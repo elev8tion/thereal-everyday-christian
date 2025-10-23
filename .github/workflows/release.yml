@@ -1,0 +1,182 @@
+name: Release Production Build
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.0.0)'
+        required: true
+        type: string
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+  JAVA_VERSION: '17'
+
+jobs:
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get version
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          release_name: Everyday Christian v${{ steps.get_version.outputs.version }}
+          draft: false
+          prerelease: false
+          body: |
+            ## What's New in v${{ steps.get_version.outputs.version }}
+
+            ### Features
+            - Feature 1
+            - Feature 2
+
+            ### Bug Fixes
+            - Fix 1
+            - Fix 2
+
+            ### Improvements
+            - Improvement 1
+            - Improvement 2
+
+            ## Downloads
+            - Android APK (Universal)
+            - Android App Bundle (Google Play)
+            - iOS IPA (requires signing)
+
+            ## Installation
+            See [Installation Guide](https://github.com/${{ github.repository }}/wiki/Installation)
+
+  build-android-release:
+    name: Build Android Release
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'gradle'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Release APKs
+        run: |
+          flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/app/outputs/symbols
+          flutter build apk --release --obfuscate --split-debug-info=build/app/outputs/symbols
+
+      - name: Build Release AAB
+        run: flutter build appbundle --release --obfuscate --split-debug-info=build/app/outputs/symbols
+
+      - name: Sign APKs (if keystore available)
+        if: secrets.ANDROID_KEYSTORE_BASE64 != ''
+        run: |
+          echo "Signing APKs with release keystore"
+          # Signing logic here
+
+      - name: Upload Universal APK
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: build/app/outputs/flutter-apk/app-release.apk
+          asset_name: everyday-christian-v${{ needs.create-release.outputs.version }}-android-universal.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Upload App Bundle
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: build/app/outputs/bundle/release/app-release.aab
+          asset_name: everyday-christian-v${{ needs.create-release.outputs.version }}-android.aab
+          asset_content_type: application/octet-stream
+
+  build-ios-release:
+    name: Build iOS Release
+    needs: create-release
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build iOS Release
+        run: |
+          flutter build ios --release --no-codesign --obfuscate --split-debug-info=build/ios/symbols
+
+      - name: Create IPA
+        run: |
+          mkdir -p Payload
+          cp -r build/ios/iphoneos/Runner.app Payload/
+          zip -r everyday-christian-v${{ needs.create-release.outputs.version }}-ios.ipa Payload
+          rm -rf Payload
+
+      - name: Upload IPA
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: everyday-christian-v${{ needs.create-release.outputs.version }}-ios.ipa
+          asset_name: everyday-christian-v${{ needs.create-release.outputs.version }}-ios.ipa
+          asset_content_type: application/octet-stream
+
+  deploy-to-stores:
+    name: Deploy to App Stores
+    needs: [build-android-release, build-ios-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Play Store
+        run: |
+          echo "Deploy to Play Store Beta/Production track"
+          echo "Configure using r0adkll/upload-google-play action"
+
+      - name: Deploy to App Store
+        run: |
+          echo "Deploy to App Store Connect"
+          echo "Configure using Apple's App Store Connect API or Fastlane"

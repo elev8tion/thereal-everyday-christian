@@ -1,0 +1,1054 @@
+{
+  "@@locale": "en",
+
+  "appName": "EVERYDAY",
+  "@appName": {
+    "description": "First part of app name on splash screen"
+  },
+  "appNameSecond": "CHRISTIAN",
+  "@appNameSecond": {
+    "description": "Second part of app name on splash screen"
+  },
+  "tagline": "Faith-guided wisdom for life's moments",
+  "@tagline": {
+    "description": "App tagline on splash screen"
+  },
+  "loadingJourney": "Preparing your spiritual journey...",
+  "@loadingJourney": {
+    "description": "Loading message on splash screen"
+  },
+  "version": "Version 1.0.0",
+  "@version": {
+    "description": "App version number"
+  },
+  "builtWithFaith": "Built with ❤️ for faith",
+  "@builtWithFaith": {
+    "description": "Footer message on splash screen"
+  },
+
+  "faithGuidedCompanion": "Your faith-guided companion for life's moments",
+  "@faithGuidedCompanion": {
+    "description": "Onboarding subtitle"
+  },
+  "aiBiblicalGuidance": "AI Biblical Guidance",
+  "@aiBiblicalGuidance": {
+    "description": "Feature title"
+  },
+  "aiBiblicalGuidanceDesc": "Get personalized Bible verses and wisdom for any situation",
+  "@aiBiblicalGuidanceDesc": {
+    "description": "Feature description"
+  },
+  "dailyVerses": "Daily Verses",
+  "@dailyVerses": {
+    "description": "Feature title"
+  },
+  "dailyVersesDesc": "Receive encouraging Scripture at 9:30 AM or your preferred time",
+  "@dailyVersesDesc": {
+    "description": "Feature description"
+  },
+  "completePrivacy": "Complete Privacy",
+  "@completePrivacy": {
+    "description": "Feature title"
+  },
+  "completePrivacyDesc": "All your spiritual conversations stay on your device",
+  "@completePrivacyDesc": {
+    "description": "Feature description"
+  },
+  "beginYourJourney": "Begin Your Journey",
+  "@beginYourJourney": {
+    "description": "Call to action button"
+  },
+  "continueAsGuest": "Continue as Guest",
+  "@continueAsGuest": {
+    "description": "Skip onboarding option"
+  },
+
+  "welcomeBack": "Welcome Back",
+  "@welcomeBack": {
+    "description": "Auth screen title"
+  },
+  "signInToContinue": "Sign in to continue your spiritual journey",
+  "@signInToContinue": {
+    "description": "Auth screen subtitle"
+  },
+  "privacyNote": "Your spiritual conversations remain completely private on your device",
+  "@privacyNote": {
+    "description": "Privacy assurance message"
+  },
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign in button and tab"
+  },
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "Sign up button and tab"
+  },
+  "fullName": "Full Name",
+  "@fullName": {
+    "description": "Full name field label"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  "createAccount": "Create Account",
+  "@createAccount": {
+    "description": "Create account button"
+  },
+  "useBiometric": "Use Biometric",
+  "@useBiometric": {
+    "description": "Biometric authentication button"
+  },
+  "agreeTerms": "By creating an account, you agree to keep your spiritual journey private and secure.",
+  "@agreeTerms": {
+    "description": "Terms agreement message"
+  },
+  "pleaseEnterEmail": "Please enter your email",
+  "@pleaseEnterEmail": {
+    "description": "Email validation error"
+  },
+  "pleaseEnterValidEmail": "Please enter a valid email address",
+  "@pleaseEnterValidEmail": {
+    "description": "Email format validation error"
+  },
+  "pleaseEnterPassword": "Please enter your password",
+  "@pleaseEnterPassword": {
+    "description": "Password validation error"
+  },
+  "passwordMinLength": "Password must be at least 6 characters",
+  "@passwordMinLength": {
+    "description": "Password length validation error"
+  },
+  "pleaseEnterName": "Please enter your name",
+  "@pleaseEnterName": {
+    "description": "Name validation error"
+  },
+  "or": "or",
+  "@or": {
+    "description": "Divider text between options"
+  },
+
+  "riseAndShine": "Rise and shine",
+  "@riseAndShine": {
+    "description": "Morning greeting"
+  },
+  "goodAfternoon": "Good afternoon",
+  "@goodAfternoon": {
+    "description": "Afternoon greeting"
+  },
+  "goodEvening": "Good evening",
+  "@goodEvening": {
+    "description": "Evening greeting"
+  },
+  "howCanIEncourage": "How can I encourage you today?",
+  "@howCanIEncourage": {
+    "description": "Home screen subtitle"
+  },
+  "dayStreak": "Day Streak",
+  "@dayStreak": {
+    "description": "Streak stat label"
+  },
+  "prayers": "Prayers",
+  "@prayers": {
+    "description": "Prayers stat label"
+  },
+  "versesRead": "Verses Read",
+  "@versesRead": {
+    "description": "Verses read stat label"
+  },
+  "devotionals": "Devotionals",
+  "@devotionals": {
+    "description": "Devotionals stat label"
+  },
+  "aiGuidance": "AI Guidance",
+  "@aiGuidance": {
+    "description": "Feature card title"
+  },
+  "aiGuidanceDesc": "Get biblical wisdom for any situation you're facing",
+  "@aiGuidanceDesc": {
+    "description": "Feature card description"
+  },
+  "dailyDevotional": "Daily Devotional",
+  "@dailyDevotional": {
+    "description": "Feature card title"
+  },
+  "dailyDevotionalDesc": "Grow closer to God with daily reflections",
+  "@dailyDevotionalDesc": {
+    "description": "Feature card description"
+  },
+  "prayerJournal": "Prayer Journal",
+  "@prayerJournal": {
+    "description": "Feature card title and screen title"
+  },
+  "prayerJournalDesc": "Track your prayers and see God's faithfulness",
+  "@prayerJournalDesc": {
+    "description": "Feature card description"
+  },
+  "readingPlans": "Reading Plans",
+  "@readingPlans": {
+    "description": "Feature card title and screen title"
+  },
+  "readingPlansDesc": "Structured Bible reading with daily guidance",
+  "@readingPlansDesc": {
+    "description": "Feature card description"
+  },
+  "quickActions": "Quick Actions",
+  "@quickActions": {
+    "description": "Section title"
+  },
+  "bibleLibrary": "Bible Library",
+  "@bibleLibrary": {
+    "description": "Quick action label"
+  },
+  "addPrayer": "Add Prayer",
+  "@addPrayer": {
+    "description": "Quick action label"
+  },
+  "shareVerse": "Share Verse",
+  "@shareVerse": {
+    "description": "Quick action label"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title and menu item"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile screen title and menu item"
+  },
+  "verseOfTheDay": "Verse of the Day",
+  "@verseOfTheDay": {
+    "description": "Daily verse section title"
+  },
+  "comfort": "Comfort",
+  "@comfort": {
+    "description": "Category badge"
+  },
+  "startSpiritualConversation": "Start Spiritual Conversation",
+  "@startSpiritualConversation": {
+    "description": "Chat CTA button"
+  },
+
+  "biblicalAIGuidance": "Biblical AI Guidance",
+  "@biblicalAIGuidance": {
+    "description": "Chat screen title"
+  },
+  "poweredByLocalAI": "Powered by local AI",
+  "@poweredByLocalAI": {
+    "description": "Chat subtitle"
+  },
+  "askForBiblicalGuidance": "Ask for biblical guidance...",
+  "@askForBiblicalGuidance": {
+    "description": "Chat input placeholder"
+  },
+  "peaceBeWithYou": "Peace be with you! 🙏",
+  "@peaceBeWithYou": {
+    "description": "Welcome message greeting"
+  },
+  "chatWelcomeMessage": "I'm here to provide biblical guidance and spiritual support. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?",
+  "@chatWelcomeMessage": {
+    "description": "Welcome message content"
+  },
+
+  "bringRequestsToGod": "Plan Pray Reflect",
+  "@bringRequestsToGod": {
+    "description": "Prayer journal subtitle"
+  },
+  "active": "Active",
+  "@active": {
+    "description": "Tab label"
+  },
+  "answered": "Answered",
+  "@answered": {
+    "description": "Tab label"
+  },
+  "noActivePrayers": "No Active Prayers",
+  "@noActivePrayers": {
+    "description": "Empty state title"
+  },
+  "startPrayerJourney": "Start your prayer journey by adding your first prayer request",
+  "@startPrayerJourney": {
+    "description": "Empty state subtitle"
+  },
+  "noAnsweredPrayersYet": "No Answered Prayers Yet",
+  "@noAnsweredPrayersYet": {
+    "description": "Empty state title"
+  },
+  "markPrayersAnswered": "When God answers your prayers, mark them as answered to see them here",
+  "@markPrayersAnswered": {
+    "description": "Empty state subtitle"
+  },
+  "markAsAnswered": "Mark as Answered",
+  "@markAsAnswered": {
+    "description": "Menu action"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Menu action"
+  },
+  "howGodAnswered": "How God Answered:",
+  "@howGodAnswered": {
+    "description": "Answered prayer label"
+  },
+  "answered_date": "Answered {date}",
+  "@answered_date": {
+    "description": "Answered date label",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "3 days ago"
+      }
+    }
+  },
+  "addPrayerRequest": "Add Prayer Request",
+  "@addPrayerRequest": {
+    "description": "Dialog title"
+  },
+  "title": "Title",
+  "@title": {
+    "description": "Form field label"
+  },
+  "whatArePrayingFor": "What are you praying for?",
+  "@whatArePrayingFor": {
+    "description": "Title field placeholder"
+  },
+  "category": "Category",
+  "@category": {
+    "description": "Form field label"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Form field label"
+  },
+  "shareMoreDetails": "Share more details about your prayer request...",
+  "@shareMoreDetails": {
+    "description": "Description field placeholder"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Button text"
+  },
+  "addPrayerButton": "Add Prayer",
+  "@addPrayerButton": {
+    "description": "Button text"
+  },
+  "markAnswered": "Mark Answered",
+  "@markAnswered": {
+    "description": "Button text"
+  },
+  "howDidGodAnswer": "How did God answer this prayer?",
+  "@howDidGodAnswer": {
+    "description": "Answer description prompt"
+  },
+  "shareHowGodAnswered": "Share how God answered your prayer...",
+  "@shareHowGodAnswered": {
+    "description": "Answer field placeholder"
+  },
+  "health": "Health",
+  "@health": {
+    "description": "Prayer category"
+  },
+  "family": "Family",
+  "@family": {
+    "description": "Prayer category"
+  },
+  "workCareer": "Work/Career",
+  "@workCareer": {
+    "description": "Prayer category"
+  },
+  "protection": "Protection",
+  "@protection": {
+    "description": "Prayer category"
+  },
+  "guidance": "Guidance",
+  "@guidance": {
+    "description": "Prayer category"
+  },
+  "gratitude": "Gratitude",
+  "@gratitude": {
+    "description": "Prayer category"
+  },
+  "general": "General",
+  "@general": {
+    "description": "Prayer category"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Date label"
+  },
+  "yesterday": "Yesterday",
+  "@yesterday": {
+    "description": "Date label"
+  },
+  "daysAgo": "{count} days ago",
+  "@daysAgo": {
+    "description": "Relative date",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+
+  "dayStreakCount": "{count} day streak",
+  "@dayStreakCount": {
+    "description": "Streak count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "completed": "{count} completed",
+  "@completed": {
+    "description": "Completion count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "23"
+      }
+    }
+  },
+  "dayNumber": "Day {number}",
+  "@dayNumber": {
+    "description": "Day indicator",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "todaysVerse": "Today's Verse",
+  "@todaysVerse": {
+    "description": "Verse section title"
+  },
+  "reflection": "Reflection",
+  "@reflection": {
+    "description": "Reflection section title"
+  },
+  "markAsCompleted": "Mark as Completed",
+  "@markAsCompleted": {
+    "description": "Button text"
+  },
+  "devotionalCompleted": "Devotional Completed",
+  "@devotionalCompleted": {
+    "description": "Completion status"
+  },
+  "completedToday": "Completed today",
+  "@completedToday": {
+    "description": "Completion date"
+  },
+  "completedYesterday": "Completed yesterday",
+  "@completedYesterday": {
+    "description": "Completion date"
+  },
+  "completedDaysAgo": "Completed {count} days ago",
+  "@completedDaysAgo": {
+    "description": "Completion date",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "previousDay": "Previous Day",
+  "@previousDay": {
+    "description": "Navigation button"
+  },
+  "nextDay": "Next Day",
+  "@nextDay": {
+    "description": "Navigation button"
+  },
+  "progress": "Progress",
+  "@progress": {
+    "description": "Progress section title"
+  },
+  "progressCount": "{current} of {total}",
+  "@progressCount": {
+    "description": "Progress counter",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "noDevotionalsAvailable": "No Devotionals Available",
+  "@noDevotionalsAvailable": {
+    "description": "Empty state title"
+  },
+  "checkBackForDevotionals": "Check back later for daily devotionals",
+  "@checkBackForDevotionals": {
+    "description": "Empty state subtitle"
+  },
+  "errorLoadingDevotionals": "Error Loading Devotionals",
+  "@errorLoadingDevotionals": {
+    "description": "Error state title"
+  },
+
+  "growInGodsWord": "Grow in God's word daily",
+  "@growInGodsWord": {
+    "description": "Reading plan subtitle"
+  },
+  "todayTab": "Today",
+  "@todayTab": {
+    "description": "Tab label"
+  },
+  "myPlans": "My Plans",
+  "@myPlans": {
+    "description": "Tab label"
+  },
+  "explore": "Explore",
+  "@explore": {
+    "description": "Tab label"
+  },
+  "noActiveReadingPlan": "No Active Reading Plan",
+  "@noActiveReadingPlan": {
+    "description": "Empty state title"
+  },
+  "startReadingPlanPrompt": "Start a reading plan to see today's readings here",
+  "@startReadingPlanPrompt": {
+    "description": "Empty state subtitle"
+  },
+  "explorePlans": "Explore Plans",
+  "@explorePlans": {
+    "description": "Button text"
+  },
+  "todaysReadings": "Today's Readings",
+  "@todaysReadings": {
+    "description": "Section title"
+  },
+  "allCaughtUp": "All caught up!",
+  "@allCaughtUp": {
+    "description": "Empty readings title"
+  },
+  "noReadingsToday": "No readings scheduled for today",
+  "@noReadingsToday": {
+    "description": "Empty readings subtitle"
+  },
+  "noActivePlans": "No Active Plans",
+  "@noActivePlans": {
+    "description": "Empty state title"
+  },
+  "startReadingPlanToTrack": "Start a reading plan to track your progress",
+  "@startReadingPlanToTrack": {
+    "description": "Empty state subtitle"
+  },
+  "continueReading": "Continue Reading",
+  "@continueReading": {
+    "description": "Button text"
+  },
+  "startPlan": "Start Plan",
+  "@startPlan": {
+    "description": "Button text"
+  },
+  "markedAsIncomplete": "Marked as incomplete",
+  "@markedAsIncomplete": {
+    "description": "Snackbar message"
+  },
+  "greatJobKeepUp": "Great job! Keep up the good work!",
+  "@greatJobKeepUp": {
+    "description": "Snackbar message"
+  },
+  "errorWithMessage": "Error: {message}",
+  "@errorWithMessage": {
+    "description": "Error message",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "readingPlanStarted": "Reading plan started! Let's begin your journey.",
+  "@readingPlanStarted": {
+    "description": "Snackbar message"
+  },
+  "errorStartingPlan": "Error starting plan: {error}",
+  "@errorStartingPlan": {
+    "description": "Error message",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Database error"
+      }
+    }
+  },
+  "resetReadingPlan": "Reset Reading Plan?",
+  "@resetReadingPlan": {
+    "description": "Dialog title"
+  },
+  "resetPlanConfirmation": "Are you sure you want to reset \"{planTitle}\"? All progress will be lost.",
+  "@resetPlanConfirmation": {
+    "description": "Dialog message",
+    "placeholders": {
+      "planTitle": {
+        "type": "String",
+        "example": "30-Day Bible Reading"
+      }
+    }
+  },
+  "reset": "Reset",
+  "@reset": {
+    "description": "Button text"
+  },
+  "readingPlanReset": "Reading plan has been reset",
+  "@readingPlanReset": {
+    "description": "Snackbar message"
+  },
+  "errorResettingPlan": "Error resetting plan: {error}",
+  "@errorResettingPlan": {
+    "description": "Error message",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Database error"
+      }
+    }
+  },
+  "oopsSomethingWrong": "Oops! Something went wrong",
+  "@oopsSomethingWrong": {
+    "description": "Error state title"
+  },
+  "percentComplete": "{percent}% complete",
+  "@percentComplete": {
+    "description": "Progress percentage",
+    "placeholders": {
+      "percent": {
+        "type": "String",
+        "example": "75.5"
+      }
+    }
+  },
+
+  "verseLibrary": "Verse Library",
+  "@verseLibrary": {
+    "description": "Screen title"
+  },
+  "findComfortInGodsWord": "Find comfort in God's word",
+  "@findComfortInGodsWord": {
+    "description": "Subtitle"
+  },
+  "searchVersesOrReferences": "Search verses or references...",
+  "@searchVersesOrReferences": {
+    "description": "Search placeholder"
+  },
+  "all": "All",
+  "@all": {
+    "description": "Category filter"
+  },
+  "faith": "Faith",
+  "@faith": {
+    "description": "Category"
+  },
+  "hope": "Hope",
+  "@hope": {
+    "description": "Category"
+  },
+  "love": "Love",
+  "@love": {
+    "description": "Category"
+  },
+  "peace": "Peace",
+  "@peace": {
+    "description": "Category"
+  },
+  "strength": "Strength",
+  "@strength": {
+    "description": "Category"
+  },
+  "wisdom": "Wisdom",
+  "@wisdom": {
+    "description": "Category"
+  },
+  "forgiveness": "Forgiveness",
+  "@forgiveness": {
+    "description": "Category"
+  },
+  "allVerses": "All Verses",
+  "@allVerses": {
+    "description": "Tab label"
+  },
+  "favorites": "Favorites",
+  "@favorites": {
+    "description": "Tab label"
+  },
+  "allVersesCount": "All Verses ({count})",
+  "@allVersesCount": {
+    "description": "Tab label with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "156"
+      }
+    }
+  },
+  "favoritesCount": "Favorites ({count})",
+  "@favoritesCount": {
+    "description": "Tab label with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "noVersesFound": "No verses found",
+  "@noVersesFound": {
+    "description": "Empty state title"
+  },
+  "tryAdjustingSearch": "Try adjusting your search or category filter",
+  "@tryAdjustingSearch": {
+    "description": "Empty state subtitle"
+  },
+  "noVersesInCategory": "No verses available in this category",
+  "@noVersesInCategory": {
+    "description": "Empty state subtitle"
+  },
+  "noFavoriteVersesYet": "No favorite verses yet",
+  "@noFavoriteVersesYet": {
+    "description": "Empty state title"
+  },
+  "tapHeartToFavorite": "Tap the heart icon on any verse to add it to your favorites",
+  "@tapHeartToFavorite": {
+    "description": "Empty state subtitle"
+  },
+  "shareVerseTitle": "Share Verse",
+  "@shareVerseTitle": {
+    "description": "Bottom sheet title"
+  },
+  "copyToClipboard": "Copy to Clipboard",
+  "@copyToClipboard": {
+    "description": "Share option"
+  },
+  "shareWithFriends": "Share with Friends",
+  "@shareWithFriends": {
+    "description": "Share option"
+  },
+  "createImageQuote": "Create Image Quote",
+  "@createImageQuote": {
+    "description": "Share option"
+  },
+
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Settings section title"
+  },
+  "dailyNotifications": "Daily Notifications",
+  "@dailyNotifications": {
+    "description": "Setting label"
+  },
+  "dailyNotificationsDesc": "Receive daily spiritual reminders",
+  "@dailyNotificationsDesc": {
+    "description": "Setting description"
+  },
+  "prayerReminders": "Prayer Reminders",
+  "@prayerReminders": {
+    "description": "Setting label"
+  },
+  "prayerRemindersDesc": "Get reminded to pray throughout the day",
+  "@prayerRemindersDesc": {
+    "description": "Setting description"
+  },
+  "verseOfTheDaySetting": "Verse of the Day",
+  "@verseOfTheDaySetting": {
+    "description": "Setting label"
+  },
+  "verseOfTheDayDesc": "Daily Bible verse notifications",
+  "@verseOfTheDayDesc": {
+    "description": "Setting description"
+  },
+  "bibleSettings": "Bible Settings",
+  "@bibleSettings": {
+    "description": "Settings section title"
+  },
+  "bibleVersion": "Bible Version",
+  "@bibleVersion": {
+    "description": "Setting label"
+  },
+  "bibleVersionDesc": "Choose your preferred translation",
+  "@bibleVersionDesc": {
+    "description": "Setting description"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Setting label"
+  },
+  "languageDesc": "Select app language",
+  "@languageDesc": {
+    "description": "Setting description"
+  },
+  "display": "Display",
+  "@display": {
+    "description": "Settings section title"
+  },
+  "textSize": "Text Size",
+  "@textSize": {
+    "description": "Setting label"
+  },
+  "textSizeDesc": "Adjust reading text size for better readability",
+  "@textSizeDesc": {
+    "description": "Setting description"
+  },
+  "dataPrivacy": "Data & Privacy",
+  "@dataPrivacy": {
+    "description": "Settings section title"
+  },
+  "offlineMode": "Offline Mode",
+  "@offlineMode": {
+    "description": "Setting label"
+  },
+  "offlineModeDesc": "Use app without internet connection",
+  "@offlineModeDesc": {
+    "description": "Setting description"
+  },
+  "clearCache": "Clear Cache",
+  "@clearCache": {
+    "description": "Setting action"
+  },
+  "clearCacheDesc": "Free up storage space",
+  "@clearCacheDesc": {
+    "description": "Setting description"
+  },
+  "exportData": "Export Data",
+  "@exportData": {
+    "description": "Setting action"
+  },
+  "exportDataDesc": "Backup your prayers and notes",
+  "@exportDataDesc": {
+    "description": "Setting description"
+  },
+  "support": "Support",
+  "@support": {
+    "description": "Settings section title"
+  },
+  "helpFAQ": "Help & FAQ",
+  "@helpFAQ": {
+    "description": "Setting action"
+  },
+  "helpFAQDesc": "Get answers to common questions",
+  "@helpFAQDesc": {
+    "description": "Setting description"
+  },
+  "contactSupport": "Contact Support",
+  "@contactSupport": {
+    "description": "Setting action"
+  },
+  "contactSupportDesc": "Get help with technical issues",
+  "@contactSupportDesc": {
+    "description": "Setting description"
+  },
+  "rateApp": "Rate App",
+  "@rateApp": {
+    "description": "Setting action"
+  },
+  "rateAppDesc": "Share your feedback on the App Store",
+  "@rateAppDesc": {
+    "description": "Setting description"
+  },
+  "about": "About",
+  "@about": {
+    "description": "Settings section title"
+  },
+  "versionLabel": "Version",
+  "@versionLabel": {
+    "description": "Info label"
+  },
+  "build": "Build",
+  "@build": {
+    "description": "Info label"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Setting action"
+  },
+  "privacyPolicyDesc": "Read our privacy policy",
+  "@privacyPolicyDesc": {
+    "description": "Setting description"
+  },
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Setting action"
+  },
+  "termsOfServiceDesc": "Read terms and conditions",
+  "@termsOfServiceDesc": {
+    "description": "Setting description"
+  },
+  "clearCacheDialogTitle": "Clear Cache",
+  "@clearCacheDialogTitle": {
+    "description": "Dialog title"
+  },
+  "clearCacheDialogMessage": "This will free up storage space but may require re-downloading some content.",
+  "@clearCacheDialogMessage": {
+    "description": "Dialog message"
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Button text"
+  },
+  "cacheCleared": "Cache cleared successfully",
+  "@cacheCleared": {
+    "description": "Snackbar message"
+  },
+  "dataExportStarted": "Data export started - you will be notified when complete",
+  "@dataExportStarted": {
+    "description": "Snackbar message"
+  },
+  "helpDialogTitle": "Help & FAQ",
+  "@helpDialogTitle": {
+    "description": "Dialog title"
+  },
+  "helpDialogMessage": "For help and support, please visit our website or contact us through the app.",
+  "@helpDialogMessage": {
+    "description": "Dialog message"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Button text"
+  },
+  "openingEmailClient": "Opening email client...",
+  "@openingEmailClient": {
+    "description": "Snackbar message"
+  },
+  "openingAppStore": "Opening App Store...",
+  "@openingAppStore": {
+    "description": "Snackbar message"
+  },
+  "openingPrivacyPolicy": "Opening privacy policy...",
+  "@openingPrivacyPolicy": {
+    "description": "Snackbar message"
+  },
+  "openingTermsOfService": "Opening terms of service...",
+  "@openingTermsOfService": {
+    "description": "Snackbar message"
+  },
+
+  "yourSpiritualJourney": "Your Spiritual Journey",
+  "@yourSpiritualJourney": {
+    "description": "Section title"
+  },
+  "prayerStreak": "Prayer Streak",
+  "@prayerStreak": {
+    "description": "Stat label"
+  },
+  "totalPrayers": "Total Prayers",
+  "@totalPrayers": {
+    "description": "Stat label"
+  },
+  "achievements": "Achievements",
+  "@achievements": {
+    "description": "Section title"
+  },
+  "achievementCount": "{unlocked}/{total}",
+  "@achievementCount": {
+    "description": "Achievement progress",
+    "placeholders": {
+      "unlocked": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "prayerWarrior": "Prayer Warrior",
+  "@prayerWarrior": {
+    "description": "Achievement title"
+  },
+  "prayerWarriorDesc": "Prayed for 7 days in a row",
+  "@prayerWarriorDesc": {
+    "description": "Achievement description"
+  },
+  "bibleScholar": "Bible Scholar",
+  "@bibleScholar": {
+    "description": "Achievement title"
+  },
+  "bibleScholarDesc": "Read 100 verses",
+  "@bibleScholarDesc": {
+    "description": "Achievement description"
+  },
+  "faithfulFriend": "Faithful Friend",
+  "@faithfulFriend": {
+    "description": "Achievement title"
+  },
+  "faithfulFriendDesc": "Complete 30 devotionals",
+  "@faithfulFriendDesc": {
+    "description": "Achievement description"
+  },
+  "scriptureMaster": "Scripture Master",
+  "@scriptureMaster": {
+    "description": "Achievement title"
+  },
+  "scriptureMasterDesc": "Complete 5 reading plans",
+  "@scriptureMasterDesc": {
+    "description": "Achievement description"
+  },
+  "account": "Account",
+  "@account": {
+    "description": "Section title"
+  },
+  "helpSupport": "Help & Support",
+  "@helpSupport": {
+    "description": "Menu item"
+  },
+  "signOut": "Sign Out",
+  "@signOut": {
+    "description": "Menu item"
+  },
+  "editProfile": "Edit Profile",
+  "@editProfile": {
+    "description": "Button and dialog title"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Form field label"
+  },
+  "enterYourName": "Enter your name",
+  "@enterYourName": {
+    "description": "Field placeholder"
+  },
+  "enterYourEmail": "Enter your email",
+  "@enterYourEmail": {
+    "description": "Field placeholder"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Button text"
+  },
+  "profileUpdated": "Profile updated successfully",
+  "@profileUpdated": {
+    "description": "Snackbar message"
+  },
+  "signOutQuestion": "Sign Out?",
+  "@signOutQuestion": {
+    "description": "Dialog title"
+  },
+  "signOutConfirmation": "Are you sure you want to sign out?",
+  "@signOutConfirmation": {
+    "description": "Dialog message"
+  },
+  "memberSince": "Member since {date}",
+  "@memberSince": {
+    "description": "Member badge",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Jan 2024"
+      }
+    }
+  }
+}

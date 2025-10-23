@@ -1,0 +1,12 @@
+{
+  "Simulator Target Bundle": "com.everyday.christian",
+  "aps": {
+    "alert": {
+      "title": "Verse of the Day",
+      "subtitle": "John 3:16",
+      "body": "For God so loved the world, that he gave his only begotten Son, that whoever believes in him should not perish, but have eternal life."
+    },
+    "badge": 1,
+    "sound": "default"
+  }
+}
