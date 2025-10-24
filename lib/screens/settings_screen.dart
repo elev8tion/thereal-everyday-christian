@@ -21,7 +21,7 @@ import '../widgets/time_picker/time_range_sheet.dart';
 import '../widgets/time_picker/time_range_sheet_style.dart';
 import '../components/glass_button.dart';
 import '../components/base_bottom_sheet.dart';
-import 'subscription_settings_screen.dart';
+import 'paywall_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -206,7 +206,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const SubscriptionSettingsScreen(),
+                      builder: (context) => const PaywallScreen(
+                        showTrialInfo: true,
+                      ),
                     ),
                   );
                 },
