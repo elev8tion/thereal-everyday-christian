@@ -13,6 +13,7 @@ import '../components/glassmorphic_fab_menu.dart';
 import '../core/navigation/app_routes.dart';
 import '../core/providers/app_providers.dart';
 import '../core/navigation/navigation_service.dart';
+import '../core/services/preferences_service.dart';
 import '../utils/responsive_utils.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -24,14 +25,21 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late String greeting;
-  late String userName;
+  String userName = 'friend';
   final GlobalKey _backgroundKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
     _setGreeting();
-    userName = "Friend"; // In production, get from user preferences
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    final prefs = await PreferencesService.getInstance();
+    setState(() {
+      userName = prefs.getFirstNameOrDefault();
+    });
   }
 
   void _setGreeting() {

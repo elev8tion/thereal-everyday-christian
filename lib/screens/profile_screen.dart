@@ -12,6 +12,7 @@ import '../components/base_bottom_sheet.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
+import '../core/services/preferences_service.dart';
 import '../utils/responsive_utils.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -22,10 +23,49 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  // User data - In production, this would come from a user service/provider
-  final String userName = "Friend";
-  final String userEmail = "friend@example.com";
+  // User data controllers
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController(text: "friend@example.com");
   final DateTime memberSince = DateTime(2024, 1, 15);
+  String userName = 'friend';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await PreferencesService.getInstance();
+    final name = prefs.getFirstNameOrDefault();
+    setState(() {
+      userName = name;
+      _nameController.text = name;
+    });
+  }
+
+  Future<void> _saveUserData() async {
+    final prefs = await PreferencesService.getInstance();
+    final name = _nameController.text.trim();
+    if (name.isNotEmpty) {
+      await prefs.saveFirstName(name);
+      setState(() {
+        userName = name;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully')),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
 
   // Build achievements list based on real stats
   List<Achievement> _buildAchievements(int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive) {
@@ -828,7 +868,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
               const SizedBox(height: AppSpacing.sm),
               TextField(
-                controller: TextEditingController(text: userName),
+                controller: _nameController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: 'Enter your name',
@@ -854,7 +894,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
               const SizedBox(height: AppSpacing.sm),
               TextField(
-                controller: TextEditingController(text: userEmail),
+                controller: _emailController,
                 style: const TextStyle(color: Colors.white),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
@@ -885,19 +925,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     child: GlassButton(
                       text: 'Save',
                       height: 48,
-                      onPressed: () {
-                        // In production, save to user service/provider
+                      onPressed: () async {
+                        await _saveUserData();
                         NavigationService.pop();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text('Profile updated successfully'),
-                            backgroundColor: AppTheme.primaryColor,
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: AppRadius.mediumRadius,
-                            ),
-                          ),
-                        );
                       },
                     ),
                   ),
