@@ -412,7 +412,7 @@ If a child under 13 uses Everyday Christian:
 - **Legitimate Interest** (Article 6(1)(f)): App functionality and security improvements
 - **Manifest Public Interest** (Article 9(2)(g)): Religious guidance provision
 
-**Data Controller**: [INSERT LEGAL ENTITY NAME], [INSERT BUSINESS ADDRESS]
+**Data Controller**: Elev8tion LLC, 15 Boyden St, Waterbury, Connecticut
 
 **Data Processor**: Google LLC (for Gemini API - Premium users only)
 
@@ -507,7 +507,7 @@ We may update this Privacy Policy to reflect changes in our practices, technolog
 - Update the "Last Updated" date at the top of this policy
 - Display an in-app notification on next app launch
 - For material changes, require acknowledgment before continuing to use the app
-- Post updated policy at [INSERT WEBSITE URL if applicable]
+- Post updated policy at www.everydaychristian.app/privacy
 
 ### 11.2 Material vs. Non-Material Changes
 
@@ -544,7 +544,7 @@ If you disagree with updated terms:
 
 **Email**: connect@everydaychristian.app
 **Response Time**: Within 30 days of inquiry
-**Mailing Address**: [INSERT IF REQUIRED BY YOUR JURISDICTION]
+**Mailing Address**: Elev8tion LLC, 15 Boyden St, Waterbury, Connecticut 06708
 
 ### 12.2 Exercising Privacy Rights
 
@@ -580,10 +580,10 @@ Email: connect@everydaychristian.app with "COPPA Inquiry" in subject line
 
 **CRITICAL: Before app store submission, you MUST:**
 
-1. **Replace all placeholders:**
-   - `connect@everydaychristian.app` → Your actual support email
-   - `[INSERT LEGAL ENTITY NAME]` → Your company/individual name
-   - `[INSERT BUSINESS ADDRESS]` → Your business address (required in CA, EU)
+1. **All placeholders have been filled:**
+   - ✅ Email: connect@everydaychristian.app
+   - ✅ Legal Entity: Elev8tion LLC
+   - ✅ Business Address: 15 Boyden St, Waterbury, Connecticut 06708
 
 2. **Verify Google Gemini API integration:**
    - Confirm API implementation matches privacy policy description

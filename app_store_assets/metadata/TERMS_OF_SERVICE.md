@@ -248,7 +248,7 @@ The World English Bible (WEB) translation used in Everyday Christian is in the p
 
 ### 6.5 Trademarks
 
-"Everyday Christian" and our logo (if applicable) are trademarks or registered trademarks of [INSERT LEGAL ENTITY NAME]. You may not use these marks without our prior written permission.
+"Everyday Christian" and our logo (if applicable) are trademarks or registered trademarks of Elev8tion LLC. You may not use these marks without our prior written permission.
 
 ### 6.6 Digital Millennium Copyright Act (DMCA)
 
@@ -379,7 +379,7 @@ You represent that you are not:
 
 ### 11.1 Governing Law
 
-These Terms shall be governed by and construed in accordance with the laws of the State of [INSERT STATE], United States, without regard to its conflict of law provisions.
+These Terms shall be governed by and construed in accordance with the laws of the State of Connecticut, United States, without regard to its conflict of law provisions.
 
 ### 11.2 Informal Dispute Resolution
 
@@ -391,7 +391,7 @@ These Terms shall be governed by and construed in accordance with the laws of th
 
 **Arbitration Procedures:**
 - Arbitration shall be conducted by the American Arbitration Association (AAA) under its Consumer Arbitration Rules
-- Arbitration shall take place in [INSERT LOCATION] or via telephone/video conference
+- Arbitration shall take place in Waterbury, Connecticut or via telephone/video conference
 - The arbitrator's decision is final and binding
 - Each party shall bear its own costs and attorneys' fees unless the arbitrator awards otherwise
 
@@ -409,7 +409,7 @@ You may opt out of the arbitration agreement by sending written notice to connec
 
 ### 11.5 Jurisdiction and Venue
 
-If arbitration is not applicable or you have opted out, you agree that any legal action shall be brought exclusively in the state or federal courts located in [INSERT COUNTY, STATE], and you consent to personal jurisdiction in those courts.
+If arbitration is not applicable or you have opted out, you agree that any legal action shall be brought exclusively in the state or federal courts located in New Haven County, Connecticut, and you consent to personal jurisdiction in those courts.
 
 ### 11.6 Limitation on Time to File Claims
 
@@ -500,7 +500,7 @@ These Terms do not create any third-party beneficiary rights except as expressly
 
 **To Us:** You may contact us at:
 - **Email:** connect@everydaychristian.app
-- **Mailing Address:** [INSERT IF REQUIRED BY JURISDICTION]
+- **Mailing Address:** Elev8tion LLC, 15 Boyden St, Waterbury, Connecticut 06708
 
 ### 14.7 Headings
 
@@ -544,12 +544,13 @@ See our Privacy Policy for detailed contact information regarding data protectio
 
 **CRITICAL: Before app store submission:**
 
-1. **Replace placeholders:**
-   - `connect@everydaychristian.app` → Your actual support email
-   - `[INSERT LEGAL ENTITY NAME]` → Your company/individual legal name
-   - `[INSERT STATE]` → Your state for governing law
-   - `[INSERT COUNTY, STATE]` → County and state for venue
-   - `[INSERT BUSINESS ADDRESS]` → Your business address (if required)
+1. **All placeholders have been filled:**
+   - ✅ Email: connect@everydaychristian.app
+   - ✅ Legal Entity: Elev8tion LLC
+   - ✅ Governing Law: State of Connecticut
+   - ✅ Arbitration Location: Waterbury, Connecticut
+   - ✅ Venue: New Haven County, Connecticut
+   - ✅ Business Address: 15 Boyden St, Waterbury, Connecticut 06708
 
 2. **Implement Terms acceptance:**
    - First launch: Display Terms with "I Accept" button
