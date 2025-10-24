@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final subscriptionService = SubscriptionService();
+  final subscriptionService = SubscriptionService.instance;
   await subscriptionService.initialize();
 
   runApp(
