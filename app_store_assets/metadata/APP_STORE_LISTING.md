@@ -81,8 +81,20 @@ WHAT USERS ARE SAYING:
 
 "Finally, a Christian app that feels modern and actually helps me grow in my faith." - Jennifer L.
 
-COMPLETELY FREE
-All features are available completely free. No subscriptions, no ads, no hidden costs. Just pure spiritual growth.
+FREE FOREVER FEATURES
+• Complete Bible with search - Always free
+• Prayer journal with unlimited entries - Always free
+• Daily Bible verses - Always free
+• Verse library and favorites - Always free
+• Reading plans - Always free
+• No ads, ever
+
+PREMIUM AI GUIDANCE (Optional)
+Try free for 3 days, then $35/year:
+• 150 AI chat messages per month
+• Personalized biblical guidance
+• Scripture-based answers to your questions
+• Cancel anytime
 
 TECHNICAL EXCELLENCE
 • Optimized performance for smooth, fast experience
@@ -181,8 +193,10 @@ Stop juggling multiple apps. Get everything you need for spiritual growth in one
 MODERN TECHNOLOGY MEETS TIMELESS TRUTH
 We've combined cutting-edge AI with biblical wisdom to create something truly special. Technology that serves your faith.
 
-COMPLETELY FREE
-No subscriptions. No ads. No premium tiers. Every feature is free, forever.
+FREE CORE FEATURES + OPTIONAL PREMIUM AI
+Bible, prayer journal, verses, and reading plans are 100% free forever. No ads.
+
+Premium AI Chat: $35/year after 3-day free trial (150 messages/month). Cancel anytime.
 
 👥 PERFECT FOR
 
@@ -209,7 +223,7 @@ No subscriptions. No ads. No premium tiers. Every feature is free, forever.
 3. READING PLANS: Stay consistent in your Bible reading
 4. BEAUTIFUL UI: Modern design that inspires
 5. PRIVACY FOCUSED: Your data stays yours
-6. COMPLETELY FREE: No strings attached
+6. FREE CORE FEATURES: Bible, prayer, verses always free
 
 📊 TRUSTED BY THOUSANDS
 
@@ -233,7 +247,7 @@ Note: Requires Android 5.0 (Lollipop) or higher. Internet connection required fo
 
 ### Promotional Text (iOS - 170 characters)
 ```
-New: AI Biblical Chat! Ask questions, explore scripture, and get personalized guidance. Plus daily verses, prayer journal & reading plans. Download free today!
+Try AI Biblical Chat free for 3 days! Get personalized guidance, explore scripture. Bible, prayer journal & reading plans always free. No ads!
 ```
 
 ### What's New (512 characters)
@@ -290,10 +304,16 @@ https://www.everydaychristian.app/privacy
 - User-generated content: Yes (prayer journal - private)
 - Personal information collection: No
 - Location sharing: No
-- Purchases: No
+- Purchases: Yes (optional Premium AI subscription)
 
 ### In-App Purchase Information
-**None** - App is completely free
+**Premium AI Subscription:**
+- Product ID: `premium_yearly_subscription`
+- Type: Auto-renewable subscription
+- Price: $34.99 USD/year (varies by region)
+- Free Trial: 3 days
+- Features: 150 AI chat messages per month
+- All other features (Bible, prayer journal, verses, reading plans) remain free
 
 ### Localization
 - **Primary Language:** English (US)
@@ -382,7 +402,7 @@ Same as above, reformatted for 5.5" display
 1. AI-powered biblical guidance (unique)
 2. All-in-one solution (verse + prayer + reading + AI)
 3. Modern glassmorphism design
-4. Completely free with all features
+4. Core features free forever (Bible, prayer, verses)
 5. Privacy-focused (local storage)
 6. Beautiful, distraction-free UI
 
