@@ -31,6 +31,9 @@ class PreferencesService {
     }
   }
 
+  /// Access the underlying SharedPreferences instance
+  SharedPreferences? get prefs => _preferences;
+
   // Keys for stored preferences
   static const String _themeModeKey = 'theme_mode';
   static const String _languageKey = 'language_preference';
