@@ -17,9 +17,13 @@ import 'package:everyday_christian/screens/splash_screen.dart';
 import 'package:everyday_christian/screens/verse_library_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables from .env file
+  await dotenv.load(fileName: ".env");
 
   final subscriptionService = SubscriptionService.instance;
   await subscriptionService.initialize();
