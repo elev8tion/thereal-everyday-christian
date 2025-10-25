@@ -26,23 +26,12 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late String greeting;
-  String userName = 'friend';
   final GlobalKey _backgroundKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    _setGreeting();
-    _loadUserName();
     _checkShowTrialWelcome();
-  }
-
-  Future<void> _loadUserName() async {
-    final prefs = await PreferencesService.getInstance();
-    setState(() {
-      userName = prefs.getFirstNameOrDefault();
-    });
   }
 
   Future<void> _checkShowTrialWelcome() async {
@@ -76,17 +65,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Navigator.of(context).pushNamed(AppRoutes.chat);
         }
       }
-    }
-  }
-
-  void _setGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) {
-      greeting = "Rise and shine";
-    } else if (hour < 17) {
-      greeting = "Good afternoon";
-    } else {
-      greeting = "Good evening";
     }
   }
 
@@ -138,35 +116,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           // FAB on left
           const GlassmorphicFABMenu(),
-          // Greeting centered
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '$greeting,',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '$userName!',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primaryText,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // Spacer in center
+          const Spacer(),
           // Profile on right
           profilePicturePath.when(
             data: (path) => _buildAvatarCircle(path),
@@ -182,8 +133,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final hasImage = imagePath != null && File(imagePath).existsSync();
 
     return Container(
-      width: ResponsiveUtils.scaleSize(context, 40, minScale: 0.85, maxScale: 1.2),
-      height: ResponsiveUtils.scaleSize(context, 40, minScale: 0.85, maxScale: 1.2),
+      width: ResponsiveUtils.scaleSize(context, 80, minScale: 0.85, maxScale: 1.2),
+      height: ResponsiveUtils.scaleSize(context, 80, minScale: 0.85, maxScale: 1.2),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
@@ -201,7 +152,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   return Icon(
                     Icons.person,
                     color: AppColors.primaryText,
-                    size: ResponsiveUtils.iconSize(context, 20),
+                    size: ResponsiveUtils.iconSize(context, 40),
                   );
                 },
               ),
@@ -209,7 +160,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           : Icon(
               Icons.person,
               color: AppColors.primaryText,
-              size: ResponsiveUtils.iconSize(context, 20),
+              size: ResponsiveUtils.iconSize(context, 40),
             ),
     );
   }
