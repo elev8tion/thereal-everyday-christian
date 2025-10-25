@@ -133,8 +133,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final hasImage = imagePath != null && File(imagePath).existsSync();
 
     return Container(
-      width: ResponsiveUtils.scaleSize(context, 80, minScale: 0.85, maxScale: 1.2),
-      height: ResponsiveUtils.scaleSize(context, 80, minScale: 0.85, maxScale: 1.2),
+      width: ResponsiveUtils.scaleSize(context, 60, minScale: 0.85, maxScale: 1.2),
+      height: ResponsiveUtils.scaleSize(context, 60, minScale: 0.85, maxScale: 1.2),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
