@@ -10,6 +10,7 @@ import '../components/glassmorphic_fab_menu.dart';
 import '../components/category_badge.dart';
 import '../components/calendar_heatmap_widget.dart';
 import '../components/reading_progress_stats_widget.dart';
+import '../core/widgets/app_snackbar.dart';
 import '../theme/app_theme.dart';
 import '../core/providers/app_providers.dart';
 import '../core/models/reading_plan.dart';
@@ -922,12 +923,10 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         readingId: reading.id,
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Could not open reading: $e'),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 3),
-        ),
+      AppSnackBar.showError(
+        context,
+        message: 'Could not open reading: $e',
+        duration: const Duration(seconds: 3),
       );
     }
   }
@@ -950,27 +949,20 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       ref.invalidate(activeReadingPlansProvider);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              reading.isCompleted
-                  ? 'Marked as incomplete'
-                  : 'Great job! Keep up the good work!',
-            ),
-            duration: const Duration(seconds: 2),
-            backgroundColor: reading.isCompleted
-                ? Colors.orange
-                : Colors.green,
-          ),
+        AppSnackBar.show(
+          context,
+          message: reading.isCompleted
+              ? 'Marked as incomplete'
+              : 'Great job! Keep up the good work!',
+          icon: reading.isCompleted ? Icons.remove_circle_outline : Icons.check_circle,
+          duration: const Duration(seconds: 2),
         );
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
-          ),
+        AppSnackBar.showError(
+          context,
+          message: 'Error: $e',
         );
       }
     }
@@ -1006,21 +998,17 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         _tabController.animateTo(0);
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Reading plan started! Let\'s begin your journey.'),
-              duration: Duration(seconds: 2),
-              backgroundColor: Colors.green,
-            ),
+          AppSnackBar.show(
+            context,
+            message: 'Reading plan started! Let\'s begin your journey.',
+            duration: const Duration(seconds: 2),
           );
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error starting plan: $e'),
-              backgroundColor: Colors.red,
-            ),
+          AppSnackBar.showError(
+            context,
+            message: 'Error starting plan: $e',
           );
         }
       }
@@ -1063,20 +1051,17 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         ref.invalidate(planStreakProvider(plan.id));
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Reading plan has been reset'),
-              duration: Duration(seconds: 2),
-            ),
+          AppSnackBar.show(
+            context,
+            message: 'Reading plan has been reset',
+            duration: const Duration(seconds: 2),
           );
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error resetting plan: $e'),
-              backgroundColor: Colors.red,
-            ),
+          AppSnackBar.showError(
+            context,
+            message: 'Error resetting plan: $e',
           );
         }
       }
