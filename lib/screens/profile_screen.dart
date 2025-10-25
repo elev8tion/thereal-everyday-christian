@@ -26,7 +26,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   // User data controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController(text: "friend@example.com");
-  final DateTime memberSince = DateTime(2024, 1, 15);
   String userName = 'friend';
 
   @override
@@ -248,47 +247,32 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   overflow: TextOverflow.ellipsis,
                 ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
 
-                const SizedBox(height: AppSpacing.sm),
-
-                CategoryBadge(
-                  text: 'Member since ${_formatDate(memberSince)}',
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                  fontSize: ResponsiveUtils.fontSize(context, 9, minSize: 7, maxSize: 11),
-                ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.normal),
               ],
             ),
           ),
 
           const SizedBox(width: 8),
 
-          // Edit Profile Button on the RIGHT
-          Flexible(
-            child: GestureDetector(
-              onTap: _showEditProfileDialog,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          // Edit Profile Icon on the RIGHT
+          GestureDetector(
+            onTap: _showEditProfileDialog,
+            child: Container(
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [
-                    AppTheme.primaryColor,
-                    AppTheme.goldColor,
-                  ],
-                ),
-                borderRadius: AppRadius.mediumRadius,
-              ),
-                child: Text(
-                  'Edit Profile',
-                  style: TextStyle(
-                    color: AppColors.primaryText,
-                    fontWeight: FontWeight.w600,
-                    fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                color: AppTheme.goldColor.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppTheme.goldColor.withValues(alpha: 0.3),
+                  width: 1,
                 ),
               ),
-            ).animate().fadeIn(duration: AppAnimations.slow, delay: 500.ms),
-          ),
+              child: Icon(
+                Icons.edit_outlined,
+                size: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 22),
+                color: AppTheme.goldColor,
+              ),
+            ),
+          ).animate().fadeIn(duration: AppAnimations.slow, delay: 500.ms),
         ],
       ),
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.2);
@@ -4987,13 +4971,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
 
 
-  String _formatDate(DateTime date) {
-    final months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-    return '${months[date.month - 1]} ${date.year}';
-  }
 }
 
 class Achievement {
