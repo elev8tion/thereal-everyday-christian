@@ -339,7 +339,7 @@ final planStreakProvider = FutureProvider.family<int, String>((ref, planId) asyn
 /// Provider for getting calendar heatmap data for a plan
 final planHeatmapDataProvider = FutureProvider.family<Map<DateTime, int>, String>((ref, planId) async {
   final progressService = ref.watch(readingPlanProgressServiceProvider);
-  return await progressService.getCalendarHeatmapData(planId);
+  return await progressService.getCalendarHeatmapData(planId, days: 90);
 });
 
 /// Provider for getting completion statistics for a plan
