@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glassmorphic_fab_menu.dart';
@@ -275,6 +276,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _launchSupportEmail() async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: 'connect@everydaychristian.app',
+      query: 'subject=Help & Support',
+    );
+
+    try {
+      if (await canLaunchUrl(emailUri)) {
+        await launchUrl(emailUri);
+      } else {
+        if (mounted) {
+          _showSnackBar('Could not open email app');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        _showSnackBar('Error opening email: $e');
+      }
+    }
   }
 
   Widget _buildStatsSection({
@@ -603,7 +626,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               _buildMenuItem(
                 'Help & Support',
                 Icons.help,
-                () {},
+                _launchSupportEmail,
               ),
               _buildDivider(),
               _buildMenuItem(
