@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -212,25 +211,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget _buildProfileCard() {
-    final profilePicturePath = ref.watch(profilePicturePathProvider);
-
     return FrostedGlassCard(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Avatar on the LEFT
-          GestureDetector(
-            onTap: () => _showProfilePictureOptions(),
-            child: profilePicturePath.when(
-              data: (path) => _buildAvatarCircle(path),
-              loading: () => _buildAvatarCircle(null),
-              error: (_, __) => _buildAvatarCircle(null),
-            ),
-          ).animate().scale(duration: AppAnimations.slow),
-
-          const SizedBox(width: 12),
-
-          // Name, email, member info in the MIDDLE
+          // Name and member info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,162 +263,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.2);
   }
 
-  Widget _buildAvatarCircle(String? imagePath) {
-    final hasImage = imagePath != null && File(imagePath).existsSync();
-
-    return Stack(
-      children: [
-        Container(
-          width: ResponsiveUtils.scaleSize(context, 80, minScale: 0.9, maxScale: 1.3),
-          height: ResponsiveUtils.scaleSize(context, 80, minScale: 0.9, maxScale: 1.3),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: AppTheme.goldColor.withValues(alpha: 0.6),
-              width: 1.5,
-            ),
-            color: hasImage ? null : AppTheme.primaryColor.withValues(alpha: 0.3),
-          ),
-          child: hasImage
-              ? ClipOval(
-                  child: Image.file(
-                    File(imagePath),
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Center(
-                        child: Text(
-                          userName[0].toUpperCase(),
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 32, minSize: 28, maxSize: 36),
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.primaryText,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                )
-              : Center(
-                  child: Text(
-                    userName[0].toUpperCase(),
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 32, minSize: 28, maxSize: 36),
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                ),
-        ),
-        // Plus icon indicator
-        Positioned(
-          right: 0,
-          bottom: 0,
-          child: Container(
-            width: 20,
-            height: 20,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppTheme.primaryColor,
-              border: Border.all(
-                color: AppTheme.goldColor.withValues(alpha: 0.6),
-                width: 1.5,
-              ),
-            ),
-            child: const Icon(
-              Icons.add,
-              size: 12,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _showProfilePictureOptions() {
-    showCustomBottomSheet(
-      context: context,
-      title: 'Profile Picture',
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo_library, color: Colors.white),
-              title: const Text('Choose from Gallery', style: TextStyle(color: Colors.white)),
-              onTap: () async {
-                NavigationService.pop();
-                await _pickImageFromGallery();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.camera_alt, color: Colors.white),
-              title: const Text('Take Photo', style: TextStyle(color: Colors.white)),
-              onTap: () async {
-                NavigationService.pop();
-                await _takePhoto();
-              },
-            ),
-            if (ref.read(profilePicturePathProvider).value != null)
-              ListTile(
-                leading: const Icon(Icons.delete_outline, color: Colors.red),
-                title: const Text('Remove Photo', style: TextStyle(color: Colors.red)),
-                onTap: () async {
-                  NavigationService.pop();
-                  await _removeProfilePicture();
-                },
-              ),
-            const SizedBox(height: AppSpacing.xl),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _pickImageFromGallery() async {
-    try {
-      final service = ref.read(profilePictureServiceProvider);
-      final path = await service.pickFromGallery();
-
-      if (path != null) {
-        ref.invalidate(profilePicturePathProvider);
-        _showSnackBar('✅ Profile picture updated');
-      }
-    } catch (e) {
-      _showSnackBar('❌ Failed to pick image: $e');
-    }
-  }
-
-  Future<void> _takePhoto() async {
-    try {
-      final service = ref.read(profilePictureServiceProvider);
-      final path = await service.takePhoto();
-
-      if (path != null) {
-        ref.invalidate(profilePicturePathProvider);
-        _showSnackBar('✅ Profile picture updated');
-      }
-    } catch (e) {
-      _showSnackBar('❌ Failed to take photo: $e');
-    }
-  }
-
-  Future<void> _removeProfilePicture() async {
-    try {
-      final service = ref.read(profilePictureServiceProvider);
-      final removed = await service.removeProfilePicture();
-
-      if (removed) {
-        ref.invalidate(profilePicturePathProvider);
-        _showSnackBar('✅ Profile picture removed');
-      } else {
-        _showSnackBar('❌ Failed to remove profile picture');
-      }
-    } catch (e) {
-      _showSnackBar('❌ Failed to remove profile picture: $e');
-    }
-  }
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(

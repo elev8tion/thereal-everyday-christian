@@ -467,7 +467,7 @@ abstract class AppLocalizations {
   /// Welcome message content
   ///
   /// In en, this message translates to:
-  /// **'I\'m here to provide biblical guidance and spiritual support. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?'**
+  /// **'I\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?'**
   String get chatWelcomeMessage;
 
   /// Prayer journal subtitle

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -106,64 +105,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildHeader() {
-    final profilePicturePath = ref.watch(profilePicturePathProvider);
-
     return Padding(
       padding: AppSpacing.horizontalXl,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // FAB on left
           const GlassmorphicFABMenu(),
-          // Spacer in center
-          const Spacer(),
-          // Profile on right
-          profilePicturePath.when(
-            data: (path) => _buildAvatarCircle(path),
-            loading: () => _buildAvatarCircle(null),
-            error: (_, __) => _buildAvatarCircle(null),
-          ),
         ],
       ),
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
 
-  Widget _buildAvatarCircle(String? imagePath) {
-    final hasImage = imagePath != null && File(imagePath).existsSync();
-
-    return Container(
-      width: ResponsiveUtils.scaleSize(context, 60, minScale: 0.85, maxScale: 1.2),
-      height: ResponsiveUtils.scaleSize(context, 60, minScale: 0.85, maxScale: 1.2),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: AppTheme.goldColor.withValues(alpha: 0.6),
-          width: 1.5,
-        ),
-        color: hasImage ? null : AppTheme.primaryColor.withValues(alpha: 0.3),
-      ),
-      child: hasImage
-          ? ClipOval(
-              child: Image.file(
-                File(imagePath),
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(
-                    Icons.person,
-                    color: AppColors.primaryText,
-                    size: ResponsiveUtils.iconSize(context, 40),
-                  );
-                },
-              ),
-            )
-          : Icon(
-              Icons.person,
-              color: AppColors.primaryText,
-              size: ResponsiveUtils.iconSize(context, 40),
-            ),
-    );
-  }
 
   Widget _buildStatsRow() {
     final streakAsync = ref.watch(devotionalStreakProvider);

@@ -46,8 +46,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Widget _buildAppBar() {
-    final profilePicturePath = ref.watch(profilePicturePathProvider);
-
     return Container(
       padding: AppSpacing.screenPadding,
       child: Row(
@@ -83,74 +81,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ],
             ),
           ),
-          // Profile picture in header (matches home screen)
-          GestureDetector(
-            onTap: () => _showProfilePictureOptions(),
-            child: profilePicturePath.when(
-              data: (path) => _buildAvatarCircle(path),
-              loading: () => _buildAvatarCircle(null),
-              error: (_, __) => _buildAvatarCircle(null),
-            ),
-          ),
         ],
       ),
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
 
-  Widget _buildAvatarCircle(String? imagePath) {
-    final hasImage = imagePath != null && File(imagePath).existsSync();
-
-    return Stack(
-      children: [
-        Container(
-          width: ResponsiveUtils.scaleSize(context, 40, minScale: 0.85, maxScale: 1.2),
-          height: ResponsiveUtils.scaleSize(context, 40, minScale: 0.85, maxScale: 1.2),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: AppTheme.goldColor.withValues(alpha: 0.6),
-              width: 1.5,
-            ),
-            color: hasImage ? null : AppTheme.primaryColor.withValues(alpha: 0.3),
-          ),
-          child: hasImage
-              ? ClipOval(
-                  child: Image.file(
-                    File(imagePath),
-                    fit: BoxFit.cover,
-                  ),
-                )
-              : Icon(
-                  Icons.person,
-                  color: AppColors.primaryText,
-                  size: ResponsiveUtils.iconSize(context, 20),
-                ),
-        ),
-        // Plus icon indicator
-        Positioned(
-          right: 0,
-          bottom: 0,
-          child: Container(
-            width: 16,
-            height: 16,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppTheme.primaryColor,
-              border: Border.all(
-                color: AppTheme.goldColor.withValues(alpha: 0.6),
-                width: 1.5,
-              ),
-            ),
-            child: const Icon(
-              Icons.add,
-              size: 10,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ],
-    ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.normal).scale(begin: const Offset(0.8, 0.8));
-  }
 
   Widget _buildSettingsContent() {
     return SingleChildScrollView(
@@ -762,90 +697,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  void _showProfilePictureOptions() {
-    showCustomBottomSheet(
-      context: context,
-      title: 'Profile Picture',
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo_library, color: Colors.white),
-              title: const Text('Choose from Gallery', style: TextStyle(color: Colors.white)),
-              onTap: () async {
-                NavigationService.pop();
-                await _pickImageFromGallery();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.camera_alt, color: Colors.white),
-              title: const Text('Take Photo', style: TextStyle(color: Colors.white)),
-              onTap: () async {
-                NavigationService.pop();
-                await _takePhoto();
-              },
-            ),
-            if (ref.read(profilePicturePathProvider).value != null)
-              ListTile(
-                leading: const Icon(Icons.delete_outline, color: Colors.red),
-                title: const Text('Remove Photo', style: TextStyle(color: Colors.red)),
-                onTap: () async {
-                  NavigationService.pop();
-                  await _removeProfilePicture();
-                },
-              ),
-            const SizedBox(height: AppSpacing.xl),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _pickImageFromGallery() async {
-    try {
-      final service = ref.read(profilePictureServiceProvider);
-      final path = await service.pickFromGallery();
-
-      if (path != null) {
-        ref.invalidate(profilePicturePathProvider);
-        _showSnackBar('✅ Profile picture updated');
-      }
-    } catch (e) {
-      _showSnackBar('❌ Failed to pick image: $e');
-    }
-  }
-
-  Future<void> _takePhoto() async {
-    try {
-      final service = ref.read(profilePictureServiceProvider);
-      final path = await service.takePhoto();
-
-      if (path != null) {
-        ref.invalidate(profilePicturePathProvider);
-        _showSnackBar('✅ Profile picture updated');
-      }
-    } catch (e) {
-      _showSnackBar('❌ Failed to take photo: $e');
-    }
-  }
-
-  Future<void> _removeProfilePicture() async {
-    try {
-      final service = ref.read(profilePictureServiceProvider);
-      final removed = await service.removeProfilePicture();
-
-      if (removed) {
-        ref.invalidate(profilePicturePathProvider);
-        _showSnackBar('✅ Profile picture removed');
-      } else {
-        _showSnackBar('❌ Failed to remove profile picture');
-      }
-    } catch (e) {
-      _showSnackBar('❌ Failed to remove profile picture: $e');
-    }
-  }
 
   void _showClearCacheDialog() {
     showDialog(
@@ -1364,15 +1215,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
 
-      // 3. Remove profile picture
-      try {
-        final profileService = ref.read(profilePictureServiceProvider);
-        await profileService.removeProfilePicture();
-      } catch (e) {
-        debugPrint('Profile picture removal failed: $e');
-      }
-
-      // 4. Clear all cache
+      // 3. Clear all cache
       try {
         imageCache.clear();
         imageCache.clearLiveImages();

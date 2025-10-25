@@ -14,7 +14,6 @@ import '../services/reading_plan_progress_service.dart';
 import '../services/bible_loader_service.dart';
 import '../services/devotional_content_loader.dart';
 import '../services/preferences_service.dart';
-import '../services/profile_picture_service.dart';
 import '../models/devotional.dart';
 import '../models/reading_plan.dart';
 import '../../services/unified_verse_service.dart';
@@ -40,16 +39,6 @@ final notificationServiceProvider = Provider<NotificationService>((ref) {
 
 final preferencesServiceProvider = FutureProvider<PreferencesService>((ref) async {
   return await PreferencesService.getInstance();
-});
-
-final profilePictureServiceProvider = Provider<ProfilePictureService>((ref) {
-  return ProfilePictureService();
-});
-
-// Profile picture path provider with auto-refresh
-final profilePicturePathProvider = FutureProvider<String?>((ref) async {
-  final service = ref.watch(profilePictureServiceProvider);
-  return await service.getProfilePicturePath();
 });
 
 // Daily Verse Provider (queries database schedule)
