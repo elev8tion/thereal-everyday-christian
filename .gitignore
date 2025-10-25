@@ -56,3 +56,11 @@ docs/
 !.env.example
 assets/asset_bible.db
 everyday_christian.db
+
+# Local Netlify folder
+.netlify
+
+# Screenshots - Keep only organized versions
+assets/screenshots/iphone*/
+assets/screenshots/simulator_screenshot_*.png
+assets/legal/screenshots/
