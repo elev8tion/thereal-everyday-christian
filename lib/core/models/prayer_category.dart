@@ -24,7 +24,7 @@ class PrayerCategory with _$PrayerCategory {
 
 extension PrayerCategoryExtension on PrayerCategory {
   /// Get icon as IconData
-  IconData get icon => IconData(iconCodePoint, fontFamily: 'MaterialIcons');
+  IconData get icon => IconData(iconCodePoint, fontFamily: 'MaterialIcons', matchTextDirection: false);
 
   /// Get color as Color object
   Color get color => Color(colorValue);
