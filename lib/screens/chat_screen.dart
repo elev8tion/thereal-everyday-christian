@@ -34,7 +34,7 @@ class ChatScreen extends HookConsumerWidget {
 
   ChatMessage _createWelcomeMessage() {
     return ChatMessage.system(
-      content: 'Peace be with you! 🙏\n\nI\'m here to provide biblical guidance and spiritual support. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+      content: 'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
     );
   }
 
@@ -94,7 +94,7 @@ class ChatScreen extends HookConsumerWidget {
 
           // Add welcome message with sessionId
           final welcomeMessage = ChatMessage.system(
-            content: 'Peace be with you! 🙏\n\nI\'m here to provide biblical guidance and spiritual support. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+            content: 'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
             sessionId: newSessionId,
           );
           await conversationService.saveMessage(welcomeMessage);
@@ -2230,7 +2230,7 @@ class ChatScreen extends HookConsumerWidget {
       sessionId.value = newSessionId;
 
       final welcomeMessage = ChatMessage.system(
-        content: 'Peace be with you! 🙏\n\nI\'m here to provide biblical guidance and spiritual support. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+        content: 'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
         sessionId: newSessionId,
       );
       await conversationService.saveMessage(welcomeMessage);
@@ -2356,7 +2356,7 @@ class ChatScreen extends HookConsumerWidget {
 
                     // Reset messages with welcome message (with sessionId)
                     final welcomeMessage = ChatMessage.system(
-                      content: 'Peace be with you! 🙏\n\nI\'m here to provide biblical guidance and spiritual support. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+                      content: 'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
                       sessionId: newSessionId,
                     );
                     await conversationService.saveMessage(welcomeMessage);
