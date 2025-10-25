@@ -219,7 +219,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
               ).animate().fadeIn(duration: AppAnimations.slow, delay: 600.ms),
               const SizedBox(height: AppSpacing.md),
               Text(
-                'Days with completed readings in the last 90 days',
+                'Days with completed readings in the last 30 days',
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -234,7 +234,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     child: CalendarHeatmapWidget(
                       activityData: heatmapData,
-                      columns: 13,
+                      columns: 5,
                     ),
                   ).animate().fadeIn(duration: AppAnimations.slow, delay: 800.ms);
                 },

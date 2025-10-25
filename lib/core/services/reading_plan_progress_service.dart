@@ -295,9 +295,9 @@ class ReadingPlanProgressService {
     }
   }
 
-  /// Get calendar heatmap data for a plan (last 90 days)
+  /// Get calendar heatmap data for a plan (last 30 days by default)
   /// Returns a map of dates to completion counts for that date
-  Future<Map<DateTime, int>> getCalendarHeatmapData(String planId, {int days = 90}) async {
+  Future<Map<DateTime, int>> getCalendarHeatmapData(String planId, {int days = 30}) async {
     try {
       final db = await _database.database;
       final now = DateTime.now();
