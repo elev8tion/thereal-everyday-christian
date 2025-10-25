@@ -27,24 +27,17 @@ class CalendarHeatmapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    final days = columns * 7; // Show 7 rows (days of week) * columns
-    final startDate = now.subtract(Duration(days: days - 1));
+    final today = DateTime.now();
+    final end = DateTime(today.year, today.month, today.day); // normalize
+    // Start on Monday of the earliest week we want to show.
+    DateTime startOfThisWeek = end.subtract(Duration(days: end.weekday - DateTime.monday));
+    final start = startOfThisWeek.subtract(Duration(days: (columns - 1) * 7));
 
-    // Group dates by week
-    final List<List<DateTime>> weeks = [];
-    DateTime currentDate = startDate;
-
-    for (int i = 0; i < columns; i++) {
-      final week = <DateTime>[];
-      for (int j = 0; j < 7; j++) {
-        week.add(currentDate);
-        currentDate = currentDate.add(const Duration(days: 1));
-        if (currentDate.isAfter(now)) break;
-      }
-      weeks.add(week);
-      if (currentDate.isAfter(now)) break;
-    }
+    // Build exactly `columns` weeks, each with 7 days (Mon..Sun)
+    final List<List<DateTime>> weeks = List.generate(columns, (i) {
+      final weekStart = start.add(Duration(days: i * 7));
+      return List.generate(7, (j) => weekStart.add(Duration(days: j)));
+    });
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +67,10 @@ class CalendarHeatmapWidget extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: weeks.map((week) => _buildWeekColumn(week, context)).toList(),
+                  children: [
+                    ...weeks.map((week) => _buildWeekColumn(week, context)),
+                    const SizedBox(width: 4), // breathing room
+                  ],
                 ),
               ),
             ),
@@ -113,15 +109,19 @@ class CalendarHeatmapWidget extends StatelessWidget {
 
   Widget _buildDayCell(DateTime date, BuildContext context) {
     final normalizedDate = DateTime(date.year, date.month, date.day);
-    final count = activityData[normalizedDate] ?? 0;
-    final color = colorForCount(count);
-    final now = DateTime.now();
-    final isToday = normalizedDate.year == now.year &&
-        normalizedDate.month == now.month &&
-        normalizedDate.day == now.day;
+    final today = DateTime.now();
+    final end = DateTime(today.year, today.month, today.day);
+    final isFuture = normalizedDate.isAfter(end);
+
+    final count = isFuture ? 0 : (activityData[normalizedDate] ?? 0);
+    final color = isFuture ? Colors.white.withValues(alpha: 0.05) : colorForCount(count);
+
+    final isToday = normalizedDate == end;
 
     return Tooltip(
-      message: '${_formatDate(date)}: ${count > 0 ? '$count reading${count > 1 ? 's' : ''}' : 'No activity'}',
+      message: isFuture
+          ? _formatDate(date)
+          : '${_formatDate(date)}: ${count > 0 ? '$count reading${count > 1 ? 's' : ''}' : 'No activity'}',
       child: Container(
         width: cellSize,
         height: cellSize,
@@ -129,11 +129,8 @@ class CalendarHeatmapWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(AppRadius.xs / 4),
-          border: isToday
-              ? Border.all(
-                  color: Colors.white.withValues(alpha: 0.8),
-                  width: 1.5,
-                )
+          border: isToday && !isFuture
+              ? Border.all(color: Colors.white.withValues(alpha: 0.8), width: 1.5)
               : null,
         ),
       ),
