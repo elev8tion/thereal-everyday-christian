@@ -11,6 +11,7 @@ import '../components/blur_popup_menu.dart';
 import '../components/category_filter_chip.dart';
 import '../components/glass_fab.dart';
 import '../components/glassmorphic_fab_menu.dart';
+import '../core/widgets/app_snackbar.dart';
 import '../utils/responsive_utils.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_gradients.dart';
@@ -803,22 +804,18 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
       await actions.addPrayer(title, description, categoryId);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Prayer added successfully'),
-            backgroundColor: AppTheme.primaryColor,
-            duration: Duration(seconds: 2),
-          ),
+        AppSnackBar.show(
+          context,
+          message: 'Prayer added successfully',
+          icon: Icons.check_circle,
+          duration: const Duration(seconds: 2),
         );
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error adding prayer: $e'),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 3),
-          ),
+        AppSnackBar.showError(
+          context,
+          message: 'Error adding prayer: $e',
         );
       }
     }
@@ -896,21 +893,17 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                               if (!context.mounted) return;
 
                               NavigationService.pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Prayer marked as answered! 🙏'),
-                                  backgroundColor: AppTheme.primaryColor,
-                                  duration: Duration(seconds: 2),
-                                ),
+                              AppSnackBar.show(
+                                context,
+                                message: 'Prayer marked as answered! 🙏',
+                                icon: Icons.check_circle,
+                                duration: const Duration(seconds: 2),
                               );
                             } catch (e) {
                               if (!context.mounted) return;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Error: $e'),
-                                  backgroundColor: Colors.red,
-                                  duration: const Duration(seconds: 3),
-                                ),
+                              AppSnackBar.showError(
+                                context,
+                                message: 'Error: $e',
                               );
                             }
                           }
@@ -1017,22 +1010,18 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         await actions.deletePrayer(prayer.id);
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Prayer deleted'),
-              backgroundColor: AppTheme.primaryColor,
-              duration: Duration(seconds: 2),
-            ),
+          AppSnackBar.show(
+            context,
+            message: 'Prayer deleted',
+            icon: Icons.delete_outline,
+            duration: const Duration(seconds: 2),
           );
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error deleting prayer: $e'),
-              backgroundColor: Colors.red,
-              duration: const Duration(seconds: 3),
-            ),
+          AppSnackBar.showError(
+            context,
+            message: 'Error deleting prayer: $e',
           );
         }
       }
