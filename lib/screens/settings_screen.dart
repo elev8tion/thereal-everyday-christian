@@ -295,7 +295,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             Icons.info,
             [
               _buildInfoTile('Version', '1.0.0'),
-              _buildInfoTile('Build', '2024.10.01'),
               _buildActionTile(
                 'Privacy Policy',
                 'Read our privacy policy',
