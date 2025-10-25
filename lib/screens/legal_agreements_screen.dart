@@ -21,6 +21,7 @@ class LegalAgreementsScreen extends StatefulWidget {
 class _LegalAgreementsScreenState extends State<LegalAgreementsScreen> {
   bool _termsChecked = false;
   bool _privacyChecked = false;
+  bool _ageChecked = false;
   bool _isAccepting = false;
   bool _isNavigating = false;
 
@@ -356,6 +357,14 @@ class _LegalAgreementsScreenState extends State<LegalAgreementsScreen> {
               linkText: 'Privacy Policy',
               onLinkTap: () => _launchURL('/privacy'),
             ),
+            const SizedBox(height: 12),
+            _buildSimpleCheckboxTile(
+              value: _ageChecked,
+              onChanged: (value) {
+                setState(() => _ageChecked = value ?? false);
+              },
+              label: 'I confirm that I am 18 years of age or older',
+            ),
           ],
         ),
       ),
@@ -430,8 +439,56 @@ class _LegalAgreementsScreenState extends State<LegalAgreementsScreen> {
     );
   }
 
+  Widget _buildSimpleCheckboxTile({
+    required bool value,
+    required ValueChanged<bool?> onChanged,
+    required String label,
+  }) {
+    final goldAccent = AppTheme.goldColor.withValues(alpha: 0.6);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () => onChanged(!value),
+          child: Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: goldAccent,
+                width: 2,
+              ),
+              color: value ? goldAccent : Colors.transparent,
+            ),
+            child: value
+                ? const Icon(
+                    Icons.check,
+                    size: 16,
+                    color: Colors.white,
+                  )
+                : null,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => onChanged(!value),
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.secondaryText,
+                  ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildBottomButton() {
-    final bool canProceed = _termsChecked && _privacyChecked && !_isAccepting;
+    final bool canProceed = _termsChecked && _privacyChecked && _ageChecked && !_isAccepting;
 
     return GlassButton(
       text: 'Accept & Continue',
@@ -444,8 +501,8 @@ class _LegalAgreementsScreenState extends State<LegalAgreementsScreen> {
     // Prevent double navigation
     if (_isNavigating) return;
 
-    if (!_termsChecked || !_privacyChecked) {
-      _showSnackBar('Please read and accept both documents');
+    if (!_termsChecked || !_privacyChecked || !_ageChecked) {
+      _showSnackBar('Please accept all required items to continue');
       return;
     }
 
