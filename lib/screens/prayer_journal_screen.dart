@@ -49,11 +49,14 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const GradientBackground(),
-          SafeArea(
-            child: Column(
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            const GradientBackground(),
+            SafeArea(
+              child: Column(
               children: [
                 _buildHeader(),
                 _buildCategoryFilter(),
@@ -75,6 +78,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             icon: Icons.add,
           ),
         ],
+        ),
       ),
     );
   }
@@ -659,8 +663,11 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
 
               return Dialog(
                 backgroundColor: Colors.transparent,
-                child: FrostedGlassCard(
-                  child: SingleChildScrollView(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                  child: FrostedGlassCard(
+                    child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -779,6 +786,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                         ),
                       ],
                     ),
+                  ),
                   ),
                 ),
               );

@@ -55,14 +55,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          RepaintBoundary(
-            key: _backgroundKey,
-            child: const GradientBackground(),
-          ),
-          SafeArea(
-            child: LayoutBuilder(
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            RepaintBoundary(
+              key: _backgroundKey,
+              child: const GradientBackground(),
+            ),
+            SafeArea(
+              child: LayoutBuilder(
               builder: (context, constraints) {
                 final screenHeight = constraints.maxHeight;
                 // More aggressive small screen detection
@@ -225,6 +228,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
         ],
+        ),
       ),
     );
   }

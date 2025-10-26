@@ -358,6 +358,9 @@ class ChatScreen extends HookConsumerWidget {
       isStreaming.value = true;
       isStreamingComplete.value = false;
       streamedText.value = '';
+
+      // Dismiss keyboard after sending message
+      FocusManager.instance.primaryFocus?.unfocus();
       messageController.clear();
 
       // Save user message to database
@@ -1313,11 +1316,14 @@ class ChatScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-      body: Stack(
-        children: [
-          const GradientBackground(),
-          SafeArea(
-            child: Column(
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            const GradientBackground(),
+            SafeArea(
+              child: Column(
               children: [
                 _buildAppBar(context, messages, sessionId, conversationService, showChatOptions),
                 // AI Service initialization status banner
@@ -1344,6 +1350,7 @@ class ChatScreen extends HookConsumerWidget {
             onPressed: scrollToBottom,
           ),
         ],
+        ),
       ),
     );
   }

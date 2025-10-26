@@ -119,11 +119,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final readingPlansActive = ref.watch(activeReadingPlansCountProvider);
 
     return Scaffold(
-      body: Stack(
-        children: [
-          const GradientBackground(),
-          SafeArea(
-            child: CustomScrollView(
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            const GradientBackground(),
+            SafeArea(
+              child: CustomScrollView(
               slivers: [
                 _buildHeader(),
                 SliverToBoxAdapter(
@@ -165,6 +168,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ),
         ],
+        ),
       ),
     );
   }

@@ -34,13 +34,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const GradientBackground(),
-          SafeArea(
-            child: _buildSettingsContent(),
-          ),
-        ],
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            const GradientBackground(),
+            SafeArea(
+              child: _buildSettingsContent(),
+            ),
+          ],
+        ),
       ),
     );
   }

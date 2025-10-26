@@ -244,40 +244,44 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const GradientBackground(),
-          SafeArea(
-            child: Column(
-              children: [
-                _buildHeader(),
-                _buildSearchBar(),
-                // TabBar always visible
-                _buildTabBar(),
-                Expanded(
-                  child: _isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : Stack(
-                          children: [
-                            // Background: TabBarView always rendered
-                            TabBarView(
-                              controller: _tabController,
-                              children: [
-                                _buildTestamentView(_getOldTestamentBooks()),
-                                _buildTestamentView(_getNewTestamentBooks()),
-                              ],
-                            ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            const GradientBackground(),
+            SafeArea(
+              child: Column(
+                children: [
+                  _buildHeader(),
+                  _buildSearchBar(),
+                  // TabBar always visible
+                  _buildTabBar(),
+                  Expanded(
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : Stack(
+                            children: [
+                              // Background: TabBarView always rendered
+                              TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  _buildTestamentView(_getOldTestamentBooks()),
+                                  _buildTestamentView(_getNewTestamentBooks()),
+                                ],
+                              ),
 
-                            // Foreground: Search overlay (when active)
-                            if (_showSearchOverlay)
-                              _buildSearchOverlay(),
-                          ],
-                        ),
+                              // Foreground: Search overlay (when active)
+                              if (_showSearchOverlay)
+                                _buildSearchOverlay(),
+                            ],
+                          ),
                 ),
               ],
             ),
           ),
         ],
+        ),
       ),
     );
   }
