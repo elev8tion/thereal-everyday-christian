@@ -446,6 +446,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       setState(() => _isProcessing = false);
 
       if (success) {
+        // CRITICAL FIX: Invalidate provider to refresh UI with new premium status
+        ref.invalidate(subscriptionSnapshotProvider);
+
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -570,6 +573,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       setState(() => _isProcessing = false);
 
       if (success) {
+        // CRITICAL FIX: Invalidate provider to refresh UI with restored premium status
+        ref.invalidate(subscriptionSnapshotProvider);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.transparent,
