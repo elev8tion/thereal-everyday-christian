@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -20,7 +19,6 @@ import '../utils/responsive_utils.dart';
 import '../widgets/time_picker/time_range_sheet.dart';
 import '../widgets/time_picker/time_range_sheet_style.dart';
 import '../components/glass_button.dart';
-import '../components/base_bottom_sheet.dart';
 import 'paywall_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -113,24 +111,64 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ref.watch(dailyNotificationsProvider),
                 (value) => ref.read(dailyNotificationsProvider.notifier).toggle(value),
               ),
+              if (ref.watch(dailyNotificationsProvider))
+                Padding(
+                  padding: const EdgeInsets.only(left: AppSpacing.lg, bottom: AppSpacing.sm),
+                  child: _buildTimePicker(
+                    'Time',
+                    'Daily devotional reminder time',
+                    ref.watch(devotionalTimeProvider),
+                    (time) => ref.read(devotionalTimeProvider.notifier).setTime(time),
+                  ),
+                ),
               _buildSwitchTile(
                 'Prayer Reminders',
                 'Get reminded to pray throughout the day',
                 ref.watch(prayerRemindersProvider),
                 (value) => ref.read(prayerRemindersProvider.notifier).toggle(value),
               ),
+              if (ref.watch(prayerRemindersProvider))
+                Padding(
+                  padding: const EdgeInsets.only(left: AppSpacing.lg, bottom: AppSpacing.sm),
+                  child: _buildTimePicker(
+                    'Time',
+                    'Prayer reminder time',
+                    ref.watch(prayerTimeProvider),
+                    (time) => ref.read(prayerTimeProvider.notifier).setTime(time),
+                  ),
+                ),
               _buildSwitchTile(
                 'Verse of the Day',
                 'Daily Bible verse notifications',
                 ref.watch(verseOfTheDayProvider),
                 (value) => ref.read(verseOfTheDayProvider.notifier).toggle(value),
               ),
-              _buildTimePicker(
-                'Notification Time',
-                'Set your preferred time for daily notifications',
-                ref.watch(notificationTimeProvider),
-                (time) => ref.read(notificationTimeProvider.notifier).setTime(time),
+              if (ref.watch(verseOfTheDayProvider))
+                Padding(
+                  padding: const EdgeInsets.only(left: AppSpacing.lg, bottom: AppSpacing.sm),
+                  child: _buildTimePicker(
+                    'Time',
+                    'Verse of the day time',
+                    ref.watch(verseTimeProvider),
+                    (time) => ref.read(verseTimeProvider.notifier).setTime(time),
+                  ),
+                ),
+              _buildSwitchTile(
+                'Reading Plan',
+                'Get reminded to complete your daily reading',
+                ref.watch(readingPlanRemindersProvider),
+                (value) => ref.read(readingPlanRemindersProvider.notifier).toggle(value),
               ),
+              if (ref.watch(readingPlanRemindersProvider))
+                Padding(
+                  padding: const EdgeInsets.only(left: AppSpacing.lg, bottom: AppSpacing.sm),
+                  child: _buildTimePicker(
+                    'Time',
+                    'Reading plan reminder time',
+                    ref.watch(readingPlanTimeProvider),
+                    (time) => ref.read(readingPlanTimeProvider.notifier).setTime(time),
+                  ),
+                ),
             ],
           ),
           const SizedBox(height: AppSpacing.xxl),

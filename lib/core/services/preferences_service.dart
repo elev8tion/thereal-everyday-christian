@@ -43,7 +43,12 @@ class PreferencesService {
   static const String _dailyNotificationsKey = 'daily_notifications_enabled';
   static const String _prayerRemindersKey = 'prayer_reminders_enabled';
   static const String _verseOfTheDayKey = 'verse_of_the_day_enabled';
-  static const String _notificationTimeKey = 'notification_time';
+  static const String _readingPlanRemindersKey = 'reading_plan_reminders_enabled';
+  static const String _notificationTimeKey = 'notification_time'; // Legacy - kept for migration
+  static const String _devotionalTimeKey = 'devotional_notification_time';
+  static const String _prayerTimeKey = 'prayer_notification_time';
+  static const String _verseTimeKey = 'verse_notification_time';
+  static const String _readingPlanTimeKey = 'reading_plan_notification_time';
   static const String _termsAcceptedKey = 'terms_accepted_v1.0';
   static const String _legalAgreementsKey = 'legal_agreements_accepted_v1.0';
 
@@ -53,6 +58,10 @@ class PreferencesService {
   static const double _defaultTextSize = 16.0;
   static const bool _defaultNotificationsEnabled = true;
   static const String _defaultNotificationTime = '08:00'; // 8:00 AM
+  static const String _defaultDevotionalTime = '07:00'; // 7:00 AM
+  static const String _defaultPrayerTime = '12:00'; // 12:00 PM
+  static const String _defaultVerseTime = '09:00'; // 9:00 AM
+  static const String _defaultReadingPlanTime = '20:00'; // 8:00 PM
 
   // ============================================================================
   // THEME MODE METHODS
@@ -367,6 +376,114 @@ class PreferencesService {
       return time ?? _defaultNotificationTime;
     } catch (e) {
       return _defaultNotificationTime;
+    }
+  }
+
+  // ============================================================================
+  // INDIVIDUAL NOTIFICATION TIME METHODS
+  // ============================================================================
+
+  /// Save devotional notification time
+  Future<bool> saveDevotionalTime(String time) async {
+    try {
+      final result = await _preferences?.setString(_devotionalTimeKey, time);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Load devotional notification time
+  String loadDevotionalTime() {
+    try {
+      final String? time = _preferences?.getString(_devotionalTimeKey);
+      return time ?? _defaultDevotionalTime;
+    } catch (e) {
+      return _defaultDevotionalTime;
+    }
+  }
+
+  /// Save prayer notification time
+  Future<bool> savePrayerTime(String time) async {
+    try {
+      final result = await _preferences?.setString(_prayerTimeKey, time);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Load prayer notification time
+  String loadPrayerTime() {
+    try {
+      final String? time = _preferences?.getString(_prayerTimeKey);
+      return time ?? _defaultPrayerTime;
+    } catch (e) {
+      return _defaultPrayerTime;
+    }
+  }
+
+  /// Save verse notification time
+  Future<bool> saveVerseTime(String time) async {
+    try {
+      final result = await _preferences?.setString(_verseTimeKey, time);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Load verse notification time
+  String loadVerseTime() {
+    try {
+      final String? time = _preferences?.getString(_verseTimeKey);
+      return time ?? _defaultVerseTime;
+    } catch (e) {
+      return _defaultVerseTime;
+    }
+  }
+
+  /// Save reading plan notification time
+  Future<bool> saveReadingPlanTime(String time) async {
+    try {
+      final result = await _preferences?.setString(_readingPlanTimeKey, time);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Load reading plan notification time
+  String loadReadingPlanTime() {
+    try {
+      final String? time = _preferences?.getString(_readingPlanTimeKey);
+      return time ?? _defaultReadingPlanTime;
+    } catch (e) {
+      return _defaultReadingPlanTime;
+    }
+  }
+
+  // ============================================================================
+  // READING PLAN REMINDERS METHODS
+  // ============================================================================
+
+  /// Enable/disable reading plan reminders
+  Future<bool> saveReadingPlanReminders(bool enabled) async {
+    try {
+      final result = await _preferences?.setBool(_readingPlanRemindersKey, enabled);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Check if reading plan reminders are enabled
+  bool loadReadingPlanReminders() {
+    try {
+      final bool? enabled = _preferences?.getBool(_readingPlanRemindersKey);
+      return enabled ?? _defaultNotificationsEnabled;
+    } catch (e) {
+      return _defaultNotificationsEnabled;
     }
   }
 

@@ -521,6 +521,33 @@ final verseOfTheDayProvider = StateNotifierProvider<VerseOfTheDayNotifier, bool>
   return VerseOfTheDayNotifier(preferencesAsync, ref);
 });
 
+final readingPlanRemindersProvider = StateNotifierProvider<ReadingPlanRemindersNotifier, bool>((ref) {
+  final preferencesAsync = ref.watch(preferencesServiceProvider);
+  return ReadingPlanRemindersNotifier(preferencesAsync, ref);
+});
+
+// Individual notification time providers
+final devotionalTimeProvider = StateNotifierProvider<DevotionalTimeNotifier, String>((ref) {
+  final preferencesAsync = ref.watch(preferencesServiceProvider);
+  return DevotionalTimeNotifier(preferencesAsync, ref);
+});
+
+final prayerTimeProvider = StateNotifierProvider<PrayerTimeNotifier, String>((ref) {
+  final preferencesAsync = ref.watch(preferencesServiceProvider);
+  return PrayerTimeNotifier(preferencesAsync, ref);
+});
+
+final verseTimeProvider = StateNotifierProvider<VerseTimeNotifier, String>((ref) {
+  final preferencesAsync = ref.watch(preferencesServiceProvider);
+  return VerseTimeNotifier(preferencesAsync, ref);
+});
+
+final readingPlanTimeProvider = StateNotifierProvider<ReadingPlanTimeNotifier, String>((ref) {
+  final preferencesAsync = ref.watch(preferencesServiceProvider);
+  return ReadingPlanTimeNotifier(preferencesAsync, ref);
+});
+
+// Legacy single time provider - kept for migration purposes
 final notificationTimeProvider = StateNotifierProvider<NotificationTimeNotifier, String>((ref) {
   final preferencesAsync = ref.watch(preferencesServiceProvider);
   return NotificationTimeNotifier(preferencesAsync, ref);
@@ -612,7 +639,7 @@ class DailyNotificationsNotifier extends StateNotifier<bool> {
   }
 
   Future<void> _scheduleNotifications() async {
-    final time = _ref.read(notificationTimeProvider);
+    final time = _ref.read(devotionalTimeProvider);
     final parts = time.split(':');
     await _ref.read(notificationServiceProvider).scheduleDailyDevotional(
       hour: int.parse(parts[0]),
@@ -648,7 +675,7 @@ class PrayerRemindersNotifier extends StateNotifier<bool> {
   }
 
   Future<void> _scheduleNotifications() async {
-    final time = _ref.read(notificationTimeProvider);
+    final time = _ref.read(prayerTimeProvider);
     final parts = time.split(':');
     await _ref.read(notificationServiceProvider).schedulePrayerReminder(
       hour: int.parse(parts[0]),
@@ -685,7 +712,46 @@ class VerseOfTheDayNotifier extends StateNotifier<bool> {
   }
 
   Future<void> _scheduleNotifications() async {
-    final time = _ref.read(notificationTimeProvider);
+    final time = _ref.read(verseTimeProvider);
+    final parts = time.split(':');
+    // TODO: Integrate with verse service to get actual daily verse
+    await _ref.read(notificationServiceProvider).scheduleDailyVerse(
+      hour: int.parse(parts[0]),
+      minute: int.parse(parts[1]),
+      verseReference: 'Verse of the Day',
+      versePreview: 'Tap to read today\'s verse',
+    );
+  }
+}
+
+class ReadingPlanRemindersNotifier extends StateNotifier<bool> {
+  final AsyncValue<PreferencesService> _preferencesAsync;
+  final Ref _ref;
+  PreferencesService? _preferences;
+
+  ReadingPlanRemindersNotifier(this._preferencesAsync, this._ref) : super(true) {
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    _preferencesAsync.whenData((prefs) {
+      _preferences = prefs;
+      state = prefs.loadReadingPlanReminders();
+    });
+  }
+
+  Future<void> toggle(bool enabled) async {
+    state = enabled;
+    await _preferences?.saveReadingPlanReminders(enabled);
+    if (enabled) {
+      await _scheduleNotifications();
+    } else {
+      await _ref.read(notificationServiceProvider).cancel(4);
+    }
+  }
+
+  Future<void> _scheduleNotifications() async {
+    final time = _ref.read(readingPlanTimeProvider);
     final parts = time.split(':');
     await _ref.read(notificationServiceProvider).scheduleReadingPlanReminder(
       hour: int.parse(parts[0]),
@@ -741,6 +807,131 @@ class NotificationTimeNotifier extends StateNotifier<String> {
       await _ref.read(notificationServiceProvider).scheduleReadingPlanReminder(
         hour: hour,
         minute: minute,
+      );
+    }
+  }
+}
+
+// Individual Time Notifiers
+class DevotionalTimeNotifier extends StateNotifier<String> {
+  final AsyncValue<PreferencesService> _preferencesAsync;
+  final Ref _ref;
+  PreferencesService? _preferences;
+
+  DevotionalTimeNotifier(this._preferencesAsync, this._ref) : super('07:00') {
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    _preferencesAsync.whenData((prefs) {
+      _preferences = prefs;
+      state = prefs.loadDevotionalTime();
+    });
+  }
+
+  Future<void> setTime(String time) async {
+    state = time;
+    await _preferences?.saveDevotionalTime(time);
+    // Reschedule devotional notification if enabled
+    if (_ref.read(dailyNotificationsProvider)) {
+      final parts = time.split(':');
+      await _ref.read(notificationServiceProvider).scheduleDailyDevotional(
+        hour: int.parse(parts[0]),
+        minute: int.parse(parts[1]),
+      );
+    }
+  }
+}
+
+class PrayerTimeNotifier extends StateNotifier<String> {
+  final AsyncValue<PreferencesService> _preferencesAsync;
+  final Ref _ref;
+  PreferencesService? _preferences;
+
+  PrayerTimeNotifier(this._preferencesAsync, this._ref) : super('12:00') {
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    _preferencesAsync.whenData((prefs) {
+      _preferences = prefs;
+      state = prefs.loadPrayerTime();
+    });
+  }
+
+  Future<void> setTime(String time) async {
+    state = time;
+    await _preferences?.savePrayerTime(time);
+    // Reschedule prayer notification if enabled
+    if (_ref.read(prayerRemindersProvider)) {
+      final parts = time.split(':');
+      await _ref.read(notificationServiceProvider).schedulePrayerReminder(
+        hour: int.parse(parts[0]),
+        minute: int.parse(parts[1]),
+        title: 'Your Prayer Requests',
+      );
+    }
+  }
+}
+
+class VerseTimeNotifier extends StateNotifier<String> {
+  final AsyncValue<PreferencesService> _preferencesAsync;
+  final Ref _ref;
+  PreferencesService? _preferences;
+
+  VerseTimeNotifier(this._preferencesAsync, this._ref) : super('09:00') {
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    _preferencesAsync.whenData((prefs) {
+      _preferences = prefs;
+      state = prefs.loadVerseTime();
+    });
+  }
+
+  Future<void> setTime(String time) async {
+    state = time;
+    await _preferences?.saveVerseTime(time);
+    // Reschedule verse notification if enabled
+    if (_ref.read(verseOfTheDayProvider)) {
+      final parts = time.split(':');
+      // TODO: Integrate with verse service to get actual daily verse
+      await _ref.read(notificationServiceProvider).scheduleDailyVerse(
+        hour: int.parse(parts[0]),
+        minute: int.parse(parts[1]),
+        verseReference: 'Verse of the Day',
+        versePreview: 'Tap to read today\'s verse',
+      );
+    }
+  }
+}
+
+class ReadingPlanTimeNotifier extends StateNotifier<String> {
+  final AsyncValue<PreferencesService> _preferencesAsync;
+  final Ref _ref;
+  PreferencesService? _preferences;
+
+  ReadingPlanTimeNotifier(this._preferencesAsync, this._ref) : super('20:00') {
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    _preferencesAsync.whenData((prefs) {
+      _preferences = prefs;
+      state = prefs.loadReadingPlanTime();
+    });
+  }
+
+  Future<void> setTime(String time) async {
+    state = time;
+    await _preferences?.saveReadingPlanTime(time);
+    // Reschedule reading plan notification if enabled
+    if (_ref.read(readingPlanRemindersProvider)) {
+      final parts = time.split(':');
+      await _ref.read(notificationServiceProvider).scheduleReadingPlanReminder(
+        hour: int.parse(parts[0]),
+        minute: int.parse(parts[1]),
       );
     }
   }
