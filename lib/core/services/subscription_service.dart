@@ -89,6 +89,12 @@ class SubscriptionService {
   // Purchase update callback
   Function(bool success, String? error)? onPurchaseUpdate;
 
+  // State change callback for provider invalidation
+  // Ref: openspec/changes/subscription-state-management-fixes/PROPOSAL.md - Task 1.3
+  // This callback is called whenever subscription state changes (message consumed,
+  // trial started, purchase verified, limits reset, etc.)
+  VoidCallback? onStateChange;
+
   // Mutex lock to prevent race conditions in message consumption
   // Ref: openspec/changes/subscription-state-management-fixes/PROPOSAL.md - Task 1.2
   final Lock _consumeLock = Lock();
@@ -233,6 +239,7 @@ class SubscriptionService {
     await _prefs?.setString(_keyTrialLastResetDate, DateTime.now().toIso8601String().substring(0, 10));
 
     developer.log('Trial started', name: 'SubscriptionService');
+    _notifyStateChange(); // Notify providers of state change
   }
 
   // ============================================================================
@@ -511,6 +518,7 @@ class SubscriptionService {
           await _updatePremiumResetDate();
           developer.log('Premium message consumed ($used/$premiumMessagesPerMonth)',
             name: 'SubscriptionService');
+          _notifyStateChange();
           return true;
         } else if (isInTrial) {
           // Start trial if not started
@@ -524,6 +532,7 @@ class SubscriptionService {
           await _updateTrialResetDate();
           developer.log('Trial message consumed ($used/$trialMessagesPerDay today)',
             name: 'SubscriptionService');
+          _notifyStateChange();
           return true;
         }
 
@@ -567,6 +576,8 @@ class SubscriptionService {
     try {
       await _iap.restorePurchases();
       developer.log('Restore purchases initiated', name: 'SubscriptionService');
+      // Note: Actual state change will be notified by _verifyAndActivatePurchase
+      // when purchase updates arrive via _handlePurchaseUpdates
     } catch (e) {
       developer.log('Restore failed: $e', name: 'SubscriptionService');
       onPurchaseUpdate?.call(false, e.toString());
@@ -638,6 +649,7 @@ class SubscriptionService {
       await _prefs?.setString(_keyPremiumLastResetDate, DateTime.now().toIso8601String().substring(0, 7));
 
       developer.log('Premium subscription activated', name: 'SubscriptionService');
+      _notifyStateChange(); // Notify providers of subscription activation
       onPurchaseUpdate?.call(true, null);
     } catch (e) {
       developer.log('Failed to activate purchase: $e', name: 'SubscriptionService');
@@ -687,6 +699,7 @@ class SubscriptionService {
           await _prefs?.setInt(_keyTrialMessagesUsed, 0);
           await _prefs?.setString(_keyTrialLastResetDate, today);
           developer.log('Trial messages reset for new day', name: 'SubscriptionService');
+          _notifyStateChange(); // Notify providers of limit reset
         }
       }
 
@@ -699,10 +712,26 @@ class SubscriptionService {
           await _prefs?.setInt(_keyPremiumMessagesUsed, 0);
           await _prefs?.setString(_keyPremiumLastResetDate, thisMonth);
           developer.log('Premium messages reset for new month', name: 'SubscriptionService');
+          _notifyStateChange(); // Notify providers of limit reset
         }
       }
     } catch (e) {
       developer.log('Failed to reset counters: $e', name: 'SubscriptionService');
+    }
+  }
+
+  // ============================================================================
+  // STATE CHANGE NOTIFICATION
+  // ============================================================================
+
+  /// Notify listeners that subscription state has changed
+  /// Ref: openspec/changes/subscription-state-management-fixes/PROPOSAL.md - Task 1.3
+  void _notifyStateChange() {
+    try {
+      onStateChange?.call();
+      developer.log('State change notified to providers', name: 'SubscriptionService');
+    } catch (e) {
+      developer.log('Failed to notify state change: $e', name: 'SubscriptionService');
     }
   }
 

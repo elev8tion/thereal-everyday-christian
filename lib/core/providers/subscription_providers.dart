@@ -3,6 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/subscription_service.dart';
 
 /// Provides access to the singleton SubscriptionService.
+///
+/// IMPORTANT: After calling state-changing methods on this service
+/// (consumeMessage, startTrial, purchasePremium, restorePurchases),
+/// you MUST call `ref.invalidate(subscriptionSnapshotProvider)` to refresh UI.
+///
+/// Ref: openspec/changes/subscription-state-management-fixes/PROPOSAL.md - Task 1.3
 final subscriptionServiceProvider = Provider<SubscriptionService>((ref) {
   return SubscriptionService.instance;
 });
