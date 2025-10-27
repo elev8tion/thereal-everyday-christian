@@ -102,7 +102,7 @@ class SubscriptionService {
       // Check if in-app purchase is available
       final bool available = await _iap.isAvailable();
       if (!available) {
-        developer.log('In-app purchase not available', name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] In-app purchase not available');
         _isInitialized = true;
         return;
       }
@@ -120,7 +120,7 @@ class SubscriptionService {
       _purchaseSubscription = _iap.purchaseStream.listen(
         _handlePurchaseUpdates,
         onDone: () => _purchaseSubscription?.cancel(),
-        onError: (error) => developer.log('Purchase stream error: $error', name: 'SubscriptionService'),
+        onError: (error) => debugPrint('📊 [SubscriptionService] Purchase stream error: $error'),
       );
 
       // Initialize counters for first-time users (no trial start date = brand new)
@@ -129,16 +129,16 @@ class SubscriptionService {
         // Brand new user - initialize with 0 messages used
         await _prefs?.setInt(_keyTrialMessagesUsed, 0);
         await _prefs?.setString(_keyTrialLastResetDate, DateTime.now().toIso8601String().substring(0, 10));
-        developer.log('First-time user detected - initialized trial counters', name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] First-time user detected - initialized trial counters');
       }
 
       // Reset message counters if needed
       await _checkAndResetCounters();
 
       _isInitialized = true;
-      developer.log('SubscriptionService initialized', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] SubscriptionService initialized');
     } catch (e) {
-      developer.log('Failed to initialize SubscriptionService: $e', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Failed to initialize SubscriptionService: $e');
       _isInitialized = true; // Still mark as initialized to prevent blocking
     }
   }
@@ -151,16 +151,15 @@ class SubscriptionService {
       );
 
       if (response.notFoundIDs.isNotEmpty) {
-        developer.log('Products not found: ${response.notFoundIDs}', name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] Products not found: ${response.notFoundIDs}');
       }
 
       if (response.productDetails.isNotEmpty) {
         _premiumProduct = response.productDetails.first;
-        developer.log('Loaded product: ${_premiumProduct!.id} - ${_premiumProduct!.price}',
-          name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] Loaded product: ${_premiumProduct!.id} - ${_premiumProduct!.price}');
       }
     } catch (e) {
-      developer.log('Failed to load products: $e', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Failed to load products: $e');
     }
   }
 
@@ -236,7 +235,7 @@ class SubscriptionService {
     await _prefs?.setInt(_keyTrialMessagesUsed, 0);
     await _prefs?.setString(_keyTrialLastResetDate, DateTime.now().toIso8601String().substring(0, 10));
 
-    developer.log('Trial started', name: 'SubscriptionService');
+    debugPrint('📊 [SubscriptionService] Trial started');
   }
 
   // ============================================================================
@@ -254,7 +253,7 @@ class SubscriptionService {
     if (expiryDate != null) {
       if (DateTime.now().isAfter(expiryDate)) {
         // Subscription expired - should trigger restorePurchases() on next app launch
-        developer.log('Premium subscription expired on $expiryDate', name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] Premium subscription expired on $expiryDate');
         return false;
       }
     }
@@ -405,7 +404,7 @@ class SubscriptionService {
       final shouldSubscribe = await shouldAutoSubscribe();
 
       if (!shouldSubscribe) {
-        developer.log('Auto-subscribe check: not applicable', name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] Auto-subscribe check: not applicable');
         return;
       }
 
@@ -462,11 +461,11 @@ class SubscriptionService {
   bool get canSendMessage {
     // NOTE: Debug bypass DISABLED for testing Phase 1 subscription fixes
     // Ref: openspec/changes/subscription-state-management-fixes
-    developer.log('canSendMessage check: kDebugMode=$kDebugMode, isPremium=$isPremium, isInTrial=$isInTrial, trialMessagesRemainingToday=$trialMessagesRemainingToday', name: 'SubscriptionService');
+    debugPrint('📊 [SubscriptionService] canSendMessage check: kDebugMode=$kDebugMode, isPremium=$isPremium, isInTrial=$isInTrial, trialMessagesRemainingToday=$trialMessagesRemainingToday');
 
     // DISABLED: Debug bypass prevents testing race conditions and state updates
     // if (kDebugMode) {
-    //   developer.log('Bypassing subscription check - debug mode', name: 'SubscriptionService');
+    //   debugPrint('📊 [SubscriptionService] Bypassing subscription check - debug mode');
     //   return true;
     // }
 
@@ -508,8 +507,7 @@ class SubscriptionService {
         final used = premiumMessagesUsed + 1;
         await _prefs?.setInt(_keyPremiumMessagesUsed, used);
         await _updatePremiumResetDate();
-        developer.log('Premium message consumed ($used/$premiumMessagesPerMonth)',
-          name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] Premium message consumed ($used/$premiumMessagesPerMonth)');
         return true;
       } else if (isInTrial) {
         // Start trial if not started
@@ -521,14 +519,13 @@ class SubscriptionService {
         final used = trialMessagesUsedToday + 1;
         await _prefs?.setInt(_keyTrialMessagesUsed, used);
         await _updateTrialResetDate();
-        developer.log('Trial message consumed ($used/$trialMessagesPerDay today)',
-          name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] Trial message consumed ($used/$trialMessagesPerDay today)');
         return true;
       }
 
       return false;
     } catch (e) {
-      developer.log('Failed to consume message: $e', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Failed to consume message: $e');
       return false;
     }
   }
@@ -553,9 +550,9 @@ class SubscriptionService {
       );
 
       await _iap.buyNonConsumable(purchaseParam: purchaseParam);
-      developer.log('Purchase initiated', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Purchase initiated');
     } catch (e) {
-      developer.log('Purchase failed: $e', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Purchase failed: $e');
       onPurchaseUpdate?.call(false, e.toString());
     }
   }
@@ -564,9 +561,9 @@ class SubscriptionService {
   Future<void> restorePurchases() async {
     try {
       await _iap.restorePurchases();
-      developer.log('Restore purchases initiated', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Restore purchases initiated');
     } catch (e) {
-      developer.log('Restore failed: $e', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Restore failed: $e');
       onPurchaseUpdate?.call(false, e.toString());
     }
   }
@@ -578,7 +575,7 @@ class SubscriptionService {
           purchase.status == PurchaseStatus.restored) {
         _verifyAndActivatePurchase(purchase);
       } else if (purchase.status == PurchaseStatus.error) {
-        developer.log('Purchase error: ${purchase.error}', name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] Purchase error: ${purchase.error}');
         onPurchaseUpdate?.call(false, purchase.error?.message);
       }
 
@@ -611,8 +608,7 @@ class SubscriptionService {
         // - iOS: Decode base64, parse JSON, extract fields from receipt.in_app array
         // - Android: Decode JWT, parse claims
 
-        developer.log('Receipt data saved (expiry extraction requires platform-specific implementation)',
-          name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] Receipt data saved (expiry extraction requires platform-specific implementation)');
 
         // Store placeholder expiry (1 year from now for annual subscription)
         // This will be replaced with actual expiry once receipt parsing is implemented
@@ -626,8 +622,7 @@ class SubscriptionService {
         // await _prefs?.setBool(_keyTrialEverUsed, wasTrialPurchase);
 
       } catch (receiptError) {
-        developer.log('Receipt parsing skipped (will implement platform-specific logic): $receiptError',
-          name: 'SubscriptionService');
+        debugPrint('📊 [SubscriptionService] Receipt parsing skipped (will implement platform-specific logic): $receiptError');
       }
 
       // Activate premium
@@ -635,10 +630,10 @@ class SubscriptionService {
       await _prefs?.setInt(_keyPremiumMessagesUsed, 0);
       await _prefs?.setString(_keyPremiumLastResetDate, DateTime.now().toIso8601String().substring(0, 7));
 
-      developer.log('Premium subscription activated', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Premium subscription activated');
       onPurchaseUpdate?.call(true, null);
     } catch (e) {
-      developer.log('Failed to activate purchase: $e', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Failed to activate purchase: $e');
       onPurchaseUpdate?.call(false, e.toString());
     }
   }
@@ -684,7 +679,7 @@ class SubscriptionService {
         if (lastResetDate != today) {
           await _prefs?.setInt(_keyTrialMessagesUsed, 0);
           await _prefs?.setString(_keyTrialLastResetDate, today);
-          developer.log('Trial messages reset for new day', name: 'SubscriptionService');
+          debugPrint('📊 [SubscriptionService] Trial messages reset for new day');
         }
       }
 
@@ -696,11 +691,11 @@ class SubscriptionService {
         if (lastResetDate != thisMonth) {
           await _prefs?.setInt(_keyPremiumMessagesUsed, 0);
           await _prefs?.setString(_keyPremiumLastResetDate, thisMonth);
-          developer.log('Premium messages reset for new month', name: 'SubscriptionService');
+          debugPrint('📊 [SubscriptionService] Premium messages reset for new month');
         }
       }
     } catch (e) {
-      developer.log('Failed to reset counters: $e', name: 'SubscriptionService');
+      debugPrint('📊 [SubscriptionService] Failed to reset counters: $e');
     }
   }
 
@@ -718,7 +713,7 @@ class SubscriptionService {
     await _prefs?.remove(_keyPremiumMessagesUsed);
     await _prefs?.remove(_keyPremiumLastResetDate);
     await _prefs?.remove(_keySubscriptionReceipt);
-    developer.log('All subscription data cleared', name: 'SubscriptionService');
+    debugPrint('📊 [SubscriptionService] All subscription data cleared');
   }
 
   /// Manually activate premium (for testing only)
@@ -727,7 +722,7 @@ class SubscriptionService {
     await _prefs?.setBool(_keyPremiumActive, true);
     await _prefs?.setInt(_keyPremiumMessagesUsed, 0);
     await _prefs?.setString(_keyPremiumLastResetDate, DateTime.now().toIso8601String().substring(0, 7));
-    developer.log('Premium activated for testing', name: 'SubscriptionService');
+    debugPrint('📊 [SubscriptionService] Premium activated for testing');
   }
 
   /// Get debug info
