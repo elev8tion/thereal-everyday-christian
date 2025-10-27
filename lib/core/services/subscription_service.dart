@@ -12,6 +12,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:synchronized/synchronized.dart';
 
 /// Represents the current subscription state of the user
 enum SubscriptionStatus {
@@ -87,6 +88,10 @@ class SubscriptionService {
 
   // Purchase update callback
   Function(bool success, String? error)? onPurchaseUpdate;
+
+  // Mutex lock to prevent race conditions in message consumption
+  // Ref: openspec/changes/subscription-state-management-fixes/PROPOSAL.md - Task 1.2
+  final Lock _consumeLock = Lock();
 
   // ============================================================================
   // INITIALIZATION
@@ -488,38 +493,46 @@ class SubscriptionService {
   }
 
   /// Consume one message (call this when sending AI message)
+  ///
+  /// CRITICAL: This method is protected by a mutex lock to prevent race conditions.
+  /// Multiple concurrent calls will execute sequentially, ensuring only valid
+  /// messages are consumed.
+  /// Ref: openspec/changes/subscription-state-management-fixes/PROPOSAL.md - Task 1.2
   Future<bool> consumeMessage() async {
-    if (!canSendMessage) return false;
+    // Wrap entire method in synchronized lock to prevent race conditions
+    return await _consumeLock.synchronized(() async {
+      if (!canSendMessage) return false;
 
-    try {
-      if (isPremium) {
-        // Consume premium message
-        final used = premiumMessagesUsed + 1;
-        await _prefs?.setInt(_keyPremiumMessagesUsed, used);
-        await _updatePremiumResetDate();
-        developer.log('Premium message consumed ($used/$premiumMessagesPerMonth)',
-          name: 'SubscriptionService');
-        return true;
-      } else if (isInTrial) {
-        // Start trial if not started
-        if (!hasStartedTrial) {
-          await startTrial();
+      try {
+        if (isPremium) {
+          // Consume premium message
+          final used = premiumMessagesUsed + 1;
+          await _prefs?.setInt(_keyPremiumMessagesUsed, used);
+          await _updatePremiumResetDate();
+          developer.log('Premium message consumed ($used/$premiumMessagesPerMonth)',
+            name: 'SubscriptionService');
+          return true;
+        } else if (isInTrial) {
+          // Start trial if not started
+          if (!hasStartedTrial) {
+            await startTrial();
+          }
+
+          // Consume trial message
+          final used = trialMessagesUsedToday + 1;
+          await _prefs?.setInt(_keyTrialMessagesUsed, used);
+          await _updateTrialResetDate();
+          developer.log('Trial message consumed ($used/$trialMessagesPerDay today)',
+            name: 'SubscriptionService');
+          return true;
         }
 
-        // Consume trial message
-        final used = trialMessagesUsedToday + 1;
-        await _prefs?.setInt(_keyTrialMessagesUsed, used);
-        await _updateTrialResetDate();
-        developer.log('Trial message consumed ($used/$trialMessagesPerDay today)',
-          name: 'SubscriptionService');
-        return true;
+        return false;
+      } catch (e) {
+        developer.log('Failed to consume message: $e', name: 'SubscriptionService');
+        return false;
       }
-
-      return false;
-    } catch (e) {
-      developer.log('Failed to consume message: $e', name: 'SubscriptionService');
-      return false;
-    }
+    });
   }
 
   // ============================================================================

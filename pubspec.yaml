@@ -52,6 +52,7 @@ dependencies:
   in_app_purchase: ^3.1.13
   url_launcher: ^6.2.1
   image_picker: ^1.0.4
+  synchronized: ^3.1.0  # For mutex locks in subscription service
 
   # Additional dependencies for production app
   dio: ^5.3.2
