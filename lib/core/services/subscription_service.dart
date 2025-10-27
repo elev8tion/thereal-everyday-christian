@@ -123,6 +123,15 @@ class SubscriptionService {
         onError: (error) => developer.log('Purchase stream error: $error', name: 'SubscriptionService'),
       );
 
+      // Initialize counters for first-time users (no trial start date = brand new)
+      final trialStartDate = _prefs?.getString(_keyTrialStartDate);
+      if (trialStartDate == null) {
+        // Brand new user - initialize with 0 messages used
+        await _prefs?.setInt(_keyTrialMessagesUsed, 0);
+        await _prefs?.setString(_keyTrialLastResetDate, DateTime.now().toIso8601String().substring(0, 10));
+        developer.log('First-time user detected - initialized trial counters', name: 'SubscriptionService');
+      }
+
       // Reset message counters if needed
       await _checkAndResetCounters();
 

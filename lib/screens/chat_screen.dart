@@ -166,7 +166,11 @@ class ChatScreen extends HookConsumerWidget {
       }
 
       // 2. Check if user has messages remaining
-      if (!subscriptionService.canSendMessage) {
+      debugPrint('🔍 About to check canSendMessage...');
+      final canSend = subscriptionService.canSendMessage;
+      debugPrint('🔍 canSendMessage result: $canSend');
+
+      if (!canSend) {
         // Show message limit dialog first
         if (context.mounted) {
           final shouldShowPaywall = await MessageLimitDialog.show(
@@ -208,7 +212,9 @@ class ChatScreen extends HookConsumerWidget {
       // Consume message credit
       // NOTE: Debug bypass DISABLED for testing Phase 1 subscription fixes
       // Ref: openspec/changes/subscription-state-management-fixes
+      debugPrint('🔍 About to call consumeMessage...');
       final consumed = await subscriptionService.consumeMessage();
+      debugPrint('🔍 consumeMessage returned: $consumed');
       if (!consumed) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
