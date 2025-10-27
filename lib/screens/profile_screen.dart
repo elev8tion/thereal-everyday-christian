@@ -461,23 +461,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Achievements',
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
-                fontWeight: FontWeight.w700,
-                color: AppColors.primaryText,
-              ),
-            ),
-            CategoryBadge(
-              text: '${achievements.where((a) => a.isUnlocked).length}/${achievements.length}',
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-            ),
-          ],
+        Text(
+          'Achievements',
+          style: TextStyle(
+            fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+            fontWeight: FontWeight.w700,
+            color: AppColors.primaryText,
+          ),
         ).animate().fadeIn(duration: AppAnimations.slow, delay: 1100.ms),
 
         const SizedBox(height: AppSpacing.lg),
