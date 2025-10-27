@@ -215,6 +215,14 @@ class ChatScreen extends HookConsumerWidget {
       debugPrint('🔍 About to call consumeMessage...');
       final consumed = await subscriptionService.consumeMessage();
       debugPrint('🔍 consumeMessage returned: $consumed');
+
+      // CRITICAL FIX: Invalidate provider to refresh UI with new message count
+      // Ref: openspec/changes/subscription-state-management-fixes/PROPOSAL.md - Task 1.1
+      if (consumed && context.mounted) {
+        ref.invalidate(subscriptionSnapshotProvider);
+        debugPrint('🔄 Invalidated subscriptionSnapshotProvider to refresh UI');
+      }
+
       if (!consumed) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
