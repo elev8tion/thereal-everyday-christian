@@ -272,7 +272,7 @@ steps:
 ### Development Key (Current)
 ```bash
 # .env
-GEMINI_API_KEY=AIzaSyArcFuJFPEJvO_YfoN2obJyUFTxcHbpXKU
+GEMINI_API_KEY=your_development_key_here
 ```
 
 ### Staging Key (Future)

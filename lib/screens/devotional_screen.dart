@@ -217,36 +217,25 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      devotional.title,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.primaryText,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      devotional.subtitle,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                        color: Colors.white.withValues(alpha: 0.9),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
+              Text(
+                devotional.title,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primaryText,
                 ),
               ),
-              CategoryBadge(
-                text: devotional.readingTime,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+              const SizedBox(height: 4),
+              Text(
+                devotional.subtitle,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                  color: Colors.white.withValues(alpha: 0.9),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
