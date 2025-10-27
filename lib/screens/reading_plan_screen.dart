@@ -947,6 +947,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       ref.invalidate(planProgressPercentageProvider(reading.planId));
       ref.invalidate(planStreakProvider(reading.planId));
       ref.invalidate(activeReadingPlansProvider);
+      ref.invalidate(allReadingPlansProvider);
 
       if (mounted) {
         AppSnackBar.show(
@@ -980,11 +981,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       try {
         await planService.startPlan(plan.id);
 
-        // Check if readings exist, if not create sample ones
+        // Check if readings exist, if not generate them based on plan category
         final readings = await progressService.getTodaysReadings(plan.id);
         if (readings.isEmpty) {
-          await progressService.createSampleReadings(
+          await progressService.generateReadingsForPlan(
             plan.id,
+            plan.category,
             plan.totalReadings,
           );
         }

@@ -1,13 +1,17 @@
 import 'package:uuid/uuid.dart';
 import '../models/reading_plan.dart';
 import 'database_service.dart';
+import 'reading_plan_generator.dart';
 
 /// Service for tracking reading plan progress
 class ReadingPlanProgressService {
   final DatabaseService _database;
   final _uuid = const Uuid();
+  late final ReadingPlanGenerator _generator;
 
-  ReadingPlanProgressService(this._database);
+  ReadingPlanProgressService(this._database) {
+    _generator = ReadingPlanGenerator(_database);
+  }
 
   /// Mark a specific day/reading as complete
   Future<void> markDayComplete(String readingId) async {
@@ -214,7 +218,17 @@ class ReadingPlanProgressService {
     }
   }
 
-  /// Create sample daily readings for a plan
+  /// Generate readings for a plan based on its category (NEW - uses real Bible data)
+  Future<void> generateReadingsForPlan(String planId, PlanCategory category, int totalDays) async {
+    try {
+      await _generator.generateReadingsForPlan(planId, category, totalDays);
+    } catch (e) {
+      throw Exception('Failed to generate readings for plan: $e');
+    }
+  }
+
+  /// Create sample daily readings for a plan (DEPRECATED - use generateReadingsForPlan instead)
+  @Deprecated('Use generateReadingsForPlan() instead - this generates incorrect generic readings')
   Future<void> createSampleReadings(String planId, int totalDays) async {
     try {
       final db = await _database.database;

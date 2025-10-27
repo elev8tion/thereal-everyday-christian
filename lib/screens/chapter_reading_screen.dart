@@ -67,6 +67,12 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
 
     try {
       await _chapterService.markReadingComplete(widget.readingId!);
+
+      // Refresh all plan-related providers to update progress
+      ref.invalidate(currentReadingPlanProvider);
+      ref.invalidate(activeReadingPlansProvider);
+      ref.invalidate(allReadingPlansProvider);
+
       if (mounted) {
         setState(() => _isCompleted = true);
         AppSnackBar.show(
