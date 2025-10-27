@@ -111,7 +111,7 @@ class MessageLimitDialog extends StatelessWidget {
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                         fontWeight: FontWeight.w600,
-                        color: AppColors.secondaryText,
+                        color: AppTheme.goldColor,
                         decoration: TextDecoration.underline,
                       ),
                     ),
