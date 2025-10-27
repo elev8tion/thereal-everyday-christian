@@ -105,70 +105,42 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             'Notifications',
             Icons.notifications,
             [
-              _buildSwitchTile(
-                'Daily Devotional',
-                'Receive daily devotional reminders',
-                ref.watch(dailyNotificationsProvider),
-                (value) => ref.read(dailyNotificationsProvider.notifier).toggle(value),
+              _buildNotificationTile(
+                icon: Icons.wb_sunny_outlined,
+                title: 'Daily Devotional',
+                subtitle: 'Morning inspiration to start your day',
+                isEnabled: ref.watch(dailyNotificationsProvider),
+                currentTime: ref.watch(devotionalTimeProvider),
+                onToggle: (value) => ref.read(dailyNotificationsProvider.notifier).toggle(value),
+                onTimeChange: (time) => ref.read(devotionalTimeProvider.notifier).setTime(time),
               ),
-              if (ref.watch(dailyNotificationsProvider))
-                Padding(
-                  padding: const EdgeInsets.only(left: AppSpacing.lg, bottom: AppSpacing.sm),
-                  child: _buildTimePicker(
-                    'Time',
-                    'Daily devotional reminder time',
-                    ref.watch(devotionalTimeProvider),
-                    (time) => ref.read(devotionalTimeProvider.notifier).setTime(time),
-                  ),
-                ),
-              _buildSwitchTile(
-                'Prayer Reminders',
-                'Get reminded to pray throughout the day',
-                ref.watch(prayerRemindersProvider),
-                (value) => ref.read(prayerRemindersProvider.notifier).toggle(value),
+              _buildNotificationTile(
+                icon: Icons.favorite_border,
+                title: 'Prayer Reminders',
+                subtitle: 'Gentle nudges to pause and pray',
+                isEnabled: ref.watch(prayerRemindersProvider),
+                currentTime: ref.watch(prayerTimeProvider),
+                onToggle: (value) => ref.read(prayerRemindersProvider.notifier).toggle(value),
+                onTimeChange: (time) => ref.read(prayerTimeProvider.notifier).setTime(time),
               ),
-              if (ref.watch(prayerRemindersProvider))
-                Padding(
-                  padding: const EdgeInsets.only(left: AppSpacing.lg, bottom: AppSpacing.sm),
-                  child: _buildTimePicker(
-                    'Time',
-                    'Prayer reminder time',
-                    ref.watch(prayerTimeProvider),
-                    (time) => ref.read(prayerTimeProvider.notifier).setTime(time),
-                  ),
-                ),
-              _buildSwitchTile(
-                'Verse of the Day',
-                'Daily Bible verse notifications',
-                ref.watch(verseOfTheDayProvider),
-                (value) => ref.read(verseOfTheDayProvider.notifier).toggle(value),
+              _buildNotificationTile(
+                icon: Icons.auto_awesome,
+                title: 'Verse of the Day',
+                subtitle: 'Daily scripture to reflect on',
+                isEnabled: ref.watch(verseOfTheDayProvider),
+                currentTime: ref.watch(verseTimeProvider),
+                onToggle: (value) => ref.read(verseOfTheDayProvider.notifier).toggle(value),
+                onTimeChange: (time) => ref.read(verseTimeProvider.notifier).setTime(time),
               ),
-              if (ref.watch(verseOfTheDayProvider))
-                Padding(
-                  padding: const EdgeInsets.only(left: AppSpacing.lg, bottom: AppSpacing.sm),
-                  child: _buildTimePicker(
-                    'Time',
-                    'Verse of the day time',
-                    ref.watch(verseTimeProvider),
-                    (time) => ref.read(verseTimeProvider.notifier).setTime(time),
-                  ),
-                ),
-              _buildSwitchTile(
-                'Reading Plan',
-                'Get reminded to complete your daily reading',
-                ref.watch(readingPlanRemindersProvider),
-                (value) => ref.read(readingPlanRemindersProvider.notifier).toggle(value),
+              _buildNotificationTile(
+                icon: Icons.menu_book_outlined,
+                title: 'Reading Plan',
+                subtitle: 'Stay on track with your Bible reading',
+                isEnabled: ref.watch(readingPlanRemindersProvider),
+                currentTime: ref.watch(readingPlanTimeProvider),
+                onToggle: (value) => ref.read(readingPlanRemindersProvider.notifier).toggle(value),
+                onTimeChange: (time) => ref.read(readingPlanTimeProvider.notifier).setTime(time),
               ),
-              if (ref.watch(readingPlanRemindersProvider))
-                Padding(
-                  padding: const EdgeInsets.only(left: AppSpacing.lg, bottom: AppSpacing.sm),
-                  child: _buildTimePicker(
-                    'Time',
-                    'Reading plan reminder time',
-                    ref.watch(readingPlanTimeProvider),
-                    (time) => ref.read(readingPlanTimeProvider.notifier).setTime(time),
-                  ),
-                ),
             ],
           ),
           const SizedBox(height: AppSpacing.xxl),
@@ -339,62 +311,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.3);
   }
 
-  Widget _buildSwitchTile(String title, String subtitle, bool value, Function(bool) onChanged) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: AppSpacing.cardPadding,
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.1),
-        borderRadius: AppRadius.mediumRadius,
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryText,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
-                    color: Colors.white.withValues(alpha: 0.7),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeThumbColor: AppTheme.primaryColor,
-            activeTrackColor: AppTheme.toggleActiveColor.withValues(alpha: 0.5),
-            inactiveThumbColor: Colors.white.withValues(alpha: 0.5),
-            inactiveTrackColor: Colors.grey.withValues(alpha: 0.3),
-            trackOutlineColor: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.selected)) {
-                return AppTheme.toggleActiveColor;
-              }
-              return Colors.grey.withValues(alpha: 0.5);
-            }),
-            trackOutlineWidth: WidgetStateProperty.all(2.0),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildSliderTile(String title, String subtitle, double value, double min, double max, Function(double) onChanged) {
     return Container(
@@ -468,81 +384,150 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  Widget _buildTimePicker(String title, String subtitle, String value, Function(String) onChanged) {
+  Widget _buildNotificationTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool isEnabled,
+    required String currentTime,
+    required Function(bool) onToggle,
+    required Function(String) onTimeChange,
+  }) {
+    // Updated color scheme: amber for icons and toggles, white for time text
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _showTimePicker(value, onChanged),
-          borderRadius: AppRadius.mediumRadius,
-          child: Container(
-            padding: AppSpacing.cardPadding,
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.1),
-              borderRadius: AppRadius.mediumRadius,
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.1),
-                width: 1,
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppSpacing.sm),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
-                    borderRadius: AppRadius.smallRadius,
+      child: Column(
+        children: [
+          // Main notification row with toggle
+          Row(
+            children: [
+              // Icon with gradient background
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.sm),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppTheme.toggleActiveColor.withValues(alpha: 0.3),
+                      AppTheme.toggleActiveColor.withValues(alpha: 0.1),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  child: Icon(
-                    Icons.access_time,
-                    color: AppColors.primaryText,
-                    size: ResponsiveUtils.iconSize(context, 20),
-                  ),
+                  borderRadius: AppRadius.smallRadius,
                 ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primaryText,
-                        ),
+                child: Icon(
+                  icon,
+                  color: AppTheme.toggleActiveColor,
+                  size: ResponsiveUtils.iconSize(context, 22),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              // Title and subtitle
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryText,
                       ),
-                      const SizedBox(height: 4),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                        color: AppColors.tertiaryText,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Toggle switch
+              Switch(
+                value: isEnabled,
+                onChanged: onToggle,
+                activeTrackColor: AppTheme.toggleActiveColor.withValues(alpha: 0.5),
+                thumbColor: WidgetStateProperty.resolveWith<Color>(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return AppTheme.toggleActiveColor;
+                    }
+                    return Colors.white.withValues(alpha: 0.5);
+                  },
+                ),
+                trackOutlineColor: WidgetStateProperty.resolveWith<Color>(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return AppTheme.toggleActiveColor;
+                    }
+                    return Colors.grey.withValues(alpha: 0.5);
+                  },
+                ),
+              ),
+            ],
+          ),
+          // Time picker (shown when enabled)
+          if (isEnabled) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => _showTimePicker(currentTime, onTimeChange),
+                borderRadius: AppRadius.mediumRadius,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.sm,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.2),
+                    borderRadius: AppRadius.mediumRadius,
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.1),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.access_time_rounded,
+                        color: AppTheme.toggleActiveColor.withValues(alpha: 0.8),
+                        size: ResponsiveUtils.iconSize(context, 18),
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
                       Text(
-                        subtitle,
+                        'Notification time',
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                           color: Colors.white.withValues(alpha: 0.7),
                         ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        _formatTimeTo12Hour(currentTime),
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Icon(
+                        Icons.chevron_right,
+                        color: AppColors.tertiaryText,
+                        size: ResponsiveUtils.iconSize(context, 18),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: AppSpacing.lg),
-                Text(
-                  _formatTimeTo12Hour(value),
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                Icon(
-                  Icons.chevron_right,
-                  color: AppColors.tertiaryText,
-                  size: ResponsiveUtils.iconSize(context, 20),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          ],
+        ],
       ),
     );
   }
