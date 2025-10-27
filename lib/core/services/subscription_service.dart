@@ -463,13 +463,15 @@ class SubscriptionService {
 
   /// Check if user can send a message (has remaining messages)
   bool get canSendMessage {
-    // Bypass limits in debug mode for testing
+    // NOTE: Debug bypass DISABLED for testing Phase 1 subscription fixes
+    // Ref: openspec/changes/subscription-state-management-fixes
     developer.log('canSendMessage check: kDebugMode=$kDebugMode, isPremium=$isPremium, isInTrial=$isInTrial, trialMessagesRemainingToday=$trialMessagesRemainingToday', name: 'SubscriptionService');
 
-    if (kDebugMode) {
-      developer.log('Bypassing subscription check - debug mode', name: 'SubscriptionService');
-      return true;
-    }
+    // DISABLED: Debug bypass prevents testing race conditions and state updates
+    // if (kDebugMode) {
+    //   developer.log('Bypassing subscription check - debug mode', name: 'SubscriptionService');
+    //   return true;
+    // }
 
     if (isPremium) {
       return premiumMessagesRemaining > 0;

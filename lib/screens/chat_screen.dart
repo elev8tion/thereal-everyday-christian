@@ -210,8 +210,10 @@ class ChatScreen extends HookConsumerWidget {
         }
       }
 
-      // Consume message credit (skip in debug mode)
-      final consumed = kDebugMode ? true : await subscriptionService.consumeMessage();
+      // Consume message credit
+      // NOTE: Debug bypass DISABLED for testing Phase 1 subscription fixes
+      // Ref: openspec/changes/subscription-state-management-fixes
+      final consumed = await subscriptionService.consumeMessage();
 
       // CRITICAL FIX: Invalidate provider to refresh UI with new message count
       // Ref: openspec/changes/subscription-state-management-fixes/PROPOSAL.md - Task 1.1
