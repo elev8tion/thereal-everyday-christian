@@ -80,7 +80,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       Achievement(
         title: 'Bible Scholar',
-        description: 'Read 100 verses',
+        description: 'Save 100 verses',
         icon: Icons.book,
         color: Colors.blue,
         isUnlocked: savedVerses >= 100,
@@ -98,7 +98,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       Achievement(
         title: 'Scripture Master',
-        description: 'Complete 5 reading plans',
+        description: 'Start 5 reading plans',
         icon: Icons.stars,
         color: AppTheme.goldColor,
         isUnlocked: readingPlansActive >= 5,
