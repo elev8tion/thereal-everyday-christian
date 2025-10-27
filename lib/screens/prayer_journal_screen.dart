@@ -668,10 +668,10 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                   onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                   child: FrostedGlassCard(
                     child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                         Text(
                           'Add Prayer Request',
                           style: TextStyle(
@@ -785,8 +785,8 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                           ],
                         ),
                       ],
+                      ),
                     ),
-                  ),
                   ),
                 ),
               );
