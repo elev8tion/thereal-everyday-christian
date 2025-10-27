@@ -150,63 +150,58 @@ class ChatScreen extends HookConsumerWidget {
 
       debugPrint('🔍 Subscription check: status=$subscriptionStatus, kDebugMode=$kDebugMode');
 
-      // Skip all checks in debug mode
-      if (kDebugMode) {
-        // In debug mode, allow sending without subscription checks
-      } else {
-        // 1. Check if user is locked out (trial expired or premium expired)
-        if (subscriptionStatus == SubscriptionStatus.trialExpired ||
-            subscriptionStatus == SubscriptionStatus.premiumExpired) {
-          // Show paywall directly - user is fully locked out
-          if (context.mounted) {
-            await Navigator.push(
+      // 1. Check if user is locked out (trial expired or premium expired)
+      if (subscriptionStatus == SubscriptionStatus.trialExpired ||
+          subscriptionStatus == SubscriptionStatus.premiumExpired) {
+        // Show paywall directly - user is fully locked out
+        if (context.mounted) {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const PaywallScreen(showTrialInfo: false),
+            ),
+          );
+        }
+        return;
+      }
+
+      // 2. Check if user has messages remaining
+      if (!subscriptionService.canSendMessage) {
+        // Show message limit dialog first
+        if (context.mounted) {
+          final shouldShowPaywall = await MessageLimitDialog.show(
+            context: context,
+            isPremium: subscriptionStatus == SubscriptionStatus.premiumActive,
+            remainingMessages: subscriptionService.remainingMessages,
+          );
+
+          if (shouldShowPaywall == true) {
+            if (!context.mounted) {
+              return;
+            }
+            // User clicked "Subscribe Now"
+            final upgraded = await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => const PaywallScreen(showTrialInfo: false),
+                builder: (_) => PaywallScreen(
+                  showTrialInfo: subscriptionStatus == SubscriptionStatus.inTrial,
+                  showMessageStats: true,
+                ),
               ),
             );
-          }
-          return;
-        }
 
-        // 2. Check if user has messages remaining
-        if (!subscriptionService.canSendMessage) {
-          // Show message limit dialog first
-          if (context.mounted) {
-            final shouldShowPaywall = await MessageLimitDialog.show(
-              context: context,
-              isPremium: subscriptionStatus == SubscriptionStatus.premiumActive,
-              remainingMessages: subscriptionService.remainingMessages,
-            );
-
-            if (shouldShowPaywall == true) {
-              if (!context.mounted) {
-                return;
-              }
-              // User clicked "Subscribe Now"
-              final upgraded = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => PaywallScreen(
-                    showTrialInfo: subscriptionStatus == SubscriptionStatus.inTrial,
-                    showMessageStats: true,
-                  ),
-                ),
-              );
-
-              if (upgraded != true) {
-                // User didn't upgrade, don't send message
-                return;
-              }
-            } else {
-              // User clicked "Maybe Later"
-              // Days 1-2: Can still view history (just return)
-              // Day 3 + cancelled: Will be handled by lockout check on next screen load
+            if (upgraded != true) {
+              // User didn't upgrade, don't send message
               return;
             }
           } else {
+            // User clicked "Maybe Later"
+            // Days 1-2: Can still view history (just return)
+            // Day 3 + cancelled: Will be handled by lockout check on next screen load
             return;
           }
+        } else {
+          return;
         }
       }
 
