@@ -326,16 +326,60 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
           );
         }
 
-        return ListView.builder(
-          padding: AppSpacing.screenPadding,
-          itemCount: activePlans.length,
-          itemBuilder: (context, index) {
-            final plan = activePlans[index];
-            return _buildPlanCard(plan, index, isActive: true)
-                .animate()
-                .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
-                .slideY(begin: 0.3);
-          },
+        return Column(
+          children: [
+            // Info banner when there's exactly 1 active plan
+            if (activePlans.length == 1)
+              Container(
+                margin: AppSpacing.screenPadding,
+                padding: const EdgeInsets.all(AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withValues(alpha: 0.1),
+                  borderRadius: AppRadius.mediumRadius,
+                  border: Border.all(
+                    color: Colors.blue.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.blue,
+                      size: ResponsiveUtils.iconSize(context, 20),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Only one reading plan can be active at a time. Reset your current plan to start a different one.',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ).animate().fadeIn(duration: AppAnimations.slow, delay: 500.ms),
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.only(
+                  left: AppSpacing.xl,
+                  right: AppSpacing.xl,
+                  top: activePlans.length == 1 ? AppSpacing.md : AppSpacing.xl,
+                  bottom: AppSpacing.xl,
+                ),
+                itemCount: activePlans.length,
+                itemBuilder: (context, index) {
+                  final plan = activePlans[index];
+                  return _buildPlanCard(plan, index, isActive: true)
+                      .animate()
+                      .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
+                      .slideY(begin: 0.3);
+                },
+              ),
+            ),
+          ],
         );
       },
     );
@@ -633,6 +677,9 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         ? ref.watch(planProgressPercentageProvider(plan.id))
         : null;
 
+    // Check if there's already an active plan (for Explore tab)
+    final currentPlanAsync = !isActive ? ref.watch(currentReadingPlanProvider) : null;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       child: FrostedGlassCard(
@@ -733,39 +780,85 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
               ],
             ],
             const SizedBox(height: AppSpacing.lg),
-            Row(
-              children: [
-                Expanded(
-                  child: GlassButton(
-                    text: plan.isStarted ? 'Continue Reading' : 'Start Plan',
-                    height: 48,
-                    onPressed: () => _handlePlanAction(plan),
-                  ),
-                ),
-                if (plan.isStarted) ...[
-                  const SizedBox(width: AppSpacing.md),
-                  GestureDetector(
-                    onTap: () => _showResetConfirmation(plan),
-                    child: Container(
-                      height: 48,
-                      padding: AppSpacing.horizontalLg,
-                      decoration: BoxDecoration(
-                        color: Colors.red.withValues(alpha: 0.2),
-                        borderRadius: AppRadius.mediumRadius,
-                        border: Border.all(
-                          color: Colors.red.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.restart_alt,
-                        color: AppColors.primaryText,
-                        size: ResponsiveUtils.iconSize(context, 20),
+            // Conditionally disable "Start Plan" button if viewing from Explore tab and another plan is active
+            if (currentPlanAsync != null)
+              currentPlanAsync.when(
+                loading: () => Row(
+                  children: [
+                    Expanded(
+                      child: GlassButton(
+                        text: 'Start Plan',
+                        height: 48,
+                        onPressed: () => _handlePlanAction(plan),
                       ),
                     ),
+                  ],
+                ),
+                error: (_, __) => Row(
+                  children: [
+                    Expanded(
+                      child: GlassButton(
+                        text: 'Start Plan',
+                        height: 48,
+                        onPressed: () => _handlePlanAction(plan),
+                      ),
+                    ),
+                  ],
+                ),
+                data: (currentPlan) {
+                  final hasActivePlan = currentPlan != null;
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Tooltip(
+                          message: hasActivePlan
+                              ? 'Reset your current plan before starting a new one'
+                              : '',
+                          child: GlassButton(
+                            text: 'Start Plan',
+                            height: 48,
+                            onPressed: hasActivePlan ? null : () => _handlePlanAction(plan),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              )
+            else
+              Row(
+                children: [
+                  Expanded(
+                    child: GlassButton(
+                      text: plan.isStarted ? 'Continue Reading' : 'Start Plan',
+                      height: 48,
+                      onPressed: () => _handlePlanAction(plan),
+                    ),
                   ),
+                  if (plan.isStarted) ...[
+                    const SizedBox(width: AppSpacing.md),
+                    GestureDetector(
+                      onTap: () => _showResetConfirmation(plan),
+                      child: Container(
+                        height: 48,
+                        padding: AppSpacing.horizontalLg,
+                        decoration: BoxDecoration(
+                          color: Colors.red.withValues(alpha: 0.2),
+                          borderRadius: AppRadius.mediumRadius,
+                          border: Border.all(
+                            color: Colors.red.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.restart_alt,
+                          color: AppColors.primaryText,
+                          size: ResponsiveUtils.iconSize(context, 20),
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
-              ],
-            ),
+              ),
           ],
         ),
       ),
