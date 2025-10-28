@@ -25,6 +25,9 @@ class _BlurDropdownState extends State<BlurDropdown> {
   final LayerLink _layerLink = LayerLink();
 
   void _showDropdown() {
+    // Dismiss keyboard first
+    FocusManager.instance.primaryFocus?.unfocus();
+
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);

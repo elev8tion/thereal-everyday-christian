@@ -668,6 +668,9 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                   onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                   child: FrostedGlassCard(
                     child: SingleChildScrollView(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
