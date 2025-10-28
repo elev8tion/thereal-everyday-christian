@@ -522,6 +522,83 @@ class ChatScreen extends HookConsumerWidget {
         return;
       }
 
+      // Check subscription before regenerating
+      final subscriptionService = ref.read(subscriptionServiceProvider);
+      final canSend = subscriptionService.canSendMessage;
+
+      if (!canSend && !kDebugMode) {
+        // Show paywall
+        if (context.mounted) {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PaywallScreen(
+                showTrialInfo: subscriptionService.isInTrial,
+                currentUsage: subscriptionService.isInTrial
+                    ? subscriptionService.trialMessagesUsedToday
+                    : subscriptionService.premiumMessagesUsedThisMonth,
+                totalAllowed: subscriptionService.isInTrial
+                    ? subscriptionService.trialMessagesPerDay
+                    : subscriptionService.premiumMessagesPerMonth,
+              ),
+            ),
+          );
+
+          if (result != true) {
+            // User didn't upgrade
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                behavior: SnackBarBehavior.floating,
+                duration: const Duration(seconds: 3),
+                margin: const EdgeInsets.all(16),
+                padding: EdgeInsets.zero,
+                content: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFF1E293B),
+                        Color(0xFF0F172A),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.orange.withValues(alpha: 0.5),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        color: Colors.orange.shade300,
+                        size: ResponsiveUtils.iconSize(context, 20),
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Text(
+                          'Subscription required to regenerate responses',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+            return;
+          }
+        }
+      }
+
       // Find the previous user message
       String? userInput;
       for (int i = aiMessageIndex - 1; i >= 0; i--) {
@@ -585,7 +662,14 @@ class ChatScreen extends HookConsumerWidget {
         return;
       }
 
-      debugPrint('🔄 Regenerating response for user input: "$userInput"');
+      // Consume a message for regeneration
+      final consumed = await subscriptionService.consumeMessage();
+      if (!consumed && !kDebugMode) {
+        debugPrint('❌ Failed to consume message for regeneration');
+        return;
+      }
+
+      debugPrint('🔄 Regenerating response for user input: "$userInput" (message consumed)');
       isTyping.value = true;
 
       try {
@@ -596,9 +680,15 @@ class ChatScreen extends HookConsumerWidget {
           throw Exception('AI Service not ready');
         }
 
+        // Add context to request a different response
         final response = await aiService.generateResponse(
           userInput: userInput,
           conversationHistory: messages.value.take(aiMessageIndex).toList(),
+          context: {
+            'regenerate': true,
+            'previous_response': aiMessage.content,
+            'instruction': 'Please provide a different perspective or alternative response to the previous question.',
+          },
         );
         debugPrint('✅ AI service returned new response');
 
