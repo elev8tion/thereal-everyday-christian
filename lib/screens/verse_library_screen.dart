@@ -448,9 +448,11 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   Widget _buildSharedVerseCard(SharedVerseEntry entry, int index) {
     final verse = entry.toBibleVerse();
     final sharedTimestamp = DateFormat('MMM d, yyyy • h:mm a').format(entry.sharedAt);
-    final channelLabel = entry.channel?.isNotEmpty == true
+
+    // Don't show internal channel names to users
+    final channelLabel = entry.channel?.isNotEmpty == true && entry.channel != 'share_sheet'
         ? entry.channel!
-        : 'Shared from device share sheet';
+        : '';
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -498,7 +500,9 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                       ),
                       const SizedBox(height: AppSpacing.xs),
                       Text(
-                        '$sharedTimestamp • $channelLabel',
+                        channelLabel.isNotEmpty
+                            ? '$sharedTimestamp • $channelLabel'
+                            : sharedTimestamp,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                           color: Colors.white.withValues(alpha: 0.55),
