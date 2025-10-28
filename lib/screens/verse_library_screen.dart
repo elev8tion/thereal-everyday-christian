@@ -371,27 +371,27 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                     ],
                   ),
                 ),
-                // Heart and Share icons on right
+                // Action icons on right: Share and Delete
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    GestureDetector(
-                      onTap: () => _toggleFavorite(verse),
-                      child: Container(
-                        padding: const EdgeInsets.all(AppSpacing.sm),
-                        child: Icon(
-                          verse.isFavorite ? Icons.favorite : Icons.favorite_outline,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: verse.isFavorite ? Colors.red : Colors.white.withValues(alpha: 0.7),
-                        ),
-                      ),
-                    ),
                     GestureDetector(
                       onTap: () => _showShareOptions(verse),
                       child: Container(
                         padding: const EdgeInsets.all(AppSpacing.sm),
                         child: Icon(
                           Icons.share,
+                          size: ResponsiveUtils.iconSize(context, 20),
+                          color: Colors.white.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => _deleteSavedVerse(verse),
+                      child: Container(
+                        padding: const EdgeInsets.all(AppSpacing.sm),
+                        child: Icon(
+                          Icons.delete_outline,
                           size: ResponsiveUtils.iconSize(context, 20),
                           color: Colors.white.withValues(alpha: 0.7),
                         ),
@@ -823,6 +823,32 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
       AppSnackBar.showError(
         context,
         message: 'Unable to remove shared verse: $e',
+      );
+    }
+  }
+
+  Future<void> _deleteSavedVerse(BibleVerse verse) async {
+    if (verse.id == null) return;
+
+    try {
+      final service = ref.read(unifiedVerseServiceProvider);
+      await service.removeFromFavorites(verse.id!);
+
+      // Invalidate providers to refresh UI counts
+      ref.invalidate(favoriteVersesProvider);
+      ref.invalidate(savedVersesCountProvider);
+
+      if (!mounted) return;
+      AppSnackBar.show(
+        context,
+        message: 'Removed from Verse Library',
+        icon: Icons.heart_broken,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      AppSnackBar.showError(
+        context,
+        message: 'Unable to remove verse: $e',
       );
     }
   }
