@@ -444,11 +444,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                   ],
                 ),
               ),
-              CategoryBadge(
-                text: plan.difficulty.displayName,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-              ),
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -711,9 +706,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                       ),
                     ],
                   ),
-                ),
-                CategoryBadge(
-                  text: plan.difficulty.displayName,
                 ),
               ],
             ),
@@ -1149,30 +1141,41 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
 
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            Icon(
-              Icons.warning_amber_rounded,
-              color: Colors.orange,
-              size: ResponsiveUtils.iconSize(context, 24),
-            ),
-            const SizedBox(width: 8),
-            const Expanded(child: Text('Reset Reading Plan?')),
-          ],
-        ),
-        content: SingleChildScrollView(
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: FrostedGlassCard(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Are you sure you want to reset "${plan.title}"?'),
-              const SizedBox(height: 16),
+              Icon(
+                Icons.warning_amber_rounded,
+                size: ResponsiveUtils.iconSize(context, 48),
+                color: Colors.orange,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                'Reset Reading Plan?',
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryText,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                'Are you sure you want to reset "${plan.title}"?',
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  color: AppColors.secondaryText,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSpacing.lg),
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.red.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: AppRadius.mediumRadius,
                   border: Border.all(
                     color: Colors.red.withValues(alpha: 0.3),
                     width: 1,
@@ -1186,6 +1189,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                        color: AppColors.primaryText,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -1193,6 +1197,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                       '• ${plan.completedReadings} completed reading${plan.completedReadings != 1 ? 's' : ''}',
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                        color: AppColors.secondaryText,
                       ),
                     ),
                     if (streak > 0)
@@ -1200,18 +1205,20 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                         '• Your $streak-day streak 🔥',
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                          color: AppColors.secondaryText,
                         ),
                       ),
                     Text(
                       '• All progress history',
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                        color: AppColors.secondaryText,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               Text(
                 'This action cannot be undone.',
                 style: TextStyle(
@@ -1219,21 +1226,55 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: Colors.red,
                 ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+              Row(
+                children: [
+                  Expanded(
+                    child: GlassButton(
+                      text: 'Cancel',
+                      height: 48,
+                      onPressed: () => Navigator.of(context).pop(false),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red.withValues(alpha: 0.2),
+                        borderRadius: AppRadius.largeCardRadius,
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 2,
+                        ),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => Navigator.of(context).pop(true),
+                          borderRadius: AppRadius.largeCardRadius,
+                          child: Container(
+                            height: 48,
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Reset',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w700,
+                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Reset'),
-          ),
-        ],
       ),
     );
 
