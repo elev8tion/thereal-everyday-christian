@@ -526,7 +526,7 @@ class ChatScreen extends HookConsumerWidget {
       final subscriptionService = ref.read(subscriptionServiceProvider);
       final canSend = subscriptionService.canSendMessage;
 
-      if (!canSend && !kDebugMode) {
+      if (!canSend) {
         // Show paywall
         if (context.mounted) {
           final result = await Navigator.push(
@@ -659,7 +659,7 @@ class ChatScreen extends HookConsumerWidget {
 
       // Consume a message for regeneration
       final consumed = await subscriptionService.consumeMessage();
-      if (!consumed && !kDebugMode) {
+      if (!consumed) {
         debugPrint('❌ Failed to consume message for regeneration');
         return;
       }
