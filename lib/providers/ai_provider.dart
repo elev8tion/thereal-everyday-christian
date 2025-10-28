@@ -3,6 +3,7 @@ import '../services/ai_service.dart';
 import '../services/gemini_ai_service.dart';
 import '../services/unified_verse_service.dart';
 import '../models/bible_verse.dart';
+import '../models/chat_message.dart';
 import '../core/services/content_filter_service.dart';
 
 /// Provider for AI service instance (Gemini AI)
@@ -139,11 +140,8 @@ class GeminiAIServiceAdapter implements AIService {
     // Get relevant verses for the theme
     final verses = await getRelevantVerses(theme, limit: 3);
 
-    // Convert conversation history to strings (if needed)
-    final historyStrings = conversationHistory.map((msg) {
-      if (msg is String) return msg;
-      return msg.toString();
-    }).toList();
+    // Format conversation history with proper context and limit to last 20 messages
+    final historyStrings = _formatConversationHistory(conversationHistory);
 
     // Call Gemini AI
     final response = await _gemini.generateResponse(
@@ -201,11 +199,8 @@ class GeminiAIServiceAdapter implements AIService {
     // Get relevant verses for the theme
     final verses = await getRelevantVerses(theme, limit: 3);
 
-    // Convert conversation history to strings
-    final historyStrings = conversationHistory.map((msg) {
-      if (msg is String) return msg;
-      return msg.toString();
-    }).toList();
+    // Format conversation history with proper context and limit to last 20 messages
+    final historyStrings = _formatConversationHistory(conversationHistory);
 
     // Use Gemini's streaming capability
     final stream = _gemini.generateStreamingResponse(
@@ -246,6 +241,37 @@ class GeminiAIServiceAdapter implements AIService {
     } catch (e) {
       return [];
     }
+  }
+
+  /// Format conversation history with proper context and limit to last 20 messages
+  ///
+  /// Converts ChatMessage objects to natural conversation format:
+  /// - USER: [user message content]
+  /// - COUNSELOR: [AI response content]
+  ///
+  /// Limits to last 20 messages per conversation thread for:
+  /// - Better performance (faster responses)
+  /// - Lower API costs
+  /// - Staying within token limits
+  List<String> _formatConversationHistory(List conversationHistory) {
+    // Limit to last 20 messages
+    final recentHistory = conversationHistory.length > 20
+        ? conversationHistory.sublist(conversationHistory.length - 20)
+        : conversationHistory;
+
+    // Format each message properly
+    return recentHistory.map((msg) {
+      if (msg is String) return msg;
+
+      // Convert ChatMessage to natural conversation format
+      if (msg is ChatMessage) {
+        final label = msg.type == MessageType.user ? 'USER' : 'COUNSELOR';
+        return '$label: ${msg.content}';
+      }
+
+      // Fallback for unknown types
+      return msg.toString();
+    }).toList();
   }
 
   @override
