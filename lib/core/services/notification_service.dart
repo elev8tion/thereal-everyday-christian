@@ -111,7 +111,7 @@ class NotificationService {
     final payload = 'verse:$verseReference';
 
     await _notifications.zonedSchedule(
-      4, // Unique ID for daily verse notifications
+      3, // Unique ID for daily verse notifications
       'Verse of the Day',
       '$verseReference - $versePreview',
       _nextInstanceOfTime(hour, minute),
@@ -160,7 +160,7 @@ class NotificationService {
       final payload = 'verse:$verseReference';
 
       await _notifications.show(
-        4,
+        3,
         'Verse of the Day',
         '$verseReference - ${verseText.substring(0, verseText.length > 50 ? 50 : verseText.length)}...',
         NotificationDetails(
@@ -221,7 +221,7 @@ class NotificationService {
     required int minute,
   }) async {
     await _notifications.zonedSchedule(
-      3,
+      4,
       'Bible Reading',
       'Continue your reading plan today',
       _nextInstanceOfTime(hour, minute),

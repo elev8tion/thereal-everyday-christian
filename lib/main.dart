@@ -18,9 +18,13 @@ import 'package:everyday_christian/screens/verse_library_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize timezone database for scheduled notifications
+  tz.initializeTimeZones();
 
   // Load environment variables from .env file
   await dotenv.load(fileName: ".env");
