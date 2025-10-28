@@ -150,16 +150,9 @@ class DatabaseMigrator {
           END
         ''');
 
-        await txn.execute('''
-          CREATE TRIGGER IF NOT EXISTS update_chat_sessions_timestamp
-          AFTER UPDATE ON chat_sessions
-          FOR EACH ROW
-          BEGIN
-            UPDATE chat_sessions
-            SET updated_at = strftime('%s', 'now')
-            WHERE id = NEW.id;
-          END
-        ''');
+        // NOTE: Removed auto-update trigger for chat_sessions.updated_at
+        // We manually manage this field in conversation_service.dart to ensure millisecond precision
+        // The trigger was using strftime('%s', 'now') which returns seconds, causing timestamp issues
 
         debugPrint('✅ Schema v2 migration complete!');
       });

@@ -342,14 +342,14 @@ class ConversationService {
     }
   }
 
-  /// Get message count for a session
+  /// Get message count for a session (excluding system messages)
   Future<int> getMessageCount(String sessionId) async {
     try {
       final db = await _dbHelper.database;
 
       final result = await db.rawQuery(
-        'SELECT COUNT(*) as count FROM chat_messages WHERE session_id = ?',
-        [sessionId],
+        'SELECT COUNT(*) as count FROM chat_messages WHERE session_id = ? AND type != ?',
+        [sessionId, 'system'],
       );
 
       return Sqflite.firstIntValue(result) ?? 0;

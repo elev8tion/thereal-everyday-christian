@@ -1953,8 +1953,19 @@ class ChatScreen extends HookConsumerWidget {
     ConversationService conversationService,
   ) async {
     debugPrint('📜 Opening conversation history...');
-    final sessions = await conversationService.getSessions();
-    debugPrint('📜 Found ${sessions.length} sessions in history');
+    final allSessions = await conversationService.getSessions();
+    // Filter out conversations with only system welcome messages
+    final sessions = allSessions.where((session) {
+      final messageCount = session['message_count'] as int? ?? 0;
+      final preview = session['last_message_preview'] as String? ?? '';
+
+      // Filter out empty conversations or those with only the welcome message
+      if (messageCount == 0) return false;
+      if (messageCount == 1 && preview.startsWith('Peace be with you')) return false;
+
+      return true;
+    }).toList();
+    debugPrint('📜 Found ${sessions.length} non-empty sessions in history (${allSessions.length} total)');
 
     if (!context.mounted) return;
 
@@ -1990,14 +2001,15 @@ class ChatScreen extends HookConsumerWidget {
             )
           : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              itemCount: sessions.length > 20 ? 20 : sessions.length,
+              itemCount: sessions.length,
               itemBuilder: (context, index) {
                 final session = sessions[index];
-                final createdAt = DateTime.fromMillisecondsSinceEpoch(
-                  session['created_at'] as int,
+                final updatedAt = DateTime.fromMillisecondsSinceEpoch(
+                  session['updated_at'] as int,
                 );
                 final messageCount = session['message_count'] as int? ?? 0;
                 final sessionIdStr = session['id'] as String;
+                final lastMessagePreview = session['last_message_preview'] as String?;
 
                 return Dismissible(
                   key: Key(sessionIdStr),
@@ -2188,17 +2200,39 @@ class ChatScreen extends HookConsumerWidget {
                         maxFontSize: 18,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      subtitle: AutoSizeText(
-                        '${_formatDate(createdAt)} • $messageCount messages',
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                          color: AppColors.secondaryText,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        maxLines: 1,
-                        minFontSize: 9,
-                        maxFontSize: 14,
-                        overflow: TextOverflow.ellipsis,
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (lastMessagePreview != null && lastMessagePreview.isNotEmpty) ...[
+                            AutoSizeText(
+                              lastMessagePreview,
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 14),
+                                color: AppColors.tertiaryText,
+                                fontStyle: FontStyle.italic,
+                                height: 1.3,
+                              ),
+                              maxLines: 2,
+                              minFontSize: 10,
+                              maxFontSize: 14,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                          ],
+                          AutoSizeText(
+                            '${_formatDate(updatedAt)} • $messageCount messages',
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 13),
+                              color: AppColors.secondaryText,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            minFontSize: 9,
+                            maxFontSize: 13,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
@@ -2480,7 +2514,7 @@ class ChatScreen extends HookConsumerWidget {
     } else if (difference.inDays < 7) {
       return '${difference.inDays} days ago';
     } else {
-      return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+      return '${dateTime.month}/${dateTime.day}/${dateTime.year}';
     }
   }
 
