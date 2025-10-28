@@ -664,6 +664,13 @@ class ChatScreen extends HookConsumerWidget {
         return;
       }
 
+      // CRITICAL FIX: Invalidate provider to refresh UI with new message count
+      // This ensures the message counter badge updates after regeneration
+      if (consumed && context.mounted) {
+        ref.invalidate(subscriptionSnapshotProvider);
+        debugPrint('🔄 Invalidated subscriptionSnapshotProvider to refresh UI');
+      }
+
       debugPrint('🔄 Regenerating response for user input: "$userInput" (message consumed)');
       isTyping.value = true;
 
