@@ -9,6 +9,7 @@ import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glassmorphic_fab_menu.dart';
+import '../components/blur_popup_menu.dart';
 import '../components/base_bottom_sheet.dart';
 import '../components/glass_button.dart';
 import '../theme/app_theme.dart';
@@ -371,33 +372,37 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                     ],
                   ),
                 ),
-                // Action icons on right: Share and Delete
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    GestureDetector(
-                      onTap: () => _showShareOptions(verse),
-                      child: Container(
-                        padding: const EdgeInsets.all(AppSpacing.sm),
-                        child: Icon(
-                          Icons.share,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: Colors.white.withValues(alpha: 0.7),
-                        ),
-                      ),
+                // 3-dot menu for actions
+                BlurPopupMenu(
+                  items: const [
+                    BlurPopupMenuItem(
+                      value: 'share',
+                      icon: Icons.share,
+                      label: 'Share',
                     ),
-                    GestureDetector(
-                      onTap: () => _deleteSavedVerse(verse),
-                      child: Container(
-                        padding: const EdgeInsets.all(AppSpacing.sm),
-                        child: Icon(
-                          Icons.delete_outline,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: Colors.white.withValues(alpha: 0.7),
-                        ),
-                      ),
+                    BlurPopupMenuItem(
+                      value: 'delete',
+                      icon: Icons.delete,
+                      label: 'Delete',
+                      iconColor: Colors.red,
+                      textColor: Colors.red,
                     ),
                   ],
+                  onSelected: (value) {
+                    if (value == 'share') {
+                      _showShareOptions(verse);
+                    } else if (value == 'delete') {
+                      _deleteSavedVerse(verse);
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.sm),
+                    child: Icon(
+                      Icons.more_vert,
+                      size: ResponsiveUtils.iconSize(context, 20),
+                      color: AppColors.primaryText,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -511,32 +516,37 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                     ],
                   ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    GestureDetector(
-                      onTap: () => _showShareOptions(verse),
-                      child: Container(
-                        padding: const EdgeInsets.all(AppSpacing.sm),
-                        child: Icon(
-                          Icons.share,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: Colors.white.withValues(alpha: 0.7),
-                        ),
-                      ),
+                // 3-dot menu for actions
+                BlurPopupMenu(
+                  items: const [
+                    BlurPopupMenuItem(
+                      value: 'share',
+                      icon: Icons.share,
+                      label: 'Share',
                     ),
-                    GestureDetector(
-                      onTap: () => _deleteSharedVerse(entry.id),
-                      child: Container(
-                        padding: const EdgeInsets.all(AppSpacing.sm),
-                        child: Icon(
-                          Icons.delete_outline,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: Colors.white.withValues(alpha: 0.7),
-                        ),
-                      ),
+                    BlurPopupMenuItem(
+                      value: 'delete',
+                      icon: Icons.delete,
+                      label: 'Delete',
+                      iconColor: Colors.red,
+                      textColor: Colors.red,
                     ),
                   ],
+                  onSelected: (value) {
+                    if (value == 'share') {
+                      _showShareOptions(verse);
+                    } else if (value == 'delete') {
+                      _deleteSharedVerse(entry.id);
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.sm),
+                    child: Icon(
+                      Icons.more_vert,
+                      size: ResponsiveUtils.iconSize(context, 20),
+                      color: AppColors.primaryText,
+                    ),
+                  ),
                 ),
               ],
             ),

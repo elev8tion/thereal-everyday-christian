@@ -515,25 +515,34 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                         ),
                       ),
                       const SizedBox(width: 8),
-                      GestureDetector(
-                        onTap: () => _sharePrayer(prayer),
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          child: Icon(
-                            Icons.share,
-                            size: ResponsiveUtils.iconSize(context, 18),
-                            color: Colors.white.withValues(alpha: 0.7),
+                      BlurPopupMenu(
+                        items: const [
+                          BlurPopupMenuItem(
+                            value: 'share',
+                            icon: Icons.share,
+                            label: 'Share',
                           ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () => _deletePrayer(prayer),
+                          BlurPopupMenuItem(
+                            value: 'delete',
+                            icon: Icons.delete,
+                            label: 'Delete',
+                            iconColor: Colors.red,
+                            textColor: Colors.red,
+                          ),
+                        ],
+                        onSelected: (value) {
+                          if (value == 'share') {
+                            _sharePrayer(prayer);
+                          } else if (value == 'delete') {
+                            _deletePrayer(prayer);
+                          }
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           child: Icon(
-                            Icons.delete_outline,
+                            Icons.more_vert,
                             size: ResponsiveUtils.iconSize(context, 18),
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: AppColors.primaryText,
                           ),
                         ),
                       ),
