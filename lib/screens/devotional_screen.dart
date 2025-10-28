@@ -23,6 +23,15 @@ class DevotionalScreen extends ConsumerStatefulWidget {
 
 class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   int _currentDay = 0;
+  bool _isInitialized = false;
+
+  void _initializeCurrentDay(List<Devotional> devotionals) {
+    final firstIncomplete = devotionals.indexWhere((d) => !d.isCompleted);
+    setState(() {
+      _currentDay = firstIncomplete != -1 ? firstIncomplete : devotionals.length - 1;
+      _isInitialized = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +57,13 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                       ],
                     ),
                   );
+                }
+
+                // Initialize current day to first uncompleted or last completed
+                if (!_isInitialized && devotionals.isNotEmpty) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _initializeCurrentDay(devotionals);
+                  });
                 }
 
                 // Ensure current day is within bounds
