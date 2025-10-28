@@ -12,7 +12,7 @@ import 'migrations/database_migrator.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 7;
+  static const int _databaseVersion = 8;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -389,6 +389,12 @@ class DatabaseHelper {
         )
       ''');
 
+      // Reading plan indexes for performance
+      await db.execute('CREATE INDEX idx_reading_plans_started ON reading_plans(is_started)');
+      await db.execute('CREATE INDEX idx_daily_readings_plan ON daily_readings(plan_id)');
+      await db.execute('CREATE INDEX idx_daily_readings_completion ON daily_readings(plan_id, is_completed, completed_date)');
+      await db.execute('CREATE INDEX idx_daily_readings_date ON daily_readings(plan_id, date)');
+
       // ==================== USER SETTINGS ====================
 
       // User settings
@@ -649,6 +655,22 @@ class DatabaseHelper {
         _logger.info('✅ Migration v6→v7 complete: Added shared_verses table');
       } catch (e) {
         _logger.error('Migration v6→v7 failed: $e');
+      }
+    }
+
+    if (oldVersion < 8) {
+      try {
+        _logger.info('Migrating v7→v8: Adding reading plan indexes for performance');
+
+        // Add indexes for reading plans queries
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_reading_plans_started ON reading_plans(is_started)');
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_daily_readings_plan ON daily_readings(plan_id)');
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_daily_readings_completion ON daily_readings(plan_id, is_completed, completed_date)');
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_daily_readings_date ON daily_readings(plan_id, date)');
+
+        _logger.info('✅ Migration v7→v8 complete: Added 4 reading plan indexes');
+      } catch (e) {
+        _logger.error('Migration v7→v8 failed: $e');
       }
     }
   }

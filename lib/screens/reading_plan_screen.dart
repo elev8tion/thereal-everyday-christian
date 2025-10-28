@@ -29,6 +29,9 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
+  // Optimistic UI state: tracks checkbox toggles before database confirms
+  final Map<String, bool> _optimisticCompletions = {};
+
   @override
   void initState() {
     super.initState();
@@ -516,6 +519,9 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildReadingCard(DailyReading reading, int index) {
+    // Check optimistic state first for instant UI feedback
+    final isCompleted = _optimisticCompletions[reading.id] ?? reading.isCompleted;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       child: GestureDetector(
@@ -542,7 +548,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: reading.isCompleted
+                      color: isCompleted
                           ? Colors.green.withValues(alpha: 0.2)
                           : AppTheme.primaryColor.withValues(alpha: 0.2),
                       blurRadius: 8,
@@ -551,8 +557,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                   ],
                 ),
                 child: Icon(
-                  reading.isCompleted ? Icons.check_circle : Icons.book,
-                  color: reading.isCompleted ? Colors.green : AppTheme.primaryColor,
+                  isCompleted ? Icons.check_circle : Icons.book,
+                  color: isCompleted ? Colors.green : AppTheme.primaryColor,
                   size: ResponsiveUtils.iconSize(context, 24),
                 ),
               ),
@@ -603,13 +609,13 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                 child: Container(
                   padding: const EdgeInsets.all(AppSpacing.sm),
                   decoration: BoxDecoration(
-                    color: reading.isCompleted
+                    color: isCompleted
                         ? Colors.green.withValues(alpha: 0.2)
                         : AppTheme.primaryColor.withValues(alpha: 0.2),
                     borderRadius: AppRadius.smallRadius,
                   ),
                   child: Icon(
-                    reading.isCompleted ? Icons.check : Icons.circle_outlined,
+                    isCompleted ? Icons.check : Icons.circle_outlined,
                     color: AppColors.primaryText,
                     size: ResponsiveUtils.iconSize(context, 20),
                   ),
@@ -932,16 +938,30 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Future<void> _toggleReadingComplete(DailyReading reading) async {
+    // Get the current completion state (check optimistic state first)
+    final currentlyCompleted = _optimisticCompletions[reading.id] ?? reading.isCompleted;
+    final newCompletedState = !currentlyCompleted;
+
+    // Step 1: Optimistic UI update (instant feedback)
+    setState(() {
+      _optimisticCompletions[reading.id] = newCompletedState;
+    });
+
+    // Step 2: Execute database operation in background
     final progressService = ref.read(readingPlanProgressServiceProvider);
 
     try {
-      if (reading.isCompleted) {
+      if (currentlyCompleted) {
         await progressService.markDayIncomplete(reading.id);
       } else {
         await progressService.markDayComplete(reading.id);
       }
 
-      // Refresh providers
+      // Step 3: Success - clear optimistic state and refresh providers
+      setState(() {
+        _optimisticCompletions.remove(reading.id);
+      });
+
       ref.invalidate(currentReadingPlanProvider);
       ref.invalidate(todaysReadingsProvider(reading.planId));
       ref.invalidate(planProgressPercentageProvider(reading.planId));
@@ -952,18 +972,23 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       if (mounted) {
         AppSnackBar.show(
           context,
-          message: reading.isCompleted
+          message: currentlyCompleted
               ? 'Marked as incomplete'
               : 'Great job! Keep up the good work!',
-          icon: reading.isCompleted ? Icons.remove_circle_outline : Icons.check_circle,
+          icon: currentlyCompleted ? Icons.remove_circle_outline : Icons.check_circle,
           duration: const Duration(seconds: 2),
         );
       }
     } catch (e) {
+      // Step 4: Error - revert optimistic state
+      setState(() {
+        _optimisticCompletions[reading.id] = currentlyCompleted;
+      });
+
       if (mounted) {
         AppSnackBar.showError(
           context,
-          message: 'Error: $e',
+          message: 'Error updating reading: $e',
         );
       }
     }
@@ -1018,12 +1043,92 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Future<void> _showResetConfirmation(ReadingPlan plan) async {
+    // Fetch current streak to show in confirmation
+    final progressService = ref.read(readingPlanProgressServiceProvider);
+    int streak = 0;
+    try {
+      streak = await progressService.getStreak(plan.id);
+    } catch (e) {
+      // If we can't get streak, proceed without it
+    }
+
+    if (!mounted) return;
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Reset Reading Plan?'),
-        content: Text(
-          'Are you sure you want to reset "${plan.title}"? All progress will be lost.',
+        title: Row(
+          children: [
+            Icon(
+              Icons.warning_amber_rounded,
+              color: Colors.orange,
+              size: ResponsiveUtils.iconSize(context, 24),
+            ),
+            const SizedBox(width: 8),
+            const Expanded(child: Text('Reset Reading Plan?')),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Are you sure you want to reset "${plan.title}"?'),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.red.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '⚠️ This will permanently delete:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '• ${plan.completedReadings} completed reading${plan.completedReadings != 1 ? 's' : ''}',
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                      ),
+                    ),
+                    if (streak > 0)
+                      Text(
+                        '• Your $streak-day streak 🔥',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                        ),
+                      ),
+                    Text(
+                      '• All progress history',
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'This action cannot be undone.',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
