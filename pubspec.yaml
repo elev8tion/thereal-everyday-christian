@@ -1,7 +1,7 @@
 name: everyday_christian
 description: A faith-centered mobile app providing personalized biblical guidance through AI-powered conversations
 publish_to: 'none'
-version: 1.0.0+5
+version: 1.0.0+6
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
