@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:share_plus/share_plus.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/clear_glass_card.dart';
@@ -498,17 +499,45 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                 ),
                 const Spacer(),
                 if (prayer.isAnswered)
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.green.withValues(alpha: 0.2),
-                      borderRadius: AppRadius.smallRadius,
-                    ),
-                    child: Icon(
-                      Icons.check_circle,
-                      size: ResponsiveUtils.iconSize(context, 16),
-                      color: Colors.green,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withValues(alpha: 0.2),
+                          borderRadius: AppRadius.smallRadius,
+                        ),
+                        child: Icon(
+                          Icons.check_circle,
+                          size: ResponsiveUtils.iconSize(context, 16),
+                          color: Colors.green,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () => _sharePrayer(prayer),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          child: Icon(
+                            Icons.share,
+                            size: ResponsiveUtils.iconSize(context, 18),
+                            color: Colors.white.withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => _deletePrayer(prayer),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          child: Icon(
+                            Icons.delete_outline,
+                            size: ResponsiveUtils.iconSize(context, 18),
+                            color: Colors.white.withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 else
                   BlurPopupMenu(
@@ -929,6 +958,35 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         );
       },
     );
+  }
+
+  Future<void> _sharePrayer(PrayerRequest prayer) async {
+    try {
+      final shareText = StringBuffer();
+      shareText.writeln('🙏 ${prayer.title}');
+      shareText.writeln();
+      shareText.writeln(prayer.description);
+
+      if (prayer.isAnswered && prayer.answerDescription != null && prayer.answerDescription!.isNotEmpty) {
+        shareText.writeln();
+        shareText.writeln('✅ Answered:');
+        shareText.writeln(prayer.answerDescription);
+      }
+
+      shareText.writeln();
+      shareText.writeln('Shared from Everyday Christian');
+
+      await Share.share(
+        shareText.toString(),
+        subject: prayer.title,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      AppSnackBar.showError(
+        context,
+        message: 'Unable to share prayer: $e',
+      );
+    }
   }
 
   Future<void> _deletePrayer(PrayerRequest prayer) async {
