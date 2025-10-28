@@ -534,12 +534,7 @@ class ChatScreen extends HookConsumerWidget {
             MaterialPageRoute(
               builder: (context) => PaywallScreen(
                 showTrialInfo: subscriptionService.isInTrial,
-                currentUsage: subscriptionService.isInTrial
-                    ? subscriptionService.trialMessagesUsedToday
-                    : subscriptionService.premiumMessagesUsedThisMonth,
-                totalAllowed: subscriptionService.isInTrial
-                    ? subscriptionService.trialMessagesPerDay
-                    : subscriptionService.premiumMessagesPerMonth,
+                showMessageStats: true,
               ),
             ),
           );
