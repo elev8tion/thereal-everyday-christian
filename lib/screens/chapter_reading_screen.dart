@@ -523,7 +523,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       // This ensures the verse library and profile screens show accurate counts
       if (mounted) {
         ref.invalidate(savedVersesCountProvider);
-        ref.invalidate(filteredVersesProvider);
       }
 
       // Trigger UI update
