@@ -419,8 +419,8 @@ class ChatScreen extends HookConsumerWidget {
         // Mark streaming as complete but keep widget visible
         isStreamingComplete.value = true;
 
-        // Wait for completion animation to finish
-        await Future.delayed(const Duration(milliseconds: 500));
+        // Brief delay to show completion state before transition
+        await Future.delayed(const Duration(milliseconds: 200));
 
         // Filter AI response for harmful content
         final contentFilterService = ContentFilterService();

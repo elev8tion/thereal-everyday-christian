@@ -261,8 +261,7 @@ class _GlassStreamingMessageState extends State<GlassStreamingMessage>
       ),
     )
         .animate()
-        .fadeIn(duration: AppAnimations.normal)
-        .slideX(begin: -0.3);
+        .fadeIn(duration: AppAnimations.normal);
   }
 
   String _formatTime(DateTime dateTime) {
