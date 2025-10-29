@@ -315,7 +315,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   /// Build filtered books list (shown when books match search)
   Widget _buildFilteredBooks() {
     return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       itemCount: _filteredBooks.length,
       itemBuilder: (context, index) => _buildBookCard(_filteredBooks[index]),
     );
@@ -511,7 +511,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       itemCount: books.length,
       itemBuilder: (context, index) => _buildBookCard(books[index]),
     );

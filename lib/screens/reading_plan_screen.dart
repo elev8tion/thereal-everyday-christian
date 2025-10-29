@@ -172,7 +172,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         final estimatedDateAsync = ref.watch(planEstimatedCompletionDateProvider(currentPlan.id));
 
         return SingleChildScrollView(
-          padding: AppSpacing.screenPadding,
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -275,7 +275,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
           error: (error, stack) => _buildErrorState(error.toString()),
           data: (todaysReadings) {
             return SingleChildScrollView(
-              padding: AppSpacing.screenPadding,
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -364,10 +364,10 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.only(
-                  left: AppSpacing.xl,
-                  right: AppSpacing.xl,
-                  top: activePlans.length == 1 ? AppSpacing.md : AppSpacing.xl,
-                  bottom: AppSpacing.xl,
+                  left: 30,
+                  right: 30,
+                  top: activePlans.length == 1 ? AppSpacing.md : 20,
+                  bottom: 20,
                 ),
                 itemCount: activePlans.length,
                 itemBuilder: (context, index) {
@@ -393,7 +393,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       error: (error, stack) => _buildErrorState(error.toString()),
       data: (allPlans) {
         return ListView.builder(
-          padding: AppSpacing.screenPadding,
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           itemCount: allPlans.length,
           itemBuilder: (context, index) {
             final plan = allPlans[index];
