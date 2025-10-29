@@ -191,11 +191,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           children: [
             const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AutoSizeText(
-                    'Profile',
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AutoSizeText(
+                      'Profile',
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
                       fontWeight: FontWeight.w800,
@@ -216,7 +218,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
-              ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
+                ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
+              ),
             ),
           ],
         ),

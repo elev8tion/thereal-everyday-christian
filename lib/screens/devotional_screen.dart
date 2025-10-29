@@ -51,7 +51,6 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                     padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                     child: Column(
                       children: [
-                        const SizedBox(height: 56 + AppSpacing.lg), // Space for FAB + spacing
                         _buildHeader(streakAsync, totalCompletedAsync),
                         const SizedBox(height: AppSpacing.xxl),
                         _buildEmptyState(),
@@ -78,7 +77,6 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                   padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                   child: Column(
                     children: [
-                      const SizedBox(height: 56 + AppSpacing.lg), // Space for FAB + spacing
                       _buildHeader(streakAsync, totalCompletedAsync),
                       const SizedBox(height: AppSpacing.xxl),
                       Padding(
@@ -102,7 +100,6 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                 child: Column(
                   children: [
-                    const SizedBox(height: 56 + AppSpacing.lg), // Space for FAB + spacing
                     _buildHeader(streakAsync, totalCompletedAsync),
                     const SizedBox(height: AppSpacing.xxl),
                     const Center(
@@ -117,7 +114,6 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                 child: Column(
                   children: [
-                    const SizedBox(height: 56 + AppSpacing.lg), // Space for FAB + spacing
                     _buildHeader(streakAsync, totalCompletedAsync),
                     const SizedBox(height: AppSpacing.xxl),
                     _buildErrorState(error),
@@ -147,10 +143,12 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
         children: [
           const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
                 AutoSizeText(
                   'Daily Devotional',
                   style: TextStyle(
@@ -213,6 +211,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                   ],
                 ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
               ],
+              ),
             ),
           ),
         ],
