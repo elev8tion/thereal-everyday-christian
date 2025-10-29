@@ -62,35 +62,45 @@ class PrayerRequest {
   /// Get formatted date created
   String get formattedDateCreated {
     final now = DateTime.now();
-    final difference = now.difference(dateCreated);
 
-    if (difference.inDays == 0) {
+    // Compare dates only (ignore time) to handle midnight boundary correctly
+    final today = DateTime(now.year, now.month, now.day);
+    final prayerDate = DateTime(dateCreated.year, dateCreated.month, dateCreated.day);
+    final daysDifference = today.difference(prayerDate).inDays;
+
+    if (daysDifference == 0) {
       return 'Today';
-    } else if (difference.inDays == 1) {
+    } else if (daysDifference == 1) {
       return 'Yesterday';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
-    } else if (difference.inDays < 30) {
-      final weeks = (difference.inDays / 7).floor();
+    } else if (daysDifference < 7) {
+      return '$daysDifference days ago';
+    } else if (daysDifference < 30) {
+      final weeks = (daysDifference / 7).floor();
       return '$weeks week${weeks == 1 ? '' : 's'} ago';
-    } else if (difference.inDays < 365) {
-      final months = (difference.inDays / 30).floor();
+    } else if (daysDifference < 365) {
+      final months = (daysDifference / 30).floor();
       return '$months month${months == 1 ? '' : 's'} ago';
     } else {
-      final years = (difference.inDays / 365).floor();
+      final years = (daysDifference / 365).floor();
       return '$years year${years == 1 ? '' : 's'} ago';
     }
   }
 
-  /// Get days since created
+  /// Get days since created (calendar days, not 24-hour periods)
   int get daysSinceCreated {
-    return DateTime.now().difference(dateCreated).inDays;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final prayerDate = DateTime(dateCreated.year, dateCreated.month, dateCreated.day);
+    return today.difference(prayerDate).inDays;
   }
 
-  /// Get days since answered (if answered)
+  /// Get days since answered (if answered) (calendar days, not 24-hour periods)
   int? get daysSinceAnswered {
     if (dateAnswered == null) return null;
-    return DateTime.now().difference(dateAnswered!).inDays;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final answeredDate = DateTime(dateAnswered!.year, dateAnswered!.month, dateAnswered!.day);
+    return today.difference(answeredDate).inDays;
   }
 
   /// Check if prayer is answered
