@@ -369,50 +369,42 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Verse number and favorite button column
-                      Column(
-                        children: [
-                          // Verse number with glassmorphic style (matching FAB)
-                          Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.white.withValues(alpha: 0.25),
-                                  Colors.white.withValues(alpha: 0.15),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: AppRadius.smallRadius,
-                              border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.3),
-                                width: 1.5,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppTheme.primaryColor.withValues(alpha: 0.2),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
+                      // Verse number with glassmorphic style (matching FAB)
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.white.withValues(alpha: 0.25),
+                              Colors.white.withValues(alpha: 0.15),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: AppRadius.smallRadius,
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            width: 1.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
                             ),
-                            child: Center(
-                              child: Text(
-                                '${verse.verseNumber}',
-                                style: TextStyle(
-                                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.primaryText,
-                                ),
-                              ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            '${verse.verseNumber}',
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primaryText,
                             ),
                           ),
-                          const SizedBox(height: 2),
-                          // Favorite button
-                          _buildFavoriteButton(verse),
-                        ],
+                        ),
                       ),
                       const SizedBox(width: 12),
 
@@ -429,6 +421,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                           ),
                         ),
                       ),
+
+                      const SizedBox(width: 8),
+                      // Favorite button moved to right edge
+                      _buildFavoriteButton(verse),
                     ],
                   ),
                 );
