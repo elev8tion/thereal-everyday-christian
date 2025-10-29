@@ -39,7 +39,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
     MenuOption(
       title: "Bible Reading",
       icon: Icons.menu_book,
-      color: AppTheme.goldColor,
+      color: Colors.orange,
       route: AppRoutes.bibleBrowser,
     ),
     MenuOption(
@@ -69,7 +69,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
     MenuOption(
       title: "Verse Library",
       icon: Icons.search,
-      color: Colors.orange,
+      color: AppTheme.goldColor,
       route: AppRoutes.verseLibrary,
     ),
     MenuOption(
@@ -275,6 +275,8 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
                       decoration: TextDecoration.none,
                       shadows: AppTheme.textShadowSubtle,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(width: 8),

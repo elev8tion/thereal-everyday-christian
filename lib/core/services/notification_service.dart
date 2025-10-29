@@ -20,7 +20,7 @@ class NotificationService {
   // Constructor accepts DatabaseService instance
   NotificationService(DatabaseService database) {
     _devotionalService = DevotionalProgressService(database);
-    _verseService = UnifiedVerseService(database);
+    _verseService = UnifiedVerseService();
     _prayerService = PrayerService(database);
     _readingPlanService = ReadingPlanService(database);
   }
