@@ -72,6 +72,8 @@ final prayerActionsProvider = Provider<PrayerActions>((ref) {
         // Invalidate providers to refresh UI
         ref.invalidate(activePrayersProvider);
         ref.invalidate(prayerStatsProvider);
+        ref.invalidate(activePrayersCountProvider);
+        ref.invalidate(answeredPrayersCountProvider);
         ref.invalidate(currentPrayerStreakProvider);
         ref.invalidate(longestPrayerStreakProvider);
         ref.invalidate(prayedTodayProvider);
@@ -90,6 +92,8 @@ final prayerActionsProvider = Provider<PrayerActions>((ref) {
         ref.invalidate(activePrayersProvider);
         ref.invalidate(answeredPrayersProvider);
         ref.invalidate(prayerStatsProvider);
+        ref.invalidate(activePrayersCountProvider);
+        ref.invalidate(answeredPrayersCountProvider);
         ref.invalidate(currentPrayerStreakProvider);
         ref.invalidate(longestPrayerStreakProvider);
         ref.invalidate(prayedTodayProvider);
@@ -101,8 +105,16 @@ final prayerActionsProvider = Provider<PrayerActions>((ref) {
     deletePrayer: (id) async {
       try {
         await service.deletePrayer(id);
+        // Invalidate providers to refresh UI
         ref.invalidate(activePrayersProvider);
+        ref.invalidate(answeredPrayersProvider);
         ref.invalidate(prayerStatsProvider);
+        ref.invalidate(activePrayersCountProvider);
+        ref.invalidate(answeredPrayersCountProvider);
+        ref.invalidate(currentPrayerStreakProvider);
+        ref.invalidate(longestPrayerStreakProvider);
+        ref.invalidate(prayedTodayProvider);
+        ref.invalidate(totalDaysPrayedProvider);
       } catch (error) {
         throw ErrorHandler.handle(error);
       }
