@@ -156,7 +156,7 @@ class DatabaseHelper {
           note TEXT,
           tags TEXT,
           date_added INTEGER NOT NULL,
-          FOREIGN KEY (verse_id) REFERENCES verses (id) ON DELETE CASCADE
+          FOREIGN KEY (verse_id) REFERENCES bible_verses (id) ON DELETE CASCADE
         )
       ''');
 
