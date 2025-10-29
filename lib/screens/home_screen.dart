@@ -78,14 +78,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.only(top: AppSpacing.xl),
+              padding: const EdgeInsets.only(top: AppSpacing.xl + 56 + AppSpacing.lg), // Top padding for FAB + spacing
               // Optimize scrolling performance
               physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeader(),
-                  const SizedBox(height: AppSpacing.xxl),
+                  const SizedBox(height: AppSpacing.md), // Extra spacing
                   _buildStatsRow(),
                   const SizedBox(height: AppSpacing.xxl),
                   _buildMainFeatures(),
@@ -99,23 +98,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
+          // Pinned FAB
+          SafeArea(
+            child: Positioned(
+              top: AppSpacing.xl,
+              left: AppSpacing.xl,
+              child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+            ),
+          ),
         ],
       ),
     );
-  }
-
-  Widget _buildHeader() {
-    return Padding(
-      padding: AppSpacing.horizontalXl,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // FAB on left
-          const GlassmorphicFABMenu(),
-        ],
-      ),
-    ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
 
 

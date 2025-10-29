@@ -41,6 +41,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             SafeArea(
               child: _buildSettingsContent(),
             ),
+            // Pinned FAB
+            SafeArea(
+              child: Positioned(
+                top: AppSpacing.xl,
+                left: AppSpacing.xl,
+                child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+              ),
+            ),
           ],
         ),
       ),
@@ -49,39 +57,34 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Widget _buildAppBar() {
     return Container(
-      padding: AppSpacing.screenPadding,
-      child: Row(
+      padding: const EdgeInsets.only(
+        left: AppSpacing.xl + 56 + AppSpacing.lg, // Left padding for FAB + spacing
+        right: AppSpacing.xl,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const GlassmorphicFABMenu(),
-          const SizedBox(width: AppSpacing.lg),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoSizeText(
-                  'Settings',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryText,
-                    shadows: AppTheme.textShadowStrong,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                AutoSizeText(
-                  'Customize your app experience',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                    color: AppColors.secondaryText,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+          AutoSizeText(
+            'Settings',
+            style: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
+              fontWeight: FontWeight.w700,
+              color: AppColors.primaryText,
+              shadows: AppTheme.textShadowStrong,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 4),
+          AutoSizeText(
+            'Customize your app experience',
+            style: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+              color: AppColors.secondaryText,
+              fontWeight: FontWeight.w500,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),

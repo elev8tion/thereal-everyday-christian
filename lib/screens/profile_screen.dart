@@ -128,6 +128,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             SafeArea(
               child: CustomScrollView(
               slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.only(top: 56 + AppSpacing.lg), // Top padding for FAB
+                ),
                 _buildHeader(),
                 SliverToBoxAdapter(
                   child: Center(
@@ -167,6 +170,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ],
             ),
           ),
+            // Pinned FAB
+            SafeArea(
+              child: Positioned(
+                top: AppSpacing.xl,
+                left: AppSpacing.xl,
+                child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+              ),
+            ),
         ],
         ),
       ),
@@ -176,41 +187,36 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget _buildHeader() {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: AppSpacing.screenPadding,
-        child: Row(
+        padding: const EdgeInsets.only(
+          left: AppSpacing.xl + 56 + AppSpacing.lg, // Left padding for FAB + spacing
+          right: AppSpacing.xl,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const GlassmorphicFABMenu(),
-            const SizedBox(width: AppSpacing.lg),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AutoSizeText(
-                    'Profile',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primaryText,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  AutoSizeText(
-                    'Everyday Christian',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                      color: AppColors.secondaryText,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
+            AutoSizeText(
+              'Profile',
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
+                fontWeight: FontWeight.w800,
+                color: AppColors.primaryText,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            AutoSizeText(
+              'Everyday Christian',
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                color: AppColors.secondaryText,
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
-        ),
+        ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
       ),
     );
   }
