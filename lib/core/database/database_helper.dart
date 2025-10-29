@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import '../error/error_handler.dart';
 import '../error/app_error.dart';
 import '../logging/app_logger.dart';
-import 'migrations/database_migrator.dart';
 
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
@@ -422,6 +421,44 @@ class DatabaseHelper {
 
       await db.execute('CREATE INDEX idx_search_history ON search_history(created_at DESC)');
 
+      // ==================== ADDITIONAL PERFORMANCE INDEXES ====================
+      // These indexes improve query performance for common operations
+
+      // Favorite verses indexes
+      await db.execute('CREATE INDEX idx_favorite_verses_verse_id ON favorite_verses(verse_id)');
+      await db.execute('CREATE INDEX idx_favorite_verses_date_added ON favorite_verses(date_added DESC)');
+      await db.execute('CREATE INDEX idx_favorite_verses_category ON favorite_verses(category)');
+
+      // Daily verses index
+      await db.execute('CREATE INDEX idx_daily_verses_verse_id ON daily_verses(verse_id)');
+
+      // Verse bookmarks index
+      await db.execute('CREATE INDEX idx_verse_bookmarks_verse_id ON verse_bookmarks(verse_id)');
+
+      // Prayer requests indexes
+      await db.execute('CREATE INDEX idx_prayer_requests_category ON prayer_requests(category)');
+      await db.execute('CREATE INDEX idx_prayer_requests_status ON prayer_requests(status)');
+      await db.execute('CREATE INDEX idx_prayer_requests_date_created ON prayer_requests(date_created DESC)');
+
+      // Chat sessions index
+      await db.execute('CREATE INDEX idx_chat_sessions_created ON chat_sessions(created_at DESC)');
+
+      // Prayer categories index
+      await db.execute('CREATE INDEX idx_prayer_categories_display_order ON prayer_categories(display_order)');
+
+      // ==================== TRIGGERS ====================
+      // Auto-update timestamp trigger for verse_bookmarks
+      await db.execute('''
+        CREATE TRIGGER update_verse_bookmarks_timestamp
+        AFTER UPDATE ON verse_bookmarks
+        FOR EACH ROW
+        BEGIN
+          UPDATE verse_bookmarks
+          SET updated_at = strftime('%s', 'now')
+          WHERE id = NEW.id;
+        END
+      ''');
+
       // Insert default data
       await _insertDefaultSettings(db);
       await _insertVersePreferences(db);
@@ -679,18 +716,6 @@ class DatabaseHelper {
   Future<void> _onOpen(Database db) async {
     // Enable foreign keys
     await db.execute('PRAGMA foreign_keys = ON');
-
-    // Run database migrations
-    try {
-      await DatabaseMigrator.migrate(db);
-    } catch (e, stackTrace) {
-      _logger.error(
-        'Database migration failed',
-        context: 'DatabaseHelper._onOpen',
-        stackTrace: stackTrace,
-      );
-      // Don't throw - allow app to continue with existing schema
-    }
   }
 
   Future<void> _insertDefaultSettings(Database db) async {
@@ -900,7 +925,7 @@ class DatabaseHelper {
         'title': 'One Year Bible Reading',
         'description': 'Read the entire Bible in one year with a balanced mix of Old Testament, New Testament, Psalms, and Proverbs daily.',
         'duration': '365 days',
-        'category': 'wholeBible',
+        'category': 'completeBible',
         'difficulty': 'challenging',
         'estimated_time_per_day': '20-30 min',
         'total_readings': 365,

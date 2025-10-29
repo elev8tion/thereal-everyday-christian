@@ -47,6 +47,7 @@ enum PlanCategory {
   newTestament,
   oldTestament,
   gospels,
+  epistles,
   psalms,
   proverbs,
   wisdom,
@@ -70,6 +71,8 @@ extension PlanCategoryExtension on PlanCategory {
         return 'Old Testament';
       case PlanCategory.gospels:
         return 'Gospels';
+      case PlanCategory.epistles:
+        return 'Epistles';
       case PlanCategory.psalms:
         return 'Psalms';
       case PlanCategory.proverbs:

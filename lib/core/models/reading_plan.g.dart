@@ -43,6 +43,7 @@ const _$PlanCategoryEnumMap = {
   PlanCategory.newTestament: 'newTestament',
   PlanCategory.oldTestament: 'oldTestament',
   PlanCategory.gospels: 'gospels',
+  PlanCategory.epistles: 'epistles',
   PlanCategory.psalms: 'psalms',
   PlanCategory.proverbs: 'proverbs',
   PlanCategory.wisdom: 'wisdom',

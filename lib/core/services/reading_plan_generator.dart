@@ -123,6 +123,12 @@ class ReadingPlanGenerator {
             .map((e) => e.key)
             .toList();
 
+      case PlanCategory.epistles:
+        return bibleBooks.entries
+            .where((e) => e.value['category'] == 'epistle')
+            .map((e) => e.key)
+            .toList();
+
       case PlanCategory.psalms:
         return ['Psalm'];
 
