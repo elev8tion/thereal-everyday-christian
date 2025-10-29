@@ -40,17 +40,21 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     final totalCompletedAsync = ref.watch(totalDevotionalsCompletedProvider);
 
     return Scaffold(
-      body: Stack(
-        children: [
-          const GradientBackground(),
-          SafeArea(
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            const GradientBackground(),
+            SafeArea(
             child: devotionalsAsync.when(
               data: (devotionals) {
                 if (devotionals.isEmpty) {
                   return SingleChildScrollView(
-                    padding: const EdgeInsets.only(top: AppSpacing.xl + 56 + AppSpacing.lg), // Top padding for FAB
+                    padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                     child: Column(
                       children: [
+                        const SizedBox(height: 56 + AppSpacing.lg), // Space for FAB + spacing
                         _buildHeader(streakAsync, totalCompletedAsync),
                         const SizedBox(height: AppSpacing.xxl),
                         _buildEmptyState(),
@@ -74,9 +78,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 final currentDevotional = devotionals[_currentDay];
 
                 return SingleChildScrollView(
-                  padding: const EdgeInsets.only(top: AppSpacing.xl + 56 + AppSpacing.lg), // Top padding for FAB
+                  padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                   child: Column(
                     children: [
+                      const SizedBox(height: 56 + AppSpacing.lg), // Space for FAB + spacing
                       _buildHeader(streakAsync, totalCompletedAsync),
                       const SizedBox(height: AppSpacing.xxl),
                       Padding(
@@ -97,9 +102,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 );
               },
               loading: () => SingleChildScrollView(
-                padding: const EdgeInsets.only(top: AppSpacing.xl + 56 + AppSpacing.lg), // Top padding for FAB
+                padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                 child: Column(
                   children: [
+                    const SizedBox(height: 56 + AppSpacing.lg), // Space for FAB + spacing
                     _buildHeader(streakAsync, totalCompletedAsync),
                     const SizedBox(height: AppSpacing.xxl),
                     const Center(
@@ -111,9 +117,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 ),
               ),
               error: (error, stack) => SingleChildScrollView(
-                padding: const EdgeInsets.only(top: AppSpacing.xl + 56 + AppSpacing.lg), // Top padding for FAB
+                padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                 child: Column(
                   children: [
+                    const SizedBox(height: 56 + AppSpacing.lg), // Space for FAB + spacing
                     _buildHeader(streakAsync, totalCompletedAsync),
                     const SizedBox(height: AppSpacing.xxl),
                     _buildErrorState(error),
@@ -121,14 +128,15 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 ),
               ),
             ),
-          ),
-          // Pinned FAB
-          Positioned(
-            top: MediaQuery.of(context).padding.top + AppSpacing.xl,
-            left: AppSpacing.xl,
-            child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
-          ),
-        ],
+            ),
+            // Pinned FAB
+            Positioned(
+              top: MediaQuery.of(context).padding.top + AppSpacing.xl,
+              left: AppSpacing.xl,
+              child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -138,14 +146,15 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     AsyncValue<int> totalCompletedAsync,
   ) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: AppSpacing.xl + 56 + AppSpacing.lg, // Left padding for FAB + spacing
-        right: AppSpacing.xl,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+      padding: AppSpacing.screenPadding,
+      child: Row(
         children: [
+          const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 AutoSizeText(
                   'Daily Devotional',
                   style: TextStyle(
@@ -207,6 +216,9 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                     ),
                   ],
                 ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
+              ],
+            ),
+          ),
         ],
       ),
     );

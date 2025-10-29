@@ -70,21 +70,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          RepaintBoundary(
-            key: _backgroundKey,
-            child: const GradientBackground(),
-          ),
-          SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.only(top: AppSpacing.xl + 56 + AppSpacing.lg), // Top padding for FAB + spacing
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            RepaintBoundary(
+              key: _backgroundKey,
+              child: const GradientBackground(),
+            ),
+            SafeArea(
+              child: SingleChildScrollView(
+              padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
               // Optimize scrolling performance
               physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: AppSpacing.md), // Extra spacing
+                  const SizedBox(height: 56 + AppSpacing.lg + 32), // Space for FAB + spacing + 32px padding
                   _buildStatsRow(),
                   const SizedBox(height: AppSpacing.xxl),
                   _buildMainFeatures(),
@@ -98,13 +101,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
-          // Pinned FAB
-          Positioned(
-            top: MediaQuery.of(context).padding.top + AppSpacing.xl,
-            left: AppSpacing.xl,
-            child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
-          ),
-        ],
+            // Pinned FAB
+            Positioned(
+              top: MediaQuery.of(context).padding.top + AppSpacing.xl,
+              left: AppSpacing.xl,
+              child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+            ),
+          ],
+        ),
       ),
     );
   }

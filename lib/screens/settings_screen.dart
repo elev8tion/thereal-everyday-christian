@@ -54,35 +54,39 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Widget _buildAppBar() {
-    return Container(
-      padding: const EdgeInsets.only(
-        left: AppSpacing.xl + 56 + AppSpacing.lg, // Left padding for FAB + spacing
-        right: AppSpacing.xl,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: AppSpacing.screenPadding,
+      child: Row(
         children: [
-          AutoSizeText(
-            'Settings',
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-              fontWeight: FontWeight.w700,
-              color: AppColors.primaryText,
-              shadows: AppTheme.textShadowStrong,
+          const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap (matching Verse Library)
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AutoSizeText(
+                  'Settings',
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryText,
+                    shadows: AppTheme.textShadowStrong,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                AutoSizeText(
+                  'Customize your app experience',
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    color: AppColors.secondaryText,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          AutoSizeText(
-            'Customize your app experience',
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-              color: AppColors.secondaryText,
-              fontWeight: FontWeight.w500,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),

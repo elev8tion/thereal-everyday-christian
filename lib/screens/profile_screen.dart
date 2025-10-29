@@ -128,9 +128,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             SafeArea(
               child: CustomScrollView(
               slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.only(top: 56 + AppSpacing.lg), // Top padding for FAB
-                ),
                 _buildHeader(),
                 SliverToBoxAdapter(
                   child: Center(
@@ -186,35 +183,43 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.only(
-          left: AppSpacing.xl + 56 + AppSpacing.lg, // Left padding for FAB + spacing
+          left: AppSpacing.xl,
           right: AppSpacing.xl,
+          top: AppSpacing.xl, // Top spacing from safe area
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            AutoSizeText(
-              'Profile',
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                fontWeight: FontWeight.w800,
-                color: AppColors.primaryText,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            AutoSizeText(
-              'Everyday Christian',
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                color: AppColors.secondaryText,
-                fontWeight: FontWeight.w500,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
+                    'Profile',
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.primaryText,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  AutoSizeText(
+                    'Everyday Christian',
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                      color: AppColors.secondaryText,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
             ),
           ],
-        ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
+        ),
       ),
     );
   }
