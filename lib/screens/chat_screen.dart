@@ -27,6 +27,8 @@ import '../utils/responsive_utils.dart';
 import 'paywall_screen.dart';
 import '../components/message_limit_dialog.dart';
 import '../components/chat_screen_lockout_overlay.dart';
+import '../components/progress_ring_send_button.dart';
+import '../components/floating_message_badge.dart';
 import '../core/services/subscription_service.dart';
 
 class ChatScreen extends HookConsumerWidget {
@@ -221,6 +223,14 @@ class ChatScreen extends HookConsumerWidget {
       if (consumed && context.mounted) {
         ref.invalidate(subscriptionSnapshotProvider);
         debugPrint('🔄 Invalidated subscriptionSnapshotProvider to refresh UI');
+
+        // Show floating badge after successful message send
+        FloatingMessageBadge.show(
+          context: context,
+          remainingMessages: subscriptionService.remainingMessages,
+          isPremium: subscriptionService.isPremium,
+          isInTrial: subscriptionService.isInTrial,
+        );
       }
 
       if (!consumed) {
@@ -1882,52 +1892,7 @@ class ChatScreen extends HookConsumerWidget {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Message counter badge
-            if (remainingMessages > 0) ...[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.sm,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppTheme.goldColor.withValues(alpha: 0.3),
-                        AppTheme.goldColor.withValues(alpha: 0.1),
-                      ],
-                    ),
-                    borderRadius: AppRadius.mediumRadius,
-                    border: Border.all(
-                      color: AppTheme.goldColor.withValues(alpha: 0.4),
-                      width: 1,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.chat_bubble_outline,
-                        size: 14,
-                        color: AppTheme.goldColor,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '$remainingMessages ${isPremium ? "messages left this month" : isInTrial ? "messages left today" : "messages left"}',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primaryText,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-            ],
-            // Input row
+            // Input row (counter removed - now on send button)
             Container(
               padding: EdgeInsets.only(
                 left: AppSpacing.screenPadding.left,
@@ -1980,42 +1945,12 @@ class ChatScreen extends HookConsumerWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.md),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: canSend
-                    ? [
-                        AppTheme.primaryColor,
-                        AppTheme.primaryColor.withValues(alpha: 0.8),
-                      ]
-                    : [
-                        Colors.grey.withValues(alpha: 0.3),
-                        Colors.grey.withValues(alpha: 0.2),
-                      ],
-              ),
-              borderRadius: BorderRadius.circular(AppRadius.xl + 1),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.3),
-                width: 1,
-              ),
-              boxShadow: canSend
-                  ? [
-                      BoxShadow(
-                        color: AppTheme.primaryColor.withValues(alpha: 0.3),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ]
-                  : [],
-            ),
-            child: IconButton(
-              onPressed: canSend ? () => sendMessage(messageController.text) : null,
-              icon: Icon(
-                Icons.send,
-                color: canSend ? AppColors.primaryText : AppColors.tertiaryText,
-                size: ResponsiveUtils.iconSize(context, 20),
-              ),
-            ),
+          ProgressRingSendButton(
+            canSend: canSend,
+            onPressed: () => sendMessage(messageController.text),
+            remainingMessages: remainingMessages,
+            totalMessages: isPremium ? 150 : 5,
+            isPremium: isPremium,
           ),
                 ],
               ),
