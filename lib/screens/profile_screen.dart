@@ -171,12 +171,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ),
             // Pinned FAB
-            SafeArea(
-              child: Positioned(
-                top: AppSpacing.xl,
-                left: AppSpacing.xl,
-                child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
-              ),
+            Positioned(
+              top: MediaQuery.of(context).padding.top + AppSpacing.xl,
+              left: AppSpacing.xl,
+              child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
             ),
         ],
         ),

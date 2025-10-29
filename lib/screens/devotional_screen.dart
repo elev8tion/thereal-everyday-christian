@@ -123,12 +123,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             ),
           ),
           // Pinned FAB
-          SafeArea(
-            child: Positioned(
-              top: AppSpacing.xl,
-              left: AppSpacing.xl,
-              child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
-            ),
+          Positioned(
+            top: MediaQuery.of(context).padding.top + AppSpacing.xl,
+            left: AppSpacing.xl,
+            child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
           ),
         ],
       ),
@@ -209,11 +207,16 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                     ),
                   ],
                 ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
-              ],
-            ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          ClearGlassCard(
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDay() {
+    return Row(
+      children: [
+        const SizedBox(width: AppSpacing.md),
+        ClearGlassCard(
             padding: const EdgeInsets.all(AppSpacing.md),
             child: AutoSizeText(
               'Day ${_currentDay + 1}',
@@ -226,8 +229,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               overflow: TextOverflow.ellipsis,
             ),
           ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.normal),
-        ],
-      ),
+      ],
     );
   }
 
