@@ -20,9 +20,9 @@ class CalendarHeatmapWidget extends StatelessWidget {
 
   static Color _defaultColorForCount(int count) {
     if (count == 0) return Colors.white.withValues(alpha: 0.1);
-    if (count == 1) return AppTheme.primaryColor.withValues(alpha: 0.3);
-    if (count == 2) return AppTheme.primaryColor.withValues(alpha: 0.6);
-    return AppTheme.primaryColor.withValues(alpha: 0.9);
+    if (count == 1) return AppTheme.goldColor.withValues(alpha: 0.3);
+    if (count == 2) return AppTheme.goldColor.withValues(alpha: 0.6);
+    return AppTheme.goldColor.withValues(alpha: 0.9);
   }
 
   @override
