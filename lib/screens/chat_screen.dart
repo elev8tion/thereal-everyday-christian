@@ -1749,14 +1749,14 @@ class ChatScreen extends HookConsumerWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppTheme.primaryColor.withValues(alpha: 0.3),
-                      AppTheme.primaryColor.withValues(alpha: 0.1),
+                      AppTheme.goldColor.withValues(alpha: 0.3),
+                      AppTheme.goldColor.withValues(alpha: 0.1),
                     ],
                   ),
                   borderRadius: AppRadius.mediumRadius,
                   border: Border.all(
-                    color: AppTheme.primaryColor.withValues(alpha: 0.3),
-                    width: 1,
+                    color: AppTheme.goldColor,
+                    width: 2,
                   ),
                 ),
                 child: Icon(
@@ -1833,7 +1833,9 @@ class ChatScreen extends HookConsumerWidget {
             if (message.isUser) ...[
               const SizedBox(width: AppSpacing.md),
               Container(
-                padding: EdgeInsets.all(ResponsiveUtils.scaleSize(context, AppSpacing.sm, minScale: 0.9, maxScale: 1.1)),
+                width: ResponsiveUtils.scaleSize(context, 40, minScale: 0.9, maxScale: 1.1),
+                height: ResponsiveUtils.scaleSize(context, 40, minScale: 0.9, maxScale: 1.1),
+                padding: EdgeInsets.all(ResponsiveUtils.scaleSize(context, 6, minScale: 0.9, maxScale: 1.1)),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -1847,10 +1849,12 @@ class ChatScreen extends HookConsumerWidget {
                     width: 1,
                   ),
                 ),
-                child: Icon(
-                  Icons.person,
-                  color: AppColors.primaryText,
-                  size: ResponsiveUtils.iconSize(context, 20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                  child: Image.asset(
+                    'assets/images/logo_transparent.png',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ],
