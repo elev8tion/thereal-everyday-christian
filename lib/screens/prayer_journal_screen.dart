@@ -321,7 +321,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
           return _buildEmptyState(
             icon: Icons.favorite_outline,
             title: 'No Active Prayers',
-            subtitle: 'Start your prayer journey by adding your first prayer request',
+            subtitle: 'Adding your prayers here to revisit, reflect, and hold yourself accountable',
           );
         }
 
