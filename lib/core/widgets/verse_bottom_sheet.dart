@@ -10,6 +10,7 @@ import '../../screens/chapter_reading_screen.dart';
 import '../providers/app_providers.dart';
 import 'app_snackbar.dart';
 import '../../models/bible_verse.dart' as app_models;
+import '../../utils/blur_dialog_utils.dart';
 
 /// Model for parsed verse reference
 class VerseReference {
@@ -628,7 +629,7 @@ class VerseBottomSheet extends ConsumerWidget {
 
 /// Helper function to show verse bottom sheet
 void showVerseBottomSheet(BuildContext context, String reference) {
-  showModalBottomSheet(
+  showBlurredBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,

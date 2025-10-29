@@ -6,6 +6,7 @@ import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../core/services/preferences_service.dart';
 import '../utils/responsive_utils.dart';
+import '../utils/blur_dialog_utils.dart';
 
 /// Terms Acceptance Dialog
 ///
@@ -74,7 +75,7 @@ class _TermsAcceptanceDialogState extends ConsumerState<TermsAcceptanceDialog> {
 
     if (!mounted) return;
 
-    await showDialog(
+    await showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,

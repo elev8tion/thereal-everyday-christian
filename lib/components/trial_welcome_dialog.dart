@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../components/glass_button.dart';
 import '../utils/responsive_utils.dart';
+import '../utils/blur_dialog_utils.dart';
 
 class TrialWelcomeDialog extends StatelessWidget {
   const TrialWelcomeDialog({super.key});
 
   static Future<bool?> show(BuildContext context) {
-    return showDialog<bool>(
+    return showBlurredDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) => const TrialWelcomeDialog(),

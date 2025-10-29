@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../utils/blur_dialog_utils.dart';
 
 /// Base bottom sheet widget with consistent dark gradient styling
 ///
@@ -86,7 +87,7 @@ Future<T?> showCustomBottomSheet<T>({
   bool isDismissible = true,
   bool enableDrag = true,
 }) {
-  return showModalBottomSheet<T>(
+  return showBlurredBottomSheet<T>(
     context: context,
     isScrollControlled: isScrollControlled,
     backgroundColor: Colors.transparent,

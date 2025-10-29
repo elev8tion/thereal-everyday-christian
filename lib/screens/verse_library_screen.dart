@@ -19,6 +19,7 @@ import '../models/shared_verse_entry.dart';
 import '../core/providers/app_providers.dart';
 import '../utils/responsive_utils.dart';
 import '../core/widgets/app_snackbar.dart';
+import '../utils/blur_dialog_utils.dart';
 
 // Provider for all saved verses
 final filteredVersesProvider = FutureProvider.autoDispose<List<BibleVerse>>((ref) async {
@@ -851,7 +852,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Future<void> _confirmClearSharedVerses() async {
-    final shouldClear = await showDialog<bool>(
+    final shouldClear = await showBlurredDialog<bool>(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -951,7 +952,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Future<void> _confirmClearSavedVerses() async {
-    final shouldClear = await showDialog<bool>(
+    final shouldClear = await showBlurredDialog<bool>(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,

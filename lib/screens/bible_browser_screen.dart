@@ -11,6 +11,7 @@ import '../models/bible_verse.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/bible_reference_parser.dart';
+import '../utils/blur_dialog_utils.dart';
 
 /// Free Bible Browser - allows users to browse and read any Bible chapter
 class BibleBrowserScreen extends ConsumerStatefulWidget {
@@ -576,7 +577,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
     if (!mounted) return;
 
-    showModalBottomSheet(
+    showBlurredBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,

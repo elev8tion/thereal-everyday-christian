@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../theme/app_theme.dart';
 import '../components/frosted_glass_card.dart';
 import 'responsive_utils.dart';
+import 'blur_dialog_utils.dart';
 
 /// Reusable utility for displaying legal documents (Terms of Service, Privacy Policy)
 /// across the app. Extracted from duplicated code in multiple screens.
@@ -48,7 +49,7 @@ class LegalDocumentViewer {
 
     if (!context.mounted) return;
 
-    await showDialog(
+    await showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,

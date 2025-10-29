@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
 import '../models/chat_message.dart';
 import '../models/bible_verse.dart';
+import '../utils/blur_dialog_utils.dart';
 
 class ModernMessageBubble extends StatelessWidget {
   final ChatMessage message;
@@ -147,7 +148,7 @@ class ModernMessageBubble extends StatelessWidget {
   }
 
   void _showMessageOptions(BuildContext context) {
-    showModalBottomSheet(
+    showBlurredBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(

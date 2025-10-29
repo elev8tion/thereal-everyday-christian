@@ -14,6 +14,7 @@ import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
 import '../core/services/preferences_service.dart';
 import '../utils/responsive_utils.dart';
+import '../utils/blur_dialog_utils.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -666,7 +667,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showEditProfileDialog() {
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -768,7 +769,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showSignOutDialog() {
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -831,7 +832,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showPrivacyPolicy() {
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -3289,7 +3290,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
 
   void _showTermsOfService() {
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,

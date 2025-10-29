@@ -8,6 +8,7 @@ import '../services/crisis_detection_service.dart';
 import '../../theme/app_theme.dart';
 import '../../components/frosted_glass_card.dart';
 import '../../utils/responsive_utils.dart';
+import '../../utils/blur_dialog_utils.dart';
 
 /// Non-dismissible crisis intervention dialog
 class CrisisDialog extends StatelessWidget {
@@ -382,7 +383,7 @@ class CrisisDialog extends StatelessWidget {
     required CrisisDetectionResult crisisResult,
     required VoidCallback onAcknowledge,
   }) {
-    return showDialog(
+    return showBlurredDialog(
       context: context,
       barrierDismissible: false, // Cannot dismiss by tapping outside
       builder: (context) => CrisisDialog(

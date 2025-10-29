@@ -22,6 +22,7 @@ import '../core/models/prayer_category.dart';
 import '../core/providers/prayer_providers.dart';
 import '../core/providers/category_providers.dart';
 import '../core/widgets/skeleton_loader.dart';
+import '../utils/blur_dialog_utils.dart';
 
 class PrayerJournalScreen extends ConsumerStatefulWidget {
   const PrayerJournalScreen({super.key});
@@ -688,7 +689,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
       }
     });
 
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
@@ -871,7 +872,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   void _markPrayerAnswered(PrayerRequest prayer) {
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) {
         String answerDescription = '';
@@ -1000,7 +1001,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
 
   Future<void> _deletePrayer(PrayerRequest prayer) async {
     // Show confirmation dialog
-    final confirmed = await showDialog<bool>(
+    final confirmed = await showBlurredDialog<bool>(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,

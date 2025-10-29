@@ -17,6 +17,7 @@ import '../core/models/reading_plan.dart';
 import '../core/navigation/navigation_service.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/reading_reference_parser.dart';
+import '../utils/blur_dialog_utils.dart';
 
 class ReadingPlanScreen extends ConsumerStatefulWidget {
   const ReadingPlanScreen({super.key});
@@ -1142,7 +1143,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
 
     if (!mounted) return;
 
-    final confirmed = await showDialog<bool>(
+    final confirmed = await showBlurredDialog<bool>(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,

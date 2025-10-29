@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_routes.dart';
+import '../../utils/blur_dialog_utils.dart';
 import '../../components/base_bottom_sheet.dart';
 
 class NavigationService {
@@ -130,7 +131,7 @@ class NavigationService {
     required Widget dialog,
     bool barrierDismissible = true,
   }) {
-    return showDialog<T>(
+    return showBlurredDialog<T>(
       context: context!,
       barrierDismissible: barrierDismissible,
       builder: (_) => dialog,

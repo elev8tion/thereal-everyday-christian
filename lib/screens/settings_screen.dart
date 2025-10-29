@@ -20,6 +20,7 @@ import '../widgets/time_picker/time_range_sheet.dart';
 import '../widgets/time_picker/time_range_sheet_style.dart';
 import '../components/glass_button.dart';
 import 'paywall_screen.dart';
+import '../utils/blur_dialog_utils.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -731,7 +732,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
 
   void _showClearCacheDialog() {
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -943,7 +944,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   void _showDeleteAllDataDialog() {
     final confirmController = TextEditingController();
 
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -1210,7 +1211,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Future<void> _deleteAllData() async {
     try {
       // Show loading indicator
-      showDialog(
+      showBlurredDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => Dialog(
@@ -1289,7 +1290,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _showHelpDialog() {
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -1609,7 +1610,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _showPrivacyPolicy() {
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -4065,7 +4066,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _showTermsOfService() {
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,

@@ -7,6 +7,7 @@ import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
+import '../utils/blur_dialog_utils.dart';
 
 class MessageLimitDialog extends StatelessWidget {
   final bool isPremium;
@@ -131,7 +132,7 @@ class MessageLimitDialog extends StatelessWidget {
     required bool isPremium,
     required int remainingMessages,
   }) {
-    return showDialog<bool>(
+    return showBlurredDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) => MessageLimitDialog(

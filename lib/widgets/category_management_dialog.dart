@@ -7,6 +7,7 @@ import '../core/providers/category_providers.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
+import '../utils/blur_dialog_utils.dart';
 
 class CategoryManagementDialog extends ConsumerStatefulWidget {
   const CategoryManagementDialog({super.key});
@@ -387,7 +388,7 @@ class _CategoryManagementDialogState extends ConsumerState<CategoryManagementDia
     IconData selectedIcon = category.icon;
     Color selectedColor = category.color;
 
-    showDialog(
+    showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
@@ -607,7 +608,7 @@ class _CategoryManagementDialogState extends ConsumerState<CategoryManagementDia
   }
 
   Future<void> _deleteCategory(PrayerCategory category) async {
-    final confirmed = await showDialog<bool>(
+    final confirmed = await showBlurredDialog<bool>(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,

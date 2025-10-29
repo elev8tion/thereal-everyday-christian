@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../utils/blur_dialog_utils.dart';
 
 class GlassCard extends StatelessWidget {
   final Widget child;
@@ -174,16 +175,12 @@ Future<T?> showGlassBottomSheet<T>({
   bool isDismissible = true,
   bool enableDrag = true,
 }) {
-  return showModalBottomSheet<T>(
+  return showBlurredBottomSheet<T>(
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: isScrollControlled,
     isDismissible: isDismissible,
     enableDrag: enableDrag,
-    barrierColor: Colors.black.withValues(alpha: 0.6),
-    builder: (context) => BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-      child: child,
-    ),
+    builder: (context) => child,
   );
 }
