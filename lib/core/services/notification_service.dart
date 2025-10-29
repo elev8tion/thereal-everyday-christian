@@ -1,10 +1,29 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:everyday_christian/core/services/devotional_progress_service.dart';
+import 'package:everyday_christian/services/unified_verse_service.dart';
+import 'package:everyday_christian/core/services/prayer_service.dart';
+import 'package:everyday_christian/core/services/reading_plan_service.dart';
+import 'package:everyday_christian/core/services/database_service.dart';
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
+
+  // Data services for notification content
+  late final DevotionalProgressService _devotionalService;
+  late final UnifiedVerseService _verseService;
+  late final PrayerService _prayerService;
+  late final ReadingPlanService _readingPlanService;
+
+  // Constructor accepts DatabaseService instance
+  NotificationService(DatabaseService database) {
+    _devotionalService = DevotionalProgressService(database);
+    _verseService = UnifiedVerseService(database);
+    _prayerService = PrayerService(database);
+    _readingPlanService = ReadingPlanService(database);
+  }
 
   Future<void> initialize() async {
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -80,10 +99,21 @@ class NotificationService {
     required int hour,
     required int minute,
   }) async {
+    // Get today's devotional content
+    final devotional = await _devotionalService.getTodaysDevotional();
+
+    final title = devotional != null
+        ? 'Daily Devotional: ${devotional.title}'
+        : 'Daily Devotional';
+
+    final body = devotional != null
+        ? devotional.content.split('\n').first.substring(0, devotional.content.length > 100 ? 100 : devotional.content.length) + '...'
+        : 'Start your day with God\'s word';
+
     await _notifications.zonedSchedule(
       1,
-      'Daily Devotional',
-      'Start your day with God\'s word',
+      title,
+      body,
       _nextInstanceOfTime(hour, minute),
       const NotificationDetails(
         android: AndroidNotificationDetails(
@@ -93,8 +123,13 @@ class NotificationService {
           importance: Importance.high,
           priority: Priority.high,
         ),
-        iOS: DarwinNotificationDetails(),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
       ),
+      payload: 'devotional:${devotional?.id ?? "today"}',
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
@@ -104,9 +139,22 @@ class NotificationService {
   Future<void> scheduleDailyVerse({
     required int hour,
     required int minute,
-    required String verseReference,
-    required String versePreview,
   }) async {
+    // Get today's daily verse from the verse service
+    final verse = await _verseService.getDailyVerse();
+
+    final verseReference = verse != null
+        ? verse.reference
+        : 'Verse of the Day';
+
+    final verseText = verse != null
+        ? verse.text
+        : 'Tap to read today\'s verse';
+
+    final versePreview = verseText.length > 100
+        ? '${verseText.substring(0, 100)}...'
+        : verseText;
+
     // Create payload for deep linking
     final payload = 'verse:$verseReference';
 
@@ -123,7 +171,7 @@ class NotificationService {
           importance: Importance.high,
           priority: Priority.high,
           styleInformation: BigTextStyleInformation(
-            versePreview,
+            verseText,
             contentTitle: 'Verse of the Day',
             summaryText: verseReference,
           ),
@@ -193,12 +241,23 @@ class NotificationService {
   Future<void> schedulePrayerReminder({
     required int hour,
     required int minute,
-    required String title,
   }) async {
+    // Get active prayer requests
+    final prayers = await _prayerService.getActivePrayers();
+    final prayerCount = prayers.length;
+
+    final title = prayerCount > 0
+        ? 'Prayer Reminder'
+        : 'Time to Pray';
+
+    final body = prayerCount > 0
+        ? 'You have $prayerCount prayer ${prayerCount == 1 ? "request" : "requests"} to lift up today'
+        : 'Take a moment to spend time with God';
+
     await _notifications.zonedSchedule(
       2,
-      'Prayer Reminder',
-      'Time to pray for: $title',
+      title,
+      body,
       _nextInstanceOfTime(hour, minute),
       const NotificationDetails(
         android: AndroidNotificationDetails(
@@ -208,8 +267,13 @@ class NotificationService {
           importance: Importance.high,
           priority: Priority.high,
         ),
-        iOS: DarwinNotificationDetails(),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
       ),
+      payload: 'prayer:active',
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
@@ -220,10 +284,21 @@ class NotificationService {
     required int hour,
     required int minute,
   }) async {
+    // Get current active reading plan
+    final currentPlan = await _readingPlanService.getCurrentPlan();
+
+    final title = currentPlan != null
+        ? 'Bible Reading: ${currentPlan.title}'
+        : 'Bible Reading';
+
+    final body = currentPlan != null
+        ? 'Continue your reading plan today'
+        : 'Start a reading plan to grow in God\'s word';
+
     await _notifications.zonedSchedule(
       4,
-      'Bible Reading',
-      'Continue your reading plan today',
+      title,
+      body,
       _nextInstanceOfTime(hour, minute),
       const NotificationDetails(
         android: AndroidNotificationDetails(
@@ -233,8 +308,13 @@ class NotificationService {
           importance: Importance.high,
           priority: Priority.high,
         ),
-        iOS: DarwinNotificationDetails(),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
       ),
+      payload: 'reading:${currentPlan?.id ?? "none"}',
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,

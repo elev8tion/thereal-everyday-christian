@@ -34,7 +34,8 @@ final databaseServiceProvider = Provider<DatabaseService>((ref) {
 });
 
 final notificationServiceProvider = Provider<NotificationService>((ref) {
-  return NotificationService();
+  final database = ref.watch(databaseServiceProvider);
+  return NotificationService(database);
 });
 
 final preferencesServiceProvider = FutureProvider<PreferencesService>((ref) async {
@@ -680,7 +681,6 @@ class PrayerRemindersNotifier extends StateNotifier<bool> {
     await _ref.read(notificationServiceProvider).schedulePrayerReminder(
       hour: int.parse(parts[0]),
       minute: int.parse(parts[1]),
-      title: 'Your Prayer Requests',
     );
   }
 }
@@ -714,12 +714,9 @@ class VerseOfTheDayNotifier extends StateNotifier<bool> {
   Future<void> _scheduleNotifications() async {
     final time = _ref.read(verseTimeProvider);
     final parts = time.split(':');
-    // TODO: Integrate with verse service to get actual daily verse
     await _ref.read(notificationServiceProvider).scheduleDailyVerse(
       hour: int.parse(parts[0]),
       minute: int.parse(parts[1]),
-      verseReference: 'Verse of the Day',
-      versePreview: 'Tap to read today\'s verse',
     );
   }
 }
@@ -799,7 +796,6 @@ class NotificationTimeNotifier extends StateNotifier<String> {
       await _ref.read(notificationServiceProvider).schedulePrayerReminder(
         hour: hour,
         minute: minute,
-        title: 'Your Prayer Requests',
       );
     }
 
@@ -868,7 +864,6 @@ class PrayerTimeNotifier extends StateNotifier<String> {
       await _ref.read(notificationServiceProvider).schedulePrayerReminder(
         hour: int.parse(parts[0]),
         minute: int.parse(parts[1]),
-        title: 'Your Prayer Requests',
       );
     }
   }
@@ -896,12 +891,9 @@ class VerseTimeNotifier extends StateNotifier<String> {
     // Reschedule verse notification if enabled
     if (_ref.read(verseOfTheDayProvider)) {
       final parts = time.split(':');
-      // TODO: Integrate with verse service to get actual daily verse
       await _ref.read(notificationServiceProvider).scheduleDailyVerse(
         hour: int.parse(parts[0]),
         minute: int.parse(parts[1]),
-        verseReference: 'Verse of the Day',
-        versePreview: 'Tap to read today\'s verse',
       );
     }
   }
@@ -965,7 +957,6 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
         await notifications.schedulePrayerReminder(
           hour: hour,
           minute: minute,
-          title: 'Your Prayer Requests',
         );
       }
 

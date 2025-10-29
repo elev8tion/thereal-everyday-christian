@@ -28,6 +28,7 @@ dependencies:
   # Permissions & Notifications
   permission_handler: ^11.0.1
   flutter_local_notifications: ^16.1.0
+  flutter_native_timezone: ^2.0.0
   workmanager: ^0.5.2
 
   # UI & Animations
