@@ -132,19 +132,6 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
 
 
   Widget _buildTabBar() {
-    final savedCountAsync = ref.watch(savedVersesCountProvider);
-    final sharedCountAsync = ref.watch(sharedVersesCountProvider);
-
-    final savedCount = savedCountAsync.maybeWhen(
-      data: (count) => count,
-      orElse: () => 0,
-    );
-
-    final sharedCount = sharedCountAsync.maybeWhen(
-      data: (count) => count,
-      orElse: () => 0,
-    );
-
     return Container(
       margin: AppSpacing.horizontalXl,
       child: FrostedGlassCard(
@@ -167,9 +154,9 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             fontWeight: FontWeight.w600,
             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
           ),
-          tabs: [
-            Tab(text: 'Saved Verses ($savedCount)'),
-            Tab(text: 'Shared ($sharedCount)'),
+          tabs: const [
+            Tab(text: 'Saved Verses'),
+            Tab(text: 'Shared'),
           ],
         ),
       ),
