@@ -40,13 +40,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     final totalCompletedAsync = ref.watch(totalDevotionalsCompletedProvider);
 
     return Scaffold(
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Stack(
-          children: [
-            const GradientBackground(),
-            SafeArea(
+      body: Stack(
+        children: [
+          const GradientBackground(),
+          SafeArea(
             child: devotionalsAsync.when(
               data: (devotionals) {
                 if (devotionals.isEmpty) {
@@ -128,15 +125,14 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 ),
               ),
             ),
-            ),
-            // Pinned FAB
-            Positioned(
-              top: MediaQuery.of(context).padding.top + AppSpacing.xl,
-              left: AppSpacing.xl,
-              child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
-            ),
-          ],
-        ),
+          ),
+          // Pinned FAB
+          Positioned(
+            top: MediaQuery.of(context).padding.top + AppSpacing.xl,
+            left: AppSpacing.xl,
+            child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+          ),
+        ],
       ),
     );
   }

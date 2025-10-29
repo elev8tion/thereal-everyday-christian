@@ -70,17 +70,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Stack(
-          children: [
-            RepaintBoundary(
-              key: _backgroundKey,
-              child: const GradientBackground(),
-            ),
-            SafeArea(
-              child: SingleChildScrollView(
+      body: Stack(
+        children: [
+          RepaintBoundary(
+            key: _backgroundKey,
+            child: const GradientBackground(),
+          ),
+          SafeArea(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
               // Optimize scrolling performance
               physics: const BouncingScrollPhysics(),
@@ -101,14 +98,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
-            // Pinned FAB
-            Positioned(
-              top: MediaQuery.of(context).padding.top + AppSpacing.xl,
-              left: AppSpacing.xl,
-              child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
-            ),
-          ],
-        ),
+          // Pinned FAB
+          Positioned(
+            top: MediaQuery.of(context).padding.top + AppSpacing.xl,
+            left: AppSpacing.xl,
+            child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+          ),
+        ],
       ),
     );
   }
