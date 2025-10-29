@@ -386,8 +386,15 @@ class ChatScreen extends HookConsumerWidget {
 
       // Save user message to database
       if (sessionId.value != null) {
-        await conversationService.saveMessage(userMessage);
-        debugPrint('💾 Saved user message to session ${sessionId.value}');
+        try {
+          await conversationService.saveMessage(userMessage);
+          debugPrint('💾 Saved user message to session ${sessionId.value}');
+        } catch (e) {
+          debugPrint('⚠️ Failed to save user message: $e');
+          // Continue with message send - UI already shows the message
+          // We can still stream the AI response even if DB save failed
+          // This prevents blocking user experience for DB issues
+        }
       } else {
         debugPrint('⚠️ Cannot save message - no active session');
       }
