@@ -2536,14 +2536,18 @@ class ChatScreen extends HookConsumerWidget {
 
   String _formatDate(DateTime dateTime) {
     final now = DateTime.now();
-    final difference = now.difference(dateTime);
 
-    if (difference.inDays == 0) {
+    // Compare dates only (ignore time) to handle midnight boundary correctly
+    final today = DateTime(now.year, now.month, now.day);
+    final messageDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    final daysDifference = today.difference(messageDate).inDays;
+
+    if (daysDifference == 0) {
       return 'Today';
-    } else if (difference.inDays == 1) {
+    } else if (daysDifference == 1) {
       return 'Yesterday';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+    } else if (daysDifference < 7) {
+      return '$daysDifference days ago';
     } else {
       return '${dateTime.month}/${dateTime.day}/${dateTime.year}';
     }
