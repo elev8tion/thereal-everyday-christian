@@ -2042,9 +2042,12 @@ class ChatScreen extends HookConsumerWidget {
               itemCount: sessions.length,
               itemBuilder: (context, index) {
                 final session = sessions[index];
-                final updatedAt = DateTime.fromMillisecondsSinceEpoch(
-                  session['updated_at'] as int,
-                );
+                final updatedAtRaw = session['updated_at'] as int;
+                // Handle both seconds and milliseconds timestamps
+                // Timestamps > 10000000000 are in milliseconds (after Sep 2001)
+                final updatedAt = updatedAtRaw > 10000000000
+                    ? DateTime.fromMillisecondsSinceEpoch(updatedAtRaw)
+                    : DateTime.fromMillisecondsSinceEpoch(updatedAtRaw * 1000);
                 final messageCount = session['message_count'] as int? ?? 0;
                 final sessionIdStr = session['id'] as String;
                 final lastMessagePreview = session['last_message_preview'] as String?;
