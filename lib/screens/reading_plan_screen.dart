@@ -1051,6 +1051,9 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       ref.invalidate(todaysReadingsProvider(reading.planId));
       ref.invalidate(planProgressPercentageProvider(reading.planId));
       ref.invalidate(planStreakProvider(reading.planId));
+      ref.invalidate(planHeatmapDataProvider(reading.planId));
+      ref.invalidate(planCompletionStatsProvider(reading.planId));
+      ref.invalidate(planEstimatedCompletionDateProvider(reading.planId));
       ref.invalidate(activeReadingPlansProvider);
       ref.invalidate(allReadingPlansProvider);
 
