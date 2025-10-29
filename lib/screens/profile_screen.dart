@@ -136,7 +136,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         maxWidth: ResponsiveUtils.maxContentWidth(context),
                       ),
                       child: Padding(
-                        padding: ResponsiveUtils.padding(context, horizontal: 16, vertical: 0),
+                        padding: EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          top: 40, // 24 + 16 extra
+                          bottom: 24,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -196,29 +201,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AutoSizeText(
-                      'Profile',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primaryText,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  AutoSizeText(
-                    'Everyday Christian',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                      color: AppColors.secondaryText,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-                ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
+                    SizedBox(height: 56 + 12), // FAB height (56) + spacing (12)
+                  ],
+                ),
               ),
             ),
           ],
