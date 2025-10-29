@@ -372,8 +372,8 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         if (prayers.isEmpty) {
           return _buildEmptyState(
             icon: Icons.check_circle_outline,
-            title: 'No Answered Prayers Yet',
-            subtitle: 'When God answers your prayers, mark them as answered to see them here',
+            title: 'Highlight Prayers Answered',
+            subtitle: 'Sometimes the answers we get aren\'t the answers we want. Save here to better reflect',
           );
         }
 
