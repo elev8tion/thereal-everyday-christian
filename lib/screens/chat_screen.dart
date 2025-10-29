@@ -1852,7 +1852,7 @@ class ChatScreen extends HookConsumerWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                   child: Image.asset(
-                    'assets/images/logo_transparent.png',
+                    'assets/images/logo_cropped.png',
                     fit: BoxFit.contain,
                   ),
                 ),
