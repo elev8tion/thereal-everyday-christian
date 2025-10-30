@@ -479,34 +479,27 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       );
     }
 
-    return SingleChildScrollView(
-      controller: _scrollController,
+    return Padding(
       padding: const EdgeInsets.all(16.0),
       child: FrostedGlassCard(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 4.0,
-            top: 20.0,
-            bottom: 20.0,
-            right: 8.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Chapter title
-              Text(
-                '${widget.book} $chapterNum',
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 28, minSize: 24, maxSize: 32),
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white,
-                  letterSpacing: -0.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Scrollable verses area
+            Expanded(
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                padding: const EdgeInsets.only(
+                  left: 4.0,
+                  top: 20.0,
+                  right: 8.0,
+                  bottom: 20.0,
                 ),
-              ),
-              const SizedBox(height: 24),
-
-              // Verses
-              ...verses.asMap().entries.map((entry) {
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Verses
+                    ...verses.asMap().entries.map((entry) {
                 final verseIndex = entry.key;
                 final verse = entry.value;
                 final isCurrentVerse = _isAudioPlaying && verseIndex == _currentPlayingVerseIndex;
@@ -596,8 +589,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                   ),
                 );
               }),
-            ],
-          ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
