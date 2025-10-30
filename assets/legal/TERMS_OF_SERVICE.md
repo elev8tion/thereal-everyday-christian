@@ -344,7 +344,7 @@ We are not liable for any failure or delay in performance due to causes beyond o
 
 8. INDEMNIFICATION
 
-You agree to defend, indemnify, and hold harmless Everyday Christian, its affiliates, licensors, and service providers, and their respective officers, directors, employees, contractors, agents, and representatives from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to:
+You agree to defend, indemnify, and hold harmless Elev8tion, its affiliates, licensors, and service providers, and their respective officers, directors, employees, contractors, agents, and representatives from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to:
 
 1. Your violation of these Terms
 2. Your use or misuse of the App
@@ -403,7 +403,7 @@ Before filing a claim, you agree to contact us at connect@everydaychristian.app 
 
 11.3 Arbitration Agreement
 
-YOU AND EVERYDAY CHRISTIAN AGREE TO RESOLVE ANY DISPUTES THROUGH BINDING INDIVIDUAL ARBITRATION, EXCEPT AS SPECIFIED BELOW.
+YOU AND ELEV8TION AGREE TO RESOLVE ANY DISPUTES THROUGH BINDING INDIVIDUAL ARBITRATION, EXCEPT AS SPECIFIED BELOW.
 
 Arbitration Procedures:
 - Arbitration shall be conducted by the American Arbitration Association (AAA) under its Consumer Arbitration Rules
@@ -492,7 +492,7 @@ We maintain an archive of previous Terms versions. To request a previous version
 
 14.1 Entire Agreement
 
-These Terms, together with our Privacy Policy, constitute the entire agreement between you and Everyday Christian regarding your use of the App and supersede all prior agreements, understandings, or representations.
+These Terms, together with our Privacy Policy, constitute the entire agreement between you and Elev8tion regarding your use of the App and supersede all prior agreements, understandings, or representations.
 
 14.2 Severability
 

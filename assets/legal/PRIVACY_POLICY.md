@@ -6,7 +6,7 @@ Effective Date: October 15, 2025
 
 1. INTRODUCTION
 
-Welcome to Everyday Christian ("we," "our," "us," or the "App"). We are deeply committed to your privacy and have built this application on a privacy-first foundation. This Privacy Policy explains our data practices for the Everyday Christian mobile application.
+Welcome to Everyday Christian (the "App"), a product of Elev8tion ("we," "our," or "us"). We are deeply committed to your privacy and have built this application on a privacy-first foundation. This Privacy Policy explains our data practices for the Everyday Christian mobile application.
 
 Everyday Christian is a faith-centered mobile app that provides:
 - AI-powered pastoral guidance using Google Gemini 2.0 Flash (Premium feature)
