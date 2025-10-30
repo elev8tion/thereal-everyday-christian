@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
+import '../components/audio_control_pill.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
@@ -10,6 +11,7 @@ import '../services/bible_chapter_service.dart';
 import '../models/bible_verse.dart';
 import '../utils/responsive_utils.dart';
 import '../core/widgets/app_snackbar.dart';
+import '../core/services/tts_service.dart';
 
 /// Chapter Reading Screen - displays Bible chapters with verse-by-verse reading
 class ChapterReadingScreen extends ConsumerStatefulWidget {
@@ -33,16 +35,54 @@ class ChapterReadingScreen extends ConsumerStatefulWidget {
 class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   final BibleChapterService _chapterService = BibleChapterService();
   final PageController _pageController = PageController();
+  final ScrollController _scrollController = ScrollController();
+  final TtsService _ttsService = TtsService();
 
   late Future<Map<int, List<BibleVerse>>> _versesFuture;
   int _currentChapterIndex = 0;
   bool _isCompleted = false;
+
+  // TTS state
+  bool _isAudioPlaying = false;
+  int _currentPlayingVerseIndex = -1;
+
+  // Keys for verse widgets (for auto-scroll)
+  final Map<int, GlobalKey> _verseKeys = {};
 
   @override
   void initState() {
     super.initState();
     _loadVerses();
     _checkCompletion();
+    _initializeTts();
+  }
+
+  Future<void> _initializeTts() async {
+    await _ttsService.initialize();
+
+    // Set up TTS callbacks
+    _ttsService.onVerseChanged = (verseIndex) {
+      if (mounted) {
+        setState(() => _currentPlayingVerseIndex = verseIndex);
+        _scrollToVerse(verseIndex);
+      }
+    };
+
+    _ttsService.onPlayStateChanged = (isPlaying) {
+      if (mounted) {
+        setState(() => _isAudioPlaying = isPlaying);
+      }
+    };
+
+    _ttsService.onPlaybackComplete = () {
+      if (mounted) {
+        AppSnackBar.show(
+          context,
+          message: 'Chapter playback complete',
+          icon: Icons.check_circle,
+        );
+      }
+    };
   }
 
   void _loadVerses() {
@@ -90,9 +130,58 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     }
   }
 
+  // TTS Controls
+  Future<void> _playAudio(List<BibleVerse> verses) async {
+    try {
+      await _ttsService.playChapter(verses);
+    } catch (e) {
+      if (mounted) {
+        AppSnackBar.showError(
+          context,
+          message: 'Audio playback error',
+        );
+      }
+    }
+  }
+
+  Future<void> _pauseAudio() async {
+    await _ttsService.pause();
+  }
+
+  Future<void> _resumeAudio() async {
+    await _ttsService.resume();
+  }
+
+  Future<void> _stopAudio() async {
+    await _ttsService.stop();
+    setState(() {
+      _currentPlayingVerseIndex = -1;
+    });
+  }
+
+  Future<void> _cycleSpeed() async {
+    await _ttsService.cycleSpeed();
+    setState(() {}); // Refresh UI to show new speed
+  }
+
+  /// Auto-scroll to current verse during playback
+  void _scrollToVerse(int verseIndex) {
+    final key = _verseKeys[verseIndex];
+    if (key == null || key.currentContext == null) return;
+
+    Scrollable.ensureVisible(
+      key.currentContext!,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+      alignment: 0.2, // Keep verse near top of viewport
+    );
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
+    _scrollController.dispose();
+    _ttsService.stop(); // Stop audio when leaving screen
     super.dispose();
   }
 
@@ -137,17 +226,51 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                         (i) => widget.startChapter + i,
                       );
 
-                      return PageView.builder(
+                      final currentChapterNum = widget.startChapter + _currentChapterIndex;
+                      final currentVerses = chaptersMap[currentChapterNum] ?? [];
+
+                      return Column(
+                        children: [
+                          // Sleek audio control pill
+                          AudioControlPill(
+                            isPlaying: _isAudioPlaying,
+                            isPaused: _ttsService.isPaused,
+                            speedLabel: _ttsService.speedLabel,
+                            currentVerse: _currentPlayingVerseIndex >= 0 ? _currentPlayingVerseIndex + 1 : null,
+                            totalVerses: currentVerses.length,
+                            onPlayPause: () {
+                              if (!_isAudioPlaying) {
+                                _playAudio(currentVerses);
+                              } else if (_ttsService.isPaused) {
+                                _resumeAudio();
+                              } else {
+                                _pauseAudio();
+                              }
+                            },
+                            onStop: _stopAudio,
+                            onSpeedTap: _cycleSpeed,
+                          ),
+
+                          // Chapter content
+                          Expanded(
+                            child: PageView.builder(
                         controller: _pageController,
                         itemCount: chapters.length,
                         onPageChanged: (index) {
                           setState(() => _currentChapterIndex = index);
+                          // Auto-stop audio when user swipes to different chapter
+                          if (_isAudioPlaying) {
+                            _stopAudio();
+                          }
                         },
-                        itemBuilder: (context, index) {
-                          final chapterNum = chapters[index];
-                          final verses = chaptersMap[chapterNum] ?? [];
-                          return _buildChapterPage(chapterNum, verses);
-                        },
+                              itemBuilder: (context, index) {
+                                final chapterNum = chapters[index];
+                                final verses = chaptersMap[chapterNum] ?? [];
+                                return _buildChapterPage(chapterNum, verses, chaptersMap);
+                              },
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -168,6 +291,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
+          // Back button
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -188,6 +312,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
             ),
           ),
           const SizedBox(width: 16),
+
+          // Title and status
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +438,13 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     );
   }
 
-  Widget _buildChapterPage(int chapterNum, List<BibleVerse> verses) {
+  Widget _buildChapterPage(int chapterNum, List<BibleVerse> verses, Map<int, List<BibleVerse>> chaptersMap) {
+    // Generate keys for verses (for auto-scroll)
+    _verseKeys.clear();
+    for (int i = 0; i < verses.length; i++) {
+      _verseKeys[i] = GlobalKey();
+    }
+
     if (verses.isEmpty) {
       return Center(
         child: FrostedGlassCard(
@@ -343,6 +475,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     }
 
     return SingleChildScrollView(
+      controller: _scrollController,
       padding: const EdgeInsets.all(16.0),
       child: FrostedGlassCard(
         child: Padding(
@@ -368,10 +501,29 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
               const SizedBox(height: 24),
 
               // Verses
-              ...verses.map((verse) {
+              ...verses.asMap().entries.map((entry) {
+                final verseIndex = entry.key;
+                final verse = entry.value;
+                final isCurrentVerse = _isAudioPlaying && verseIndex == _currentPlayingVerseIndex;
+
                 return Padding(
+                  key: _verseKeys[verseIndex],
                   padding: const EdgeInsets.only(bottom: 16.0),
-                  child: Row(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    decoration: isCurrentVerse
+                        ? BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppTheme.primaryColor.withValues(alpha: 0.15),
+                                AppTheme.primaryColor.withValues(alpha: 0.05),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          )
+                        : null,
+                    padding: isCurrentVerse ? const EdgeInsets.all(8.0) : EdgeInsets.zero,
+                    child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Verse number and favorite button column
@@ -434,7 +586,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                           ),
                         ),
                       ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               }),
