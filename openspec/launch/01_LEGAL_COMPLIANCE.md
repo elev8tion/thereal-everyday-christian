@@ -108,7 +108,7 @@ This checklist ensures Everyday Christian complies with:
 
 **1. Subscription Terms:**
 ```
-• 3-day free trial (5 AI messages/day)
+• 3-day free trial (15 AI messages total)
 • Auto-renews at $35/year unless cancelled 24h before end
 • 150 AI messages per month after subscription
 • Cancel anytime via App Store account settings
@@ -208,7 +208,7 @@ App Store account settings.'
 
 **✅ Subscription Settings Screen** (lib/screens/subscription_settings_screen.dart:119-132)
 ```dart
-'Start your 3-day free trial with 5 AI messages per day.
+'Start your 3-day free trial with 15 AI messages total.
 After trial: ~$35/year (varies by region) for 150 messages
 per month. Cancel anytime in App Store settings.'
 ```

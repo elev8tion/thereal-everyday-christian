@@ -262,7 +262,7 @@ This checklist ensures the app is technically sound, secure, and meets Apple's A
 
 - [ ] **Subscription Flow**
   - Trial starts on first message send
-  - 5 messages/day limit enforced
+  - 15 messages total limit enforced
   - Paywall appears when limit reached
   - Purchase flow completes successfully
   - Premium unlocks 150 messages/month

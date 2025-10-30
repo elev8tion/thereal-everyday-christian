@@ -151,8 +151,8 @@ Check: hasAcceptedLegalAgreements?
 ```dart
 // Trial Configuration (subscription_service.dart:34-36)
 - Trial Duration: 3 days (const int trialDurationDays = 3)
-- Trial Messages: 5 per day (const int trialMessagesPerDay = 5)
-- Total Trial Messages: 15 (3 days × 5 messages)
+- Trial Messages: 15 total (const int trialTotalMessages = 15)
+- No daily limits: Use all 15 anytime within 3 days
 
 // Premium Configuration (subscription_service.dart:39)
 - Price: ~$35/year (varies by region)
@@ -265,16 +265,16 @@ Future<void> sendMessage(String text) async {
 ### Business Logic Requirements (User Specified)
 
 **Trial Behavior:**
-1. **Duration:** 3 days from when user chooses to start free trial (currently: first message)
+1. **Duration:** 3 days OR 15 messages (whichever comes first) from when user sends first AI message
 2. **Cancellation Rules:**
-   - If user cancels **anytime before end of 3rd day** → 5 messages/day **immediately revoked**, no access to AI chat
+   - If user cancels **anytime before end of 3rd day** → Trial access **immediately revoked**, no access to AI chat
    - If user **does not cancel within 3 days** → **Automatic subscription purchase** ($35/year)
 3. **Message Limits:**
-   - Days 1-2: User hits 5-message limit → Show "Subscribe Now?" dialog
-   - Days 1-2: User declines subscription → Can still view message history until day 3
-   - Day 3: User hits 5-message limit → Show "Subscribe Now?" dialog
-   - Day 3: User declines AND doesn't cancel → Automatic subscription at end of day 3
-   - Day 3: User declines AND cancels → **Locked behind paywall immediately**
+   - 15 messages total over 3 days (no daily limits)
+   - When user hits 15-message limit → Show "Trial Limit Reached" dialog
+   - User declines subscription → Can still view message history until day 3 expires
+   - Day 3 expires + user didn't cancel → Automatic subscription at end of day 3
+   - User cancels trial → **Locked behind paywall immediately**
 4. **Offline Handling:**
    - Trial expiry is based on **date started**, not online status
    - If trial expires while user offline and they didn't cancel → Automatic purchase when they come online
@@ -359,17 +359,17 @@ Future<void> sendMessage(String text) async {
 ### Decisions Made
 
 ✅ **DECISION 9:** Add message limit dialog (before paywall)
-When user hits their daily/monthly limit:
+When user hits their trial/monthly limit:
 ```dart
 Show Dialog:
-  Title: "Daily Limit Reached" (trial) or "Monthly Limit Reached" (premium)
-  Message: "You've used all 5 messages today. Subscribe now for 150 messages/month?"
+  Title: "Trial Limit Reached" (15 messages used) or "Monthly Limit Reached" (premium)
+  Message: "You've used all 15 trial messages. Subscribe now for 150 messages/month?"
   Actions:
     - "Subscribe Now" → Navigate to PaywallScreen
     - "Maybe Later" → Close dialog
-      - Days 1-2: User can still view chat history
-      - Day 3 + cancelled: Lock chat screen with paywall overlay
-      - Day 3 + no cancel: Auto-subscribe logic runs
+      - Trial still active (days remaining): User can still view chat history
+      - Day 3 expired + cancelled: Lock chat screen with paywall overlay
+      - Day 3 expired + no cancel: Auto-subscribe logic runs
 ```
 
 ✅ **DECISION 10:** Chat screen lockout overlay
@@ -501,7 +501,7 @@ Future<void> _deleteAllData() async {
 **✅ Task 2.3: Add message limit dialog** - COMPLETE
 - ✅ File: `lib/components/message_limit_dialog.dart` (149 lines)
 - ✅ Design: Frosted glass with chat bubble icon (friendly, not lock)
-- ✅ Dynamic title: "Daily Limit Reached" (trial) / "Monthly Limit Reached" (premium)
+- ✅ Dynamic title: "Trial Limit Reached" (15 messages) / "Monthly Limit Reached" (premium)
 - ✅ Actions: "Subscribe Now" / "Maybe Later" buttons
 - ✅ Returns `bool?` (true = subscribe, false/null = declined)
 
@@ -613,13 +613,13 @@ Future<void> _deleteAllData() async {
 ## Testing Checklist
 
 ### Trial & Subscription Flow
-- [ ] New user starts trial → 3 days, 5 messages/day
-- [ ] User deletes data during trial → Trial persists on relaunch
+- [ ] New user starts trial → 3 days OR 15 messages total (whichever comes first)
+- [ ] User deletes data during trial → Trial persists on relaunch (Keychain tracking)
 - [ ] User deletes data after subscribing → Subscription auto-restores
-- [ ] User hits message limit Day 1 → Dialog appears → "Maybe Later" → Can view history
-- [ ] User hits message limit Day 2 → Dialog appears → "Maybe Later" → Can view history
-- [ ] User hits message limit Day 3 → Dialog appears → "Maybe Later" → Still can send (until end of day)
-- [ ] Trial expires → Chat screen shows lockout overlay
+- [ ] User uses 15 messages rapidly → "Trial Limit Reached" dialog appears
+- [ ] User hits 15-message limit → "Maybe Later" → Can view history (if days remaining)
+- [ ] User uses 10 messages on Day 1 → Still has 5 remaining for Days 2-3
+- [ ] Trial expires (3 days) → Chat screen shows lockout overlay
 - [ ] Trial expires → Bible, prayer, verses still accessible
 
 ### Paywall & Lockout

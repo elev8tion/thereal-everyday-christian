@@ -14,7 +14,7 @@ The subscription model is the core revenue driver. **Every edge case must be tes
 - App Store rejection (non-compliant subscription handling)
 
 **Business Model:**
-- 3-day trial: 5 messages/day (15 total)
+- 3-day trial: 15 messages total (15 total)
 - Premium: $34.99/year, 150 messages/month
 - Auto-renewable subscription via App Store
 
@@ -207,7 +207,7 @@ Message 6 (limit reached):
 ```
 ⚠️ User gets a new trial (BUG - infinite trials possible)
 ⚠️ trial_start_date resets to new date
-⚠️ 5 messages/day granted again
+⚠️ 15 messages total granted again
 ```
 
 **Pass Criteria (After Fix):**

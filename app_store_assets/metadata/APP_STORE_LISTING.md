@@ -90,11 +90,12 @@ FREE FOREVER FEATURES
 • No ads, ever
 
 PREMIUM AI GUIDANCE (Optional)
-Try free for 3 days, then $35/year:
-• 150 AI chat messages per month
-• Personalized biblical guidance
-• Scripture-based answers to your questions
-• Cancel anytime
+3-Day Free Trial - 15 AI Messages Total:
+• Try all features with 15 AI chat messages
+• No daily limits - use them anytime
+• Cancel before trial ends to avoid charges
+• After trial: $35/year for 150 messages/month
+• Cancel anytime in your App Store settings
 
 TECHNICAL EXCELLENCE
 • Optimized performance for smooth, fast experience
@@ -196,7 +197,7 @@ We've combined cutting-edge AI with biblical wisdom to create something truly sp
 FREE CORE FEATURES + OPTIONAL PREMIUM AI
 Bible, prayer journal, verses, and reading plans are 100% free forever. No ads.
 
-Premium AI Chat: $35/year after 3-day free trial (150 messages/month). Cancel anytime.
+Premium AI Chat: 3-day free trial with 15 AI messages total. After trial: $35/year (150 messages/month). Cancel anytime.
 
 👥 PERFECT FOR
 

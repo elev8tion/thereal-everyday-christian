@@ -45,9 +45,10 @@ Please test and provide feedback on:
    - View prayer history
 
 3. **Subscription & Trial**
-   - Trial message limits (5 messages/day for 3 days)
+   - Trial message limits (15 messages total over 3 days - no daily limits)
    - Message count displays correctly
    - "Delete All Data" preserves subscription status
+   - Trial abuse prevention via Keychain (persists across app reinstalls)
 
 ### General Testing:
 4. **App Stability**

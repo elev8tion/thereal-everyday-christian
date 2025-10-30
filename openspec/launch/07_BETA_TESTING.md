@@ -324,7 +324,7 @@ Note: Sandbox purchases are FREE and don't affect your real Apple account.
 - [ ] Test "Delete All Data" → Subscription restores
 
 **Feedback Questions:**
-- Was trial clearly explained (3 days, 5 messages/day)?
+- Was trial clearly explained (3 days, 15 messages total)?
 - Was paywall messaging compelling but not pushy?
 - Did purchase flow work smoothly?
 - Was premium status obvious after purchase?

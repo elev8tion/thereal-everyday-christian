@@ -124,13 +124,29 @@ Premium subscribers receive 150 AI chat messages per month:
 - If you exceed 150 messages, you must wait until renewal or upgrade (if available)
 - We track message counts locally on your device; counts may reset if you reinstall the App
 
-4.5 Free Trial (If Offered)
+4.5 Free Trial
 
-If we offer a free trial:
-- Trial duration will be clearly disclosed before subscription
-- You must cancel before the trial ends to avoid being charged
-- You may not be eligible for a free trial if you previously subscribed
-- We reserve the right to modify or discontinue free trials at any time
+We offer a 3-day free trial for new users:
+
+Trial Terms:
+- Duration: 3 days from first AI message sent
+- Message Allowance: 15 AI chat messages total (not per day)
+- No daily limits: Use all 15 messages at once or spread over 3 days
+- Trial starts when you send your first AI chat message
+- After 3 days OR 15 messages (whichever comes first), trial ends
+
+Automatic Subscription:
+- If you do NOT cancel within 3 days, you will be automatically charged $35.99/year
+- You must cancel at least 24 hours before trial ends to avoid charges
+- Cancel anytime via: iOS Settings > Subscriptions OR Google Play > Subscriptions
+
+Trial Eligibility:
+- Free trial is offered once per device
+- If you previously used a trial on this device, you are not eligible for another trial
+- Trial eligibility persists across app reinstalls via device-level tracking
+- We do not collect personal information to track trials (privacy-first design)
+
+We reserve the right to modify or discontinue free trials at any time with notice.
 
 
 5. USER CONDUCT AND CONTENT POLICY

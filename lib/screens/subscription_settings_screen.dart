@@ -3,7 +3,7 @@
 ///
 /// Displays:
 /// - Subscription status (Free/Trial/Premium)
-/// - Message usage (trial daily or premium monthly)
+/// - Message usage (trial: 15 total, premium: 150/month)
 /// - Trial days remaining or renewal info
 /// - Upgrade button (if not premium)
 /// - Manage subscription link
@@ -119,7 +119,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                               AutoSizeText(
                                 isPremium
                                     ? 'Your subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.'
-                                    : 'Start your 3-day free trial with 5 AI messages per day. After trial: ~\$35.99/year (pricing may vary by region and currency) for 150 messages per month. Cancel anytime in App Store settings.',
+                                    : 'Start your 3-day free trial with 15 AI messages total (use anytime). After trial: ~\$35.99/year (pricing may vary by region and currency) for 150 messages per month. Cancel anytime in App Store settings.',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: AppColors.secondaryText,

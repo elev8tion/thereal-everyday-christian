@@ -268,7 +268,7 @@ available anytime.
 **3. Subscription Details (FTC Required)**
 ```
 SUBSCRIPTION DETAILS
-• Free 3-day trial (5 AI messages/day)
+• Free 3-day trial (15 AI messages total)
 • Premium: $35/year (150 messages/month)
 • Auto-renews unless cancelled 24h before period ends
 • Cancel anytime in App Store settings
@@ -335,7 +335,7 @@ Unlike other Bible apps, Everyday Christian combines timeless scripture with mod
 Developed by a former youth pastor with a heart for accessible, doctrinally sound faith resources.
 
 SUBSCRIPTION DETAILS
-• Free 3-day trial: 5 AI messages per day
+• Free 3-day trial: 15 AI messages total
 • Premium: ~$35/year (varies by region)
 • Premium includes: 150 AI messages per month
 • Auto-renews unless cancelled 24 hours before period ends
@@ -568,7 +568,7 @@ This is our initial release, bringing you:
 • Complete KJV & Spanish Bible (Free)
 • Private prayer journal (Free)
 • Beautiful, peaceful design
-• 3-day free trial with 5 messages/day
+• 3-day free trial with 15 messages total
 
 Thank you for being an early adopter! We're excited to
 walk with you on your faith journey.
