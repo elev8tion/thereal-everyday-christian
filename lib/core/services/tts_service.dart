@@ -49,6 +49,15 @@ class TtsService {
   double _speechRate = 0.5; // Will be set correctly in _loadSpeechRate
   int _currentSpeedIndex = _defaultSpeedIndex;
 
+  // Preferred voice names (case-insensitive matching)
+  static const List<String> _preferredVoiceNames = [
+    'Siri',       // Siri voices (premium quality)
+    'Samantha',   // Natural female voice
+    'Alex',       // Natural male voice
+    'Ava',        // Enhanced quality
+    'Evan',       // Enhanced quality
+  ];
+
   // Callbacks for UI updates
   Function(int verseIndex)? onVerseChanged;
   Function(bool isPlaying)? onPlayStateChanged;
@@ -74,9 +83,12 @@ class TtsService {
       await _tts.setVolume(1.0);
       await _tts.setPitch(1.0);
 
+      // Select best quality voice (Siri or enhanced quality)
+      await _selectBestVoice();
+
       // Load saved speech rate and apply it
       await _loadSpeechRate();
-      developer.log('[TtsService] 🔊 APPLYING SPEECH RATE: ${_speechRate}x (index: $_currentSpeedIndex)', name: 'TtsService');
+      developer.log('[TtsService] 🔊 APPLYING SPEECH RATE: $_speechRate (index: $_currentSpeedIndex)', name: 'TtsService');
       await _tts.setSpeechRate(_speechRate); // CRITICAL: Apply loaded rate to engine
       developer.log('[TtsService] ✅ Speech rate applied successfully', name: 'TtsService');
 
@@ -241,6 +253,107 @@ class TtsService {
         return '1.25x'; // Fast
       default:
         return '1.0x';
+    }
+  }
+
+  /// Select the best quality voice available
+  /// Priority: Siri (premium) > Enhanced quality > Default
+  Future<void> _selectBestVoice() async {
+    try {
+      final voices = await _tts.getVoices;
+
+      if (voices == null || voices.isEmpty) {
+        developer.log('[TtsService] No voices available, using default', name: 'TtsService');
+        return;
+      }
+
+      developer.log('[TtsService] Found ${voices.length} available voices', name: 'TtsService');
+
+      // DEBUG: Log all en-US voices for troubleshooting
+      final enUsVoicesDebug = voices.where((voice) {
+        final locale = voice['locale'] as String?;
+        return locale != null && locale.toLowerCase().startsWith('en-us');
+      }).toList();
+
+      developer.log('[TtsService] 🔍 Available en-US voices:', name: 'TtsService');
+      for (var voice in enUsVoicesDebug) {
+        developer.log('[TtsService]   - ${voice['name']} (${voice['identifier']}) [locale: ${voice['locale']}]', name: 'TtsService');
+      }
+
+      // Filter for en-US voices only
+      final enUsVoices = voices.where((voice) {
+        final locale = voice['locale'] as String?;
+        return locale != null && locale.toLowerCase().startsWith('en-us');
+      }).toList();
+
+      if (enUsVoices.isEmpty) {
+        developer.log('[TtsService] No en-US voices found', name: 'TtsService');
+        return;
+      }
+
+      dynamic selectedVoice;
+
+      if (Platform.isIOS) {
+        // Try to find voice from preferred list in order
+        for (var preferredName in _preferredVoiceNames) {
+          final matchingVoices = enUsVoices.where((voice) {
+            final name = (voice['name'] as String?)?.toLowerCase() ?? '';
+            return name.contains(preferredName.toLowerCase());
+          }).toList();
+
+          if (matchingVoices.isNotEmpty) {
+            selectedVoice = matchingVoices.first;
+            developer.log('[TtsService] 🎙️ Selected preferred voice: ${selectedVoice['name']} (${selectedVoice['identifier']})', name: 'TtsService');
+            break;
+          }
+        }
+
+        // If no preferred voice found, try enhanced quality (non-compact)
+        if (selectedVoice == null) {
+          final enhancedVoices = enUsVoices.where((voice) {
+            final identifier = (voice['identifier'] as String?)?.toLowerCase() ?? '';
+            return !identifier.contains('compact');
+          }).toList();
+
+          if (enhancedVoices.isNotEmpty) {
+            selectedVoice = enhancedVoices.first;
+            developer.log('[TtsService] 🎙️ Selected enhanced voice: ${selectedVoice['name']} (${selectedVoice['identifier']})', name: 'TtsService');
+          } else {
+            // Fallback: Use first available voice
+            selectedVoice = enUsVoices.first;
+            developer.log('[TtsService] 🎙️ Using default voice: ${selectedVoice['name']} (${selectedVoice['identifier']})', name: 'TtsService');
+          }
+        }
+
+        // Set the voice using identifier (most reliable on iOS)
+        if (selectedVoice != null && selectedVoice['identifier'] != null) {
+          await _tts.setVoice({"identifier": selectedVoice['identifier']});
+          developer.log('[TtsService] ✅ Voice set successfully', name: 'TtsService');
+        }
+      } else {
+        // Android: Select highest quality voice available
+        // Android voices have 'quality' field: low, normal, high, very_high
+        final highQualityVoices = enUsVoices.where((voice) {
+          final quality = (voice['quality'] as String?)?.toLowerCase() ?? '';
+          return quality.contains('high') || quality.contains('premium');
+        }).toList();
+
+        if (highQualityVoices.isNotEmpty) {
+          selectedVoice = highQualityVoices.first;
+          developer.log('[TtsService] 🎙️ Selected high-quality Android voice: ${selectedVoice['name']}', name: 'TtsService');
+
+          // Set voice using name and locale
+          await _tts.setVoice({
+            "name": selectedVoice['name'],
+            "locale": selectedVoice['locale']
+          });
+        } else {
+          developer.log('[TtsService] 🎙️ Using default Android voice', name: 'TtsService');
+        }
+      }
+    } catch (e) {
+      developer.log('[TtsService] Error selecting voice: $e', name: 'TtsService', error: e);
+      // Continue with default voice on error
     }
   }
 
