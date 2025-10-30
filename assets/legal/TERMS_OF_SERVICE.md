@@ -6,15 +6,15 @@ Effective Date: October 17, 2025
 
 1. AGREEMENT TO TERMS
 
-Welcome to Everyday Christian ("we," "our," "us," or the "App"). These Terms of Service ("Terms") govern your access to and use of the Everyday Christian mobile application, including all features, content, and services offered through the App.
+Welcome to Everyday Christian (the “App”), a product of Elev8tion (“Elev8tion,” “we,” “our,” or “us”). These Terms of Service (“Terms”) govern your access to and use of the Everyday Christian mobile application, including all features, content, and services made available through the App.
 
-BY DOWNLOADING, INSTALLING, OR USING EVERYDAY CHRISTIAN, YOU AGREE TO BE BOUND BY THESE TERMS AND OUR PRIVACY POLICY. IF YOU DO NOT AGREE TO THESE TERMS, DO NOT USE THE APP.
+BY DOWNLOADING, INSTALLING, OR USING THE APP, YOU AGREE TO BE BOUND BY THESE TERMS AND OUR PRIVACY POLICY. IF YOU DO NOT AGREE, DO NOT USE THE APP.
 
-These Terms constitute a legally binding agreement between you ("you," "your," or "User") and Everyday Christian. If you are using the App on behalf of an organization, you represent that you have the authority to bind that organization to these Terms.
+These Terms constitute a legally binding agreement between you (“you,” “your,” or “User”) and Elev8tion, the owner and provider of the App. If you are using the App on behalf of an organization, you represent and warrant that you have the authority to bind that organization to these Terms.
 
 1.1 Additional Terms
 
-Certain features or services may be subject to additional terms and conditions, which will be presented to you at the time you access those features. Those additional terms are incorporated into these Terms by reference.
+Certain features, promotions, or services offered within the App may be subject to additional terms and conditions. Any such additional terms will be presented to you at the time you access those features and are incorporated into these Terms by reference.
 
 1.2 Age Requirements
 
@@ -36,10 +36,9 @@ Core Features (Free):
 - Bible reading plans and progress tracking
 - Verse bookmarking and favorites with personal notes
 - Crisis intervention resources including 988 Suicide & Crisis Lifeline
-- Biometric authentication for privacy protection
 
 Premium Features (approximately $35/year subscription):
-- AI-powered pastoral guidance using Google Gemini 2.0 Flash API
+- AI-powered pastoral guidance using Custom trained llm
 - 150 AI chat messages per month with biblically-grounded responses
 - Scripture-based guidance on faith questions, spiritual struggles, and life challenges
 - Conversation history stored locally on your device
@@ -92,7 +91,7 @@ If you enable biometric authentication (Face ID, Touch ID, fingerprint), you are
 4.1 Subscription Plans
 
 Premium Annual Subscription:
-Price: $35.00 USD per year (pricing may vary by region and currency)
+Price: $35.99 USD per year (pricing may vary by region and currency)
 Features: 150 AI chat messages per month, unlimited access to all Premium features
 Billing: Charged annually to your Apple App Store or Google Play Store account
 Auto-Renewal: Automatically renews each year unless canceled at least 24 hours before the end of the current period
@@ -220,22 +219,25 @@ AI Chat Messages:
 
 6.1 App Ownership
 
-Everyday Christian, including all software, design, graphics, text, functionality, and content (excluding user-generated content and third-party content), is owned by us or our licensors and is protected by:
+The Everyday Christian mobile application (the “App”) is a product of Elev8tion. The App, including without limitation all software, source code, design, graphics, text, user interfaces, functionality, audio, video, and other content made available through the App (collectively, the “App Materials”), is owned by Elev8tion or its licensors and is protected by:
 - United States copyright law
 - International copyright treaties
 - Trademark law
-- Other intellectual property laws
+- Other applicable intellectual property and proprietary rights laws
+
+For clarity, this does not include: (a) user-generated content that you submit through the App, or (b) third-party content made available through the App, each of which remains the property of its respective owner, subject to any licenses granted to Elev8tion under these Terms.
 
 6.2 Limited License to Use
 
-We grant you a limited, non-exclusive, non-transferable, revocable license to:
+Subject to your continued compliance with these Terms, Elev8tion grants you a limited, non-exclusive, non-transferable, non-sublicensable, revocable license to:
 - Download and install the App on devices you own or control
 - Use the App for personal, non-commercial purposes in accordance with these Terms
 
 This license does NOT permit you to:
-- Modify, copy, distribute, transmit, display, perform, reproduce, publish, license, create derivative works from, transfer, or sell any content, software, or services obtained from the App
-- Use the App for commercial purposes without our prior written consent
-- Remove or alter any copyright, trademark, or other proprietary notices
+-modify, copy, distribute, transmit, display, perform, reproduce, publish, license, create derivative works from, transfer, or sell any part of the App or App Materials;
+- use the App or App Materials for any commercial purpose without Elev8tion’s prior written consent;
+- reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code of the App, except to the extent such restriction is prohibited by applicable law; or
+- remove, alter, or obscure any copyright, trademark, or other proprietary rights notices appearing in or on the App.
 
 6.3 Bible Translation License
 
@@ -257,7 +259,7 @@ Google Gemini AI responses are generated by Google's AI technology and may be su
 
 6.5 Trademarks
 
-"Everyday Christian" and our logo (if applicable) are trademarks or registered trademarks of [INSERT LEGAL ENTITY NAME]. You may not use these marks without our prior written permission.
+"Everyday Christian" and our logo (if applicable) are trademarks or registered trademarks of [Elev8tion]. You may not use these marks without our prior written permission.
 
 6.6 Digital Millennium Copyright Act (DMCA)
 

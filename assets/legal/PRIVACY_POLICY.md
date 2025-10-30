@@ -68,7 +68,7 @@ We have intentionally designed Everyday Christian to respect your privacy by NOT
 
 2.3 Third-Party Service: Google Gemini API
 
-Premium AI Chat Feature Only: When you use the Premium AI pastoral guidance feature (150 messages/month, approximately $35/year subscription (pricing varies by region)), your chat messages are sent to Google's Gemini 2.0 Flash API to generate biblically-grounded responses.
+Premium AI Chat Feature Only: When you use the Premium AI pastoral guidance feature (150 messages/month, approximately $35.99/year subscription, pricing may vary by region and currency), your chat messages are sent to Google's Gemini 2.0 Flash API to generate biblically-grounded responses.
 
 Important details:
 - Anonymous requests: We do not include your name, email, device ID, or any personal identifiers when sending messages to Google
@@ -187,7 +187,7 @@ We categorically do not and will never:
 - Use your spiritual content for advertising purposes
 - Monetize your prayers, Bible reading, or chat conversations
 
-We have no business model based on data monetization. Our only revenue comes from optional Premium subscriptions (approximately $35/year).
+We have no business model based on data monetization. Our only revenue comes from optional Premium subscriptions (approximately $35.99/year, pricing may vary by region and currency).
 
 5.2 Third-Party Data Sharing
 
