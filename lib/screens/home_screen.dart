@@ -118,7 +118,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return LayoutBuilder(
       builder: (context, constraints) => SizedBox(
-        height: ResponsiveUtils.scaleSize(context, 130, minScale: 0.9, maxScale: 1.3),
+        height: ResponsiveUtils.scaleSize(context, 100, minScale: 0.9, maxScale: 1.2),
         child: ListView(
         scrollDirection: Axis.horizontal,
         padding: AppSpacing.horizontalXl,
@@ -232,8 +232,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }) {
     return LayoutBuilder(
       builder: (context, constraints) => Container(
-        width: ResponsiveUtils.scaleSize(context, 140, minScale: 0.9, maxScale: 1.2),
-        padding: AppSpacing.screenPadding,
+        width: ResponsiveUtils.scaleSize(context, 120, minScale: 0.9, maxScale: 1.2),
+        padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         gradient: AppGradients.glassMedium,
         borderRadius: AppRadius.cardRadius,
@@ -318,8 +318,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }) {
     return LayoutBuilder(
       builder: (context, constraints) => Container(
-        width: ResponsiveUtils.scaleSize(context, 140, minScale: 0.9, maxScale: 1.2),
-        padding: AppSpacing.screenPadding,
+        width: ResponsiveUtils.scaleSize(context, 120, minScale: 0.9, maxScale: 1.2),
+        padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         gradient: AppGradients.glassMedium,
         borderRadius: AppRadius.cardRadius,
@@ -404,19 +404,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             Expanded(
               child: FrostedGlassCard(
+                padding: const EdgeInsets.all(12),
                 onTap: () => NavigationService.goToChat(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClearGlassCard(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(8),
                       child: Icon(
                         Icons.chat_bubble_outline,
-                        size: ResponsiveUtils.iconSize(context, 24),
+                        size: ResponsiveUtils.iconSize(context, 20),
                         color: AppColors.primaryText,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.sm),
                     Text(
                       "Biblical Chat",
                       style: TextStyle(
@@ -445,19 +446,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: FrostedGlassCard(
+                padding: const EdgeInsets.all(12),
                 onTap: () => NavigationService.goToDevotional(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClearGlassCard(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(8),
                       child: Icon(
                         Icons.auto_stories,
-                        size: ResponsiveUtils.iconSize(context, 24),
+                        size: ResponsiveUtils.iconSize(context, 20),
                         color: AppColors.primaryText,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.sm),
                     Text(
                       "Daily Devotional",
                       style: TextStyle(
@@ -490,19 +492,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             Expanded(
               child: FrostedGlassCard(
+                padding: const EdgeInsets.all(12),
                 onTap: () => NavigationService.goToPrayerJournal(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClearGlassCard(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(8),
                       child: Icon(
                         Icons.favorite_outline,
-                        size: ResponsiveUtils.iconSize(context, 24),
+                        size: ResponsiveUtils.iconSize(context, 20),
                         color: AppColors.primaryText,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.sm),
                     Text(
                       "Prayer Journal",
                       style: TextStyle(
@@ -531,19 +534,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: FrostedGlassCard(
+                padding: const EdgeInsets.all(12),
                 onTap: () => NavigationService.goToReadingPlan(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClearGlassCard(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(8),
                       child: Icon(
                         Icons.library_books_outlined,
-                        size: ResponsiveUtils.iconSize(context, 24),
+                        size: ResponsiveUtils.iconSize(context, 20),
                         color: AppColors.primaryText,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.sm),
                     Text(
                       "Reading Plans",
                       style: TextStyle(
@@ -595,7 +599,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         const SizedBox(height: AppSpacing.lg),
         LayoutBuilder(
           builder: (context, constraints) => SizedBox(
-            height: ResponsiveUtils.scaleSize(context, 120, minScale: 0.9, maxScale: 1.3),
+            height: ResponsiveUtils.scaleSize(context, 100, minScale: 0.9, maxScale: 1.2),
             child: ListView(
             scrollDirection: Axis.horizontal,
             padding: AppSpacing.horizontalXl,
