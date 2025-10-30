@@ -25,7 +25,7 @@ class SubscriptionSnapshot {
     required this.messagesUsed,
     required this.trialDaysRemaining,
     required this.premiumMessagesRemaining,
-    required this.trialMessagesRemainingToday,
+    required this.trialMessagesRemaining,
   });
 
   final SubscriptionStatus status;
@@ -37,7 +37,7 @@ class SubscriptionSnapshot {
   final int messagesUsed;
   final int trialDaysRemaining;
   final int premiumMessagesRemaining;
-  final int trialMessagesRemainingToday;
+  final int trialMessagesRemaining;
 }
 
 /// Memoises the latest subscription information for UI consumers.
@@ -55,7 +55,7 @@ final subscriptionSnapshotProvider = Provider<SubscriptionSnapshot>((ref) {
     messagesUsed: service.messagesUsed,
     trialDaysRemaining: service.trialDaysRemaining,
     premiumMessagesRemaining: service.premiumMessagesRemaining,
-    trialMessagesRemainingToday: service.trialMessagesRemainingToday,
+    trialMessagesRemaining: service.trialMessagesRemaining,
   );
 });
 
@@ -95,6 +95,6 @@ final premiumMessagesRemainingProvider = Provider<int>((ref) {
   return ref.watch(subscriptionSnapshotProvider).premiumMessagesRemaining;
 });
 
-final trialMessagesRemainingTodayProvider = Provider<int>((ref) {
-  return ref.watch(subscriptionSnapshotProvider).trialMessagesRemainingToday;
+final trialMessagesRemainingProvider = Provider<int>((ref) {
+  return ref.watch(subscriptionSnapshotProvider).trialMessagesRemaining;
 });

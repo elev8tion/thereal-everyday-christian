@@ -97,7 +97,7 @@ class TrialWelcomeDialog extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xl),
 
                   // Features
-                  _buildFeature(context, Icons.chat_bubble, '5 AI messages per day for 3 days'),
+                  _buildFeature(context, Icons.chat_bubble, '15 AI messages over 3 days'),
                   const SizedBox(height: AppSpacing.md),
                   _buildFeature(context, Icons.menu_book, 'Scripture interpretation & guidance'),
                   const SizedBox(height: AppSpacing.md),

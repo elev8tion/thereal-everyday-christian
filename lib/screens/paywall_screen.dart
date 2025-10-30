@@ -134,7 +134,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                               child: _buildStatCard(
                                 icon: Icons.check_circle_outline,
                                 value: '$messagesUsed',
-                                label: isPremium ? 'Used This\nMonth' : 'Used\nToday',
+                                label: isPremium ? 'Used This\nMonth' : 'Used in\nTrial',
                                 color: Colors.green,
                               ),
                             ),

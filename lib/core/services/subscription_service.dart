@@ -1,7 +1,7 @@
 /// Subscription Service
 /// Manages premium subscription state, trial period, and message limits
 ///
-/// Trial: 3 days, 5 messages/day (15 total)
+/// Trial: 3 days OR 15 messages total (whichever comes first)
 /// Premium: ~$35.99/year (pricing may vary by region and currency), 150 messages/month
 ///
 /// Uses SharedPreferences for local persistence (privacy-first design)
@@ -239,23 +239,16 @@ class SubscriptionService {
     return (trialDurationDays - daysSinceStart).clamp(0, trialDurationDays);
   }
 
-  /// Get trial messages used today
-  int get trialMessagesUsedToday {
+  /// Get total trial messages used (no daily reset)
+  int get trialMessagesUsed {
     if (!isInTrial) return 0;
-
-    final lastResetDate = _prefs?.getString(_keyTrialLastResetDate);
-    final today = DateTime.now().toIso8601String().substring(0, 10);
-
-    // If last reset was not today, return 0
-    if (lastResetDate != today) return 0;
-
     return _prefs?.getInt(_keyTrialMessagesUsed) ?? 0;
   }
 
-  /// Get remaining trial messages today
-  int get trialMessagesRemainingToday {
+  /// Get remaining trial messages (out of 15 total)
+  int get trialMessagesRemaining {
     if (!isInTrial) return 0;
-    return (trialMessagesPerDay - trialMessagesUsedToday).clamp(0, trialMessagesPerDay);
+    return (trialTotalMessages - trialMessagesUsed).clamp(0, trialTotalMessages);
   }
 
   /// Start trial (called on first AI message)
@@ -270,7 +263,7 @@ class SubscriptionService {
 
     await _prefs?.setString(_keyTrialStartDate, DateTime.now().toIso8601String());
     await _prefs?.setInt(_keyTrialMessagesUsed, 0);
-    await _prefs?.setString(_keyTrialLastResetDate, DateTime.now().toIso8601String().substring(0, 10));
+    // Note: No longer setting _keyTrialLastResetDate (no daily resets)
 
     // Mark trial as used in Keychain (survives app uninstall)
     await markTrialAsUsed();
@@ -506,7 +499,7 @@ class SubscriptionService {
   bool get canSendMessage {
     // NOTE: Debug bypass DISABLED for testing Phase 1 subscription fixes
     // Ref: openspec/changes/subscription-state-management-fixes
-    debugPrint('📊 [SubscriptionService] canSendMessage check: kDebugMode=$kDebugMode, isPremium=$isPremium, isInTrial=$isInTrial, trialMessagesRemainingToday=$trialMessagesRemainingToday');
+    debugPrint('📊 [SubscriptionService] canSendMessage check: kDebugMode=$kDebugMode, isPremium=$isPremium, isInTrial=$isInTrial, trialMessagesRemaining=$trialMessagesRemaining');
 
     // DISABLED: Debug bypass prevents testing race conditions and state updates
     // if (kDebugMode) {
@@ -517,7 +510,7 @@ class SubscriptionService {
     if (isPremium) {
       return premiumMessagesRemaining > 0;
     } else if (isInTrial) {
-      return trialMessagesRemainingToday > 0;
+      return trialMessagesRemaining > 0;
     }
     return false;
   }
@@ -527,7 +520,7 @@ class SubscriptionService {
     if (isPremium) {
       return premiumMessagesRemaining;
     } else if (isInTrial) {
-      return trialMessagesRemainingToday;
+      return trialMessagesRemaining;
     }
     return 0;
   }
@@ -537,7 +530,7 @@ class SubscriptionService {
     if (isPremium) {
       return premiumMessagesUsed;
     } else if (isInTrial) {
-      return trialMessagesUsedToday;
+      return trialMessagesUsed;
     }
     return 0;
   }
@@ -560,11 +553,11 @@ class SubscriptionService {
           await startTrial();
         }
 
-        // Consume trial message
-        final used = trialMessagesUsedToday + 1;
+        // Consume trial message (no daily reset)
+        final used = trialMessagesUsed + 1;
         await _prefs?.setInt(_keyTrialMessagesUsed, used);
-        await _updateTrialResetDate();
-        debugPrint('📊 [SubscriptionService] Trial message consumed ($used/$trialMessagesPerDay today)');
+        // No longer calling _updateTrialResetDate() - no daily resets
+        debugPrint('📊 [SubscriptionService] Trial message consumed ($used/$trialTotalMessages total)');
         return true;
       }
 
@@ -713,20 +706,10 @@ class SubscriptionService {
     await _prefs?.setString(_keyPremiumLastResetDate, thisMonth);
   }
 
-  /// Check and reset message counters (daily for trial, monthly for premium)
+  /// Check and reset message counters (monthly for premium only, trial has no reset)
   Future<void> _checkAndResetCounters() async {
     try {
-      // Reset trial counter if needed (daily)
-      if (isInTrial) {
-        final lastResetDate = _prefs?.getString(_keyTrialLastResetDate);
-        final today = DateTime.now().toIso8601String().substring(0, 10);
-
-        if (lastResetDate != today) {
-          await _prefs?.setInt(_keyTrialMessagesUsed, 0);
-          await _prefs?.setString(_keyTrialLastResetDate, today);
-          debugPrint('📊 [SubscriptionService] Trial messages reset for new day');
-        }
-      }
+      // Trial no longer has daily resets - messages counted against 15 total
 
       // Reset premium counter if needed (monthly)
       if (isPremium) {
@@ -848,8 +831,8 @@ class SubscriptionService {
       'hasStartedTrial': hasStartedTrial,
       'hasTrialExpired': hasTrialExpired,
       'trialDaysRemaining': trialDaysRemaining,
-      'trialMessagesUsedToday': trialMessagesUsedToday,
-      'trialMessagesRemainingToday': trialMessagesRemainingToday,
+      'trialMessagesUsed': trialMessagesUsed,
+      'trialMessagesRemaining': trialMessagesRemaining,
       'premiumMessagesUsed': premiumMessagesUsed,
       'premiumMessagesRemaining': premiumMessagesRemaining,
       'canSendMessage': canSendMessage,

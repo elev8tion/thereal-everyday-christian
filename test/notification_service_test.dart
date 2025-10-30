@@ -32,7 +32,7 @@ void main() {
       expect(notificationService.scheduleReadingPlanReminder, isA<Function>());
     });
 
-    test('should have cancel methods', () {
+    test('should have cancel methods', () => {
       expect(notificationService.cancel, isA<Function>());
       expect(notificationService.cancelAll, isA<Function>());
     });
@@ -311,7 +311,7 @@ void main() {
         await notificationService.schedulePrayerReminder(
           hour: 10,
           minute: 0,
-          title: 'Prayer with "quotes" and \'apostrophes\'',
+          title: 'Prayer with "quotes" and 'apostrophes'',
         );
         expect(true, isTrue);
       } catch (e) {

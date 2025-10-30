@@ -68,7 +68,7 @@ class MessageLimitDialog extends StatelessWidget {
 
                 // Title
                 Text(
-                  isPremium ? 'Monthly Limit Reached' : 'Daily Limit Reached',
+                  isPremium ? 'Monthly Limit Reached' : 'Trial Limit Reached',
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
                     fontWeight: FontWeight.bold,
@@ -82,7 +82,7 @@ class MessageLimitDialog extends StatelessWidget {
                 Text(
                   isPremium
                       ? 'You\'ve used all 150 messages this month.\nUpgrade your plan or wait for the monthly reset.'
-                      : 'You\'ve used all 5 messages today.\nSubscribe now for 150 messages per month!',
+                      : 'You\'ve used all 15 trial messages.\nSubscribe now for 150 messages per month!',
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                     color: AppColors.secondaryText,

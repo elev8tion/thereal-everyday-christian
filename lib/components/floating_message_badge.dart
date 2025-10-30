@@ -95,7 +95,7 @@ class _FloatingMessageBadgeState extends State<FloatingMessageBadge> {
     if (widget.isPremium) {
       return widget.remainingMessages == 1 ? 'message left this month' : 'messages left this month';
     } else if (widget.isInTrial) {
-      return widget.remainingMessages == 1 ? 'message left today' : 'messages left today';
+      return widget.remainingMessages == 1 ? 'message left' : 'messages left';
     } else {
       return widget.remainingMessages == 1 ? 'message left' : 'messages left';
     }
