@@ -12,6 +12,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Represents the current subscription state of the user
 enum SubscriptionStatus {
@@ -74,6 +75,10 @@ class SubscriptionService {
   static const String _keyAutoRenewStatus = 'auto_renew_status';
   static const String _keyAutoSubscribeAttempted = 'auto_subscribe_attempted';
 
+  // Keychain/KeyStore keys (survives app uninstall for trial abuse prevention)
+  static const String _keychainTrialEverUsed = 'trial_ever_used_keychain';
+  static const String _keychainTrialMarkedDate = 'trial_marked_date_keychain';
+
   // ============================================================================
   // PROPERTIES
   // ============================================================================
@@ -81,6 +86,12 @@ class SubscriptionService {
   SharedPreferences? _prefs;
   final InAppPurchase _iap = InAppPurchase.instance;
   StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
+
+  // Secure storage for trial abuse prevention (survives app uninstall)
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+  );
 
   bool _isInitialized = false;
   ProductDetails? _premiumProduct;
@@ -112,6 +123,23 @@ class SubscriptionService {
 
       // Auto-restore purchases on app launch (prevents data loss after "Delete All Data")
       await restorePurchases();
+
+      // ============================================================
+      // TRIAL ABUSE PREVENTION: Check Keychain for previous trial
+      // ============================================================
+      // This check survives app uninstall/reinstall and prevents
+      // users from getting unlimited trials by reinstalling the app.
+      // Privacy-first: All data stays on device in secure Keychain/KeyStore
+      final hasUsedBefore = await hasUsedTrialBefore();
+      if (hasUsedBefore && !isPremium) {
+        // User previously used trial on this device and is not a paid subscriber
+        // Block new trial to prevent abuse
+        await _prefs?.setBool('trial_blocked', true);
+        debugPrint('📊 [SubscriptionService] Trial blocked - previously used on this device');
+      } else {
+        // Either first-time user or paid subscriber - allow trial/access
+        await _prefs?.setBool('trial_blocked', false);
+      }
 
       // Check if user should be automatically subscribed (day 3 without cancellation)
       await attemptAutoSubscribe();
@@ -177,6 +205,9 @@ class SubscriptionService {
   bool get isInTrial {
     if (isPremium) return false; // Premium users are not in trial
 
+    // Check if trial is blocked from previous use (survives app uninstall)
+    if (isTrialBlocked) return false;
+
     final trialStartDate = _getTrialStartDate();
     if (trialStartDate == null) return true; // Never started trial = can start
 
@@ -231,11 +262,20 @@ class SubscriptionService {
   Future<void> startTrial() async {
     if (hasStartedTrial) return;
 
+    // Check if trial is blocked (already used before)
+    if (isTrialBlocked) {
+      debugPrint('📊 [SubscriptionService] Cannot start trial - already used on this device');
+      return;
+    }
+
     await _prefs?.setString(_keyTrialStartDate, DateTime.now().toIso8601String());
     await _prefs?.setInt(_keyTrialMessagesUsed, 0);
     await _prefs?.setString(_keyTrialLastResetDate, DateTime.now().toIso8601String().substring(0, 10));
 
-    debugPrint('📊 [SubscriptionService] Trial started');
+    // Mark trial as used in Keychain (survives app uninstall)
+    await markTrialAsUsed();
+
+    debugPrint('📊 [SubscriptionService] Trial started and marked in Keychain');
   }
 
   // ============================================================================
@@ -281,6 +321,11 @@ class SubscriptionService {
 
       // Active premium with auto-renew
       return SubscriptionStatus.premiumActive;
+    }
+
+    // Check if trial is blocked (used before, survives app uninstall)
+    if (isTrialBlocked) {
+      return SubscriptionStatus.trialExpired;
     }
 
     // Check trial status
@@ -700,6 +745,56 @@ class SubscriptionService {
   }
 
   // ============================================================================
+  // KEYCHAIN TRIAL TRACKING (SURVIVES APP UNINSTALL)
+  // ============================================================================
+
+  /// Check if trial has been used before on this device
+  /// Uses iOS Keychain / Android KeyStore which persists across app uninstalls
+  ///
+  /// Privacy-first: All data stays on device, nothing transmitted to servers
+  Future<bool> hasUsedTrialBefore() async {
+    try {
+      final trialUsed = await _secureStorage.read(key: _keychainTrialEverUsed);
+      final hasUsed = trialUsed == 'true';
+
+      if (hasUsed) {
+        final markedDate = await _secureStorage.read(key: _keychainTrialMarkedDate);
+        debugPrint('📊 [SubscriptionService] Trial already used on this device (marked: $markedDate)');
+      }
+
+      return hasUsed;
+    } catch (e) {
+      debugPrint('📊 [SubscriptionService] Error reading Keychain trial status: $e');
+      // Fail open - don't block users if Keychain read fails
+      return false;
+    }
+  }
+
+  /// Mark trial as used in Keychain (persists across app uninstalls)
+  /// Called when user starts their first trial
+  ///
+  /// Privacy-first: Stored locally on device in secure Keychain/KeyStore
+  Future<void> markTrialAsUsed() async {
+    try {
+      await _secureStorage.write(key: _keychainTrialEverUsed, value: 'true');
+      await _secureStorage.write(
+        key: _keychainTrialMarkedDate,
+        value: DateTime.now().toIso8601String(),
+      );
+      debugPrint('📊 [SubscriptionService] Trial marked as used in Keychain');
+    } catch (e) {
+      debugPrint('📊 [SubscriptionService] Error writing to Keychain: $e');
+      // Non-critical failure - continue execution
+    }
+  }
+
+  /// Check if trial is blocked (used before and not premium)
+  /// Returns true if user should be blocked from starting a new trial
+  bool get isTrialBlocked {
+    return _prefs?.getBool('trial_blocked') ?? false;
+  }
+
+  // ============================================================================
   // DEBUG / TESTING
   // ============================================================================
 
@@ -713,7 +808,25 @@ class SubscriptionService {
     await _prefs?.remove(_keyPremiumMessagesUsed);
     await _prefs?.remove(_keyPremiumLastResetDate);
     await _prefs?.remove(_keySubscriptionReceipt);
-    debugPrint('📊 [SubscriptionService] All subscription data cleared');
+    await _prefs?.remove('trial_blocked');
+    debugPrint('📊 [SubscriptionService] All subscription data cleared (SharedPreferences only)');
+    debugPrint('📊 [SubscriptionService] Note: Keychain trial marker persists - use clearKeychainForTesting() to reset');
+  }
+
+  /// Clear Keychain trial marker (for testing only)
+  /// WARNING: This defeats the trial abuse prevention system
+  /// Only use during development/testing
+  @visibleForTesting
+  Future<void> clearKeychainForTesting() async {
+    try {
+      await _secureStorage.delete(key: _keychainTrialEverUsed);
+      await _secureStorage.delete(key: _keychainTrialMarkedDate);
+      await _prefs?.setBool('trial_blocked', false);
+      debugPrint('📊 [SubscriptionService] Keychain trial marker cleared - trial can be used again');
+      debugPrint('⚠️  [SubscriptionService] WARNING: Only use this method for testing!');
+    } catch (e) {
+      debugPrint('📊 [SubscriptionService] Error clearing Keychain: $e');
+    }
   }
 
   /// Manually activate premium (for testing only)
@@ -731,6 +844,7 @@ class SubscriptionService {
       'isInitialized': _isInitialized,
       'isPremium': isPremium,
       'isInTrial': isInTrial,
+      'isTrialBlocked': isTrialBlocked,
       'hasStartedTrial': hasStartedTrial,
       'hasTrialExpired': hasTrialExpired,
       'trialDaysRemaining': trialDaysRemaining,

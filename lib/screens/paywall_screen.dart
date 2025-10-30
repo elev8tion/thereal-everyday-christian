@@ -94,6 +94,17 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                             isSelected: true,
                           ),
                         )
+                      else if (subscriptionService.isTrialBlocked)
+                        // Trial was already used on this device (survives app uninstall)
+                        Text(
+                          'Welcome back!\n\nYour trial has been used on this device.\nSubscribe to continue using AI chat.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.secondaryText,
+                            height: 1.4,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
                       else
                         Text(
                           'Your trial has ended.\nUpgrade to continue using AI chat.',
