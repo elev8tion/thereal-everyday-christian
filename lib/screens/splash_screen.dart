@@ -3,8 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../components/gradient_background.dart';
-import '../components/frosted_glass_card.dart';
-import '../components/glass/static_liquid_glass_lens.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/navigation/app_routes.dart';
 import '../core/widgets/app_initializer.dart';
@@ -20,7 +18,6 @@ class SplashScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final backgroundKey = useMemoized(() => GlobalKey());
 
     // Use custom hook for combined fade and scale animations
     final animations = useFadeAndScale(
@@ -88,10 +85,8 @@ class SplashScreen extends HookConsumerWidget {
       child: Scaffold(
         body: Stack(
           children: [
-            RepaintBoundary(
-              key: backgroundKey,
-              child: const GradientBackground(),
-            ),
+            // Existing gradient background
+            const GradientBackground(),
             SafeArea(
               child: Center(
                 child: FadeTransition(
@@ -101,115 +96,67 @@ class SplashScreen extends HookConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Logo with liquid glass lens effect
-                        StaticLiquidGlassLens(
-                          backgroundKey: backgroundKey,
-                          width: 200,
-                          height: 200,
-                          effectSize: 3.0,
-                          dispersionStrength: 0.3,
-                          blurIntensity: 0.05,
-                          child: Image.asset(
-                            'assets/images/logo_transparent.png',
-                            width: 200,
-                            height: 200,
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) {
-                              // Fallback icon if logo not found
-                              return Container(
-                                width: 200,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      AppTheme.goldColor.withValues(alpha: 0.3),
-                                      AppTheme.goldColor.withValues(alpha: 0.1),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
+                        // Logo (appropriately sized)
+                        Image.asset(
+                          'assets/images/logo_transparent.png',
+                          width: 140,
+                          height: 140,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            // Fallback icon if logo not found
+                            return Container(
+                              width: 140,
+                              height: 140,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppTheme.goldColor.withValues(alpha: 0.3),
+                                    AppTheme.goldColor.withValues(alpha: 0.1),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
                                 ),
-                                child: Icon(
-                                  Icons.auto_stories,
-                                  size: ResponsiveUtils.iconSize(context, 80),
-                                  color: AppTheme.goldColor,
-                                ),
-                              );
-                            },
+                              ),
+                              child: Icon(
+                                Icons.auto_stories,
+                                size: ResponsiveUtils.iconSize(context, 60),
+                                color: AppTheme.goldColor,
+                              ),
+                            );
+                          },
+                        ),
+
+                        const SizedBox(height: 32),
+
+                        // App name (clean, no card)
+                        Text(
+                          'EVERYDAY',
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 26, minSize: 22, maxSize: 30),
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 8,
+                            color: AppTheme.goldColor,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'CHRISTIAN',
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 36, minSize: 32, maxSize: 40),
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 4,
+                            color: AppColors.primaryText,
                           ),
                         ),
 
-                        const SizedBox(height: AppSpacing.xxl),
+                        const SizedBox(height: 80),
 
-                        // App name in frosted glass card
-                        FrostedGlassCard(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xxl,
-                            vertical: AppSpacing.xl,
-                          ),
-                          intensity: GlassIntensity.medium,
-                          child: Column(
-                            children: [
-                              // App name
-                              Text(
-                                'EVERYDAY',
-                                style: TextStyle(
-                                  fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                                  fontWeight: FontWeight.w300,
-                                  letterSpacing: 6,
-                                  color: AppTheme.goldColor,
-                                ),
-                              ),
-                              Text(
-                                'CHRISTIAN',
-                                style: TextStyle(
-                                  fontSize: ResponsiveUtils.fontSize(context, 32, minSize: 28, maxSize: 36),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 3,
-                                  color: AppColors.primaryText,
-                                ),
-                              ),
-
-                              const SizedBox(height: AppSpacing.md),
-
-                              // Tagline
-                              Text(
-                                'Faith-guided wisdom for life\'s moments',
-                                style: TextStyle(
-                                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                                  color: AppColors.secondaryText,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(height: 60),
-
-                        // Loading indicator with glass effect
-                        Container(
-                          width: 60,
-                          height: 60,
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppTheme.goldColor.withValues(alpha: 0.3),
-                              width: 2,
-                            ),
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.white.withValues(alpha: 0.1),
-                                Colors.white.withValues(alpha: 0.05),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
-                          child: const CircularProgressIndicator(
+                        // Simple loading indicator
+                        const SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
                               AppTheme.goldColor,
                             ),
@@ -219,9 +166,9 @@ class SplashScreen extends HookConsumerWidget {
 
                         const SizedBox(height: AppSpacing.xxl),
 
-                        // Loading text
+                        // Loading text (simplified)
                         Text(
-                          'Preparing your spiritual journey...',
+                          'Loading...',
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                             color: AppColors.secondaryText,
