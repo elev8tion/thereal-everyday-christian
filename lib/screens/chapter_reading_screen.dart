@@ -195,90 +195,68 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         children: [
           const GradientBackground(),
           SafeArea(
-            child: Column(
-              children: [
-                // Header
-                _buildHeader(currentChapter, totalChapters),
+            child: FutureBuilder<Map<int, List<BibleVerse>>>(
+              future: _versesFuture,
+              builder: (context, snapshot) {
+                final currentChapterNum = widget.startChapter + _currentChapterIndex;
+                final currentVerses = (snapshot.hasData)
+                    ? (snapshot.data![currentChapterNum] ?? <BibleVerse>[])
+                    : <BibleVerse>[];
 
-                // Chapter indicator
-                _buildChapterIndicator(currentChapter, totalChapters),
+                return Column(
+                  children: [
+                    // Header with integrated audio player
+                    _buildHeader(currentChapter, totalChapters, currentVerses),
 
-                // Content
-                Expanded(
-                  child: FutureBuilder<Map<int, List<BibleVerse>>>(
-                    future: _versesFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return _buildLoading();
-                      }
+                    // Chapter indicator
+                    _buildChapterIndicator(currentChapter, totalChapters),
 
-                      if (snapshot.hasError) {
-                        return _buildError(snapshot.error.toString());
-                      }
+                    // Content
+                    Expanded(
+                      child: Builder(builder: (context) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return _buildLoading();
+                        }
 
-                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return _buildNoData();
-                      }
+                        if (snapshot.hasError) {
+                          return _buildError(snapshot.error.toString());
+                        }
 
-                      final chaptersMap = snapshot.data!;
-                      final chapters = List.generate(
-                        totalChapters,
-                        (i) => widget.startChapter + i,
-                      );
+                        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return _buildNoData();
+                        }
 
-                      final currentChapterNum = widget.startChapter + _currentChapterIndex;
-                      final currentVerses = chaptersMap[currentChapterNum] ?? [];
+                        final chaptersMap = snapshot.data!;
+                        final chapters = List.generate(
+                          totalChapters,
+                          (i) => widget.startChapter + i,
+                        );
 
-                      return Column(
-                        children: [
-                          // Sleek audio control pill
-                          AudioControlPill(
-                            isPlaying: _isAudioPlaying,
-                            isPaused: _ttsService.isPaused,
-                            speedLabel: _ttsService.speedLabel,
-                            currentVerse: _currentPlayingVerseIndex >= 0 ? _currentPlayingVerseIndex + 1 : null,
-                            totalVerses: currentVerses.length,
-                            onPlayPause: () {
-                              if (!_isAudioPlaying) {
-                                _playAudio(currentVerses);
-                              } else if (_ttsService.isPaused) {
-                                _resumeAudio();
-                              } else {
-                                _pauseAudio();
-                              }
-                            },
-                            onStop: _stopAudio,
-                            onSpeedTap: _cycleSpeed,
-                          ),
+                        // Chapter content with PageView
+                        return PageView.builder(
+                          controller: _pageController,
+                          itemCount: chapters.length,
+                          onPageChanged: (index) {
+                            setState(() => _currentChapterIndex = index);
+                            // Auto-stop audio when user swipes to different chapter
+                            if (_isAudioPlaying) {
+                              _stopAudio();
+                            }
+                          },
+                          itemBuilder: (context, index) {
+                            final chapterNum = chapters[index];
+                            final verses = chaptersMap[chapterNum] ?? [];
+                            return _buildChapterPage(chapterNum, verses, chaptersMap);
+                          },
+                        );
+                      }),
+                    ),
 
-                          // Chapter content
-                          Expanded(
-                            child: PageView.builder(
-                        controller: _pageController,
-                        itemCount: chapters.length,
-                        onPageChanged: (index) {
-                          setState(() => _currentChapterIndex = index);
-                          // Auto-stop audio when user swipes to different chapter
-                          if (_isAudioPlaying) {
-                            _stopAudio();
-                          }
-                        },
-                              itemBuilder: (context, index) {
-                                final chapterNum = chapters[index];
-                                final verses = chaptersMap[chapterNum] ?? [];
-                                return _buildChapterPage(chapterNum, verses, chaptersMap);
-                              },
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-
-                // Mark as Complete button
-                if (widget.readingId != null) _buildCompleteButton(),
-              ],
+                    // Mark as Complete button
+                    if (widget.readingId != null) _buildCompleteButton(),
+                  ],
+                );
+              },
             ),
           ),
         ],
@@ -286,10 +264,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     );
   }
 
-  Widget _buildHeader(int currentChapter, int totalChapters) {
+  Widget _buildHeader(int currentChapter, int totalChapters, List<BibleVerse> currentVerses) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 16.0, right: 8.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Back button
           Container(
@@ -311,49 +290,49 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
               onPressed: () => NavigationService.pop(),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 12),
 
-          // Title and status
+          // Title and subtitle stacked (compact)
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   '${widget.book} $currentChapter',
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
+                    fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 22),
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
+                    height: 1.2,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Row(
                   children: [
-                    Text(
-                      totalChapters > 1
-                        ? 'Chapter ${_currentChapterIndex + 1} of $totalChapters'
-                        : '1 chapter',
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                        color: Colors.white.withValues(alpha: 0.8),
-                        fontWeight: FontWeight.w500,
+                    Flexible(
+                      child: Text(
+                        totalChapters > 1
+                          ? 'Chapter ${_currentChapterIndex + 1} of $totalChapters'
+                          : '1 chapter',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 11, maxSize: 13),
+                          color: Colors.white.withValues(alpha: 0.7),
+                          fontWeight: FontWeight.w500,
+                          height: 1.2,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     if (_isCompleted) ...[
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
                       Icon(
                         Icons.check_circle,
-                        size: ResponsiveUtils.iconSize(context, 16),
+                        size: 12,
                         color: Colors.green.shade300,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Completed',
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                          color: Colors.green.shade300,
-                          fontWeight: FontWeight.w600,
-                        ),
                       ),
                     ],
                   ],
@@ -361,6 +340,32 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
               ],
             ),
           ),
+
+          const SizedBox(width: 8),
+
+          // Audio player on the right side with max width constraint
+          if (currentVerses.isNotEmpty)
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 160),
+              child: AudioControlPill(
+                isPlaying: _isAudioPlaying,
+                isPaused: _ttsService.isPaused,
+                speedLabel: _ttsService.speedLabel,
+                currentVerse: _currentPlayingVerseIndex >= 0 ? _currentPlayingVerseIndex + 1 : null,
+                totalVerses: currentVerses.length,
+                onPlayPause: () {
+                  if (!_isAudioPlaying) {
+                    _playAudio(currentVerses);
+                  } else if (_ttsService.isPaused) {
+                    _resumeAudio();
+                  } else {
+                    _pauseAudio();
+                  }
+                },
+                onStop: _stopAudio,
+                onSpeedTap: _cycleSpeed,
+              ),
+            ),
         ],
       ),
     );

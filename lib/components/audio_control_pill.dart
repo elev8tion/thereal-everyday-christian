@@ -62,13 +62,14 @@ class AudioControlPill extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Stop button (only when playing)
+                // Stop button (only when playing) - smaller size
                 if (isPlaying) ...[
                   _buildIconButton(
                     icon: Icons.stop_rounded,
                     onTap: onStop,
+                    size: 32, // Smaller than default 40
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 2), // Reduced from 4
                 ],
 
                 // Play/Pause button
@@ -81,12 +82,14 @@ class AudioControlPill extends StatelessWidget {
                   isActive: isActive,
                 ),
 
-                const SizedBox(width: 4),
+                const SizedBox(width: 2), // Reduced from 4
 
-                // Speed button
-                _buildSpeedButton(
-                  label: speedLabel,
-                  onTap: onSpeedTap,
+                // Speed button (flexible to prevent overflow)
+                Flexible(
+                  child: _buildSpeedButton(
+                    label: speedLabel,
+                    onTap: onSpeedTap,
+                  ),
                 ),
               ],
             ),
@@ -115,12 +118,13 @@ class AudioControlPill extends StatelessWidget {
     required VoidCallback onTap,
     bool isPrimary = false,
     bool isActive = false,
+    double size = 40, // Add size parameter with default
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 40,
-        height: 40,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isPrimary && isActive
@@ -136,7 +140,7 @@ class AudioControlPill extends StatelessWidget {
         child: Icon(
           icon,
           color: Colors.white,
-          size: isPrimary ? 24 : 20,
+          size: isPrimary ? 24 : (size * 0.5), // Scale icon with button size
         ),
       ),
     );
