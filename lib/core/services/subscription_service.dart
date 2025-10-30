@@ -2,7 +2,7 @@
 /// Manages premium subscription state, trial period, and message limits
 ///
 /// Trial: 3 days, 5 messages/day (15 total)
-/// Premium: ~$35/year (varies by region), 150 messages/month
+/// Premium: ~$35.99/year (pricing may vary by region and currency), 150 messages/month
 ///
 /// Uses SharedPreferences for local persistence (privacy-first design)
 /// Uses in_app_purchase for App Store/Play Store subscriptions

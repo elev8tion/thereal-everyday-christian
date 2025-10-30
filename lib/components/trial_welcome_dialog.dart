@@ -115,13 +115,27 @@ class TrialWelcomeDialog extends StatelessWidget {
                         color: Colors.white.withValues(alpha: 0.1),
                       ),
                     ),
-                    child: Text(
-                      'After trial: ~\$35/year for 150 messages/month',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                        color: AppColors.secondaryText,
-                      ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'After trial: ~\$35.99/year for 150 messages/month',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            color: AppColors.secondaryText,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '(pricing may vary by region and currency)',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 8, maxSize: 12),
+                            color: AppColors.secondaryText.withValues(alpha: 0.7),
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 

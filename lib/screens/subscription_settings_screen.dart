@@ -83,7 +83,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                         if (!isPremium) ...[
                           GlassButton(
                             text: hasTrialExpired
-                                ? 'Subscribe Now - ~\$35/year*'
+                                ? 'Subscribe Now - ~\$35.99/year*'
                                 : 'Start Free Trial',
                             onPressed: () {
                               Navigator.of(context).push(
@@ -119,7 +119,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                               AutoSizeText(
                                 isPremium
                                     ? 'Your subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.'
-                                    : 'Start your 3-day free trial with 5 AI messages per day. After trial: ~\$35/year (varies by region) for 150 messages per month. Cancel anytime in App Store settings.',
+                                    : 'Start your 3-day free trial with 5 AI messages per day. After trial: ~\$35.99/year (pricing may vary by region and currency) for 150 messages per month. Cancel anytime in App Store settings.',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: AppColors.secondaryText,

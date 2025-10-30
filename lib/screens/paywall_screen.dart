@@ -4,7 +4,7 @@
 /// Displays:
 /// - Trial status or expired message
 /// - Premium features list
-/// - Pricing ($35/year, 150 messages/month)
+/// - Pricing ($35.99/year, 150 messages/month)
 /// - Purchase and restore buttons
 
 import 'package:flutter/material.dart';
@@ -164,7 +164,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                                   ),
                                 ),
                                 Text(
-                                  premiumProduct?.price ?? '35',
+                                  premiumProduct?.price ?? '35.99',
                                   style: const TextStyle(
                                     fontSize: 56,
                                     fontWeight: FontWeight.bold,
@@ -174,12 +174,25 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                                 ),
                               ],
                             ),
-                            Text(
-                              'per year',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.secondaryText,
-                              ),
+                            Column(
+                              children: [
+                                Text(
+                                  'per year',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.secondaryText,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '(pricing may vary by region and currency)',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: AppColors.secondaryText.withValues(alpha: 0.7),
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: AppSpacing.lg),
                             Container(
@@ -261,7 +274,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       GlassButton(
                         text: _isProcessing
                             ? 'Processing...'
-                            : 'Start Premium - ${premiumProduct?.price ?? "\$35"}/year',
+                            : 'Start Premium - ${premiumProduct?.price ?? "\$35.99"}/year',
                         onPressed: _isProcessing ? null : _handlePurchase,
                       ),
                       const SizedBox(height: AppSpacing.lg),
