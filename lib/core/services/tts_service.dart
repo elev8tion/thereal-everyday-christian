@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'dart:developer' as developer;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +13,10 @@ import '../../models/bible_verse.dart';
 /// - Verse-by-verse progress tracking
 /// - Background audio support
 /// - Automatic cleanup on completion
+///
+/// Platform-specific speech rates:
+/// - iOS: Normal = 0.5 (0.375 = slow, 0.625 = fast)
+/// - Android: Normal = 1.0 (0.75 = slow, 1.25 = fast)
 class TtsService {
   static final TtsService _instance = TtsService._internal();
   factory TtsService() => _instance;
@@ -27,12 +32,21 @@ class TtsService {
   int _currentVerseIndex = -1;
   Completer<void>? _speakCompleter;
 
-  // Configurable settings
-  static const String _keyTtsRate = 'tts_speech_rate';
-  static const List<double> speedPresets = [0.75, 1.0, 1.25]; // Slow, Normal, Fast
-  static const double _defaultRate = 1.0; // Normal speed
-  static const int _defaultSpeedIndex = 1; // Default to 1.0x (index 1)
-  double _speechRate = _defaultRate;
+  // Platform-specific speed presets
+  // iOS uses 0.5 as normal (not 1.0!), Android uses 1.0
+  static List<double> get speedPresets {
+    if (Platform.isIOS) {
+      return [0.375, 0.5, 0.625]; // 0.75x, 1.0x, 1.25x equivalents
+    } else {
+      return [0.75, 1.0, 1.25]; // Android normal values
+    }
+  }
+
+  // Default to normal speed (index 1 in presets)
+  static const int _defaultSpeedIndex = 1;
+  static double get _defaultRate => speedPresets[_defaultSpeedIndex];
+
+  double _speechRate = 0.5; // Will be set correctly in _loadSpeechRate
   int _currentSpeedIndex = _defaultSpeedIndex;
 
   // Callbacks for UI updates
@@ -216,11 +230,18 @@ class TtsService {
   }
 
   /// Get current speed as formatted string (e.g., "1.0x")
+  /// Always shows user-friendly labels regardless of platform
   String get speedLabel {
-    if (_speechRate == 0.75) return '0.75x';
-    if (_speechRate == 1.0) return '1.0x';
-    if (_speechRate == 1.25) return '1.25x';
-    return '${_speechRate.toStringAsFixed(2)}x';
+    switch (_currentSpeedIndex) {
+      case 0:
+        return '0.75x'; // Slow
+      case 1:
+        return '1.0x'; // Normal
+      case 2:
+        return '1.25x'; // Fast
+      default:
+        return '1.0x';
+    }
   }
 
   /// Load saved speech rate preference
@@ -228,10 +249,16 @@ class TtsService {
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      // MIGRATION: Remove old slider-based preference if it exists
-      if (prefs.containsKey(_keyTtsRate)) {
-        developer.log('[TtsService] Removing old tts_speech_rate preference', name: 'TtsService');
-        await prefs.remove(_keyTtsRate);
+      // MIGRATION: Remove old preferences if they exist (from buggy 1.0 implementation)
+      bool needsMigration = false;
+      if (prefs.containsKey('tts_speech_rate')) {
+        developer.log('[TtsService] Migrating from old tts_speech_rate preference', name: 'TtsService');
+        await prefs.remove('tts_speech_rate');
+        needsMigration = true;
+      }
+      if (prefs.containsKey('tts_speed_index') && needsMigration) {
+        // Reset speed index too since old values were incorrect for iOS
+        await prefs.remove('tts_speed_index');
       }
 
       _currentSpeedIndex = prefs.getInt('tts_speed_index') ?? _defaultSpeedIndex;
@@ -242,7 +269,9 @@ class TtsService {
       }
 
       _speechRate = speedPresets[_currentSpeedIndex];
-      developer.log('[TtsService] Loaded speed preset: ${_speechRate}x (index $_currentSpeedIndex)', name: 'TtsService');
+
+      final platform = Platform.isIOS ? 'iOS' : 'Android';
+      developer.log('[TtsService] Loaded speed preset for $platform: $_speechRate (index $_currentSpeedIndex, displays as $speedLabel)', name: 'TtsService');
     } catch (e) {
       developer.log('[TtsService] Error loading speech rate: $e', name: 'TtsService', error: e);
       _speechRate = _defaultRate;

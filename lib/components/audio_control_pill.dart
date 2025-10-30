@@ -48,7 +48,7 @@ class AudioControlPill extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: AppTheme.primaryColor, // Gold border always visible
+                color: AppTheme.goldColor, // Gold border always visible
                 width: isActive ? 2.0 : 1.5, // Thicker when playing
               ),
               boxShadow: [
@@ -124,11 +124,11 @@ class AudioControlPill extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isPrimary && isActive
-              ? AppTheme.primaryColor.withValues(alpha: 0.2)
+              ? AppTheme.goldColor.withValues(alpha: 0.2)
               : Colors.transparent,
           border: isPrimary && isActive
               ? Border.all(
-                  color: AppTheme.primaryColor.withValues(alpha: 0.4),
+                  color: AppTheme.goldColor.withValues(alpha: 0.4),
                   width: 1,
                 )
               : null,
