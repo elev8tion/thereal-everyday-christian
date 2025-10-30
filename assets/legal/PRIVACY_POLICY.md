@@ -421,7 +421,7 @@ Legal Basis for Processing:
 - Legitimate Interest (Article 6(1)(f)): App functionality and security improvements
 - Manifest Public Interest (Article 9(2)(g)): Religious guidance provision
 
-Data Controller: [INSERT LEGAL ENTITY NAME], [INSERT BUSINESS ADDRESS]
+Data Controller: Elev8tion LLC, 15 Boyden St Office A, Waterbury, Connecticut 06704
 
 Data Processor: Google LLC (for Gemini API - Premium users only)
 
@@ -519,7 +519,7 @@ How we notify you:
 - Update the "Last Updated" date at the top of this policy
 - Display an in-app notification on next app launch
 - For material changes, require acknowledgment before continuing to use the app
-- Post updated policy at [INSERT WEBSITE URL if applicable]
+- Post updated policy at https://everydaychristian.app
 
 11.2 Material vs. Non-Material Changes
 
@@ -557,7 +557,7 @@ For questions about this Privacy Policy or our data practices:
 
 Email: connect@everydaychristian.app
 Response Time: Within 30 days of inquiry
-Mailing Address: [INSERT IF REQUIRED BY YOUR JURISDICTION]
+Mailing Address: Elev8tion LLC, 15 Boyden St Office A, Waterbury, CT 06704
 
 12.2 Exercising Privacy Rights
 
