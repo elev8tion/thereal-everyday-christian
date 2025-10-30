@@ -31,6 +31,7 @@ Everyday Christian is a faith-centered mobile application that provides:
 
 Core Features (Free):
 - Access to 31,103 Bible verses from the World English Bible translation
+- Audio Bible chapter reading with Text-to-Speech (adjustable speed: 0.75x - 1.25x)
 - Daily Bible verses and devotional content
 - Personal prayer journal with categories and progress tracking
 - Bible reading plans and progress tracking

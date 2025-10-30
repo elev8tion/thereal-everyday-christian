@@ -13,7 +13,8 @@ Everyday Christian is a faith-centered mobile app that provides:
 - Daily Bible verses and devotionals
 - Personal prayer journal
 - Comprehensive verse library (31,103 verses from the World English Bible)
-- Bible reading plans
+- Bible reading plans with audio playback (Text-to-Speech)
+- Audio Bible chapter reading with adjustable speech rate
 - Crisis intervention resources
 
 Our Privacy-First Commitment:
@@ -48,7 +49,7 @@ AI Chat History (Premium users only): Conversations with the AI pastoral guidanc
 
 Daily Verses: Track which daily verses have been delivered to you, whether you've opened them, and whether notifications were sent.
 
-App Settings: Your preferences including theme selection, text size, notification preferences, font size for Bible reader, biometric authentication preferences, and other customization options stored in a local settings table.
+App Settings: Your preferences including theme selection, text size, notification preferences, font size for Bible reader, audio playback speed (Text-to-Speech rate), biometric authentication preferences, and other customization options stored in a local settings table.
 
 Devotional Progress: Which daily devotionals you've completed and when.
 
@@ -88,9 +89,9 @@ Free tier users: If you don't subscribe to Premium, you can use all other app fe
 
 The data stored locally on your device is used to:
 
-Provide Core Features: Display your prayer journal, favorite verses, reading history, and AI chat conversations within the app
+Provide Core Features: Display your prayer journal, favorite verses, reading history, AI chat conversations, and audio Bible chapter playback within the app
 
-Personalize Your Experience: Remember your settings, track reading progress, and suggest relevant reading plans based on your history
+Personalize Your Experience: Remember your settings (including audio playback speed), track reading progress, and suggest relevant reading plans based on your history
 
 Maintain Reading Streaks: Track daily devotional completion and reading plan adherence
 
