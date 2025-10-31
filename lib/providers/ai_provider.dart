@@ -5,6 +5,7 @@ import '../services/unified_verse_service.dart';
 import '../models/bible_verse.dart';
 import '../models/chat_message.dart';
 import '../core/services/content_filter_service.dart';
+import '../core/services/input_security_service.dart';
 
 /// Provider for AI service instance (Gemini AI)
 final aiServiceProvider = Provider<AIService>((ref) {
@@ -116,6 +117,7 @@ class GeminiAIServiceAdapter implements AIService {
   final GeminiAIService _gemini = GeminiAIService.instance;
   final UnifiedVerseService _verseService = UnifiedVerseService();
   final ContentFilterService _contentFilter = ContentFilterService();
+  final InputSecurityService _inputSecurity = InputSecurityService();
 
   @override
   Future<void> initialize() async {
@@ -132,6 +134,26 @@ class GeminiAIServiceAdapter implements AIService {
     Map<String, dynamic>? context,
   }) async {
     final stopwatch = Stopwatch()..start();
+
+    // ============================================================================
+    // SECURITY: Validate user input BEFORE sending to AI
+    // ============================================================================
+    final securityCheck = _inputSecurity.validateInput(userInput);
+
+    if (securityCheck.isRejected) {
+      // Block malicious input - return safe rejection message
+      return AIResponse(
+        content: securityCheck.rejectionReason!,
+        verses: [],
+        metadata: {
+          'security_blocked': true,
+          'threat_level': securityCheck.threatLevel?.name,
+          'detected_patterns': securityCheck.detectedPatterns,
+        },
+        processingTime: stopwatch.elapsed,
+        confidence: 1.0, // High confidence - this is our security response
+      );
+    }
 
     // Detect theme from user input
     final themes = BiblicalPrompts.detectThemes(userInput);
@@ -192,6 +214,17 @@ class GeminiAIServiceAdapter implements AIService {
     List conversationHistory = const [],
     Map<String, dynamic>? context,
   }) async* {
+    // ============================================================================
+    // SECURITY: Validate user input BEFORE sending to AI
+    // ============================================================================
+    final securityCheck = _inputSecurity.validateInput(userInput);
+
+    if (securityCheck.isRejected) {
+      // Block malicious input - yield safe rejection message
+      yield securityCheck.rejectionReason!;
+      return;
+    }
+
     // Detect theme from user input
     final themes = BiblicalPrompts.detectThemes(userInput);
     final theme = themes.isNotEmpty ? themes.first : 'comfort';
