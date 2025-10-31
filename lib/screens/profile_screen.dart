@@ -338,12 +338,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               crossAxisCount: crossAxisCount,
               mainAxisSpacing: ResponsiveUtils.spacing(context, 12),
               crossAxisSpacing: ResponsiveUtils.spacing(context, 12),
-              childAspectRatio: ResponsiveUtils.valueByDevice(
-                context,
-                mobile: 1.3,
-                tablet: 1.2,
-                desktop: 1.1,
-              ),
+              childAspectRatio: 1.6,
               children: [
                 _buildStatCard(
                   'Devotional Streak',
@@ -399,24 +394,24 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Widget _buildStatCard(String label, String value, IconData icon, Color color, int delay) {
     return FrostedGlassCard(
-      padding: AppSpacing.cardPadding,
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(AppSpacing.sm),
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.2),
               borderRadius: AppRadius.mediumRadius,
             ),
             child: Icon(
               icon,
-              size: ResponsiveUtils.iconSize(context, 22),
+              size: ResponsiveUtils.iconSize(context, 20),
               color: color,
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: 6),
           Text(
             value,
             style: TextStyle(
