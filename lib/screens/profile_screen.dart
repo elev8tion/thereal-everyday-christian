@@ -374,6 +374,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: AppSpacing.xl),
         // Responsive grid: 2 columns on mobile, 3 on tablet, 4 on desktop
         LayoutBuilder(
           builder: (context, constraints) {
