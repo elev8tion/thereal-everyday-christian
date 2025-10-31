@@ -423,8 +423,8 @@ class AppRadius {
   static const double pill = 100.0; // For fully rounded elements
 
   // Common border radius patterns
-  static final BorderRadius smallRadius = BorderRadius.circular(xs);
-  static final BorderRadius mediumRadius = BorderRadius.circular(sm);
+  static final BorderRadius smallRadius = BorderRadius.circular(sm);
+  static final BorderRadius mediumRadius = BorderRadius.circular(md);
   static final BorderRadius cardRadius = BorderRadius.circular(lg);
   static final BorderRadius largeCardRadius = BorderRadius.circular(xl);
   static final BorderRadius buttonRadius = BorderRadius.circular(xxl);

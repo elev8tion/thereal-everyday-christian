@@ -525,7 +525,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   Widget _buildProgressIndicator(List<Devotional> devotionals) {
-    return FrostedGlassCard(
+    return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
