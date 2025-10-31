@@ -1,44 +1,80 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../theme/app_theme.dart';
 
 /// Shows a glass morphism style dialog
+///
+/// Uses the EXACT same animation pattern as the FAB menu:
+/// - BackdropFilter with animated blur (sigmaX/Y: 0→8)
+/// - Semi-transparent black overlay with animated opacity (0→0.3)
+/// - Smooth reverse animation completion (waits before dismissing)
+/// - Fade + Scale transition for dialog content
 Future<T?> showGlassDialog<T>({
   required BuildContext context,
   required Widget child,
   bool barrierDismissible = true,
   Color? barrierColor,
-  Duration transitionDuration = const Duration(milliseconds: 300),
+  Duration transitionDuration = const Duration(milliseconds: 700),
 }) {
   return showGeneralDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
     barrierLabel: 'Dismiss',
-    barrierColor: barrierColor ?? Colors.black.withValues(alpha: 0.5),
+    barrierColor: Colors.transparent, // Make barrier transparent so blur shows
     transitionDuration: transitionDuration,
     pageBuilder: (context, animation, secondaryAnimation) {
       return child;
     },
     transitionBuilder: (context, animation, secondaryAnimation, child) {
-      return FadeTransition(
-        opacity: CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeOut,
-        ),
-        child: ScaleTransition(
-          scale: CurvedAnimation(
-            parent: animation,
-            curve: Curves.easeOutBack,
-          ),
-          child: AlertDialog(
-            backgroundColor: Colors.transparent,
-            contentPadding: EdgeInsets.zero,
-            content: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: child,
+      // EXACT same animation pattern as FAB menu (glassmorphic_fab_menu.dart:138-165)
+      return GestureDetector(
+        onTap: barrierDismissible ? () => Navigator.of(context).pop() : null,
+        behavior: HitTestBehavior.opaque,
+        child: Stack(
+          children: [
+            // Animated blurred backdrop - EXACT same as FAB menu
+            Positioned.fill(
+              child: AnimatedBuilder(
+                animation: animation,
+                builder: (context, _) {
+                  return BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: animation.value * 8, // 0→8 during open, 8→0 during close
+                      sigmaY: animation.value * 8,
+                    ),
+                    child: Container(
+                      color: Colors.black.withValues(alpha: 0.3 * animation.value), // 0→0.3
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
+            // Dialog content with fade + scale animation (like FAB menu items)
+            Center(
+              child: FadeTransition(
+                opacity: CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.fastEaseInToSlowEaseOut, // Same curve as FAB menu
+                ),
+                child: ScaleTransition(
+                  scale: CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.fastEaseInToSlowEaseOut,
+                  ),
+                  child: AlertDialog(
+                    backgroundColor: Colors.transparent,
+                    contentPadding: EdgeInsets.zero,
+                    content: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: child,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       );
     },
