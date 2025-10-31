@@ -21,7 +21,7 @@ class UnifiedVerseService {
     try {
       final database = await _db.database;
 
-      // Use FTS5 for full-text search with ranking (with timeout)
+      // Use FTS5 for full-text search with ranking + randomization (with timeout)
       final results = await database.rawQuery('''
         SELECT v.*,
                snippet(bible_verses_fts, 0, '<mark>', '</mark>', '...', 32) as snippet,
@@ -29,7 +29,7 @@ class UnifiedVerseService {
         FROM bible_verses_fts
         JOIN bible_verses v ON bible_verses_fts.rowid = v.id
         WHERE bible_verses_fts MATCH ?
-        ORDER BY rank
+        ORDER BY rank, RANDOM()
         LIMIT ?
       ''', [query, limit]).timeout(
         const Duration(seconds: 10),
@@ -79,6 +79,7 @@ class UnifiedVerseService {
 
   /// Search verses by theme
   Future<List<BibleVerse>> searchByTheme(String theme, {int limit = 20}) async {
+    print('🔍 [searchByTheme] Called with theme: "$theme", limit: $limit');
     final database = await _db.database;
 
     // Search in themes JSON array or category field
@@ -88,6 +89,14 @@ class UnifiedVerseService {
       ORDER BY RANDOM()
       LIMIT ?
     ''', ['%"${theme.toLowerCase()}"%', '%${theme.toLowerCase()}%', '%$theme%', limit]);
+
+    print('🔍 [searchByTheme] Found ${results.length} verses for theme "$theme"');
+    if (results.isNotEmpty) {
+      // Log first 2 verses for verification
+      for (int i = 0; i < results.length && i < 2; i++) {
+        print('  📖 Verse ${i + 1}: ${results[i]['reference']} - ${results[i]['text']?.toString().substring(0, 50)}...');
+      }
+    }
 
     final favoriteIds = await _getFavoriteVerseIds();
 

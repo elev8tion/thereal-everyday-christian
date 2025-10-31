@@ -237,7 +237,8 @@ class GeminiAIServiceAdapter implements AIService {
   @override
   Future<List<BibleVerse>> getRelevantVerses(String topic, {int limit = 3}) async {
     try {
-      return await _verseService.searchVerses(topic, limit: limit);
+      // Use theme-based search for intelligent, contextual verse selection
+      return await _verseService.searchByTheme(topic, limit: limit);
     } catch (e) {
       return [];
     }
