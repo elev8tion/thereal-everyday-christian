@@ -73,33 +73,28 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
                 final currentDevotional = devotionals[_currentDay];
 
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppSpacing.xl),
-                      child: _buildHeader(streakAsync, totalCompletedAsync),
-                    ),
-                    const SizedBox(height: AppSpacing.xxl),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        padding: AppSpacing.horizontalXl,
-                        child: Column(
-                          children: [
-                            // Fixed height card with internal scrolling
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.65, // 65% of screen height
-                              child: _buildDevotionalCard(currentDevotional),
-                            ),
-                            const SizedBox(height: AppSpacing.xl),
-                            _buildNavigationButtons(devotionals.length),
-                            const SizedBox(height: AppSpacing.xl),
-                            _buildProgressIndicator(devotionals),
-                            const SizedBox(height: AppSpacing.xl),
-                          ],
-                        ),
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    top: AppSpacing.xl,
+                    left: AppSpacing.xl,
+                    right: AppSpacing.xl,
+                  ),
+                  child: Column(
+                    children: [
+                      _buildHeader(streakAsync, totalCompletedAsync),
+                      const SizedBox(height: AppSpacing.xxl),
+                      // Fixed height card with internal scrolling
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.65, // 65% of screen height
+                        child: _buildDevotionalCard(currentDevotional),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: AppSpacing.xl),
+                      _buildNavigationButtons(devotionals.length),
+                      const SizedBox(height: AppSpacing.xl),
+                      _buildProgressIndicator(devotionals),
+                      const SizedBox(height: AppSpacing.xl),
+                    ],
+                  ),
                 );
               },
               loading: () => SingleChildScrollView(
