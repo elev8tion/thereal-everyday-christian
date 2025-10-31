@@ -111,11 +111,12 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
     });
 
     if (_isVisible) {
-      _controller.forward();
       _showOverlay();
+      _controller.forward();
     } else {
-      _controller.reverse();
-      _removeOverlay();
+      _controller.reverse().then((_) {
+        _removeOverlay();
+      });
     }
   }
 
