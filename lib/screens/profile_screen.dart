@@ -760,33 +760,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
               ),
 
-              const SizedBox(height: AppSpacing.lg),
-
-              Text(
-                'Email',
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryText,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              TextField(
-                controller: _emailController,
-                style: const TextStyle(color: Colors.white),
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: 'Enter your email',
-                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
-                  filled: true,
-                  fillColor: Colors.white.withValues(alpha: 0.1),
-                  border: OutlineInputBorder(
-                    borderRadius: AppRadius.mediumRadius,
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-
               const SizedBox(height: AppSpacing.xxl),
 
               Row(
