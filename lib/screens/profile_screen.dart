@@ -215,6 +215,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Widget _buildProfileCard() {
     return FrostedGlassCard(
+      borderRadius: 32,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -1455,7 +1457,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     text: 'No Cloud Storage',
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  TextSpan(text: ': We do not sync your data to any cloud service, external server, or backup system. Your spiritual journey remains private on your device.'),
+                  TextSpan(text: ': We do not sync your data to any cloud service, external server, or backup system. Your data remains private on your device.'),
                 ],
               ),
               const TextSpan(text: '\n'),
