@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/connectivity_service.dart';
 import '../services/database_service.dart';
+import '../database/database_helper.dart';
 import '../services/notification_service.dart';
 import '../services/prayer_service.dart';
 import '../services/prayer_streak_service.dart';
@@ -27,6 +28,12 @@ export 'subscription_providers.dart';
 // Core Services
 final connectivityServiceProvider = Provider<ConnectivityService>((ref) {
   return ConnectivityService();
+});
+
+// Connectivity Status Stream Provider
+final connectivityStatusProvider = StreamProvider<bool>((ref) {
+  final service = ref.watch(connectivityServiceProvider);
+  return service.connectivityStream;
 });
 
 final databaseServiceProvider = Provider<DatabaseService>((ref) {
@@ -225,6 +232,18 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   await database.initialize();
   await notifications.initialize();
   await subscription.initialize();
+
+  // Automatic cleanup: Remove old chat messages (60+ days OR keep only 100 most recent)
+  try {
+    final dbHelper = DatabaseHelper.instance;
+    final cleanup = await dbHelper.autoCleanupChatMessages();
+    if (cleanup['total_deleted']! > 0) {
+      print('🧹 Auto-cleanup: Removed ${cleanup['total_deleted']} old chat messages');
+    }
+  } catch (e) {
+    // Don't block app initialization if cleanup fails
+    print('⚠️ Auto-cleanup failed: $e');
+  }
 
   // Load Bible on first launch
   final isWEBLoaded = await bibleLoader.isBibleLoaded('WEB');

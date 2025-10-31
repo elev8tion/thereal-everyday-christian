@@ -165,13 +165,25 @@ class GeminiAIServiceAdapter implements AIService {
     // Format conversation history with proper context and limit to last 20 messages
     final historyStrings = _formatConversationHistory(conversationHistory);
 
-    // Call Gemini AI
-    final response = await _gemini.generateResponse(
-      userInput: userInput,
-      theme: theme,
-      verses: verses,
-      conversationHistory: historyStrings,
-    );
+    // Call Gemini AI with error handling
+    AIResponse response;
+    try {
+      response = await _gemini.generateResponse(
+        userInput: userInput,
+        theme: theme,
+        verses: verses,
+        conversationHistory: historyStrings,
+      );
+    } catch (e) {
+      stopwatch.stop();
+      // GRACEFUL FALLBACK: Return encouraging message with relevant verses
+      return _createFallbackResponse(
+        theme: theme,
+        verses: verses,
+        error: e.toString(),
+        processingTime: stopwatch.elapsed,
+      );
+    }
 
     stopwatch.stop();
 
@@ -235,35 +247,49 @@ class GeminiAIServiceAdapter implements AIService {
     // Format conversation history with proper context and limit to last 20 messages
     final historyStrings = _formatConversationHistory(conversationHistory);
 
-    // Use Gemini's streaming capability
-    final stream = _gemini.generateStreamingResponse(
-      userInput: userInput,
-      theme: theme,
-      verses: verses,
-      conversationHistory: historyStrings,
-    );
+    // Use Gemini's streaming capability with error handling
+    Stream<String> stream;
+    try {
+      stream = _gemini.generateStreamingResponse(
+        userInput: userInput,
+        theme: theme,
+        verses: verses,
+        conversationHistory: historyStrings,
+      );
+    } catch (e) {
+      // GRACEFUL FALLBACK: Yield encouraging message with verses
+      final fallback = _createFallbackMessage(theme, verses);
+      yield fallback;
+      return;
+    }
 
     // Buffer all chunks to filter complete response
     final buffer = StringBuffer();
-    await for (final chunk in stream) {
-      buffer.write(chunk);
-    }
+    try {
+      await for (final chunk in stream) {
+        buffer.write(chunk);
+      }
 
-    final completeResponse = buffer.toString();
+      final completeResponse = buffer.toString();
 
-    // Filter AI response for harmful theology
-    final filterResult = _contentFilter.filterResponse(completeResponse);
+      // Filter AI response for harmful theology
+      final filterResult = _contentFilter.filterResponse(completeResponse);
 
-    if (filterResult.isRejected) {
-      // Log the filtered response
-      _contentFilter.logFilteredResponse(filterResult, completeResponse);
+      if (filterResult.isRejected) {
+        // Log the filtered response
+        _contentFilter.logFilteredResponse(filterResult, completeResponse);
 
-      // Yield safe fallback response instead
-      final fallbackContent = _contentFilter.getFallbackResponse(theme);
-      yield fallbackContent;
-    } else {
-      // Yield the approved response
-      yield completeResponse;
+        // Yield safe fallback response instead
+        final fallbackContent = _contentFilter.getFallbackResponse(theme);
+        yield fallbackContent;
+      } else {
+        // Yield the approved response
+        yield completeResponse;
+      }
+    } catch (e) {
+      // GRACEFUL FALLBACK: Stream failed mid-response
+      final fallback = _createFallbackMessage(theme, verses);
+      yield fallback;
     }
   }
 
@@ -306,6 +332,75 @@ class GeminiAIServiceAdapter implements AIService {
       // Fallback for unknown types
       return msg.toString();
     }).toList();
+  }
+
+  /// Create graceful fallback response when AI service fails
+  AIResponse _createFallbackResponse({
+    required String theme,
+    required List<BibleVerse> verses,
+    required String error,
+    required Duration processingTime,
+  }) {
+    final fallbackMessage = _createFallbackMessage(theme, verses);
+
+    return AIResponse(
+      content: fallbackMessage,
+      verses: verses,
+      metadata: {
+        'fallback': true,
+        'error': error,
+        'fallback_reason': 'AI service temporarily unavailable',
+      },
+      processingTime: processingTime,
+      confidence: 0.7, // Moderate confidence for fallback
+    );
+  }
+
+  /// Create encouraging fallback message with Scripture
+  String _createFallbackMessage(String theme, List<BibleVerse> verses) {
+    final buffer = StringBuffer();
+
+    // Opening message
+    buffer.writeln("I'm having trouble connecting right now, but here's encouragement from Scripture while we reconnect:\n");
+
+    // Add relevant verses
+    if (verses.isNotEmpty) {
+      for (final verse in verses) {
+        buffer.writeln('"${verse.text}"');
+        buffer.writeln('— ${verse.reference}\n');
+      }
+    } else {
+      // Default comfort verse if no verses available
+      buffer.writeln('"Cast all your anxiety on him because he cares for you."');
+      buffer.writeln('— 1 Peter 5:7\n');
+    }
+
+    // Closing encouragement based on theme
+    final encouragement = _getThemeEncouragement(theme);
+    buffer.writeln(encouragement);
+
+    buffer.writeln("\nPlease try sending your message again in a moment. I'm here for you.");
+
+    return buffer.toString();
+  }
+
+  /// Get theme-specific encouragement
+  String _getThemeEncouragement(String theme) {
+    final encouragements = {
+      'anxiety': 'God is with you in your anxiety. His peace surpasses all understanding.',
+      'fear': 'You are not alone in your fear. God has not given you a spirit of fear, but of power, love, and sound mind.',
+      'hope': 'Hold fast to hope. Your story is not over, and God is writing the next chapter.',
+      'forgiveness': 'God\'s forgiveness is complete and unconditional. He remembers your sins no more.',
+      'love': 'You are deeply loved by God. Nothing can separate you from His love.',
+      'faith': 'Even when doubts arise, God is faithful. He meets you where you are.',
+      'peace': 'The peace of Christ is available to you right now. Rest in His presence.',
+      'strength': 'God\'s strength is made perfect in your weakness. Lean on Him.',
+      'guidance': 'God will direct your steps. Trust Him one day at a time.',
+      'comfort': 'God is near to the brokenhearted. He will comfort you in your pain.',
+    };
+
+    return encouragements[theme.toLowerCase()] ??
+        'Remember, God is with you. He hears your prayers and cares about every detail of your life.';
   }
 
   @override

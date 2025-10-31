@@ -80,6 +80,9 @@ class ChatScreen extends HookConsumerWidget {
     // Watch AI service initialization state
     final aiServiceState = ref.watch(aiServiceStateProvider);
 
+    // Watch connectivity status
+    final connectivityStatus = ref.watch(connectivityStatusProvider);
+
     // Initialize session and load messages from database
     useEffect(() {
       Future<void> initializeSession() async {
@@ -1448,6 +1451,8 @@ class ChatScreen extends HookConsumerWidget {
                 _buildAppBar(context, messages, sessionId, conversationService, showChatOptions),
                 // AI Service initialization status banner
                 _buildAIStatusBanner(aiServiceState),
+                // Connectivity status banner
+                _buildConnectivityBanner(connectivityStatus),
                 Expanded(
                   child: _buildMessagesList(
                     context,
@@ -2561,6 +2566,64 @@ class ChatScreen extends HookConsumerWidget {
     } else {
       return '${dateTime.month}/${dateTime.day}/${dateTime.year}';
     }
+  }
+
+  Widget _buildConnectivityBanner(AsyncValue<bool> connectivityStatus) {
+    return connectivityStatus.when(
+      data: (isConnected) {
+        if (isConnected) {
+          return const SizedBox.shrink();
+        }
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.red.withValues(alpha: 0.3),
+                Colors.red.withValues(alpha: 0.2),
+              ],
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.cloud_off_rounded,
+                color: Colors.white,
+                size: 18,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'No Internet Connection',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'AI chat requires internet. Your Bible, prayers, and saved verses work offline.',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.9),
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      loading: () => const SizedBox.shrink(),
+      error: (_, __) => const SizedBox.shrink(),
+    );
   }
 
 }

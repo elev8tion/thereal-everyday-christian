@@ -1128,6 +1128,49 @@ class DatabaseHelper {
     );
   }
 
+  /// Delete excess chat messages, keeping only the N most recent
+  Future<int> deleteExcessChatMessages(int keepCount) async {
+    final db = await database;
+
+    // Get the timestamp of the Nth most recent message
+    final result = await db.query(
+      'chat_messages',
+      columns: ['timestamp'],
+      orderBy: 'timestamp DESC',
+      limit: 1,
+      offset: keepCount,
+    );
+
+    if (result.isEmpty) {
+      // Less than keepCount messages exist, nothing to delete
+      return 0;
+    }
+
+    final cutoffTimestamp = result.first['timestamp'] as int;
+
+    // Delete all messages older than the cutoff
+    return await db.delete(
+      'chat_messages',
+      where: 'timestamp < ?',
+      whereArgs: [cutoffTimestamp],
+    );
+  }
+
+  /// Perform automatic cleanup: remove messages older than 60 days OR keep only 100 most recent
+  Future<Map<String, int>> autoCleanupChatMessages() async {
+    // Delete messages older than 60 days
+    final deletedByAge = await deleteOldChatMessages(60);
+
+    // Delete excess messages, keeping only 100 most recent
+    final deletedByCount = await deleteExcessChatMessages(100);
+
+    return {
+      'deleted_by_age': deletedByAge,
+      'deleted_by_count': deletedByCount,
+      'total_deleted': deletedByAge + deletedByCount,
+    };
+  }
+
   Future<int> insertPrayerRequest(Map<String, dynamic> prayer) async {
     final db = await database;
     return await db.insert('prayer_requests', prayer);
