@@ -507,14 +507,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         size: ResponsiveUtils.iconSize(context, 18),
                       ),
                       const SizedBox(width: AppSpacing.sm),
-                      Text(
-                        'Notification time',
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                          color: Colors.white.withValues(alpha: 0.7),
+                      Expanded(
+                        child: Text(
+                          'Notification time',
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                            color: Colors.white.withValues(alpha: 0.7),
+                          ),
                         ),
                       ),
-                      const Spacer(),
+                      const SizedBox(width: AppSpacing.sm),
                       Text(
                         _formatTimeTo12Hour(currentTime),
                         style: TextStyle(
@@ -1628,6 +1630,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               children: [
                 // Header
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(AppSpacing.sm),
@@ -1651,12 +1654,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    Text(
-                      'Privacy Policy',
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                    Flexible(
+                      child: Text(
+                        'Privacy Policy',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -4084,6 +4090,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               children: [
                 // Header
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(AppSpacing.sm),
@@ -4107,12 +4114,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    Text(
-                      'Terms of Service',
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                    Flexible(
+                      child: Text(
+                        'Terms of Service',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],

@@ -474,16 +474,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ),
           const SizedBox(height: 2),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
-              color: AppColors.secondaryText,
-              fontWeight: FontWeight.w500,
+          Flexible(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
+                color: AppColors.secondaryText,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -896,6 +898,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               children: [
                 // Header
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(AppSpacing.sm),
@@ -919,12 +922,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    Text(
-                      'Privacy Policy',
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                    Flexible(
+                      child: Text(
+                        'Privacy Policy',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -3354,6 +3360,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               children: [
                 // Header
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(AppSpacing.sm),
@@ -3377,12 +3384,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    Text(
-                      'Terms of Service',
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                    Flexible(
+                      child: Text(
+                        'Terms of Service',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
