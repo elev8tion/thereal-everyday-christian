@@ -319,6 +319,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
 
   Widget _buildSliderTile(String title, String subtitle, double value, double min, double max, Function(double) onChanged) {
+    final textSize = ref.watch(textSizeProvider);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: AppSpacing.cardPadding,
@@ -343,7 +345,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       title,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18) * textSize,
                         fontWeight: FontWeight.w600,
                         color: AppColors.primaryText,
                       ),
@@ -352,7 +354,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15) * textSize,
                         color: Colors.white.withValues(alpha: 0.7),
                       ),
                     ),
@@ -362,7 +364,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Text(
                 '${(value * 100).round()}%',
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16) * textSize,
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
