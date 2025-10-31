@@ -39,8 +39,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final prefs = await PreferencesService.getInstance();
     final name = prefs.getFirstNameOrDefault();
     setState(() {
-      userName = name;
-      _nameController.text = name;
+      // If it's the default 'friend', treat as empty
+      userName = name == 'friend' ? '' : name;
+      _nameController.text = userName;
     });
   }
 
@@ -57,6 +58,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const SnackBar(content: Text('Profile updated successfully')),
         );
       }
+    } else {
+      // If name is empty, just clear it (will show pencil icon)
+      setState(() {
+        userName = '';
+      });
     }
   }
 
@@ -146,8 +152,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildProfileCard(),
-                            const SizedBox(height: AppSpacing.xxl),
                             _buildStatsSection(
                               devotionalStreak: devotionalStreak,
                               totalPrayers: totalPrayers,
@@ -186,6 +190,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget _buildHeader() {
+    final bool hasCustomName = userName.isNotEmpty;
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.only(
@@ -200,9 +206,64 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    SizedBox(height: 56 + 12), // FAB height (56) + spacing (12)
+                    // Show pencil icon if no custom name, otherwise show username card
+                    GestureDetector(
+                      onTap: _showEditProfileDialog,
+                      child: AnimatedSwitcher(
+                        duration: AppAnimations.normal,
+                        switchInCurve: Curves.easeInOut,
+                        switchOutCurve: Curves.easeInOut,
+                        transitionBuilder: (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: ScaleTransition(
+                              scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+                                CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.easeOutBack,
+                                ),
+                              ),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: hasCustomName
+                            ? FrostedGlassCard(
+                                key: const ValueKey('username_card'),
+                                borderRadius: 20,
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                child: Text(
+                                  userName,
+                                  style: TextStyle(
+                                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primaryText,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            : Container(
+                                key: const ValueKey('pencil_icon'),
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.goldColor.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: AppTheme.goldColor.withValues(alpha: 0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.edit_outlined,
+                                  size: ResponsiveUtils.iconSize(context, 20),
+                                  color: AppTheme.goldColor,
+                                ),
+                              ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -216,7 +277,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget _buildProfileCard() {
     return FrostedGlassCard(
       borderRadius: 32,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -313,17 +374,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Your Spiritual Journey',
-          style: TextStyle(
-            fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
-            fontWeight: FontWeight.w700,
-            color: AppColors.primaryText,
-          ),
-        ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.slow),
-
-        const SizedBox(height: AppSpacing.lg),
-
         // Responsive grid: 2 columns on mobile, 3 on tablet, 4 on desktop
         LayoutBuilder(
           builder: (context, constraints) {
