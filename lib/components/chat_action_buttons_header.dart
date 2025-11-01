@@ -65,7 +65,7 @@ class ChatActionButtons extends StatelessWidget {
               ),
               borderRadius: AppRadius.mediumRadius,
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: AppTheme.goldColor.withValues(alpha: 0.4),
                 width: 1,
               ),
             ),
@@ -86,7 +86,7 @@ class ChatActionButtons extends StatelessWidget {
               ),
               borderRadius: AppRadius.mediumRadius,
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: AppTheme.goldColor.withValues(alpha: 0.4),
                 width: 1,
               ),
             ),
