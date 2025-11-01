@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -1974,51 +1975,57 @@ class ChatScreen extends HookConsumerWidget {
           child: Row(
             children: [
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.white.withValues(alpha: 0.2),
-                        Colors.white.withValues(alpha: 0.1),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(AppRadius.xl + 1),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.3),
-                      width: 1,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppRadius.xl + 1),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.white.withValues(alpha: 0.2),
+                            Colors.white.withValues(alpha: 0.1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(AppRadius.xl + 1),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.3),
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.15),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: TextField(
-                    controller: messageController,
-                    style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Scripture Chat...',
-                      hintStyle: TextStyle(
-                        color: AppColors.tertiaryText,
-                        fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                      child: TextField(
+                        controller: messageController,
+                        style: TextStyle(
+                          color: AppColors.primaryText,
+                          fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Scripture Chat...',
+                          hintStyle: TextStyle(
+                            color: AppColors.tertiaryText,
+                            fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                          ),
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 15,
+                          ),
+                        ),
+                        minLines: 1,
+                        maxLines: 3,
+                        textCapitalization: TextCapitalization.sentences,
+                        onSubmitted: canSend ? sendMessage : null,
                       ),
-                      border: InputBorder.none,
-                      filled: true,
-                      fillColor: Colors.transparent,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
                     ),
-                    minLines: 1,
-                    maxLines: 3,
-                    textCapitalization: TextCapitalization.sentences,
-                    onSubmitted: canSend ? sendMessage : null,
                   ),
                 ),
               ),
