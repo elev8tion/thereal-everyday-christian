@@ -315,13 +315,16 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   /// Build filtered books list (shown when books match search)
   Widget _buildFilteredBooks() {
-    return ListView.builder(
+    return GridView.builder(
       padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
-      itemCount: _filteredBooks.length,
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 12),
-        child: _buildBookCard(_filteredBooks[index]),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1.6,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
       ),
+      itemCount: _filteredBooks.length,
+      itemBuilder: (context, index) => _buildBookCard(_filteredBooks[index]),
     );
   }
 
@@ -514,13 +517,16 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
       );
     }
 
-    return ListView.builder(
+    return GridView.builder(
       padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
-      itemCount: books.length,
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 12),
-        child: _buildBookCard(books[index]),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1.6,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
       ),
+      itemCount: books.length,
+      itemBuilder: (context, index) => _buildBookCard(books[index]),
     );
   }
 
@@ -528,48 +534,22 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
     return GestureDetector(
       onTap: () => _showChapterSelector(book),
       child: FrostedGlassCard(
-          child: Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.white.withValues(alpha: 0.25),
-                      Colors.white.withValues(alpha: 0.15),
-                    ],
-                  ),
-                  borderRadius: AppRadius.mediumRadius,
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    width: 1.5,
-                  ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: AutoSizeText(
+                book,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryText,
                 ),
-                child: Icon(
-                  Icons.menu_book,
-                  color: Colors.white,
-                  size: ResponsiveUtils.iconSize(context, 24),
-                ),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                minFontSize: 11,
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: AutoSizeText(
-                  book,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryText,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Icon(
-                Icons.chevron_right,
-                color: Colors.white.withValues(alpha: 0.6),
-              ),
-            ],
+            ),
           ),
       ),
     );
