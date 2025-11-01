@@ -76,11 +76,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   // Build achievements list based on real stats
-  List<Achievement> _buildAchievements(int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive) {
+  List<Achievement> _buildAchievements(int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive, int devotionalStreak, int totalPrayers) {
     return [
       Achievement(
         title: 'Prayer Warrior',
-        description: 'Prayed for 7 days in a row',
+        description: 'Maintain a 7-day prayer streak',
         icon: Icons.local_fire_department,
         color: Colors.orange,
         isUnlocked: prayerStreak >= 7,
@@ -88,8 +88,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 7,
       ),
       Achievement(
+        title: 'Prayer Champion',
+        description: 'Log 50 prayers',
+        icon: Icons.favorite,
+        color: Colors.pink,
+        isUnlocked: totalPrayers >= 50,
+        progress: totalPrayers >= 50 ? 50 : totalPrayers,
+        total: 50,
+      ),
+      Achievement(
         title: 'Bible Scholar',
-        description: 'Save 100 verses',
+        description: 'Save 100 Bible verses',
         icon: Icons.book,
         color: Colors.blue,
         isUnlocked: savedVerses >= 100,
@@ -98,9 +107,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       Achievement(
         title: 'Faithful Friend',
-        description: 'Complete 30 devotionals',
-        icon: Icons.favorite,
-        color: Colors.pink,
+        description: 'Complete 30 devotionals${devotionalStreak > 0 ? ' • 🔥 $devotionalStreak day${devotionalStreak > 1 ? 's' : ''} streak' : ''}',
+        icon: Icons.auto_stories,
+        color: Colors.purple,
         isUnlocked: devotionalsCompleted >= 30,
         progress: devotionalsCompleted >= 30 ? 30 : devotionalsCompleted,
         total: 30,
@@ -154,18 +163,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildStatsSection(
-                              devotionalStreak: devotionalStreak,
-                              totalPrayers: totalPrayers,
-                              savedVerses: savedVerses,
-                              devotionalsCompleted: devotionalsCompleted,
-                            ),
-                            const SizedBox(height: AppSpacing.xxl),
+                            const SizedBox(height: AppSpacing.xl),
                             _buildAchievementsSection(
                               prayerStreak: prayerStreak,
                               savedVerses: savedVerses,
                               devotionalsCompleted: devotionalsCompleted,
                               readingPlansActive: readingPlansActive,
+                              devotionalStreak: devotionalStreak,
+                              totalPrayers: totalPrayers,
                             ),
                             const SizedBox(height: AppSpacing.xxl),
                             _buildMenuSection(),
@@ -367,138 +372,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
 
-  Widget _buildStatsSection({
-    required AsyncValue<int> devotionalStreak,
-    required AsyncValue<int> totalPrayers,
-    required AsyncValue<int> savedVerses,
-    required AsyncValue<int> devotionalsCompleted,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: AppSpacing.xl),
-        // Responsive grid: 2 columns on mobile, 3 on tablet, 4 on desktop
-        LayoutBuilder(
-          builder: (context, constraints) {
-            final crossAxisCount = ResponsiveUtils.gridColumns(
-              context,
-              mobile: 2,
-              tablet: 3,
-              desktop: 4,
-            );
-
-            return GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: ResponsiveUtils.spacing(context, 12),
-              crossAxisSpacing: ResponsiveUtils.spacing(context, 12),
-              childAspectRatio: 1.6,
-              children: [
-                _buildStatCard(
-                  'Devotional Streak',
-                  devotionalStreak.when(
-                    data: (streak) => '$streak days',
-                    loading: () => '...',
-                    error: (_, __) => '0 days',
-                  ),
-                  Icons.local_fire_department,
-                  Colors.orange,
-                  700,
-                ),
-                _buildStatCard(
-                  'Total Prayers',
-                  totalPrayers.when(
-                    data: (count) => '$count',
-                    loading: () => '...',
-                    error: (_, __) => '0',
-                  ),
-                  Icons.favorite,
-                  Colors.pink,
-                  800,
-                ),
-                _buildStatCard(
-                  'Verses Saved',
-                  savedVerses.when(
-                    data: (count) => '$count',
-                    loading: () => '...',
-                    error: (_, __) => '0',
-                  ),
-                  Icons.book,
-                  Colors.blue,
-                  900,
-                ),
-                _buildStatCard(
-                  'Devotionals',
-                  devotionalsCompleted.when(
-                    data: (count) => '$count',
-                    loading: () => '...',
-                    error: (_, __) => '0',
-                  ),
-                  Icons.auto_stories,
-                  Colors.purple,
-                  1000,
-                ),
-              ],
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatCard(String label, String value, IconData icon, Color color, int delay) {
-    return FrostedGlassCard(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.2),
-              borderRadius: AppRadius.mediumRadius,
-            ),
-            child: Icon(
-              icon,
-              size: ResponsiveUtils.iconSize(context, 20),
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
-              fontWeight: FontWeight.w800,
-              color: AppColors.primaryText,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Flexible(
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
-                color: AppColors.secondaryText,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    ).animate().fadeIn(duration: AppAnimations.slow, delay: delay.ms).scale(begin: const Offset(0.8, 0.8));
-  }
-
   Widget _buildAchievementsSection({
     required AsyncValue<int> prayerStreak,
     required AsyncValue<int> savedVerses,
     required AsyncValue<int> devotionalsCompleted,
     required AsyncValue<int> readingPlansActive,
+    required AsyncValue<int> devotionalStreak,
+    required AsyncValue<int> totalPrayers,
   }) {
     // Build achievements list with real data
     final achievements = _buildAchievements(
@@ -506,6 +386,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       savedVerses.value ?? 0,
       devotionalsCompleted.value ?? 0,
       readingPlansActive.value ?? 0,
+      devotionalStreak.value ?? 0,
+      totalPrayers.value ?? 0,
     );
 
     return Column(
