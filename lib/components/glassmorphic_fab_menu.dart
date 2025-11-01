@@ -294,7 +294,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
                   child: Icon(
                     option.icon,
                     size: ResponsiveUtils.iconSize(context, 18),
-                    color: option.color,
+                    color: AppColors.secondaryText,
                   ),
                 ),
               ],

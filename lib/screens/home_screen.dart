@@ -255,7 +255,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.2),
               borderRadius: AppRadius.mediumRadius,
@@ -263,7 +263,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Icon(
               icon,
               size: ResponsiveUtils.iconSize(context, 20),
-              color: color,
+              color: AppColors.secondaryText,
             ),
           ),
           const SizedBox(height: 4),
@@ -341,7 +341,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.2),
               borderRadius: AppRadius.mediumRadius,
@@ -349,7 +349,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Icon(
               icon,
               size: ResponsiveUtils.iconSize(context, 20),
-              color: color,
+              color: AppColors.secondaryText,
             ),
           ),
           const SizedBox(height: 4),
@@ -695,7 +695,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Icon(
                 icon,
                 size: ResponsiveUtils.iconSize(context, 24),
-                color: color,
+                color: AppColors.secondaryText,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
