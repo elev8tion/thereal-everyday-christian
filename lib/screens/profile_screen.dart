@@ -13,6 +13,7 @@ import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
 import '../core/services/preferences_service.dart';
+import '../core/widgets/app_snackbar.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/blur_dialog_utils.dart';
 
@@ -54,8 +55,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         userName = name;
       });
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully')),
+        AppSnackBar.show(
+          context,
+          message: 'Profile updated successfully',
         );
       }
     } else {
@@ -539,91 +541,92 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget _buildAchievementCard(Achievement achievement, int index) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      child: FrostedGlassCard(
-        padding: AppSpacing.cardPadding,
-        child: Row(
-          children: [
-            // Icon
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: achievement.isUnlocked
-                    ? achievement.color.withValues(alpha: 0.2)
-                    : Colors.white.withValues(alpha: 0.1),
-                borderRadius: AppRadius.mediumRadius,
-              ),
-              child: Icon(
-                achievement.icon,
-                size: ResponsiveUtils.iconSize(context, 24),
-                color: achievement.isUnlocked
-                    ? achievement.color
-                    : Colors.white.withValues(alpha: 0.3),
-              ),
+      padding: AppSpacing.cardPadding,
+      decoration: const BoxDecoration(
+        color: Colors.transparent,
+      ),
+      child: Row(
+        children: [
+          // Icon
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: achievement.isUnlocked
+                  ? achievement.color.withValues(alpha: 0.2)
+                  : Colors.white.withValues(alpha: 0.1),
+              borderRadius: AppRadius.mediumRadius,
             ),
+            child: Icon(
+              achievement.icon,
+              size: ResponsiveUtils.iconSize(context, 24),
+              color: achievement.isUnlocked
+                  ? achievement.color
+                  : Colors.white.withValues(alpha: 0.3),
+            ),
+          ),
 
-            const SizedBox(width: AppSpacing.lg),
+          const SizedBox(width: AppSpacing.lg),
 
-            // Content
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          achievement.title,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                            fontWeight: FontWeight.w700,
-                            color: achievement.isUnlocked
-                                ? Colors.white
-                                : Colors.white.withValues(alpha: 0.5),
-                          ),
+          // Content
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        achievement.title,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontWeight: FontWeight.w700,
+                          color: achievement.isUnlocked
+                              ? Colors.white
+                              : Colors.white.withValues(alpha: 0.5),
                         ),
                       ),
-                      if (achievement.isUnlocked)
-                        Icon(
-                          Icons.check_circle,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: achievement.color,
-                        ),
-                    ],
+                    ),
+                    if (achievement.isUnlocked)
+                      Icon(
+                        Icons.check_circle,
+                        size: ResponsiveUtils.iconSize(context, 20),
+                        color: achievement.color,
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  achievement.description,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                    color: Colors.white.withValues(alpha: 0.7),
+                  ),
+                ),
+                if (!achievement.isUnlocked && achievement.progress != null) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(AppRadius.xs / 2),
+                    child: LinearProgressIndicator(
+                      value: achievement.progress! / achievement.total!,
+                      backgroundColor: Colors.white.withValues(alpha: 0.1),
+                      valueColor: AlwaysStoppedAnimation(achievement.color),
+                      minHeight: 6,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    achievement.description,
+                    '${achievement.progress}/${achievement.total}',
                     style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                      color: Colors.white.withValues(alpha: 0.7),
+                      fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
+                      color: AppColors.tertiaryText,
                     ),
                   ),
-                  if (!achievement.isUnlocked && achievement.progress != null) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(AppRadius.xs / 2),
-                      child: LinearProgressIndicator(
-                        value: achievement.progress! / achievement.total!,
-                        backgroundColor: Colors.white.withValues(alpha: 0.1),
-                        valueColor: AlwaysStoppedAnimation(achievement.color),
-                        minHeight: 6,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${achievement.progress}/${achievement.total}',
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
-                        color: AppColors.tertiaryText,
-                      ),
-                    ),
-                  ],
                 ],
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
