@@ -9,12 +9,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glass_section_header.dart';
 import '../components/category_badge.dart';
 import '../components/glassmorphic_fab_menu.dart';
+import '../components/standard_screen_header.dart';
 import '../theme/app_theme.dart';
 import '../core/providers/app_providers.dart';
 
@@ -53,72 +55,58 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         children: [
           const GradientBackground(),
           SafeArea(
-            child: Column(
-              children: [
-                // App Bar with FAB
-                Container(
-                  padding: AppSpacing.screenPadding,
-                  child: Row(
-                    children: [
-                      const GlassmorphicFABMenu(),
-                      Expanded(child: Container()),
-                    ],
-                  ),
-                ),
-                // Content
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: AppSpacing.screenPadding,
-                    child: Column(
-                      children: [
-                        // Title
-                      const Text(
-                        'Everyday Christian\nPremium',
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(
+                top: AppSpacing.xl,
+                left: AppSpacing.xl,
+                right: AppSpacing.xl,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header with StandardScreenHeader
+                  _buildAppBar(isInTrial, trialDaysRemaining, subscriptionService),
+                  const SizedBox(height: AppSpacing.xl),
+
+                  // Subtitle - Trial or Expired (centered below header)
+                  if (widget.showTrialInfo && isInTrial)
+                    Center(
+                      child: CategoryBadge(
+                        text: '$trialDaysRemaining days left in trial',
+                        icon: Icons.schedule,
+                        badgeColor: Colors.blue,
+                        isSelected: true,
+                      ),
+                    )
+                  else if (subscriptionService.isTrialBlocked)
+                    // Trial was already used on this device (survives app uninstall)
+                    Center(
+                      child: Text(
+                        'Welcome back!\n\nYour trial has been used on this device.\nSubscribe to continue using AI chat.',
                         style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText,
-                          height: 1.2,
+                          fontSize: 16,
+                          color: AppColors.secondaryText,
+                          height: 1.4,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: AppSpacing.md),
-
-                      // Subtitle - Trial or Expired
-                      if (widget.showTrialInfo && isInTrial)
-                        Center(
-                          child: CategoryBadge(
-                            text: '$trialDaysRemaining days left in trial',
-                            icon: Icons.schedule,
-                            badgeColor: Colors.blue,
-                            isSelected: true,
-                          ),
-                        )
-                      else if (subscriptionService.isTrialBlocked)
-                        // Trial was already used on this device (survives app uninstall)
-                        Text(
-                          'Welcome back!\n\nYour trial has been used on this device.\nSubscribe to continue using AI chat.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: AppColors.secondaryText,
-                            height: 1.4,
-                          ),
-                          textAlign: TextAlign.center,
-                        )
-                      else
-                        Text(
-                          'Your trial has ended.\nUpgrade to continue using AI chat.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: AppColors.secondaryText,
-                            height: 1.4,
-                          ),
-                          textAlign: TextAlign.center,
+                    )
+                  else
+                    Center(
+                      child: Text(
+                        'Your trial has ended.\nUpgrade to continue using AI chat.',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.secondaryText,
+                          height: 1.4,
                         ),
-                      const SizedBox(height: AppSpacing.xxl),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  const SizedBox(height: AppSpacing.xxl),
 
-                      // Message Stats (if enabled)
-                      if (widget.showMessageStats) ...[
+                  // Message Stats (if enabled)
+                  if (widget.showMessageStats) ...[
                         Row(
                           children: [
                             Expanded(
@@ -153,14 +141,17 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ],
 
                       // Pricing Card (Tappable)
-                      GestureDetector(
-                        onTap: _isProcessing ? null : _handlePurchase,
-                        child: FrostedGlassCard(
-                          padding: const EdgeInsets.all(AppSpacing.xl),
-                          intensity: GlassIntensity.strong,
-                          borderColor: AppTheme.goldColor.withValues(alpha: 0.8),
-                          child: Column(
-                          children: [
+                      Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 280),
+                          child: GestureDetector(
+                            onTap: _isProcessing ? null : _handlePurchase,
+                            child: FrostedGlassCard(
+                              padding: const EdgeInsets.all(AppSpacing.lg),
+                              intensity: GlassIntensity.strong,
+                              borderColor: AppTheme.goldColor.withValues(alpha: 0.8),
+                              child: Column(
+                              children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +159,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                                 const Text(
                                   '\$',
                                   style: TextStyle(
-                                    fontSize: 32,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.goldColor,
                                     height: 1.5,
@@ -177,7 +168,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                                 Text(
                                   premiumProduct?.price ?? '35.99',
                                   style: const TextStyle(
-                                    fontSize: 56,
+                                    fontSize: 40,
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.goldColor,
                                     height: 1,
@@ -222,10 +213,11 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                               child: const Text(
                                 '150 AI messages per month',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.primaryText,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                             const SizedBox(height: AppSpacing.sm),
@@ -238,6 +230,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                             ),
                           ],
                         ),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: AppSpacing.xxl),
@@ -336,17 +330,29 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.xxl),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                  const SizedBox(height: AppSpacing.xxl),
+                ],
+              ),
             ),
+          ),
+          // Pinned FAB
+          Positioned(
+            top: MediaQuery.of(context).padding.top + AppSpacing.xl,
+            left: AppSpacing.xl,
+            child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
           ),
         ],
       ),
     );
+  }
+
+  /// Build header using StandardScreenHeader
+  Widget _buildAppBar(bool isInTrial, int trialDaysRemaining, dynamic subscriptionService) {
+    return const StandardScreenHeader(
+      title: 'Premium',
+      subtitle: 'Unlock AI chat features',
+      showFAB: false, // FAB is positioned separately
+    ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
 
   /// Build a stat card (for message stats display)
