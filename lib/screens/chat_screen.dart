@@ -30,6 +30,8 @@ import '../components/chat_screen_lockout_overlay.dart';
 import '../components/progress_ring_send_button.dart';
 import '../components/floating_message_badge.dart';
 import '../core/services/subscription_service.dart';
+import '../components/standard_screen_header.dart';
+import '../components/chat_action_buttons_header.dart';
 
 class ChatScreen extends HookConsumerWidget {
   const ChatScreen({super.key});
@@ -1447,34 +1449,51 @@ class ChatScreen extends HookConsumerWidget {
             const GradientBackground(),
             SafeArea(
               child: Column(
-              children: [
-                _buildAppBar(context, messages, sessionId, conversationService, showChatOptions),
-                // AI Service initialization status banner
-                _buildAIStatusBanner(aiServiceState),
-                // Connectivity status banner
-                _buildConnectivityBanner(connectivityStatus),
-                Expanded(
-                  child: _buildMessagesList(
-                    context,
-                    scrollController,
-                    messages.value,
-                    isTyping.value,
-                    isStreaming.value,
-                    isStreamingComplete.value,
-                    streamedText.value,
-                    regenerateResponse,
+                children: [
+                  // AI Service initialization status banner
+                  _buildAIStatusBanner(aiServiceState),
+                  // Connectivity status banner
+                  _buildConnectivityBanner(connectivityStatus),
+                  // CustomScrollView with pinned header and action buttons
+                  Expanded(
+                    child: CustomScrollView(
+                      controller: scrollController,
+                      slivers: [
+                        // Pinned FAB + action buttons row
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: ChatActionButtonsDelegate(
+                            height: 120.0, // Increased to accommodate full FAB menu (80px) + padding (20px top + 20px bottom)
+                            child: ChatActionButtons(
+                              onMorePressed: showChatOptions,
+                              onHistoryPressed: () => _showConversationHistory(context, messages, sessionId, conversationService),
+                              onNewPressed: () => _startNewConversation(context, messages, sessionId, conversationService),
+                            ),
+                          ),
+                        ),
+                        // Messages list
+                        _buildMessagesSliver(
+                          context,
+                          messages.value,
+                          isTyping.value,
+                          isStreaming.value,
+                          isStreamingComplete.value,
+                          streamedText.value,
+                          regenerateResponse,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                _buildMessageInput(context, messageController, canSend.value, sendMessage),
-              ],
+                  _buildMessageInput(context, messageController, canSend.value, sendMessage),
+                ],
+              ),
             ),
-          ),
-          // Scroll to bottom button
-          ScrollToBottom(
-            isVisible: showScrollToBottom.value,
-            onPressed: scrollToBottom,
-          ),
-        ],
+            // Scroll to bottom button
+            ScrollToBottom(
+              isVisible: showScrollToBottom.value,
+              onPressed: scrollToBottom,
+            ),
+          ],
         ),
       ),
     );
@@ -1670,6 +1689,43 @@ class ChatScreen extends HookConsumerWidget {
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
 
+  // Sliver version for CustomScrollView
+  Widget _buildMessagesSliver(
+    BuildContext context,
+    List<ChatMessage> messages,
+    bool isTyping,
+    bool isStreaming,
+    bool isStreamingComplete,
+    String streamedText,
+    Future<void> Function(int) onRegenerateResponse,
+  ) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (listContext, index) {
+            // Show streaming message while streaming
+            if (index == messages.length && isStreaming) {
+              return GlassStreamingMessage(
+                streamedText: streamedText,
+                isComplete: isStreamingComplete,
+              );
+            }
+
+            // Show typing indicator as fallback
+            if (index == messages.length && isTyping) {
+              return _buildTypingIndicator();
+            }
+
+            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse);
+          },
+          childCount: messages.length + (isStreaming ? 1 : (isTyping ? 1 : 0)),
+        ),
+      ),
+    );
+  }
+
+  // Keep original for reference (can be removed later)
   Widget _buildMessagesList(
     BuildContext context,
     ScrollController scrollController,
@@ -1771,19 +1827,15 @@ class ChatScreen extends HookConsumerWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppTheme.goldColor.withValues(alpha: 0.3),
-                      AppTheme.goldColor.withValues(alpha: 0.1),
+                      const Color(0xFFC05E91).withValues(alpha: 0.3),
+                      const Color(0xFFC05E91).withValues(alpha: 0.1),
                     ],
                   ),
                   borderRadius: AppRadius.mediumRadius,
-                  border: Border.all(
-                    color: AppTheme.goldColor,
-                    width: 2,
-                  ),
                 ),
                 child: Icon(
                   Icons.auto_awesome,
-                  color: AppColors.primaryText,
+                  color: AppColors.secondaryText,
                   size: ResponsiveUtils.iconSize(context, 20),
                 ),
               ),
