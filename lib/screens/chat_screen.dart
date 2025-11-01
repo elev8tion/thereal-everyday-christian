@@ -1481,12 +1481,22 @@ class ChatScreen extends HookConsumerWidget {
                           streamedText.value,
                           regenerateResponse,
                         ),
+                        // Add spacing at bottom to prevent last message from being hidden by floating input
+                        const SliverToBoxAdapter(
+                          child: SizedBox(height: 80), // Space for floating input field
+                        ),
                       ],
                     ),
                   ),
-                  _buildMessageInput(context, messageController, canSend.value, sendMessage),
                 ],
               ),
+            ),
+            // Floating message input - positioned outside SafeArea
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: _buildMessageInput(context, messageController, canSend.value, sendMessage),
             ),
             // Scroll to bottom button
             ScrollToBottom(
@@ -1953,73 +1963,75 @@ class ChatScreen extends HookConsumerWidget {
         final isPremium = ref.watch(isPremiumProvider);
         final isInTrial = ref.watch(isInTrialProvider);
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Input row (counter removed - now on send button)
-            Container(
-              padding: EdgeInsets.only(
-                left: AppSpacing.screenPadding.left,
-                right: AppSpacing.screenPadding.right,
-                top: AppSpacing.screenPadding.top,
-                bottom: bottomPadding > 0 ? bottomPadding + AppSpacing.sm : AppSpacing.screenPadding.bottom,
-              ),
-              child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white.withValues(alpha: 0.2),
-                    Colors.white.withValues(alpha: 0.1),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(AppRadius.xl + 1),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.3),
-                  width: 1,
-                ),
-              ),
-              child: TextField(
-                controller: messageController,
-                style: TextStyle(
-                  color: AppColors.primaryText,
-                  fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-                ),
-                decoration: InputDecoration(
-                  hintText: 'Scripture Chat...',
-                  hintStyle: TextStyle(
-                    color: AppColors.tertiaryText,
-                    fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-                  ),
-                  border: InputBorder.none,
-                  filled: true,
-                  fillColor: Colors.transparent,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
-                  ),
-                ),
-                minLines: 1,
-                maxLines: 3,
-                textCapitalization: TextCapitalization.sentences,
-                onSubmitted: canSend ? sendMessage : null,
-              ),
-            ),
+        return Container(
+          color: Colors.transparent, // Fully transparent background
+          padding: EdgeInsets.only(
+            left: AppSpacing.md,
+            right: AppSpacing.md,
+            top: AppSpacing.md,
+            bottom: bottomPadding > 0 ? bottomPadding + AppSpacing.sm : AppSpacing.md,
           ),
-          const SizedBox(width: AppSpacing.md),
-          ProgressRingSendButton(
-            canSend: canSend,
-            onPressed: () => sendMessage(messageController.text),
-            remainingMessages: remainingMessages,
-            totalMessages: isPremium ? 150 : 5,
-            isPremium: isPremium,
-          ),
-                ],
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withValues(alpha: 0.2),
+                        Colors.white.withValues(alpha: 0.1),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.xl + 1),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.3),
+                      width: 1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: messageController,
+                    style: TextStyle(
+                      color: AppColors.primaryText,
+                      fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Scripture Chat...',
+                      hintStyle: TextStyle(
+                        color: AppColors.tertiaryText,
+                        fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                      ),
+                      border: InputBorder.none,
+                      filled: true,
+                      fillColor: Colors.transparent,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                    ),
+                    minLines: 1,
+                    maxLines: 3,
+                    textCapitalization: TextCapitalization.sentences,
+                    onSubmitted: canSend ? sendMessage : null,
+                  ),
+                ),
               ),
-            ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast).slideY(begin: 0.3),
-          ],
+              const SizedBox(width: AppSpacing.md),
+              ProgressRingSendButton(
+                canSend: canSend,
+                onPressed: () => sendMessage(messageController.text),
+                remainingMessages: remainingMessages,
+                totalMessages: isPremium ? 150 : 5,
+                isPremium: isPremium,
+              ),
+            ],
+          ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast).slideY(begin: 0.3),
         );
       },
     );
