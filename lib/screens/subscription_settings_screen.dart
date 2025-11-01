@@ -18,6 +18,7 @@ import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glass_section_header.dart';
 import '../components/glassmorphic_fab_menu.dart';
+import '../components/standard_screen_header.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_gradients.dart';
 import '../core/providers/app_providers.dart';
@@ -148,27 +149,9 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
 
   /// Build custom app bar
   Widget _buildAppBar(BuildContext context) {
-    return Container(
-      padding: AppSpacing.screenPadding,
-      child: Row(
-        children: [
-          const GlassmorphicFABMenu(),
-          const SizedBox(width: AppSpacing.lg),
-          Expanded(
-            child: AutoSizeText(
-              'Subscription',
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                fontWeight: FontWeight.w700,
-                color: AppColors.primaryText,
-                shadows: AppTheme.textShadowStrong,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
+    return const StandardScreenHeader(
+      title: 'Subscription',
+      subtitle: 'Manage your premium access',
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
 
