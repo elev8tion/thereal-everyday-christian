@@ -316,9 +316,12 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   /// Build filtered books list (shown when books match search)
   Widget _buildFilteredBooks() {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
       itemCount: _filteredBooks.length,
-      itemBuilder: (context, index) => _buildBookCard(_filteredBooks[index]),
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: _buildBookCard(_filteredBooks[index]),
+      ),
     );
   }
 
@@ -512,18 +515,19 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
       itemCount: books.length,
-      itemBuilder: (context, index) => _buildBookCard(books[index]),
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: _buildBookCard(books[index]),
+      ),
     );
   }
 
   Widget _buildBookCard(String book) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: GestureDetector(
-        onTap: () => _showChapterSelector(book),
-        child: FrostedGlassCard(
+    return GestureDetector(
+      onTap: () => _showChapterSelector(book),
+      child: FrostedGlassCard(
           child: Row(
             children: [
               Container(
@@ -567,7 +571,6 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               ),
             ],
           ),
-        ),
       ),
     );
   }

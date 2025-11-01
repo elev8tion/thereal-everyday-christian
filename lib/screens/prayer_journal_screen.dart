@@ -327,13 +327,16 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
           itemCount: prayers.length,
           itemBuilder: (context, index) {
             final prayer = prayers[index];
-            return _buildPrayerCard(prayer, index).animate()
-                .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
-                .slideY(begin: 0.3);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _buildPrayerCard(prayer, index).animate()
+                  .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
+                  .slideY(begin: 0.3),
+            );
           },
         );
       },
@@ -379,13 +382,16 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
           itemCount: prayers.length,
           itemBuilder: (context, index) {
             final prayer = prayers[index];
-            return _buildPrayerCard(prayer, index).animate()
-                .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
-                .slideY(begin: 0.3);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _buildPrayerCard(prayer, index).animate()
+                  .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
+                  .slideY(begin: 0.3),
+            );
           },
         );
       },
@@ -465,9 +471,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   Widget _buildPrayerCard(PrayerRequest prayer, int index) {
     final categoriesAsync = ref.watch(activeCategoriesProvider);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: FrostedGlassCard(
+    return FrostedGlassCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -672,7 +676,6 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             ),
           ],
         ),
-      ),
     );
   }
 

@@ -365,18 +365,21 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.only(
-                  left: 30,
-                  right: 30,
+                  left: 50,
+                  right: 50,
                   top: activePlans.length == 1 ? AppSpacing.md : 20,
                   bottom: 20,
                 ),
                 itemCount: activePlans.length,
                 itemBuilder: (context, index) {
                   final plan = activePlans[index];
-                  return _buildPlanCard(plan, index, isActive: true)
-                      .animate()
-                      .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
-                      .slideY(begin: 0.3);
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: _buildPlanCard(plan, index, isActive: true)
+                        .animate()
+                        .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
+                        .slideY(begin: 0.3),
+                  );
                 },
               ),
             ),
@@ -394,14 +397,17 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       error: (error, stack) => _buildErrorState(error.toString()),
       data: (allPlans) {
         return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
           itemCount: allPlans.length,
           itemBuilder: (context, index) {
             final plan = allPlans[index];
-            return _buildPlanCard(plan, index, isActive: false)
-                .animate()
-                .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
-                .slideY(begin: 0.3);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _buildPlanCard(plan, index, isActive: false)
+                  .animate()
+                  .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
+                  .slideY(begin: 0.3),
+            );
           },
         );
       },
@@ -676,9 +682,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
     // Check if there's already an active plan (for Explore tab)
     final currentPlanAsync = !isActive ? ref.watch(currentReadingPlanProvider) : null;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: FrostedGlassCard(
+    return FrostedGlassCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -854,7 +858,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
               ),
           ],
         ),
-      ),
     );
   }
 

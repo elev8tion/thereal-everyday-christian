@@ -89,6 +89,8 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                         child: _buildDevotionalCard(currentDevotional),
                       ),
                       const SizedBox(height: AppSpacing.xl),
+                      _buildCompletionButton(currentDevotional),
+                      const SizedBox(height: AppSpacing.xl),
                       _buildNavigationButtons(devotionals.length),
                       const SizedBox(height: AppSpacing.xl),
                       _buildProgressIndicator(devotionals),
@@ -251,201 +253,209 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
           // Scrollable content area
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.only(
-                left: 24.0,
-                top: 24.0,
-                right: 24.0,
-                bottom: 20.0,
-              ),
+              padding: const EdgeInsets.all(24.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Title and subtitle
-                  Text(
-                    devotional.title,
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primaryText,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title and subtitle
+                Text(
+                  devotional.title,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.primaryText,
+                  ),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  devotional.subtitle,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                    color: Colors.white.withValues(alpha: 0.9),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+
+                const SizedBox(height: AppSpacing.xxl),
+
+                // Today's Verse container
+                Container(
+                  padding: AppSpacing.screenPadding,
+                  decoration: BoxDecoration(
+                    gradient: AppGradients.glassVeryStrong,
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    border: Border.all(
+                      color: AppTheme.goldColor.withValues(alpha: 0.6),
+                      width: 1.5,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    devotional.subtitle,
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                      color: Colors.white.withValues(alpha: 0.9),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-
-                  const SizedBox(height: AppSpacing.xxl),
-
-                  // Today's Verse container
-                  Container(
-                    padding: AppSpacing.screenPadding,
-                    decoration: BoxDecoration(
-                      gradient: AppGradients.glassVeryStrong,
-                      borderRadius: BorderRadius.circular(AppRadius.md),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.3),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.format_quote,
-                              color: AppTheme.primaryColor,
-                              size: ResponsiveUtils.iconSize(context, 20),
-                            ),
-                            const SizedBox(width: AppSpacing.sm),
-                            Text(
-                              'Today\'s Verse',
-                              style: TextStyle(
-                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryText,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        Text(
-                          '"${devotional.verse}"',
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                            color: AppColors.primaryText,
-                            height: 1.5,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        Text(
-                          devotional.verseReference,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: AppSpacing.xxl),
-
-                  // Reflection
-                  Text(
-                    'Reflection',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-
-                  Text(
-                    devotional.content,
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-                      color: Colors.white.withValues(alpha: 0.9),
-                      height: 1.6,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Fixed bottom section with button
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: !devotional.isCompleted
-                ? GlassButton(
-                    text: 'Mark as Completed',
-                    onPressed: () async {
-                      await progressService.markAsComplete(devotional.id);
-                      // Refresh the providers
-                      ref.invalidate(allDevotionalsProvider);
-                      ref.invalidate(devotionalStreakProvider);
-                      ref.invalidate(totalDevotionalsCompletedProvider);
-                      ref.invalidate(completedDevotionalsProvider);
-                    },
-                  )
-                : Container(
-                    width: double.infinity,
-                    padding: AppSpacing.cardPadding,
-                    decoration: BoxDecoration(
-                      color: Colors.green.withValues(alpha: 0.2),
-                      borderRadius: AppRadius.mediumRadius,
-                      border: Border.all(
-                        color: Colors.green.withValues(alpha: 0.4),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.check_circle,
-                              color: Colors.green,
-                              size: ResponsiveUtils.iconSize(context, 20),
-                            ),
-                            const SizedBox(width: AppSpacing.sm),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Devotional Completed',
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                                  ),
-                                ),
-                                if (devotional.completedDate != null)
-                                  Text(
-                                    _formatCompletedDate(devotional.completedDate!),
-                                    style: TextStyle(
-                                      color: Colors.green.withValues(alpha: 0.8),
-                                      fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await progressService.markAsIncomplete(devotional.id);
-                            // Refresh the providers
-                            ref.invalidate(allDevotionalsProvider);
-                            ref.invalidate(devotionalStreakProvider);
-                            ref.invalidate(totalDevotionalsCompletedProvider);
-                            ref.invalidate(completedDevotionalsProvider);
-                          },
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.green.withValues(alpha: 0.6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.format_quote,
+                            color: AppTheme.goldColor,
                             size: ResponsiveUtils.iconSize(context, 20),
                           ),
+                          const SizedBox(width: AppSpacing.sm),
+                          Text(
+                            'Today\'s Verse',
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primaryText,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      Text(
+                        '"${devotional.verse}"',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          color: AppColors.primaryText,
+                          height: 1.5,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ],
-                    ),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      Text(
+                        devotional.verseReference,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                          color: AppTheme.goldColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+
+                const SizedBox(height: AppSpacing.xxl),
+
+                // Reflection
+                Text(
+                  'Reflection',
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryText,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+
+                Text(
+                  devotional.content,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                    color: Colors.white.withValues(alpha: 0.9),
+                    height: 1.6,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+              ],
+            ),
+            ),
           ),
         ],
       ),
     ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.slow).slideY(begin: 0.3);
+  }
+
+  Widget _buildCompletionButton(Devotional devotional) {
+    final progressService = ref.read(devotionalProgressServiceProvider);
+
+    return !devotional.isCompleted
+        ? GlassButton(
+            text: 'Mark as Completed',
+            onPressed: () async {
+              await progressService.markAsComplete(devotional.id);
+              // Refresh the providers
+              ref.invalidate(allDevotionalsProvider);
+              ref.invalidate(devotionalStreakProvider);
+              ref.invalidate(totalDevotionalsCompletedProvider);
+              ref.invalidate(completedDevotionalsProvider);
+            },
+          )
+        : Container(
+            width: double.infinity,
+            padding: AppSpacing.cardPadding,
+            decoration: BoxDecoration(
+              color: Colors.green.withValues(alpha: 0.2),
+              borderRadius: AppRadius.mediumRadius,
+              border: Border.all(
+                color: Colors.green.withValues(alpha: 0.6),
+                width: 1.5,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                        size: ResponsiveUtils.iconSize(context, 20),
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Devotional Completed',
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.w600,
+                                fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                              ),
+                            ),
+                            if (devotional.completedDate != null)
+                              Text(
+                                _formatCompletedDate(devotional.completedDate!),
+                                style: TextStyle(
+                                  color: Colors.green.withValues(alpha: 0.8),
+                                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    await progressService.markAsIncomplete(devotional.id);
+                    // Refresh the providers
+                    ref.invalidate(allDevotionalsProvider);
+                    ref.invalidate(devotionalStreakProvider);
+                    ref.invalidate(totalDevotionalsCompletedProvider);
+                    ref.invalidate(completedDevotionalsProvider);
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.green.withValues(alpha: 0.6),
+                    size: ResponsiveUtils.iconSize(context, 20),
+                  ),
+                ),
+              ],
+            ),
+          );
   }
 
   Widget _buildNavigationButtons(int totalDevotionals) {

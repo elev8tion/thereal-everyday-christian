@@ -178,13 +178,16 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
           itemCount: entries.length,
           itemBuilder: (context, index) {
             final entry = entries[index];
-            return _buildSharedVerseCard(entry, index).animate()
-                .fadeIn(duration: AppAnimations.slow, delay: (100 + index * 50).ms)
-                .slideY(begin: 0.3);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _buildSharedVerseCard(entry, index).animate()
+                  .fadeIn(duration: AppAnimations.slow, delay: (100 + index * 50).ms)
+                  .slideY(begin: 0.3),
+            );
           },
         );
       },
@@ -214,13 +217,16 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
           itemCount: verses.length,
           itemBuilder: (context, index) {
             final verse = verses[index];
-            return _buildVerseCard(verse, index).animate()
-                .fadeIn(duration: AppAnimations.slow, delay: (100 + index * 50).ms)
-                .slideY(begin: 0.3);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _buildVerseCard(verse, index).animate()
+                  .fadeIn(duration: AppAnimations.slow, delay: (100 + index * 50).ms)
+                  .slideY(begin: 0.3),
+            );
           },
         );
       },
@@ -317,9 +323,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Widget _buildVerseCard(BibleVerse verse, int index) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: FrostedGlassCard(
+    return FrostedGlassCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -434,7 +438,6 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             ],
           ],
         ),
-      ),
     );
   }
 
@@ -447,9 +450,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         ? entry.channel!
         : '';
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: FrostedGlassCard(
+    return FrostedGlassCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -581,7 +582,6 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             ],
           ],
         ),
-      ),
     );
   }
 
