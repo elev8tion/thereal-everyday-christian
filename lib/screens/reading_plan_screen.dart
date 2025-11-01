@@ -8,6 +8,7 @@ import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/category_badge.dart';
+import '../components/standard_screen_header.dart';
 import '../components/calendar_heatmap_widget.dart';
 import '../components/reading_progress_stats_widget.dart';
 import '../core/widgets/app_snackbar.dart';
@@ -76,42 +77,9 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: AppSpacing.screenPadding,
-      child: Row(
-        children: [
-          const GlassmorphicFABMenu(),
-          const SizedBox(width: AppSpacing.lg),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoSizeText(
-                  'Reading Plans',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primaryText,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
-                const SizedBox(height: 4),
-                AutoSizeText(
-                  'Grow in God\'s word daily',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                    color: AppColors.secondaryText,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return const StandardScreenHeader(
+      title: 'Reading Plans',
+      subtitle: 'Grow in God\'s word daily',
     );
   }
 

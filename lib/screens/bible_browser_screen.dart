@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glassmorphic_fab_menu.dart';
+import '../components/standard_screen_header.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
 import '../services/bible_chapter_service.dart';
@@ -330,42 +331,9 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          const GlassmorphicFABMenu(),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoSizeText(
-                  'Bible Browser',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primaryText,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                AutoSizeText(
-                  'Read any chapter freely',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                    color: AppColors.secondaryText,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return const StandardScreenHeader(
+      title: 'Bible Browser',
+      subtitle: 'Read any chapter freely',
     );
   }
 

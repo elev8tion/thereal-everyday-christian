@@ -13,6 +13,7 @@ import '../theme/app_gradients.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glassmorphic_fab_menu.dart';
+import '../components/standard_screen_header.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
 import '../utils/responsive_utils.dart';
@@ -55,42 +56,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Widget _buildAppBar() {
-    return Padding(
-      padding: AppSpacing.screenPadding,
-      child: Row(
-        children: [
-          const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap (matching Verse Library)
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoSizeText(
-                  'Settings',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryText,
-                    shadows: AppTheme.textShadowStrong,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                AutoSizeText(
-                  'Customize your app experience',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                    color: AppColors.secondaryText,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return const StandardScreenHeader(
+      title: 'Settings',
+      subtitle: 'Customize your app experience',
+      showFAB: false, // FAB is positioned separately
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
 

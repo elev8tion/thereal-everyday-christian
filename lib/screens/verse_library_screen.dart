@@ -12,6 +12,7 @@ import '../components/glassmorphic_fab_menu.dart';
 import '../components/blur_popup_menu.dart';
 import '../components/base_bottom_sheet.dart';
 import '../components/glass_button.dart';
+import '../components/standard_screen_header.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../models/bible_verse.dart';
@@ -78,55 +79,22 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: AppSpacing.screenPadding,
-      child: Row(
-        children: [
-          const GlassmorphicFABMenu(),
-          const SizedBox(width: AppSpacing.lg),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoSizeText(
-                  'Verse Library',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primaryText,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
-                const SizedBox(height: 4),
-                AutoSizeText(
-                  'Everyday Verses',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                    color: AppColors.secondaryText,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
-              ],
-            ),
+    return StandardScreenHeader(
+      title: 'Verse Library',
+      subtitle: 'Everyday verses',
+      trailingWidget: Container(
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.1),
+          borderRadius: AppRadius.mediumRadius,
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.2),
+            width: 1,
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
-              borderRadius: AppRadius.mediumRadius,
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.2),
-                width: 1,
-              ),
-            ),
-            child: IconButton(
-              icon: Icon(Icons.more_vert, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
-              onPressed: _showVerseOptions,
-            ),
-          ),
-        ],
+        ),
+        child: IconButton(
+          icon: Icon(Icons.more_vert, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
+          onPressed: _showVerseOptions,
+        ),
       ),
     );
   }

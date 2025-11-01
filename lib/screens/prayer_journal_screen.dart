@@ -12,6 +12,7 @@ import '../components/blur_popup_menu.dart';
 import '../components/category_filter_chip.dart';
 import '../components/glass_fab.dart';
 import '../components/glassmorphic_fab_menu.dart';
+import '../components/standard_screen_header.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../utils/responsive_utils.dart';
 import '../theme/app_theme.dart';
@@ -86,38 +87,9 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: AppSpacing.screenPadding,
-      child: Row(
-        children: [
-          const GlassmorphicFABMenu(),
-          const SizedBox(width: AppSpacing.lg),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Prayer Journal',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primaryText,
-                  ),
-                ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
-                const SizedBox(height: 4),
-                Text(
-                  'Plan Pray Reflect',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                    color: AppColors.secondaryText,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return const StandardScreenHeader(
+      title: 'Prayer Journal',
+      subtitle: 'Plan pray reflect',
     );
   }
 

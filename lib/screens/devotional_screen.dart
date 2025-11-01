@@ -8,6 +8,7 @@ import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/category_badge.dart';
+import '../components/standard_screen_header.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_gradients.dart';
 import '../core/providers/app_providers.dart';
@@ -140,85 +141,60 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     AsyncValue<int> streakAsync,
     AsyncValue<int> totalCompletedAsync,
   ) {
-    return Padding(
-      padding: AppSpacing.screenPadding,
-      child: Row(
+    return StandardScreenHeader(
+      title: 'Daily Devotional',
+      subtitle: '', // Not used because we provide customSubtitle
+      showFAB: false, // FAB is positioned separately
+      customSubtitle: Row(
         children: [
-          const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          Flexible(
+            child: streakAsync.when(
+              data: (streak) => Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                AutoSizeText(
-                  'Daily Devotional',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primaryText,
+                  Icon(
+                    Icons.local_fire_department,
+                    color: streak > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.5),
+                    size: ResponsiveUtils.iconSize(context, 16),
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ).animate().fadeIn(duration: AppAnimations.slow).slideX(begin: -0.3),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Flexible(
-                      child: streakAsync.when(
-                        data: (streak) => Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.local_fire_department,
-                              color: streak > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.5),
-                              size: ResponsiveUtils.iconSize(context, 16),
-                            ),
-                            const SizedBox(width: 4),
-                            Flexible(
-                              child: AutoSizeText(
-                                '$streak day streak',
-                                style: TextStyle(
-                                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 8, maxSize: 14),
-                                  color: AppColors.secondaryText,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                maxLines: 1,
-                                minFontSize: 8,
-                              ),
-                            ),
-                          ],
-                        ),
-                        loading: () => const SizedBox.shrink(),
-                        error: (_, __) => const SizedBox.shrink(),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: AutoSizeText(
+                      '$streak day streak',
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 8, maxSize: 14),
+                        color: AppColors.secondaryText,
+                        fontWeight: FontWeight.w600,
                       ),
+                      maxLines: 1,
+                      minFontSize: 8,
                     ),
-                    const SizedBox(width: AppSpacing.sm),
-                    Flexible(
-                      child: totalCompletedAsync.when(
-                        data: (total) => AutoSizeText(
-                          '$total completed',
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 8, maxSize: 14),
-                            color: AppColors.secondaryText,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          maxLines: 1,
-                          minFontSize: 8,
-                        ),
-                        loading: () => const SizedBox.shrink(),
-                        error: (_, __) => const SizedBox.shrink(),
-                      ),
-                    ),
-                  ],
-                ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
-              ],
+                  ),
+                ],
               ),
+              loading: () => const SizedBox.shrink(),
+              error: (_, __) => const SizedBox.shrink(),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Flexible(
+            child: totalCompletedAsync.when(
+              data: (total) => AutoSizeText(
+                '$total completed',
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 8, maxSize: 14),
+                  color: AppColors.secondaryText,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 1,
+                minFontSize: 8,
+              ),
+              loading: () => const SizedBox.shrink(),
+              error: (_, __) => const SizedBox.shrink(),
             ),
           ),
         ],
-      ),
+      ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
     );
   }
 
