@@ -534,6 +534,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
     return GestureDetector(
       onTap: () => _showChapterSelector(book),
       child: FrostedGlassCard(
+          borderColor: Colors.white.withValues(alpha: 0.2),
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
