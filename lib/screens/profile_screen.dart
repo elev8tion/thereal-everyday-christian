@@ -28,7 +28,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   // User data controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController(text: "friend@example.com");
-  String userName = 'friend';
+  String userName = '';
 
   @override
   void initState() {
@@ -61,7 +61,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         );
       }
     } else {
-      // If name is empty, just clear it (will show pencil icon)
+      // If name is empty, delete it from SharedPreferences
+      await prefs.deleteFirstName();
       setState(() {
         userName = '';
       });
