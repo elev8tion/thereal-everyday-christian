@@ -6,6 +6,7 @@ import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../core/navigation/navigation_service.dart';
+import '../core/providers/app_providers.dart';
 import '../services/bible_chapter_service.dart';
 import '../models/bible_verse.dart';
 import '../theme/app_theme.dart';
@@ -319,7 +320,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
       padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 1.6,
+        childAspectRatio: 1.8,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),
@@ -521,7 +522,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
       padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 1.6,
+        childAspectRatio: 1.8,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),
@@ -531,24 +532,28 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   }
 
   Widget _buildBookCard(String book) {
+    final textSize = ref.watch(textSizeProvider);
+
     return GestureDetector(
       onTap: () => _showChapterSelector(book),
       child: FrostedGlassCard(
+          padding: EdgeInsets.zero,
           borderColor: Colors.white.withValues(alpha: 0.2),
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
               child: AutoSizeText(
                 book,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                  fontSize: 14 * textSize,
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
+                  height: 1.3,
                 ),
+                minFontSize: 11,
                 maxLines: 2,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
-                minFontSize: 11,
               ),
             ),
           ),
