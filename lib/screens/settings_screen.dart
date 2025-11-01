@@ -282,13 +282,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 padding: const EdgeInsets.all(AppSpacing.sm),
                 decoration: BoxDecoration(
                   gradient: AppGradients.customColored(
-                    AppTheme.primaryColor,
+                    AppTheme.experimentalNavy,
                     startAlpha: 0.3,
                     endAlpha: 0.1,
                   ),
                   borderRadius: BorderRadius.circular(AppRadius.xs + 2),
                   border: Border.all(
-                    color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                    color: AppTheme.experimentalNavy.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
@@ -425,7 +425,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
                 child: Icon(
                   icon,
-                  color: AppTheme.toggleActiveColor,
+                  color: Colors.white,
                   size: ResponsiveUtils.iconSize(context, 22),
                 ),
               ),
@@ -622,7 +622,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     const textColor = AppColors.primaryText;
     final subtitleColor = Colors.white.withValues(alpha: 0.7);
     final iconColor = isDestructive ? Colors.red : AppColors.primaryText;
-    final borderColor = isDestructive ? Colors.red.withValues(alpha: 0.3) : Colors.white.withValues(alpha: 0.1);
+    final borderColor = isDestructive ? Colors.red.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.2);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -634,9 +634,23 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           child: Container(
             padding: AppSpacing.cardPadding,
             decoration: BoxDecoration(
-              color: isDestructive
-                  ? Colors.red.withValues(alpha: 0.05)
-                  : Colors.black.withValues(alpha: 0.1),
+              gradient: isDestructive
+                  ? LinearGradient(
+                      colors: [
+                        Colors.red.withValues(alpha: 0.15),
+                        Colors.red.withValues(alpha: 0.08),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    )
+                  : LinearGradient(
+                      colors: [
+                        Colors.white.withValues(alpha: 0.1),
+                        Colors.white.withValues(alpha: 0.05),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
               borderRadius: AppRadius.mediumRadius,
               border: Border.all(
                 color: borderColor,
@@ -703,10 +717,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: AppSpacing.cardPadding,
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.1),
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withValues(alpha: 0.1),
+            Colors.white.withValues(alpha: 0.05),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: AppRadius.mediumRadius,
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
+          color: Colors.white.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
