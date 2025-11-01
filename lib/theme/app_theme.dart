@@ -6,7 +6,15 @@ class AppTheme {
   static const Color accentColor = Color(0xFF8B5CF6); // Beautiful purple
   static const Color secondaryColor = Color(0xFF64748B); // Slate gray
   static const Color goldColor = Color(0xFFD4AF37); // Gold/amber from logo
-  static const Color toggleActiveColor = Color(0xFFFFA726); // Amber/orange for toggles
+  static const Color toggleActiveColor = Color(0xFFFFA726); // Amber/orange
+
+  // Experimental Accent Colors - Color Palette 01
+  static const Color experimentalNavy = Color(0xFF494A8A); // Deep navy blue
+  static const Color experimentalPurple = Color(0xFF925892); // Medium purple
+  static const Color experimentalRose = Color(0xFFC05E91); // Rose/mauve
+  static const Color experimentalPeach = Color(0xFFFFC39D); // Light peach
+  static const Color experimentalCoral = Color(0xFFFE9397); // Soft coral
+  static const Color experimentalPink = Color(0xFFF86888); // Vibrant pink
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,

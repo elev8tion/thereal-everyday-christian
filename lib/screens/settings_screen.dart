@@ -458,21 +458,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Switch(
                 value: isEnabled,
                 onChanged: onToggle,
-                activeTrackColor: AppTheme.toggleActiveColor.withValues(alpha: 0.5),
+                activeTrackColor: Colors.white.withValues(alpha: 0.5),
                 thumbColor: WidgetStateProperty.resolveWith<Color>(
                   (Set<WidgetState> states) {
                     if (states.contains(WidgetState.selected)) {
-                      return AppTheme.toggleActiveColor;
+                      return AppTheme.secondaryColor;
                     }
-                    return Colors.white.withValues(alpha: 0.5);
+                    return AppTheme.secondaryColor;
                   },
                 ),
                 trackOutlineColor: WidgetStateProperty.resolveWith<Color>(
                   (Set<WidgetState> states) {
                     if (states.contains(WidgetState.selected)) {
-                      return AppTheme.toggleActiveColor;
+                      return AppTheme.secondaryColor;
                     }
-                    return Colors.grey.withValues(alpha: 0.5);
+                    return AppTheme.secondaryColor;
                   },
                 ),
               ),
