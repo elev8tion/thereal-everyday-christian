@@ -271,8 +271,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Widget _buildSettingsSection(String title, IconData icon, List<Widget> children) {
-    return FrostedGlassCard(
+    return Container(
       padding: AppSpacing.screenPadding,
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: const BoxDecoration(
+        color: Colors.transparent,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -287,10 +291,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     endAlpha: 0.1,
                   ),
                   borderRadius: BorderRadius.circular(AppRadius.xs + 2),
-                  border: Border.all(
-                    color: AppTheme.experimentalNavy.withValues(alpha: 0.3),
-                    width: 1,
-                  ),
                 ),
                 child: Icon(
                   icon,
@@ -766,6 +766,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
+            borderColor: Colors.transparent,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -783,10 +784,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           ],
                         ),
                         borderRadius: BorderRadius.circular(AppRadius.xs + 2),
-                        border: Border.all(
-                          color: AppTheme.primaryColor.withValues(alpha: 0.3),
-                          width: 1,
-                        ),
                       ),
                       child: Icon(
                         Icons.cleaning_services,
@@ -979,6 +976,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
+            borderColor: Colors.transparent,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -996,10 +994,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           ],
                         ),
                         borderRadius: BorderRadius.circular(AppRadius.xs + 2),
-                        border: Border.all(
-                          color: Colors.red.withValues(alpha: 0.3),
-                          width: 1,
-                        ),
                       ),
                       child: Icon(
                         Icons.warning_amber_rounded,
@@ -1242,6 +1236,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         builder: (context) => Dialog(
           backgroundColor: Colors.transparent,
           child: FrostedGlassCard(
+            borderColor: Colors.transparent,
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Row(
@@ -1325,6 +1320,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
+            borderColor: Colors.transparent,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1342,10 +1338,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           ],
                         ),
                         borderRadius: BorderRadius.circular(AppRadius.xs + 2),
-                        border: Border.all(
-                          color: AppTheme.primaryColor.withValues(alpha: 0.3),
-                          width: 1,
-                        ),
                       ),
                       child: Icon(
                         Icons.help_outline,
@@ -1645,6 +1637,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
+            borderColor: Colors.transparent,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1663,10 +1656,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           ],
                         ),
                         borderRadius: BorderRadius.circular(AppRadius.xs + 2),
-                        border: Border.all(
-                          color: AppTheme.primaryColor.withValues(alpha: 0.3),
-                          width: 1,
-                        ),
                       ),
                       child: Icon(
                         Icons.privacy_tip_outlined,
@@ -4105,6 +4094,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
+            borderColor: Colors.transparent,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -4123,10 +4113,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           ],
                         ),
                         borderRadius: BorderRadius.circular(AppRadius.xs + 2),
-                        border: Border.all(
-                          color: AppTheme.primaryColor.withValues(alpha: 0.3),
-                          width: 1,
-                        ),
                       ),
                       child: Icon(
                         Icons.description_outlined,
