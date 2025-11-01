@@ -211,7 +211,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 16, top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -604,74 +604,81 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void _showEditProfileDialog() {
     showBlurredDialog(
       context: context,
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: FrostedGlassCard(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Edit Profile',
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryText,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-
-              Text(
-                'Name',
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryText,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              TextField(
-                controller: _nameController,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Enter your name',
-                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
-                  filled: true,
-                  fillColor: Colors.white.withValues(alpha: 0.1),
-                  border: OutlineInputBorder(
-                    borderRadius: AppRadius.mediumRadius,
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: AppSpacing.xxl),
-
-              Row(
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: FrostedGlassCard(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: GlassButton(
-                      text: 'Cancel',
-                      height: 48,
-                      onPressed: () => NavigationService.pop(),
+                  Text(
+                    'Edit Profile',
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryText,
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: GlassButton(
-                      text: 'Save',
-                      height: 48,
-                      onPressed: () async {
-                        await _saveUserData();
-                        NavigationService.pop();
-                      },
+                  const SizedBox(height: AppSpacing.xl),
+
+                  Text(
+                    'Name',
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryText,
                     ),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  TextField(
+                    controller: _nameController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Enter your name',
+                      hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+                      filled: true,
+                      fillColor: Colors.white.withValues(alpha: 0.1),
+                      border: OutlineInputBorder(
+                        borderRadius: AppRadius.mediumRadius,
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {}); // Rebuild to update button text
+                    },
+                  ),
+
+                  const SizedBox(height: AppSpacing.xxl),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GlassButton(
+                          text: 'Cancel',
+                          height: 48,
+                          onPressed: () => NavigationService.pop(),
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: GlassButton(
+                          text: _nameController.text.trim().isEmpty && userName.isNotEmpty ? 'Delete' : 'Save',
+                          height: 48,
+                          onPressed: () async {
+                            await _saveUserData();
+                            NavigationService.pop();
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
