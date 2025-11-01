@@ -65,6 +65,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       setState(() {
         userName = '';
       });
+      if (mounted) {
+        AppSnackBar.show(
+          context,
+          message: 'Name deleted successfully',
+        );
+      }
     }
   }
 
@@ -266,7 +272,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 child: Icon(
                                   Icons.edit_outlined,
                                   size: ResponsiveUtils.iconSize(context, 20),
-                                  color: AppTheme.goldColor,
+                                  color: AppColors.primaryText,
                                 ),
                               ),
                       ),
@@ -604,82 +610,85 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void _showEditProfileDialog() {
     showBlurredDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: FrostedGlassCard(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Edit Profile',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryText,
+      builder: (context) {
+        // Check if user has a saved name when dialog opens
+        final bool hasExistingName = userName.isNotEmpty;
+
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: FrostedGlassCard(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Edit Profile',
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryText,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xl),
+
+                Text(
+                  'Name',
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryText,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                TextField(
+                  controller: _nameController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: 'Enter your name',
+                    hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+                    filled: true,
+                    fillColor: Colors.white.withValues(alpha: 0.1),
+                    border: OutlineInputBorder(
+                      borderRadius: AppRadius.mediumRadius,
+                      borderSide: BorderSide.none,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xl),
+                ),
 
-                  Text(
-                    'Name',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  TextField(
-                    controller: _nameController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: 'Enter your name',
-                      hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
-                      filled: true,
-                      fillColor: Colors.white.withValues(alpha: 0.1),
-                      border: OutlineInputBorder(
-                        borderRadius: AppRadius.mediumRadius,
-                        borderSide: BorderSide.none,
+                const SizedBox(height: AppSpacing.xxl),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: GlassButton(
+                        text: 'Cancel',
+                        height: 48,
+                        onPressed: () => NavigationService.pop(),
                       ),
                     ),
-                    onChanged: (value) {
-                      setState(() {}); // Rebuild to update button text
-                    },
-                  ),
-
-                  const SizedBox(height: AppSpacing.xxl),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: GlassButton(
-                          text: 'Cancel',
-                          height: 48,
-                          onPressed: () => NavigationService.pop(),
-                        ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: GlassButton(
+                        text: hasExistingName ? 'Delete' : 'Save',
+                        height: 48,
+                        borderColor: hasExistingName ? Colors.red.withValues(alpha: 0.8) : null,
+                        onPressed: () async {
+                          // If deleting, clear the text field first
+                          if (hasExistingName) {
+                            _nameController.clear();
+                          }
+                          await _saveUserData();
+                          NavigationService.pop();
+                        },
                       ),
-                      const SizedBox(width: AppSpacing.md),
-                      Expanded(
-                        child: GlassButton(
-                          text: _nameController.text.trim().isEmpty && userName.isNotEmpty ? 'Delete' : 'Save',
-                          height: 48,
-                          onPressed: () async {
-                            await _saveUserData();
-                            NavigationService.pop();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

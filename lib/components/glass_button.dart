@@ -9,6 +9,7 @@ class GlassButton extends StatelessWidget {
   final double? width;
   final double height;
   final Widget? loadingWidget;
+  final Color? borderColor;
 
   const GlassButton({
     super.key,
@@ -18,6 +19,7 @@ class GlassButton extends StatelessWidget {
     this.width,
     this.height = 56,
     this.loadingWidget,
+    this.borderColor,
   });
 
   @override
@@ -29,7 +31,7 @@ class GlassButton extends StatelessWidget {
         borderRadius: 28,
         padding: const EdgeInsets.all(0),
         border: Border.all(
-          color: AppTheme.primaryColor,
+          color: borderColor ?? AppTheme.primaryColor,
           width: 2,
         ),
         child: Material(
