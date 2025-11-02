@@ -65,6 +65,7 @@ class ChatScreen extends HookConsumerWidget {
     final canSend = useState(false);
     final showScrollToBottom = useState(false);
     final hasAddedVerseContext = useState(false); // Track if verse context was prepended to AI
+    final regeneratedMessageId = useState<String?>(null); // Track which message was just regenerated for animation
 
     // Listen to text changes to update send button state
     useEffect(() {
@@ -788,6 +789,17 @@ class ChatScreen extends HookConsumerWidget {
         }
 
         isTyping.value = false;
+
+        // Set regenerated message ID for shimmer animation
+        regeneratedMessageId.value = newAiMessage.id;
+        debugPrint('✨ Triggering shimmer animation for message ${newAiMessage.id}');
+
+        // Clear animation flag after 3 seconds
+        Future.delayed(const Duration(seconds: 3), () {
+          if (context.mounted) {
+            regeneratedMessageId.value = null;
+          }
+        });
 
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -1524,6 +1536,7 @@ class ChatScreen extends HookConsumerWidget {
                           isStreamingComplete.value,
                           streamedText.value,
                           regenerateResponse,
+                          regeneratedMessageId.value,
                         ),
                         // Add spacing at bottom to prevent last message from being hidden by floating input
                         const SliverToBoxAdapter(
@@ -1752,6 +1765,7 @@ class ChatScreen extends HookConsumerWidget {
     bool isStreamingComplete,
     String streamedText,
     Future<void> Function(int) onRegenerateResponse,
+    String? regeneratedMessageId,
   ) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -1763,7 +1777,7 @@ class ChatScreen extends HookConsumerWidget {
               return _buildTypingIndicator();
             }
 
-            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse);
+            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, regeneratedMessageId);
           },
           childCount: messages.length + (isTyping ? 1 : 0),
         ),
@@ -1781,6 +1795,7 @@ class ChatScreen extends HookConsumerWidget {
     bool isStreamingComplete,
     String streamedText,
     Future<void> Function(int) onRegenerateResponse,
+    String? regeneratedMessageId,
   ) {
     return ListView.builder(
       controller: scrollController,
@@ -1800,7 +1815,7 @@ class ChatScreen extends HookConsumerWidget {
           return _buildTypingIndicator();
         }
 
-        return _buildMessageBubble(context, messages[index], index, onRegenerateResponse);
+        return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, regeneratedMessageId);
       },
     );
   }
@@ -1810,8 +1825,11 @@ class ChatScreen extends HookConsumerWidget {
     ChatMessage message,
     int index,
     Future<void> Function(int) onRegenerateResponse,
+    String? regeneratedMessageId,
   ) {
-    return GestureDetector(
+    final bool isRegeneratedMessage = regeneratedMessageId != null && message.id == regeneratedMessageId;
+
+    final bubble = GestureDetector(
       onLongPress: message.isAI
           ? () {
               // Show options for regenerate
@@ -1932,7 +1950,8 @@ class ChatScreen extends HookConsumerWidget {
               const SizedBox(width: AppSpacing.md),
             ],
             Flexible(
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
                 padding: AppSpacing.cardPadding,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -1955,13 +1974,17 @@ class ChatScreen extends HookConsumerWidget {
                     bottomRight: const Radius.circular(AppRadius.lg),
                   ),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    width: 1,
+                    color: isRegeneratedMessage
+                        ? AppTheme.goldColor.withValues(alpha: 0.8)
+                        : Colors.white.withValues(alpha: 0.3),
+                    width: isRegeneratedMessage ? 2 : 1,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 8,
+                      color: isRegeneratedMessage
+                          ? AppTheme.goldColor.withValues(alpha: 0.3)
+                          : Colors.black.withValues(alpha: 0.1),
+                      blurRadius: isRegeneratedMessage ? 12 : 8,
                       offset: const Offset(0, 4),
                     ),
                   ],
@@ -2024,11 +2047,34 @@ class ChatScreen extends HookConsumerWidget {
             ],
           ],
         ),
-      ).animate().fadeIn(duration: AppAnimations.normal, delay: (index * 100).ms).then()
-          .slideX(
-            begin: message.isUser ? 0.3 : 0, // Only slide user messages, AI messages appear in place
-          ),
-    );
+      ),
+    ); // End of GestureDetector - defines bubble variable
+
+    // Only apply animations if NOT a regenerated message
+    if (isRegeneratedMessage) {
+      // For regenerated messages, only apply shimmer animation
+      return bubble.animate()
+          .shimmer(
+            duration: const Duration(milliseconds: 800),
+            color: AppTheme.goldColor.withValues(alpha: 0.4),
+          )
+          .then()
+          .shimmer(
+            duration: const Duration(milliseconds: 800),
+            color: AppTheme.goldColor.withValues(alpha: 0.4),
+          )
+          .then()
+          .shimmer(
+            duration: const Duration(milliseconds: 800),
+            color: AppTheme.goldColor.withValues(alpha: 0.4),
+          );
+    } else {
+      // For normal messages, apply entrance animations
+      return bubble.animate()
+          .fadeIn(duration: AppAnimations.normal, delay: (index * 100).ms)
+          .then()
+          .slideX(begin: message.isUser ? 0.3 : 0);
+    }
   }
 
   Widget _buildTypingIndicator() {
