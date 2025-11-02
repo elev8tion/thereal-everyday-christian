@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -102,7 +103,7 @@ class ChatScreen extends HookConsumerWidget {
 
           // Add welcome message with sessionId
           final welcomeMessage = ChatMessage.system(
-            content: 'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+            content: 'Peace be with you.\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
             sessionId: newSessionId,
           );
           await conversationService.saveMessage(welcomeMessage);
@@ -1787,6 +1788,50 @@ class ChatScreen extends HookConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    ListTile(
+                      leading: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              AppTheme.primaryColor.withValues(alpha: 0.3),
+                              AppTheme.primaryColor.withValues(alpha: 0.1),
+                            ],
+                          ),
+                          borderRadius: AppRadius.mediumRadius,
+                        ),
+                        child: const Icon(Icons.copy, color: AppTheme.primaryColor),
+                      ),
+                      title: const Text(
+                        'Copy Message',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryText,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Copy message text to clipboard',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                          color: AppColors.secondaryText,
+                        ),
+                      ),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        await Clipboard.setData(ClipboardData(text: message.content));
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text('Message copied to clipboard'),
+                              backgroundColor: AppTheme.primaryColor,
+                              behavior: SnackBarBehavior.floating,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 8),
                     ListTile(
                       leading: Container(
                         padding: const EdgeInsets.all(8),

@@ -79,6 +79,51 @@ class IntentDetectionService {
     'i need advice',
     'counsel me',
     'guide me',
+
+    // Life-threatening crisis (immediate pastoral care needed)
+    'suicidal',
+    'kill myself',
+    'want to die',
+    'end my life',
+    'taking my life',
+    'suicide',
+
+    // Abuse (safety concern)
+    'being abused',
+    'abused',
+    'abuse',
+    'abusive',
+
+    // Self-harm
+    'self harm',
+    'cutting myself',
+    'hurting myself',
+    'harm myself',
+
+    // Faith crisis (harder to detect from tone alone)
+    'losing faith',
+    'lost faith',
+    'losing my faith',
+    'doubt god',
+    'doubting god',
+    'questioning god',
+    'where is god',
+    'god abandoned me',
+    'feel abandoned by god',
+    'god doesn t care',
+
+    // Major life trauma (often stated matter-of-factly)
+    'someone died',
+    'died',
+    'death of',
+    'passed away',
+    'funeral',
+    'divorce',
+    'divorcing',
+    'getting divorced',
+    'miscarriage',
+    'lost the baby',
+    'lost my baby',
   ];
 
   // ============================================================================
@@ -115,11 +160,19 @@ class IntentDetectionService {
     'i ve been thinking about',
     'i ve been studying',
 
-    // Doctrinal questions
+    // Doctrinal questions (present and past tense)
     'what is',
+    'what was',
     'who is',
+    'who was',
+    'why is',
+    'why was',
     'why did',
+    'how is',
+    'how was',
     'how did',
+    'when is',
+    'when was',
     'when did',
     'what happened',
     'what s the difference between',
@@ -158,6 +211,15 @@ class IntentDetectionService {
 
   /// Detect user's conversation intent
   IntentResult detectIntent(String userInput) {
+    // Handle empty/whitespace input - default to guidance
+    if (userInput.trim().isEmpty) {
+      return IntentResult(
+        intent: ConversationIntent.guidance,
+        confidence: 0.3,
+        detectedPatterns: [],
+      );
+    }
+
     final normalized = _normalizeText(userInput);
 
     // Count pattern matches for each intent
@@ -172,6 +234,18 @@ class IntentDetectionService {
     // Check guidance patterns
     for (final pattern in _guidancePatterns) {
       if (normalized.contains(pattern)) {
+        // Skip "help me" if it's followed by "understand [specific topic]" (educational context)
+        // But keep "help me" for "help me understand" alone (support request)
+        if (pattern == 'help me' && normalized.contains('help me understand')) {
+          // Check if there's a topic after "understand"
+          final understandIndex = normalized.indexOf('help me understand') + 'help me understand'.length;
+          final wordsAfter = normalized.substring(understandIndex).trim();
+          if (wordsAfter.isNotEmpty) {
+            // Has topic like "help me understand Romans 8" - skip guidance pattern
+            continue;
+          }
+        }
+
         guidanceScore += 3; // Weight guidance higher (emotional needs prioritized)
         guidanceMatches.add(pattern);
       }
@@ -185,9 +259,9 @@ class IntentDetectionService {
       }
     }
 
-    // Check casual patterns
+    // Check casual patterns (with word boundary check for short patterns)
     for (final pattern in _casualPatterns) {
-      if (normalized.contains(pattern)) {
+      if (_matchesWithWordBoundary(normalized, pattern)) {
         casualScore += 1;
         casualMatches.add(pattern);
       }
@@ -206,7 +280,10 @@ class IntentDetectionService {
     }
 
     // First-person emotional language suggests guidance
-    if (normalized.contains('i m') || normalized.contains('i feel')) {
+    // BUT exclude intellectual curiosity phrases (those are discussion)
+    if ((normalized.contains('i m') || normalized.contains('i feel')) &&
+        !normalized.contains('i m curious') &&
+        !normalized.contains('i m wondering')) {
       guidanceScore += 2;
     }
 
@@ -222,14 +299,25 @@ class IntentDetectionService {
     double confidence;
     List<String> detectedPatterns;
 
-    if (guidanceScore > discussionScore && guidanceScore > casualScore) {
+    // If NO patterns match at all, default to GUIDANCE (safer than casual)
+    if (guidanceScore == 0 && discussionScore == 0 && casualScore == 0) {
+      intent = ConversationIntent.guidance;
+      confidence = 0.3; // Low confidence, but guidance is safer default
+      detectedPatterns = [];
+    } else if (guidanceScore > discussionScore && guidanceScore > casualScore) {
       intent = ConversationIntent.guidance;
       confidence = _calculateConfidence(guidanceScore, discussionScore, casualScore);
       detectedPatterns = guidanceMatches;
-    } else if (discussionScore > casualScore) {
+    } else if (discussionScore >= guidanceScore && discussionScore > casualScore) {
+      // Discussion wins if it ties or beats guidance AND beats casual
       intent = ConversationIntent.discussion;
       confidence = _calculateConfidence(discussionScore, guidanceScore, casualScore);
       detectedPatterns = discussionMatches;
+    } else if (guidanceScore >= casualScore) {
+      // Guidance wins ties with casual (safety tie-breaker)
+      intent = ConversationIntent.guidance;
+      confidence = _calculateConfidence(guidanceScore, discussionScore, casualScore);
+      detectedPatterns = guidanceMatches;
     } else {
       intent = ConversationIntent.casual;
       confidence = _calculateConfidence(casualScore, guidanceScore, discussionScore);
@@ -276,5 +364,18 @@ class IntentDetectionService {
         .trim()
         .replaceAll(RegExp(r'[^\w\s]'), ' ') // Remove punctuation
         .replaceAll(RegExp(r'\s+'), ' '); // Normalize whitespace
+  }
+
+  /// Check if pattern matches with word boundaries
+  /// Prevents "hi" from matching inside "this" or "everything"
+  bool _matchesWithWordBoundary(String text, String pattern) {
+    // For very short patterns (1-3 chars), require word boundaries
+    if (pattern.length <= 3) {
+      final words = text.split(' ');
+      return words.contains(pattern);
+    }
+
+    // For longer patterns, use standard contains check
+    return text.contains(pattern);
   }
 }

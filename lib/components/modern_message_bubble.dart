@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
 import '../models/chat_message.dart';
@@ -93,9 +94,7 @@ class ModernMessageBubble extends StatelessWidget {
 
   Widget _buildMessageContent(BuildContext context) {
     return GestureDetector(
-      onLongPress: message.isAI && onRegenerateResponse != null
-          ? () => _showMessageOptions(context)
-          : null,
+      onLongPress: () => _showMessageOptions(context),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -184,20 +183,51 @@ class ModernMessageBubble extends StatelessWidget {
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.refresh, color: AppTheme.primaryColor),
+                leading: const Icon(Icons.copy, color: AppTheme.primaryColor),
                 title: const Text(
-                  'Regenerate Response',
+                  'Copy Message',
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                 ),
                 subtitle: const Text(
-                  'Get a new AI response',
+                  'Copy text to clipboard',
                   style: TextStyle(color: Colors.white70, fontSize: 12),
                 ),
-                onTap: () {
+                onTap: () async {
                   Navigator.pop(context);
-                  onRegenerateResponse?.call();
+                  await Clipboard.setData(ClipboardData(text: message.content));
+
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('Message copied to clipboard'),
+                        backgroundColor: AppTheme.primaryColor,
+                        behavior: SnackBarBehavior.floating,
+                        duration: const Duration(seconds: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                        ),
+                      ),
+                    );
+                  }
                 },
               ),
+              if (message.isAI && onRegenerateResponse != null) ...[
+                ListTile(
+                  leading: const Icon(Icons.refresh, color: AppTheme.primaryColor),
+                  title: const Text(
+                    'Regenerate Response',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: const Text(
+                    'Get a new AI response',
+                    style: TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    onRegenerateResponse?.call();
+                  },
+                ),
+              ],
               const SizedBox(height: 20),
             ],
           ),
