@@ -10,9 +10,11 @@ import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
 import '../services/bible_chapter_service.dart';
 import '../models/bible_verse.dart';
+import '../models/verse_context.dart';
 import '../utils/responsive_utils.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../core/services/tts_service.dart';
+import 'chat_screen.dart';
 
 /// Chapter Reading Screen - displays Bible chapters with verse-by-verse reading
 class ChapterReadingScreen extends ConsumerStatefulWidget {
@@ -573,29 +575,32 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                           // Favorite button
                           _buildFavoriteButton(verse),
                           const SizedBox(height: 4),
-                          // User avatar with logo
-                          Container(
-                            width: 36,
-                            height: 36,
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppTheme.goldColor.withValues(alpha: 0.3),
-                                  AppTheme.goldColor.withValues(alpha: 0.1),
-                                ],
+                          // User avatar with logo - tap to discuss verse
+                          GestureDetector(
+                            onTap: () => _navigateToVerseDiscussion(verse),
+                            child: Container(
+                              width: 36,
+                              height: 36,
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppTheme.goldColor.withValues(alpha: 0.3),
+                                    AppTheme.goldColor.withValues(alpha: 0.1),
+                                  ],
+                                ),
+                                borderRadius: AppRadius.smallRadius,
+                                border: Border.all(
+                                  color: AppTheme.goldColor.withValues(alpha: 0.3),
+                                  width: 1,
+                                ),
                               ),
-                              borderRadius: AppRadius.smallRadius,
-                              border: Border.all(
-                                color: AppTheme.goldColor.withValues(alpha: 0.3),
-                                width: 1,
-                              ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(AppRadius.xs),
-                              child: Image.asset(
-                                'assets/images/logo_cropped.png',
-                                fit: BoxFit.contain,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(AppRadius.xs),
+                                child: Image.asset(
+                                  'assets/images/logo_cropped.png',
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             ),
                           ),
@@ -725,6 +730,48 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         message: 'Error: $e',
       );
     }
+  }
+
+  /// Navigate to chat screen to discuss a specific verse
+  /// Returns to this screen with auto-scroll when user taps "Return to Reading"
+  Future<void> _navigateToVerseDiscussion(BibleVerse verse) async {
+    final verseContext = VerseContext.fromVerse(verse);
+
+    final result = await Navigator.push<VerseContext>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatScreen(
+          verseContext: verseContext,
+        ),
+      ),
+    );
+
+    // If user returned from chat, scroll to the verse
+    if (result != null && mounted) {
+      debugPrint('📖 Returned from chat, scrolling to verse ${result.verseNumber}');
+      _scrollToVerseNumber(result.verseNumber);
+    }
+  }
+
+  /// Scroll to a specific verse number in the current chapter
+  void _scrollToVerseNumber(int verseNumber) {
+    // Find the verse index (0-based)
+    final verseIndex = verseNumber - 1;
+
+    // Check if we have a key for this verse
+    final key = _verseKeys[verseIndex];
+    if (key == null || key.currentContext == null) {
+      debugPrint('⚠️ No key found for verse $verseNumber');
+      return;
+    }
+
+    // Scroll to the verse with animation
+    Scrollable.ensureVisible(
+      key.currentContext!,
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.easeInOut,
+      alignment: 0.2, // Keep verse near top of viewport
+    );
   }
 
   Widget _buildCompleteButton() {

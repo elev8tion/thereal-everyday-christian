@@ -34,9 +34,16 @@ import '../components/floating_message_badge.dart';
 import '../core/services/subscription_service.dart';
 import '../components/standard_screen_header.dart';
 import '../components/chat_action_buttons_header.dart';
+import '../components/verse_context_message.dart';
+import '../models/verse_context.dart';
 
 class ChatScreen extends HookConsumerWidget {
-  const ChatScreen({super.key});
+  final VerseContext? verseContext; // Optional verse context for verse discussion
+
+  const ChatScreen({
+    super.key,
+    this.verseContext,
+  });
 
   ChatMessage _createWelcomeMessage() {
     return ChatMessage.system(
@@ -57,6 +64,7 @@ class ChatScreen extends HookConsumerWidget {
     final conversationService = useMemoized(() => ConversationService());
     final canSend = useState(false);
     final showScrollToBottom = useState(false);
+    final hasAddedVerseContext = useState(false); // Track if verse context was prepended to AI
 
     // Listen to text changes to update send button state
     useEffect(() {
@@ -96,26 +104,36 @@ class ChatScreen extends HookConsumerWidget {
           // Always start with a fresh session (old sessions accessible via history)
           debugPrint('🆕 Creating fresh session');
           final newSessionId = await conversationService.createSession(
-            title: 'New Conversation',
+            title: verseContext != null
+              ? 'Discussing ${verseContext!.reference}'
+              : 'New Conversation',
           );
           sessionId.value = newSessionId;
           debugPrint('✅ Created new session: $newSessionId');
 
-          // Add welcome message with sessionId
-          final welcomeMessage = ChatMessage.system(
-            content: 'Peace be with you.\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
-            sessionId: newSessionId,
-          );
-          await conversationService.saveMessage(welcomeMessage);
-
-          // Set messages
-          messages.value = [welcomeMessage];
-          debugPrint('✅ New session initialized with welcome message');
+          // Only add welcome message if NOT navigated from verse
+          if (verseContext == null) {
+            final welcomeMessage = ChatMessage.system(
+              content: 'Peace be with you.\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+              sessionId: newSessionId,
+            );
+            await conversationService.saveMessage(welcomeMessage);
+            messages.value = [welcomeMessage];
+            debugPrint('✅ New session initialized with welcome message');
+          } else {
+            // For verse discussions, start with empty messages (verse context shows separately)
+            messages.value = [];
+            debugPrint('✅ New verse discussion session initialized: ${verseContext!.reference}');
+          }
         } catch (e, stackTrace) {
           debugPrint('❌ Failed to initialize session: $e');
           debugPrint('❌ Stack trace: $stackTrace');
           // Fallback to in-memory
-          messages.value = [_createWelcomeMessage()];
+          if (verseContext == null) {
+            messages.value = [_createWelcomeMessage()];
+          } else {
+            messages.value = [];
+          }
           debugPrint('⚠️ Using in-memory fallback mode');
         }
       }
@@ -423,12 +441,21 @@ class ChatScreen extends HookConsumerWidget {
 
         debugPrint('🚀 Starting streaming AI response for: "${text.trim()}"');
 
+        // Prepend verse context to first message (behind the scenes, not visible to user)
+        String aiInput = text.trim();
+        if (verseContext != null && !hasAddedVerseContext.value) {
+          // Only on first user message in verse discussion
+          aiInput = "Regarding ${verseContext!.fullReference}: '${verseContext!.verseText}'\n\n$aiInput";
+          hasAddedVerseContext.value = true; // Mark as added so we don't prepend again
+          debugPrint('📖 Prepended verse context to AI input (not visible to user)');
+        }
+
         // Accumulate full response
         final fullResponse = StringBuffer();
 
         // Start streaming
         final stream = aiService.generateResponseStream(
-          userInput: text.trim(),
+          userInput: aiInput, // Send modified input to AI
           conversationHistory: messages.value.sublist(0, messages.value.length - 1), // Exclude the placeholder
         );
 
@@ -1479,9 +1506,15 @@ class ChatScreen extends HookConsumerWidget {
                               onMorePressed: showChatOptions,
                               onHistoryPressed: () => _showConversationHistory(context, messages, sessionId, conversationService),
                               onNewPressed: () => _startNewConversation(context, messages, sessionId, conversationService),
+                              onReturnToReadingPressed: verseContext != null ? () => _returnToReading(context) : null,
                             ),
                           ),
                         ),
+                        // Verse context message (only shows if navigated from verse)
+                        if (verseContext != null)
+                          SliverToBoxAdapter(
+                            child: VerseContextMessage(verseContext: verseContext!),
+                          ),
                         // Messages list
                         _buildMessagesSliver(
                           context,
@@ -2665,6 +2698,14 @@ class ChatScreen extends HookConsumerWidget {
       debugPrint('❌ Failed to load conversation: $e');
       debugPrint('❌ Stack trace: $stackTrace');
     }
+  }
+
+  /// Navigate back to ChapterReadingScreen with the verse context
+  void _returnToReading(BuildContext context) {
+    if (verseContext == null) return;
+
+    debugPrint('📖 Returning to reading: ${verseContext!.reference}');
+    Navigator.pop(context, verseContext);
   }
 
   String _formatDate(DateTime dateTime) {

@@ -38,12 +38,14 @@ class ChatActionButtons extends StatelessWidget {
   final VoidCallback onMorePressed;
   final VoidCallback onHistoryPressed;
   final VoidCallback onNewPressed;
+  final VoidCallback? onReturnToReadingPressed; // Optional return button
 
   const ChatActionButtons({
     super.key,
     required this.onMorePressed,
     required this.onHistoryPressed,
     required this.onNewPressed,
+    this.onReturnToReadingPressed,
   });
 
   @override
@@ -55,6 +57,53 @@ class ChatActionButtons extends StatelessWidget {
         children: [
           const GlassmorphicFABMenu(),
           const Spacer(),
+
+          // Return to Reading button (only visible when navigated from verse)
+          if (onReturnToReadingPressed != null) ...[
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withValues(alpha: 0.2),
+                    Colors.white.withValues(alpha: 0.1),
+                  ],
+                ),
+                borderRadius: AppRadius.mediumRadius,
+                border: Border.all(
+                  color: AppTheme.goldColor.withValues(alpha: 0.4),
+                  width: 1,
+                ),
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onReturnToReadingPressed,
+                  borderRadius: AppRadius.mediumRadius,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: ResponsiveUtils.iconSize(context, 18),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          Icons.menu_book,
+                          color: Colors.white,
+                          size: ResponsiveUtils.iconSize(context, 18),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+          ],
+
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
