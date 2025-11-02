@@ -165,7 +165,7 @@ class GeminiAIServiceAdapter implements AIService {
     // Format conversation history with proper context and limit to last 20 messages
     final historyStrings = _formatConversationHistory(conversationHistory);
 
-    // Call Gemini AI with error handling
+    // Call Gemini AI with error handling (pass context for regeneration)
     AIResponse response;
     try {
       response = await _gemini.generateResponse(
@@ -173,6 +173,7 @@ class GeminiAIServiceAdapter implements AIService {
         theme: theme,
         verses: verses,
         conversationHistory: historyStrings,
+        context: context, // Pass context for regeneration instructions
       );
     } catch (e) {
       stopwatch.stop();
