@@ -29,38 +29,61 @@ def create_gradient(width, height, color1, color2):
     return base
 
 def create_fab_icon(size):
-    """Create an app icon matching the FAB button design with app gradient background"""
+    """Create an app icon with the actual GradientBackground widget gradient"""
 
     # Colors from AppTheme
     gold_color = hex_to_rgb('#D4AF37')  # goldColor
 
-    # App background gradient colors (from AppGradients.backgroundDark)
-    navy_color = hex_to_rgb('#1A1A2E')  # Dark navy
-    deep_blue = hex_to_rgb('#16213E')   # Deep blue
-    dark_purple = hex_to_rgb('#0F3460') # Dark purple
+    # Actual app gradient colors (from GradientBackground widget)
+    navy_color = hex_to_rgb('#1A1A2E')  # Dark navy (stop: 0%)
+    indigo_color = hex_to_rgb('#6366F1')  # AppTheme.primaryColor (stop: 30%)
+    purple_color = hex_to_rgb('#8B5CF6')  # AppTheme.accentColor (stop: 70%)
+    dark_blue = hex_to_rgb('#0F3460')   # Deep dark blue (stop: 100%)
 
-    # Create base image with app gradient background
+    # Create base image
     img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
 
-    # Create vertical gradient background (navy → deep blue → dark purple)
-    # This matches the app's main background
+    # Create diagonal gradient matching GradientBackground
+    # Direction: from left-center (-1, 0.5) to right-top (1, -0.5)
     gradient = Image.new('RGB', (size, size))
-    for y in range(size):
-        # Create 3-color vertical gradient
-        if y < size // 2:
-            # First half: navy to deep blue
-            ratio = y / (size // 2)
-            r = int(navy_color[0] + (deep_blue[0] - navy_color[0]) * ratio)
-            g = int(navy_color[1] + (deep_blue[1] - navy_color[1]) * ratio)
-            b = int(navy_color[2] + (deep_blue[2] - navy_color[2]) * ratio)
-        else:
-            # Second half: deep blue to dark purple
-            ratio = (y - size // 2) / (size // 2)
-            r = int(deep_blue[0] + (dark_purple[0] - deep_blue[0]) * ratio)
-            g = int(deep_blue[1] + (dark_purple[1] - deep_blue[1]) * ratio)
-            b = int(deep_blue[2] + (dark_purple[2] - deep_blue[2]) * ratio)
 
+    for y in range(size):
         for x in range(size):
+            # Normalize coordinates to -1 to 1 range
+            norm_x = (x / size) * 2 - 1
+            norm_y = (y / size) * 2 - 1
+
+            # Calculate position along gradient line from (-1, 0.5) to (1, -0.5)
+            # Distance from start point
+            start_x, start_y = -1, 0.5
+            end_x, end_y = 1, -0.5
+
+            # Project point onto gradient line
+            dx = end_x - start_x
+            dy = end_y - start_y
+            t = ((norm_x - start_x) * dx + (norm_y - start_y) * dy) / (dx * dx + dy * dy)
+            t = max(0, min(1, t))  # Clamp to 0-1
+
+            # Interpolate colors based on stops: 0%, 30%, 70%, 100%
+            if t < 0.3:
+                # Between navy and indigo
+                ratio = t / 0.3
+                r = int(navy_color[0] + (indigo_color[0] - navy_color[0]) * ratio)
+                g = int(navy_color[1] + (indigo_color[1] - navy_color[1]) * ratio)
+                b = int(navy_color[2] + (indigo_color[2] - navy_color[2]) * ratio)
+            elif t < 0.7:
+                # Between indigo and purple
+                ratio = (t - 0.3) / 0.4
+                r = int(indigo_color[0] + (purple_color[0] - indigo_color[0]) * ratio)
+                g = int(indigo_color[1] + (purple_color[1] - indigo_color[1]) * ratio)
+                b = int(indigo_color[2] + (purple_color[2] - indigo_color[2]) * ratio)
+            else:
+                # Between purple and dark blue
+                ratio = (t - 0.7) / 0.3
+                r = int(purple_color[0] + (dark_blue[0] - purple_color[0]) * ratio)
+                g = int(purple_color[1] + (dark_blue[1] - purple_color[1]) * ratio)
+                b = int(purple_color[2] + (dark_blue[2] - purple_color[2]) * ratio)
+
             gradient.putpixel((x, y), (r, g, b))
 
     # Apply rounded corners (Apple automatically applies rounded corners, but we'll keep them)
