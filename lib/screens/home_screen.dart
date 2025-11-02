@@ -846,9 +846,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildStartChatButton() {
-    return GlassButton(
-      text: 'Start Spiritual Conversation',
-      onPressed: () => NavigationService.goToChat(),
-    ).animate().fadeIn(delay: 2000.ms).scale(delay: 2000.ms);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: GlassButton(
+        text: 'Start Spiritual Conversation',
+        onPressed: () => NavigationService.goToChat(),
+      ).animate().fadeIn(delay: 2000.ms).scale(delay: 2000.ms),
+    );
   }
 }
