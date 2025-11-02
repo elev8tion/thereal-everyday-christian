@@ -1829,7 +1829,7 @@ class ChatScreen extends HookConsumerWidget {
   ) {
     final bool isRegeneratedMessage = regeneratedMessageId != null && message.id == regeneratedMessageId;
 
-    final bubble = GestureDetector(
+    final messageWidget = GestureDetector(
       onLongPress: message.isAI
           ? () {
               // Show options for regenerate
@@ -2048,12 +2048,13 @@ class ChatScreen extends HookConsumerWidget {
           ],
         ),
       ),
-    ); // End of GestureDetector - defines bubble variable
+    ); // End of GestureDetector
 
-    // Only apply animations if NOT a regenerated message
+    // Conditionally wrap with shimmer animation for regenerated messages
+    // This keeps the same widget structure, avoiding widget rebuilds
     if (isRegeneratedMessage) {
-      // For regenerated messages, only apply shimmer animation
-      return bubble.animate()
+      return messageWidget
+          .animate()
           .shimmer(
             duration: const Duration(milliseconds: 800),
             color: AppTheme.goldColor.withValues(alpha: 0.4),
@@ -2068,13 +2069,10 @@ class ChatScreen extends HookConsumerWidget {
             duration: const Duration(milliseconds: 800),
             color: AppTheme.goldColor.withValues(alpha: 0.4),
           );
-    } else {
-      // For normal messages, apply entrance animations
-      return bubble.animate()
-          .fadeIn(duration: AppAnimations.normal, delay: (index * 100).ms)
-          .then()
-          .slideX(begin: message.isUser ? 0.3 : 0);
     }
+
+    // For all other messages, return without animations (like streaming messages)
+    return messageWidget;
   }
 
   Widget _buildTypingIndicator() {
