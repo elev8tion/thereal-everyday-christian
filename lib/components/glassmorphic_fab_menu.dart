@@ -348,7 +348,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Image.asset(
-                      'assets/images/logo_cropped.png',
+                      'assets/images/app_icon.png',
                       width: 64,
                       height: 64,
                       fit: BoxFit.contain,
