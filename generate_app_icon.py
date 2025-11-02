@@ -29,29 +29,48 @@ def create_gradient(width, height, color1, color2):
     return base
 
 def create_fab_icon(size):
-    """Create an app icon matching the FAB button design"""
+    """Create an app icon matching the FAB button design with app gradient background"""
 
     # Colors from AppTheme
     gold_color = hex_to_rgb('#D4AF37')  # goldColor
-    primary_color = hex_to_rgb('#6366F1')  # primaryColor (indigo)
 
-    # Create base image
+    # App background gradient colors (from AppGradients.backgroundDark)
+    navy_color = hex_to_rgb('#1A1A2E')  # Dark navy
+    deep_blue = hex_to_rgb('#16213E')   # Deep blue
+    dark_purple = hex_to_rgb('#0F3460') # Dark purple
+
+    # Create base image with app gradient background
     img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
 
-    # Create gradient background (gold to indigo, 30% opacity)
-    gradient = create_gradient(size, size,
-                               gold_color + (int(255 * 0.3),),
-                               primary_color + (int(255 * 0.3),))
+    # Create vertical gradient background (navy → deep blue → dark purple)
+    # This matches the app's main background
+    gradient = Image.new('RGB', (size, size))
+    for y in range(size):
+        # Create 3-color vertical gradient
+        if y < size // 2:
+            # First half: navy to deep blue
+            ratio = y / (size // 2)
+            r = int(navy_color[0] + (deep_blue[0] - navy_color[0]) * ratio)
+            g = int(navy_color[1] + (deep_blue[1] - navy_color[1]) * ratio)
+            b = int(navy_color[2] + (deep_blue[2] - navy_color[2]) * ratio)
+        else:
+            # Second half: deep blue to dark purple
+            ratio = (y - size // 2) / (size // 2)
+            r = int(deep_blue[0] + (dark_purple[0] - deep_blue[0]) * ratio)
+            g = int(deep_blue[1] + (dark_purple[1] - deep_blue[1]) * ratio)
+            b = int(deep_blue[2] + (dark_purple[2] - deep_blue[2]) * ratio)
 
-    # Apply rounded corners
+        for x in range(size):
+            gradient.putpixel((x, y), (r, g, b))
+
+    # Apply rounded corners (Apple automatically applies rounded corners, but we'll keep them)
     mask = Image.new('L', (size, size), 0)
     mask_draw = ImageDraw.Draw(mask)
-    corner_radius = int(size * 0.2)  # 20% radius (matching mediumRadius)
+    corner_radius = int(size * 0.225)  # iOS standard is ~22.5% radius
     mask_draw.rounded_rectangle([(0, 0), (size, size)], corner_radius, fill=255)
 
-    # Create background with gradient
-    background = Image.new('RGBA', (size, size), (255, 255, 255, 255))
-    background.paste(gradient, (0, 0), mask)
+    # Create background with app gradient (fully opaque - Apple requirement)
+    background = gradient.convert('RGBA')
 
     # Add border (gold with 60% opacity)
     border_img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
