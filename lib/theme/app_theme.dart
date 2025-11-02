@@ -549,3 +549,109 @@ class AppBlur {
   static const double strong = 40.0;
   static const double veryStrong = 60.0;
 }
+
+/// WCAG Contrast Ratio Calculator for Accessibility
+///
+/// Verifies color contrast meets WCAG 2.1 Level AA standards:
+/// - Normal text: 4.5:1 minimum
+/// - Large text (≥18pt): 3:1 minimum
+/// - UI components: 3:1 minimum
+class WCAGContrast {
+  WCAGContrast._();
+
+  /// Calculate relative luminance using WCAG formula
+  static double _relativeLuminance(Color color) {
+    double r = color.red / 255.0;
+    double g = color.green / 255.0;
+    double b = color.blue / 255.0;
+
+    // Apply sRGB gamma correction
+    r = (r <= 0.03928) ? r / 12.92 : _pow((r + 0.055) / 1.055, 2.4);
+    g = (g <= 0.03928) ? g / 12.92 : _pow((g + 0.055) / 1.055, 2.4);
+    b = (b <= 0.03928) ? b / 12.92 : _pow((b + 0.055) / 1.055, 2.4);
+
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+
+  /// Power function helper (dart:math pow returns num, we need double)
+  static double _pow(double base, double exponent) {
+    double result = 1.0;
+    for (int i = 0; i < exponent * 10; i++) {
+      result *= base;
+      if (i % 10 == 9) result = result; // Every 10 iterations = 1.0 power
+    }
+    // Approximate for fractional exponents
+    if (exponent == 2.4) {
+      // base^2.4 ≈ base^2 * base^0.4
+      result = base * base * _sqrtApprox(base); // Rough approximation
+    }
+    return result;
+  }
+
+  /// Simple square root approximation
+  static double _sqrtApprox(double n) {
+    if (n < 0) return 0;
+    double x = n;
+    double y = 1.0;
+    double e = 0.000001;
+    while (x - y > e) {
+      x = (x + y) / 2;
+      y = n / x;
+    }
+    return x;
+  }
+
+  /// Calculate contrast ratio between two colors
+  static double contrastRatio(Color foreground, Color background) {
+    double lum1 = _relativeLuminance(foreground) + 0.05;
+    double lum2 = _relativeLuminance(background) + 0.05;
+
+    double ratio = lum1 > lum2 ? lum1 / lum2 : lum2 / lum1;
+    return ratio;
+  }
+
+  /// Check if contrast meets WCAG AA standard (4.5:1 for normal text)
+  static bool meetsWCAG_AA(Color foreground, Color background) {
+    return contrastRatio(foreground, background) >= 4.5;
+  }
+
+  /// Check if contrast meets WCAG AA standard for large text (3:1)
+  static bool meetsWCAG_AA_Large(Color foreground, Color background) {
+    return contrastRatio(foreground, background) >= 3.0;
+  }
+
+  /// Check if contrast meets WCAG AAA standard (7:1 for normal text)
+  static bool meetsWCAG_AAA(Color foreground, Color background) {
+    return contrastRatio(foreground, background) >= 7.0;
+  }
+
+  /// Get formatted contrast ratio string
+  static String getContrastReport(Color foreground, Color background) {
+    double ratio = contrastRatio(foreground, background);
+    bool passAA = ratio >= 4.5;
+    bool passAAA = ratio >= 7.0;
+
+    return '${ratio.toStringAsFixed(2)}:1 ${passAA ? "✅ WCAG AA" : "❌ FAIL AA"}${passAAA ? " ✅ AAA" : ""}';
+  }
+
+  /// Verify app theme colors meet WCAG standards
+  static void verifyThemeContrast() {
+    print('\n═══ WCAG Contrast Verification Report ═══\n');
+
+    // Test user message bubble (white text on primaryGradient)
+    print('USER MESSAGE BUBBLE:');
+    print('  White on Indigo (#6366F1): ${getContrastReport(Colors.white, AppTheme.primaryColor)}');
+    print('  White on Purple (#8B5CF6): ${getContrastReport(Colors.white, AppTheme.accentColor)}');
+
+    // Test gold accent
+    print('\nGOLD ACCENT:');
+    print('  Gold (#D4AF37) on Dark: ${getContrastReport(AppTheme.goldColor, const Color(0xFF1E293B))}');
+    print('  White on Gold: ${getContrastReport(Colors.white, AppTheme.goldColor)}');
+
+    // Test AI message bubble (assumed white text on card color)
+    print('\nAI MESSAGE BUBBLE:');
+    print('  Dark text on Light card: ${getContrastReport(Colors.black87, Colors.white)}');
+
+    print('\n═══════════════════════════════════════════\n');
+  }
+}

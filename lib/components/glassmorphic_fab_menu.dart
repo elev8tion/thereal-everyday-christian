@@ -106,6 +106,8 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
     // Haptic feedback
     HapticFeedback.mediumImpact();
 
+    if (!mounted) return;
+
     setState(() {
       _isVisible = !_isVisible;
     });
@@ -166,6 +168,9 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
   }
 
   List<Widget> _buildAnimatedMenuItems() {
+    // Safety check: don't build if widget is disposed
+    if (!mounted) return [];
+
     final options = _menuOptions; // Don't reverse, show in order
 
     // Position from top-left where FAB is located

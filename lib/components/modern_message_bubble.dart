@@ -21,41 +21,48 @@ class ModernMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: Column(
-        crossAxisAlignment: message.isUser
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: message.isUser
-                ? MainAxisAlignment.end
-                : MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (!message.isUser) ...[
-                _buildAvatar(),
-                const SizedBox(width: 12),
+    // Screen reader label for accessibility (VoiceOver/TalkBack)
+    final semanticLabel = '${message.isUser ? 'You' : 'AI'} said: ${message.content}';
+
+    return Semantics(
+      label: semanticLabel,
+      liveRegion: true, // Announce new messages automatically
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: Column(
+          crossAxisAlignment: message.isUser
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: message.isUser
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!message.isUser) ...[
+                  _buildAvatar(),
+                  const SizedBox(width: 12),
+                ],
+                Flexible(
+                  child: _buildMessageContent(context),
+                ),
+                if (message.isUser) ...[
+                  const SizedBox(width: 12),
+                  _buildUserAvatar(),
+                ],
               ],
-              Flexible(
-                child: _buildMessageContent(context),
-              ),
-              if (message.isUser) ...[
-                const SizedBox(width: 12),
-                _buildUserAvatar(),
-              ],
+            ),
+            if (showTimestamp) ...[
+              const SizedBox(height: 4),
+              _buildTimestamp(),
             ],
-          ),
-          if (showTimestamp) ...[
-            const SizedBox(height: 4),
-            _buildTimestamp(),
+            if (message.verses.isNotEmpty == true) ...[
+              const SizedBox(height: 8),
+              _buildVerses(),
+            ],
           ],
-          if (message.verses.isNotEmpty == true) ...[
-            const SizedBox(height: 8),
-            _buildVerses(),
-          ],
-        ],
+        ),
       ),
     ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.3);
   }
@@ -263,101 +270,108 @@ class ModernVerseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 8),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppTheme.primaryColor.withValues(alpha: 0.05),
-                  AppTheme.accentColor.withValues(alpha: 0.05),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+    // Screen reader label for Bible verses
+    final semanticLabel = 'Bible verse: ${verse.reference}. ${verse.text}';
+
+    return Semantics(
+      label: semanticLabel,
+      button: onTap != null, // Announce as button if tappable
+      child: Container(
+        margin: const EdgeInsets.only(top: 8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppTheme.primaryColor.withValues(alpha: 0.05),
+                    AppTheme.accentColor.withValues(alpha: 0.05),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                  width: 1,
+                ),
               ),
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              border: Border.all(
-                color: AppTheme.primaryColor.withValues(alpha: 0.2),
-                width: 1,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                        borderRadius: AppRadius.smallRadius,
-                      ),
-                      child: const Icon(
-                        Icons.auto_stories,
-                        size: 16,
-                        color: AppTheme.primaryColor,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        verse.reference,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                          borderRadius: AppRadius.smallRadius,
+                        ),
+                        child: const Icon(
+                          Icons.auto_stories,
+                          size: 16,
                           color: AppTheme.primaryColor,
                         ),
                       ),
-                    ),
-                    if (onTap != null)
-                      Icon(
-                        Icons.open_in_new,
-                        size: 16,
-                        color: AppTheme.primaryColor.withValues(alpha: 0.6),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  verse.text,
-                  style: TextStyle(
-                    fontSize: compact ? 14 : 16,
-                    fontStyle: FontStyle.italic,
-                    height: 1.4,
-                    color: Theme.of(context).textTheme.bodyLarge?.color,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                if (verse.themes.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 6,
-                    children: verse.themes.take(3).map((theme) =>
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                          borderRadius: AppRadius.mediumRadius,
-                        ),
+                      const SizedBox(width: 8),
+                      Expanded(
                         child: Text(
-                          theme,
+                          verse.reference,
                           style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
                             color: AppTheme.primaryColor,
                           ),
                         ),
                       ),
-                    ).toList(),
+                      if (onTap != null)
+                        Icon(
+                          Icons.open_in_new,
+                          size: 16,
+                          color: AppTheme.primaryColor.withValues(alpha: 0.6),
+                        ),
+                    ],
                   ),
+                  const SizedBox(height: 12),
+                  Text(
+                    verse.text,
+                    style: TextStyle(
+                      fontSize: compact ? 14 : 16,
+                      fontStyle: FontStyle.italic,
+                      height: 1.4,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  if (verse.themes.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 6,
+                      children: verse.themes.take(3).map((theme) =>
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                            borderRadius: AppRadius.mediumRadius,
+                          ),
+                          child: Text(
+                            theme,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ).toList(),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),

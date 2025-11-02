@@ -730,11 +730,12 @@ class ChatScreen extends HookConsumerWidget {
           finalContent = response.content;
         }
 
-        final newAiMessage = ChatMessage.ai(
+        // Use copyWith to preserve the original message ID
+        // This prevents re-animation when the widget rebuilds
+        final newAiMessage = aiMessage.copyWith(
           content: finalContent,
           verses: response.verses,
           metadata: response.metadata,
-          sessionId: sessionId.value,
         );
 
         // Replace the message in the list
@@ -744,10 +745,10 @@ class ChatScreen extends HookConsumerWidget {
 
         // Update in database
         if (sessionId.value != null) {
-          // Delete old message and save new one
+          // Delete and re-save with same ID (preserves message identity)
           await conversationService.deleteMessage(aiMessage.id);
           await conversationService.saveMessage(newAiMessage);
-          debugPrint('💾 Updated message in database');
+          debugPrint('💾 Updated message in database (ID preserved: ${aiMessage.id})');
         }
 
         isTyping.value = false;
@@ -1945,8 +1946,9 @@ class ChatScreen extends HookConsumerWidget {
             ],
           ],
         ),
-      ).animate().fadeIn(duration: AppAnimations.normal, delay: (index * 100).ms).slideX(
-            begin: message.isUser ? 0.3 : -0.3,
+      ).animate().fadeIn(duration: AppAnimations.normal, delay: (index * 100).ms).then()
+          .slideX(
+            begin: message.isUser ? 0.3 : 0, // Only slide user messages, AI messages appear in place
           ),
     );
   }

@@ -15,6 +15,7 @@ import 'package:everyday_christian/screens/reading_plan_screen.dart';
 import 'package:everyday_christian/screens/settings_screen.dart';
 import 'package:everyday_christian/screens/splash_screen.dart';
 import 'package:everyday_christian/screens/verse_library_screen.dart';
+import 'package:everyday_christian/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
