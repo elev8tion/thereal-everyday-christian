@@ -45,9 +45,16 @@ class SplashScreen extends HookConsumerWidget {
       // Guard against double navigation
       if (_hasNavigated) return null;
 
+      bool disposed = false;
+
       Future.delayed(const Duration(seconds: 3), () async {
         // Double-check before navigation
-        if (_hasNavigated) return;
+        if (_hasNavigated || disposed) return;
+
+        // CRITICAL: Check if we're still on splash screen before navigating
+        // This prevents navigation if user has moved to another screen (hot reload, widget rebuild, etc.)
+        final currentRoute = ModalRoute.of(context)?.settings.name;
+        if (currentRoute != AppRoutes.splash && currentRoute != '/') return;
 
         // Check if user has accepted all legal agreements
         final prefsService = await PreferencesService.getInstance();
@@ -55,7 +62,7 @@ class SplashScreen extends HookConsumerWidget {
 
         if (!hasAcceptedLegalAgreements) {
           // Show legal agreements screen
-          if (_hasNavigated) return;
+          if (_hasNavigated || disposed) return;
           _hasNavigated = true;
           NavigationService.pushReplacementNamed(AppRoutes.legalAgreements);
           return;
@@ -66,18 +73,22 @@ class SplashScreen extends HookConsumerWidget {
 
         if (!hasCompletedOnboarding) {
           // First time user - show onboarding
-          if (_hasNavigated) return;
+          if (_hasNavigated || disposed) return;
           _hasNavigated = true;
           NavigationService.pushReplacementNamed(AppRoutes.onboarding);
           return;
         }
 
         // Returning user - go directly to home
-        if (_hasNavigated) return;
+        if (_hasNavigated || disposed) return;
         _hasNavigated = true;
         NavigationService.pushReplacementNamed(AppRoutes.home);
       });
-      return null;
+
+      // Cleanup: Mark as disposed to prevent navigation after widget is disposed
+      return () {
+        disposed = true;
+      };
     }, []);
 
     // Wrap the splash screen UI with AppInitializer
