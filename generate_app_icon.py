@@ -95,11 +95,11 @@ def create_fab_icon(size):
     # Create background with app gradient (fully opaque - Apple requirement)
     background = gradient.convert('RGBA')
 
-    # Add border (gold with 60% opacity)
+    # Add border (gold with full opacity for visibility on home screen)
     border_img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
     border_draw = ImageDraw.Draw(border_img)
     border_width = max(2, int(size * 0.02))  # 2% border width
-    border_color = gold_color + (int(255 * 0.6),)
+    border_color = gold_color + (255,)  # Full opacity
 
     # Draw border
     border_draw.rounded_rectangle(
