@@ -4,6 +4,7 @@ import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/audio_control_pill.dart';
+import '../components/glass_icon_avatar.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
@@ -482,6 +483,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: FrostedGlassCard(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -491,9 +493,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                 controller: _scrollController,
                 padding: const EdgeInsets.only(
                   left: 4.0,
-                  top: 8.0,
+                  top: 0,
                   right: 8.0,
-                  bottom: 20.0,
+                  bottom: 0,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -528,10 +530,12 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                       Column(
                         children: [
                           // Verse number with glassmorphic style (matching FAB)
-                          Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Container(
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
                                   Colors.white.withValues(alpha: 0.25),
@@ -563,10 +567,38 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                                 ),
                               ),
                             ),
+                            ),
                           ),
-                          const SizedBox(height: 2),
+                          const SizedBox(height: 4),
                           // Favorite button
                           _buildFavoriteButton(verse),
+                          const SizedBox(height: 4),
+                          // User avatar with logo
+                          Container(
+                            width: 36,
+                            height: 36,
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppTheme.goldColor.withValues(alpha: 0.3),
+                                  AppTheme.goldColor.withValues(alpha: 0.1),
+                                ],
+                              ),
+                              borderRadius: AppRadius.smallRadius,
+                              border: Border.all(
+                                color: AppTheme.goldColor.withValues(alpha: 0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(AppRadius.xs),
+                              child: Image.asset(
+                                'assets/images/logo_cropped.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(width: 12),
