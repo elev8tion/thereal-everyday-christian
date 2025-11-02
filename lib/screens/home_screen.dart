@@ -738,21 +738,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           padding: AppSpacing.horizontalXl,
           child: Container(
             padding: AppSpacing.screenPaddingLarge,
-            decoration: BoxDecoration(
-              gradient: AppGradients.glassStrong,
-              borderRadius: AppRadius.cardRadius,
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.3),
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.15),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
