@@ -56,10 +56,6 @@ class IntentDetectionService {
     'help me',
     'i need help',
     'i need guidance',
-    'i need prayer',
-    'pray for me',
-    'can you pray',
-    'please pray',
 
     // Life situations
     'i m going through',
