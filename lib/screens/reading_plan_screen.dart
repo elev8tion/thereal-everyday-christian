@@ -295,63 +295,46 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
           );
         }
 
-        return Column(
-          children: [
-            // Info banner when there's exactly 1 active plan
-            if (activePlans.length == 1)
-              Container(
-                margin: AppSpacing.screenPadding,
-                padding: const EdgeInsets.all(AppSpacing.md),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.1),
-                  borderRadius: AppRadius.mediumRadius,
-                  border: Border.all(
-                    color: Colors.blue.withValues(alpha: 0.3),
-                    width: 1,
+        return ListView.builder(
+          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
+          itemCount: activePlans.length + (activePlans.length == 1 ? 1 : 0),
+          itemBuilder: (context, index) {
+            // Show reading plan card(s)
+            if (index < activePlans.length) {
+              final plan = activePlans[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _buildPlanCard(plan, index, isActive: true)
+                    .animate()
+                    .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
+                    .slideY(begin: 0.3),
+              );
+            }
+
+            // Show info message BELOW the reading plan card when there's exactly 1 active plan
+            return Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: AppColors.secondaryText,
+                    size: ResponsiveUtils.iconSize(context, 18),
                   ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Colors.blue,
-                      size: ResponsiveUtils.iconSize(context, 20),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'Only one reading plan can be active at a time. Reset your current plan to start a different one.',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
-                        ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Only one reading plan can be active at a time. Reset your current plan to start a different one.',
+                      style: TextStyle(
+                        color: AppColors.secondaryText,
+                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                       ),
                     ),
-                  ],
-                ),
-              ).animate().fadeIn(duration: AppAnimations.slow, delay: 500.ms),
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.only(
-                  left: 50,
-                  right: 50,
-                  top: activePlans.length == 1 ? AppSpacing.md : 20,
-                  bottom: 20,
-                ),
-                itemCount: activePlans.length,
-                itemBuilder: (context, index) {
-                  final plan = activePlans[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: _buildPlanCard(plan, index, isActive: true)
-                        .animate()
-                        .fadeIn(duration: AppAnimations.slow, delay: (600 + index * 100).ms)
-                        .slideY(begin: 0.3),
-                  );
-                },
+                  ),
+                ],
               ),
-            ),
-          ],
+            ).animate().fadeIn(duration: AppAnimations.slow, delay: 700.ms);
+          },
         );
       },
     );
