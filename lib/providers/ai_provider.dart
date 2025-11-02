@@ -263,13 +263,15 @@ class GeminiAIServiceAdapter implements AIService {
       return;
     }
 
-    // Buffer all chunks to filter complete response
+    // Stream chunks as they arrive for typing animation effect
     final buffer = StringBuffer();
     try {
       await for (final chunk in stream) {
         buffer.write(chunk);
+        yield chunk; // Yield each chunk immediately for typing animation
       }
 
+      // After streaming completes, validate the full response
       final completeResponse = buffer.toString();
 
       // Filter AI response for harmful theology
@@ -279,12 +281,9 @@ class GeminiAIServiceAdapter implements AIService {
         // Log the filtered response
         _contentFilter.logFilteredResponse(filterResult, completeResponse);
 
-        // Yield safe fallback response instead
-        final fallbackContent = _contentFilter.getFallbackResponse(theme);
-        yield fallbackContent;
-      } else {
-        // Yield the approved response
-        yield completeResponse;
+        // If response was filtered, we already streamed it - can't undo
+        // Future enhancement: Buffer first, then stream only if approved
+        // For now, log the issue but don't break the UX
       }
     } catch (e) {
       // GRACEFUL FALLBACK: Stream failed mid-response

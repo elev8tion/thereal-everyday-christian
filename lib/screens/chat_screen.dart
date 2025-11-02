@@ -382,10 +382,16 @@ class ChatScreen extends HookConsumerWidget {
         sessionId: sessionId.value,
       );
 
-      messages.value = [...messages.value, userMessage];
+      // Create AI message placeholder IMMEDIATELY (before streaming)
+      final aiMessage = ChatMessage.ai(
+        content: '',  // Start with empty content
+        sessionId: sessionId.value,
+      );
+
+      // Add both messages to list at once
+      messages.value = [...messages.value, userMessage, aiMessage];
       isStreaming.value = true;
       isStreamingComplete.value = false;
-      streamedText.value = '';
 
       // Dismiss keyboard after sending message
       FocusManager.instance.primaryFocus?.unfocus();
@@ -398,9 +404,6 @@ class ChatScreen extends HookConsumerWidget {
           debugPrint('💾 Saved user message to session ${sessionId.value}');
         } catch (e) {
           debugPrint('⚠️ Failed to save user message: $e');
-          // Continue with message send - UI already shows the message
-          // We can still stream the AI response even if DB save failed
-          // This prevents blocking user experience for DB issues
         }
       } else {
         debugPrint('⚠️ Cannot save message - no active session');
@@ -420,18 +423,25 @@ class ChatScreen extends HookConsumerWidget {
 
         debugPrint('🚀 Starting streaming AI response for: "${text.trim()}"');
 
-        // Accumulate full response for saving
+        // Accumulate full response
         final fullResponse = StringBuffer();
 
         // Start streaming
         final stream = aiService.generateResponseStream(
           userInput: text.trim(),
-          conversationHistory: messages.value,
+          conversationHistory: messages.value.sublist(0, messages.value.length - 1), // Exclude the placeholder
         );
 
         await for (final chunk in stream) {
-          streamedText.value += chunk;
           fullResponse.write(chunk);
+
+          // Update the AI message content in place
+          final updatedMessages = [...messages.value];
+          updatedMessages[updatedMessages.length - 1] = ChatMessage.ai(
+            content: fullResponse.toString(),
+            sessionId: sessionId.value,
+          );
+          messages.value = updatedMessages;
 
           // Add small delay for smoother reading experience
           await Future.delayed(const Duration(milliseconds: 30));
@@ -439,12 +449,6 @@ class ChatScreen extends HookConsumerWidget {
         }
 
         debugPrint('✅ Streaming complete, full response length: ${fullResponse.length}');
-
-        // Mark streaming as complete but keep widget visible
-        isStreamingComplete.value = true;
-
-        // Brief delay to show completion state before transition
-        await Future.delayed(const Duration(milliseconds: 200));
 
         // Filter AI response for harmful content
         final contentFilterService = ContentFilterService();
@@ -464,20 +468,24 @@ class ChatScreen extends HookConsumerWidget {
           finalContent = fullResponse.toString();
         }
 
-        // Create final AI message with filtered content
-        final aiMessage = ChatMessage.ai(
-          content: finalContent,
-          sessionId: sessionId.value,
-        );
+        // Update final message with filtered content (if filtering changed it)
+        if (filterResult.isRejected) {
+          final updatedMessages = [...messages.value];
+          updatedMessages[updatedMessages.length - 1] = ChatMessage.ai(
+            content: finalContent,
+            sessionId: sessionId.value,
+          );
+          messages.value = updatedMessages;
+        }
 
-        // Now transition to final message
+        // Mark streaming as complete
         isStreaming.value = false;
         isStreamingComplete.value = false;
-        messages.value = [...messages.value, aiMessage];
 
         // Save AI message to database
+        final finalAiMessage = messages.value.last;
         if (sessionId.value != null) {
-          await conversationService.saveMessage(aiMessage);
+          await conversationService.saveMessage(finalAiMessage);
           debugPrint('💾 Saved AI message to session ${sessionId.value}');
 
           // Auto-generate conversation title after first exchange
@@ -1717,14 +1725,6 @@ class ChatScreen extends HookConsumerWidget {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (listContext, index) {
-            // Show streaming message while streaming
-            if (index == messages.length && isStreaming) {
-              return GlassStreamingMessage(
-                streamedText: streamedText,
-                isComplete: isStreamingComplete,
-              );
-            }
-
             // Show typing indicator as fallback
             if (index == messages.length && isTyping) {
               return _buildTypingIndicator();
@@ -1732,7 +1732,7 @@ class ChatScreen extends HookConsumerWidget {
 
             return _buildMessageBubble(context, messages[index], index, onRegenerateResponse);
           },
-          childCount: messages.length + (isStreaming ? 1 : (isTyping ? 1 : 0)),
+          childCount: messages.length + (isTyping ? 1 : 0),
         ),
       ),
     );
