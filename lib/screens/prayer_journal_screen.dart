@@ -783,7 +783,6 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                               child: GlassButton(
                                 text: 'Cancel',
                                 height: 48,
-                                borderColor: AppColors.secondaryText,
                                 onPressed: () => NavigationService.pop(),
                               ),
                             ),

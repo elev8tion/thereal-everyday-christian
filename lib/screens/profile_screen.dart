@@ -664,7 +664,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       child: GlassButton(
                         text: 'Cancel',
                         height: 48,
-                        borderColor: AppColors.secondaryText,
                         onPressed: () => NavigationService.pop(),
                       ),
                     ),
@@ -733,7 +732,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     child: GlassButton(
                       text: 'Cancel',
                       height: 48,
-                      borderColor: AppColors.secondaryText,
                       onPressed: () => NavigationService.pop(),
                     ),
                   ),

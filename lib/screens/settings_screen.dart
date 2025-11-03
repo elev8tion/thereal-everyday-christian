@@ -787,7 +787,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       child: GlassButton(
                         text: 'Cancel',
                         height: 48,
-                        borderColor: AppColors.secondaryText,
                         onPressed: () => NavigationService.pop(),
                       ),
                     ),
@@ -1100,7 +1099,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       child: GlassButton(
                         text: 'Cancel',
                         height: 48,
-                        borderColor: AppColors.secondaryText,
                         onPressed: () {
                           confirmController.dispose();
                           NavigationService.pop();
@@ -1110,7 +1108,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: GlassButton(
-                        text: 'Delete Everything',
+                        text: 'Delete',
                         height: 48,
                         borderColor: Colors.red.withValues(alpha: 0.8),
                         onPressed: () async {

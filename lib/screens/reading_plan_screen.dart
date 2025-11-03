@@ -1193,7 +1193,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                     child: GlassButton(
                       text: 'Cancel',
                       height: 48,
-                      borderColor: AppColors.secondaryText,
                       onPressed: () => Navigator.of(context).pop(false),
                     ),
                   ),
