@@ -220,7 +220,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         },
                       ),
 
-                      SizedBox(height: isVerySmallScreen ? 16 : (isSmallScreen ? 24 : 40)),
+                      SizedBox(
+                        height: (isVerySmallScreen ? 16 : (isSmallScreen ? 24 : 40))
+                          + MediaQuery.of(context).padding.bottom + 20,
+                      ),
                     ],
                   ),
                 );
