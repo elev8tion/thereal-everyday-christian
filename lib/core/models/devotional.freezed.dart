@@ -21,15 +21,21 @@ Devotional _$DevotionalFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Devotional {
   String get id => throw _privateConstructorUsedError;
+  String get date => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String get subtitle => throw _privateConstructorUsedError;
-  String get content => throw _privateConstructorUsedError;
-  String get verse => throw _privateConstructorUsedError;
-  String get verseReference => throw _privateConstructorUsedError;
-  DateTime get date => throw _privateConstructorUsedError;
+  String get openingScriptureReference => throw _privateConstructorUsedError;
+  String get openingScriptureText => throw _privateConstructorUsedError;
+  String get keyVerseReference => throw _privateConstructorUsedError;
+  String get keyVerseText => throw _privateConstructorUsedError;
+  String get reflection => throw _privateConstructorUsedError;
+  String get lifeApplication => throw _privateConstructorUsedError;
+  String get prayer => throw _privateConstructorUsedError;
+  String get actionStep => throw _privateConstructorUsedError;
+  List<String> get goingDeeper => throw _privateConstructorUsedError;
   String get readingTime => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
   DateTime? get completedDate => throw _privateConstructorUsedError;
+  bool get actionStepCompleted => throw _privateConstructorUsedError;
 
   /// Serializes this Devotional to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,15 +55,21 @@ abstract class $DevotionalCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String date,
       String title,
-      String subtitle,
-      String content,
-      String verse,
-      String verseReference,
-      DateTime date,
+      String openingScriptureReference,
+      String openingScriptureText,
+      String keyVerseReference,
+      String keyVerseText,
+      String reflection,
+      String lifeApplication,
+      String prayer,
+      String actionStep,
+      List<String> goingDeeper,
       String readingTime,
       bool isCompleted,
-      DateTime? completedDate});
+      DateTime? completedDate,
+      bool actionStepCompleted});
 }
 
 /// @nodoc
@@ -76,45 +88,71 @@ class _$DevotionalCopyWithImpl<$Res, $Val extends Devotional>
   @override
   $Res call({
     Object? id = null,
-    Object? title = null,
-    Object? subtitle = null,
-    Object? content = null,
-    Object? verse = null,
-    Object? verseReference = null,
     Object? date = null,
+    Object? title = null,
+    Object? openingScriptureReference = null,
+    Object? openingScriptureText = null,
+    Object? keyVerseReference = null,
+    Object? keyVerseText = null,
+    Object? reflection = null,
+    Object? lifeApplication = null,
+    Object? prayer = null,
+    Object? actionStep = null,
+    Object? goingDeeper = null,
     Object? readingTime = null,
     Object? isCompleted = null,
     Object? completedDate = freezed,
+    Object? actionStepCompleted = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      subtitle: null == subtitle
-          ? _value.subtitle
-          : subtitle // ignore: cast_nullable_to_non_nullable
+      openingScriptureReference: null == openingScriptureReference
+          ? _value.openingScriptureReference
+          : openingScriptureReference // ignore: cast_nullable_to_non_nullable
               as String,
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
+      openingScriptureText: null == openingScriptureText
+          ? _value.openingScriptureText
+          : openingScriptureText // ignore: cast_nullable_to_non_nullable
               as String,
-      verse: null == verse
-          ? _value.verse
-          : verse // ignore: cast_nullable_to_non_nullable
+      keyVerseReference: null == keyVerseReference
+          ? _value.keyVerseReference
+          : keyVerseReference // ignore: cast_nullable_to_non_nullable
               as String,
-      verseReference: null == verseReference
-          ? _value.verseReference
-          : verseReference // ignore: cast_nullable_to_non_nullable
+      keyVerseText: null == keyVerseText
+          ? _value.keyVerseText
+          : keyVerseText // ignore: cast_nullable_to_non_nullable
               as String,
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      reflection: null == reflection
+          ? _value.reflection
+          : reflection // ignore: cast_nullable_to_non_nullable
+              as String,
+      lifeApplication: null == lifeApplication
+          ? _value.lifeApplication
+          : lifeApplication // ignore: cast_nullable_to_non_nullable
+              as String,
+      prayer: null == prayer
+          ? _value.prayer
+          : prayer // ignore: cast_nullable_to_non_nullable
+              as String,
+      actionStep: null == actionStep
+          ? _value.actionStep
+          : actionStep // ignore: cast_nullable_to_non_nullable
+              as String,
+      goingDeeper: null == goingDeeper
+          ? _value.goingDeeper
+          : goingDeeper // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       readingTime: null == readingTime
           ? _value.readingTime
           : readingTime // ignore: cast_nullable_to_non_nullable
@@ -127,6 +165,10 @@ class _$DevotionalCopyWithImpl<$Res, $Val extends Devotional>
           ? _value.completedDate
           : completedDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      actionStepCompleted: null == actionStepCompleted
+          ? _value.actionStepCompleted
+          : actionStepCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -141,15 +183,21 @@ abstract class _$$DevotionalImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String date,
       String title,
-      String subtitle,
-      String content,
-      String verse,
-      String verseReference,
-      DateTime date,
+      String openingScriptureReference,
+      String openingScriptureText,
+      String keyVerseReference,
+      String keyVerseText,
+      String reflection,
+      String lifeApplication,
+      String prayer,
+      String actionStep,
+      List<String> goingDeeper,
       String readingTime,
       bool isCompleted,
-      DateTime? completedDate});
+      DateTime? completedDate,
+      bool actionStepCompleted});
 }
 
 /// @nodoc
@@ -166,45 +214,71 @@ class __$$DevotionalImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? title = null,
-    Object? subtitle = null,
-    Object? content = null,
-    Object? verse = null,
-    Object? verseReference = null,
     Object? date = null,
+    Object? title = null,
+    Object? openingScriptureReference = null,
+    Object? openingScriptureText = null,
+    Object? keyVerseReference = null,
+    Object? keyVerseText = null,
+    Object? reflection = null,
+    Object? lifeApplication = null,
+    Object? prayer = null,
+    Object? actionStep = null,
+    Object? goingDeeper = null,
     Object? readingTime = null,
     Object? isCompleted = null,
     Object? completedDate = freezed,
+    Object? actionStepCompleted = null,
   }) {
     return _then(_$DevotionalImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      subtitle: null == subtitle
-          ? _value.subtitle
-          : subtitle // ignore: cast_nullable_to_non_nullable
+      openingScriptureReference: null == openingScriptureReference
+          ? _value.openingScriptureReference
+          : openingScriptureReference // ignore: cast_nullable_to_non_nullable
               as String,
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
+      openingScriptureText: null == openingScriptureText
+          ? _value.openingScriptureText
+          : openingScriptureText // ignore: cast_nullable_to_non_nullable
               as String,
-      verse: null == verse
-          ? _value.verse
-          : verse // ignore: cast_nullable_to_non_nullable
+      keyVerseReference: null == keyVerseReference
+          ? _value.keyVerseReference
+          : keyVerseReference // ignore: cast_nullable_to_non_nullable
               as String,
-      verseReference: null == verseReference
-          ? _value.verseReference
-          : verseReference // ignore: cast_nullable_to_non_nullable
+      keyVerseText: null == keyVerseText
+          ? _value.keyVerseText
+          : keyVerseText // ignore: cast_nullable_to_non_nullable
               as String,
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      reflection: null == reflection
+          ? _value.reflection
+          : reflection // ignore: cast_nullable_to_non_nullable
+              as String,
+      lifeApplication: null == lifeApplication
+          ? _value.lifeApplication
+          : lifeApplication // ignore: cast_nullable_to_non_nullable
+              as String,
+      prayer: null == prayer
+          ? _value.prayer
+          : prayer // ignore: cast_nullable_to_non_nullable
+              as String,
+      actionStep: null == actionStep
+          ? _value.actionStep
+          : actionStep // ignore: cast_nullable_to_non_nullable
+              as String,
+      goingDeeper: null == goingDeeper
+          ? _value._goingDeeper
+          : goingDeeper // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       readingTime: null == readingTime
           ? _value.readingTime
           : readingTime // ignore: cast_nullable_to_non_nullable
@@ -217,6 +291,10 @@ class __$$DevotionalImplCopyWithImpl<$Res>
           ? _value.completedDate
           : completedDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      actionStepCompleted: null == actionStepCompleted
+          ? _value.actionStepCompleted
+          : actionStepCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -226,15 +304,22 @@ class __$$DevotionalImplCopyWithImpl<$Res>
 class _$DevotionalImpl implements _Devotional {
   const _$DevotionalImpl(
       {required this.id,
-      required this.title,
-      required this.subtitle,
-      required this.content,
-      required this.verse,
-      required this.verseReference,
       required this.date,
+      required this.title,
+      required this.openingScriptureReference,
+      required this.openingScriptureText,
+      required this.keyVerseReference,
+      required this.keyVerseText,
+      required this.reflection,
+      required this.lifeApplication,
+      required this.prayer,
+      required this.actionStep,
+      required final List<String> goingDeeper,
       required this.readingTime,
       this.isCompleted = false,
-      this.completedDate});
+      this.completedDate,
+      this.actionStepCompleted = false})
+      : _goingDeeper = goingDeeper;
 
   factory _$DevotionalImpl.fromJson(Map<String, dynamic> json) =>
       _$$DevotionalImplFromJson(json);
@@ -242,17 +327,33 @@ class _$DevotionalImpl implements _Devotional {
   @override
   final String id;
   @override
+  final String date;
+  @override
   final String title;
   @override
-  final String subtitle;
+  final String openingScriptureReference;
   @override
-  final String content;
+  final String openingScriptureText;
   @override
-  final String verse;
+  final String keyVerseReference;
   @override
-  final String verseReference;
+  final String keyVerseText;
   @override
-  final DateTime date;
+  final String reflection;
+  @override
+  final String lifeApplication;
+  @override
+  final String prayer;
+  @override
+  final String actionStep;
+  final List<String> _goingDeeper;
+  @override
+  List<String> get goingDeeper {
+    if (_goingDeeper is EqualUnmodifiableListView) return _goingDeeper;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_goingDeeper);
+  }
+
   @override
   final String readingTime;
   @override
@@ -260,10 +361,13 @@ class _$DevotionalImpl implements _Devotional {
   final bool isCompleted;
   @override
   final DateTime? completedDate;
+  @override
+  @JsonKey()
+  final bool actionStepCompleted;
 
   @override
   String toString() {
-    return 'Devotional(id: $id, title: $title, subtitle: $subtitle, content: $content, verse: $verse, verseReference: $verseReference, date: $date, readingTime: $readingTime, isCompleted: $isCompleted, completedDate: $completedDate)';
+    return 'Devotional(id: $id, date: $date, title: $title, openingScriptureReference: $openingScriptureReference, openingScriptureText: $openingScriptureText, keyVerseReference: $keyVerseReference, keyVerseText: $keyVerseText, reflection: $reflection, lifeApplication: $lifeApplication, prayer: $prayer, actionStep: $actionStep, goingDeeper: $goingDeeper, readingTime: $readingTime, isCompleted: $isCompleted, completedDate: $completedDate, actionStepCompleted: $actionStepCompleted)';
   }
 
   @override
@@ -272,26 +376,56 @@ class _$DevotionalImpl implements _Devotional {
         (other.runtimeType == runtimeType &&
             other is _$DevotionalImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.subtitle, subtitle) ||
-                other.subtitle == subtitle) &&
-            (identical(other.content, content) || other.content == content) &&
-            (identical(other.verse, verse) || other.verse == verse) &&
-            (identical(other.verseReference, verseReference) ||
-                other.verseReference == verseReference) &&
             (identical(other.date, date) || other.date == date) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.openingScriptureReference,
+                    openingScriptureReference) ||
+                other.openingScriptureReference == openingScriptureReference) &&
+            (identical(other.openingScriptureText, openingScriptureText) ||
+                other.openingScriptureText == openingScriptureText) &&
+            (identical(other.keyVerseReference, keyVerseReference) ||
+                other.keyVerseReference == keyVerseReference) &&
+            (identical(other.keyVerseText, keyVerseText) ||
+                other.keyVerseText == keyVerseText) &&
+            (identical(other.reflection, reflection) ||
+                other.reflection == reflection) &&
+            (identical(other.lifeApplication, lifeApplication) ||
+                other.lifeApplication == lifeApplication) &&
+            (identical(other.prayer, prayer) || other.prayer == prayer) &&
+            (identical(other.actionStep, actionStep) ||
+                other.actionStep == actionStep) &&
+            const DeepCollectionEquality()
+                .equals(other._goingDeeper, _goingDeeper) &&
             (identical(other.readingTime, readingTime) ||
                 other.readingTime == readingTime) &&
             (identical(other.isCompleted, isCompleted) ||
                 other.isCompleted == isCompleted) &&
             (identical(other.completedDate, completedDate) ||
-                other.completedDate == completedDate));
+                other.completedDate == completedDate) &&
+            (identical(other.actionStepCompleted, actionStepCompleted) ||
+                other.actionStepCompleted == actionStepCompleted));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, subtitle, content,
-      verse, verseReference, date, readingTime, isCompleted, completedDate);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      date,
+      title,
+      openingScriptureReference,
+      openingScriptureText,
+      keyVerseReference,
+      keyVerseText,
+      reflection,
+      lifeApplication,
+      prayer,
+      actionStep,
+      const DeepCollectionEquality().hash(_goingDeeper),
+      readingTime,
+      isCompleted,
+      completedDate,
+      actionStepCompleted);
 
   /// Create a copy of Devotional
   /// with the given fields replaced by the non-null parameter values.
@@ -312,15 +446,21 @@ class _$DevotionalImpl implements _Devotional {
 abstract class _Devotional implements Devotional {
   const factory _Devotional(
       {required final String id,
+      required final String date,
       required final String title,
-      required final String subtitle,
-      required final String content,
-      required final String verse,
-      required final String verseReference,
-      required final DateTime date,
+      required final String openingScriptureReference,
+      required final String openingScriptureText,
+      required final String keyVerseReference,
+      required final String keyVerseText,
+      required final String reflection,
+      required final String lifeApplication,
+      required final String prayer,
+      required final String actionStep,
+      required final List<String> goingDeeper,
       required final String readingTime,
       final bool isCompleted,
-      final DateTime? completedDate}) = _$DevotionalImpl;
+      final DateTime? completedDate,
+      final bool actionStepCompleted}) = _$DevotionalImpl;
 
   factory _Devotional.fromJson(Map<String, dynamic> json) =
       _$DevotionalImpl.fromJson;
@@ -328,23 +468,35 @@ abstract class _Devotional implements Devotional {
   @override
   String get id;
   @override
+  String get date;
+  @override
   String get title;
   @override
-  String get subtitle;
+  String get openingScriptureReference;
   @override
-  String get content;
+  String get openingScriptureText;
   @override
-  String get verse;
+  String get keyVerseReference;
   @override
-  String get verseReference;
+  String get keyVerseText;
   @override
-  DateTime get date;
+  String get reflection;
+  @override
+  String get lifeApplication;
+  @override
+  String get prayer;
+  @override
+  String get actionStep;
+  @override
+  List<String> get goingDeeper;
   @override
   String get readingTime;
   @override
   bool get isCompleted;
   @override
   DateTime? get completedDate;
+  @override
+  bool get actionStepCompleted;
 
   /// Create a copy of Devotional
   /// with the given fields replaced by the non-null parameter values.

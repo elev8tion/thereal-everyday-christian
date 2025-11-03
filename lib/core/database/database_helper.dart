@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 8;
+  static const int _databaseVersion = 9;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -336,19 +336,25 @@ class DatabaseHelper {
 
       // ==================== DEVOTIONAL TABLES ====================
 
-      // Devotionals
+      // Devotionals (8-section format)
       await db.execute('''
         CREATE TABLE devotionals (
           id TEXT PRIMARY KEY,
+          date TEXT NOT NULL,
           title TEXT NOT NULL,
-          subtitle TEXT NOT NULL,
-          content TEXT NOT NULL,
-          verse TEXT NOT NULL,
-          verse_reference TEXT NOT NULL,
-          date INTEGER NOT NULL,
+          opening_scripture_reference TEXT NOT NULL,
+          opening_scripture_text TEXT NOT NULL,
+          key_verse_reference TEXT NOT NULL,
+          key_verse_text TEXT NOT NULL,
+          reflection TEXT NOT NULL,
+          life_application TEXT NOT NULL,
+          prayer TEXT NOT NULL,
+          action_step TEXT NOT NULL,
+          going_deeper TEXT NOT NULL,
           reading_time TEXT NOT NULL,
           is_completed INTEGER NOT NULL DEFAULT 0,
-          completed_date INTEGER
+          completed_date INTEGER,
+          action_step_completed INTEGER NOT NULL DEFAULT 0
         )
       ''');
 
@@ -708,6 +714,42 @@ class DatabaseHelper {
         _logger.info('✅ Migration v7→v8 complete: Added 4 reading plan indexes');
       } catch (e) {
         _logger.error('Migration v7→v8 failed: $e');
+      }
+    }
+
+    if (oldVersion < 9) {
+      try {
+        _logger.info('Migrating v8→v9: Updating devotionals table to 8-section format');
+
+        // Drop old devotionals table (no user data to preserve - will reload from JSON)
+        await db.execute('DROP TABLE IF EXISTS devotionals');
+
+        // Create new devotionals table with 8-section format
+        await db.execute('''
+          CREATE TABLE devotionals (
+            id TEXT PRIMARY KEY,
+            date TEXT NOT NULL,
+            title TEXT NOT NULL,
+            opening_scripture_reference TEXT NOT NULL,
+            opening_scripture_text TEXT NOT NULL,
+            key_verse_reference TEXT NOT NULL,
+            key_verse_text TEXT NOT NULL,
+            reflection TEXT NOT NULL,
+            life_application TEXT NOT NULL,
+            prayer TEXT NOT NULL,
+            action_step TEXT NOT NULL,
+            going_deeper TEXT NOT NULL,
+            reading_time TEXT NOT NULL,
+            is_completed INTEGER NOT NULL DEFAULT 0,
+            completed_date INTEGER,
+            action_step_completed INTEGER NOT NULL DEFAULT 0
+          )
+        ''');
+
+        _logger.info('✅ Migration v8→v9 complete: Devotionals table updated to 8-section format');
+      } catch (e) {
+        _logger.error('Migration v8→v9 failed: $e');
+        rethrow;
       }
     }
   }

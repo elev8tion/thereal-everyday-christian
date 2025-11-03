@@ -544,6 +544,25 @@ class MockDatabaseHelper extends _i1.Mock implements _i7.DatabaseHelper {
       ) as _i5.Future<int>);
 
   @override
+  _i5.Future<int> deleteExcessChatMessages(int? keepCount) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteExcessChatMessages,
+          [keepCount],
+        ),
+        returnValue: _i5.Future<int>.value(0),
+      ) as _i5.Future<int>);
+
+  @override
+  _i5.Future<Map<String, int>> autoCleanupChatMessages() => (super.noSuchMethod(
+        Invocation.method(
+          #autoCleanupChatMessages,
+          [],
+        ),
+        returnValue: _i5.Future<Map<String, int>>.value(<String, int>{}),
+      ) as _i5.Future<Map<String, int>>);
+
+  @override
   _i5.Future<int> insertPrayerRequest(Map<String, dynamic>? prayer) =>
       (super.noSuchMethod(
         Invocation.method(

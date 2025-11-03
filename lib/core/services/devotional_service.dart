@@ -17,17 +17,13 @@ class DevotionalService {
 
   Future<Devotional?> getTodaysDevotional() async {
     final today = DateTime.now();
-    final startOfDay = DateTime(today.year, today.month, today.day);
-    final endOfDay = startOfDay.add(const Duration(days: 1));
+    final todayString = '${today.year.toString().padLeft(4, '0')}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
 
     final db = await _database.database;
     final maps = await db.query(
       'devotionals',
-      where: 'date >= ? AND date < ?',
-      whereArgs: [
-        startOfDay.millisecondsSinceEpoch,
-        endOfDay.millisecondsSinceEpoch,
-      ],
+      where: 'date = ?',
+      whereArgs: [todayString],
       limit: 1,
     );
 
@@ -68,6 +64,18 @@ class DevotionalService {
       {
         'is_completed': 0,
         'completed_date': null,
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> toggleActionStepCompleted(String id, bool completed) async {
+    final db = await _database.database;
+    await db.update(
+      'devotionals',
+      {
+        'action_step_completed': completed ? 1 : 0,
       },
       where: 'id = ?',
       whereArgs: [id],
@@ -119,17 +127,23 @@ class DevotionalService {
   Devotional _devotionalFromMap(Map<String, dynamic> map) {
     return Devotional(
       id: map['id'],
+      date: map['date'],
       title: map['title'],
-      subtitle: map['subtitle'],
-      content: map['content'],
-      verse: map['verse'],
-      verseReference: map['verse_reference'],
-      date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+      openingScriptureReference: map['opening_scripture_reference'],
+      openingScriptureText: map['opening_scripture_text'],
+      keyVerseReference: map['key_verse_reference'],
+      keyVerseText: map['key_verse_text'],
+      reflection: map['reflection'],
+      lifeApplication: map['life_application'],
+      prayer: map['prayer'],
+      actionStep: map['action_step'],
+      goingDeeper: (map['going_deeper'] as String).split('|||'),
       readingTime: map['reading_time'],
       isCompleted: map['is_completed'] == 1,
       completedDate: map['completed_date'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['completed_date'])
           : null,
+      actionStepCompleted: map['action_step_completed'] == 1,
     );
   }
 }

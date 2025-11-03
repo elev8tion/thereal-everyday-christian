@@ -7,15 +7,21 @@ part 'devotional.g.dart';
 class Devotional with _$Devotional {
   const factory Devotional({
     required String id,
+    required String date,
     required String title,
-    required String subtitle,
-    required String content,
-    required String verse,
-    required String verseReference,
-    required DateTime date,
+    required String openingScriptureReference,
+    required String openingScriptureText,
+    required String keyVerseReference,
+    required String keyVerseText,
+    required String reflection,
+    required String lifeApplication,
+    required String prayer,
+    required String actionStep,
+    required List<String> goingDeeper,
     required String readingTime,
     @Default(false) bool isCompleted,
     DateTime? completedDate,
+    @Default(false) bool actionStepCompleted,
   }) = _Devotional;
 
   factory Devotional.fromJson(Map<String, dynamic> json) =>

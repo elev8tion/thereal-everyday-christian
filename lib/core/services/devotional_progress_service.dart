@@ -105,7 +105,7 @@ class DevotionalProgressService {
     DateTime? lastScheduledDate;
 
     for (final devotional in sortedDevotionals) {
-      final scheduledDate = devotional.date;
+      final scheduledDate = DateTime.parse(devotional.date);
 
       final scheduledDay = DateTime(
         scheduledDate.year,
@@ -145,7 +145,7 @@ class DevotionalProgressService {
 
     if (sortedDevotionals.isNotEmpty) {
       // Check both the most recent and earliest devotionals in the streak
-      final mostRecentDate = sortedDevotionals.first.date;
+      final mostRecentDate = DateTime.parse(sortedDevotionals.first.date);
       final mostRecentDay = DateTime(mostRecentDate.year, mostRecentDate.month, mostRecentDate.day);
 
       // Days from today (positive = past, negative = future)
@@ -229,17 +229,23 @@ class DevotionalProgressService {
   Devotional _devotionalFromMap(Map<String, dynamic> map) {
     return Devotional(
       id: map['id'] as String,
+      date: map['date'] as String,
       title: map['title'] as String,
-      subtitle: map['subtitle'] as String,
-      content: map['content'] as String,
-      verse: map['verse'] as String,
-      verseReference: map['verse_reference'] as String,
-      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      openingScriptureReference: map['opening_scripture_reference'] as String,
+      openingScriptureText: map['opening_scripture_text'] as String,
+      keyVerseReference: map['key_verse_reference'] as String,
+      keyVerseText: map['key_verse_text'] as String,
+      reflection: map['reflection'] as String,
+      lifeApplication: map['life_application'] as String,
+      prayer: map['prayer'] as String,
+      actionStep: map['action_step'] as String,
+      goingDeeper: (map['going_deeper'] as String).split('|||'),
       readingTime: map['reading_time'] as String,
       isCompleted: (map['is_completed'] as int) == 1,
       completedDate: map['completed_date'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['completed_date'] as int)
           : null,
+      actionStepCompleted: (map['action_step_completed'] as int) == 1,
     );
   }
 }

@@ -107,7 +107,7 @@ class NotificationService {
         : 'Daily Devotional';
 
     final body = devotional != null
-        ? devotional.content.split('\n').first.substring(0, devotional.content.length > 100 ? 100 : devotional.content.length) + '...'
+        ? devotional.reflection.split('\n').first.substring(0, devotional.reflection.length > 100 ? 100 : devotional.reflection.length) + '...'
         : 'Start your day with God\'s word';
 
     await _notifications.zonedSchedule(
