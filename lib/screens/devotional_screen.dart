@@ -9,6 +9,7 @@ import '../components/glass_button.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/category_badge.dart';
 import '../components/standard_screen_header.dart';
+import '../components/dark_glass_container.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_gradients.dart';
 import '../core/providers/app_providers.dart';
@@ -132,7 +133,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                       _buildActionStep(currentDevotional),
                       _buildSectionDivider(),
 
-                      // 7. Going Deeper
+                      // 7. Extended
                       _buildGoingDeeper(currentDevotional),
                       _buildSectionDivider(),
 
@@ -592,7 +593,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.2);
   }
 
-  // 7. Going Deeper
+  // 7. Extended
   Widget _buildGoingDeeper(Devotional devotional) {
     return Padding(
       padding: AppSpacing.screenPadding,
@@ -608,7 +609,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
-                'Going Deeper',
+                'Extended',
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                   fontWeight: FontWeight.w700,
@@ -1103,7 +1104,12 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
       }
 
       // Get book name (everything except the last part)
-      final book = bookChapterParts.sublist(0, bookChapterParts.length - 1).join(' ');
+      var book = bookChapterParts.sublist(0, bookChapterParts.length - 1).join(' ');
+
+      // Normalize book name (database uses "Psalms" but devotionals use "Psalm")
+      if (book == 'Psalm') {
+        book = 'Psalms';
+      }
 
       // Navigate to ChapterReadingScreen with auto-scroll to verse
       Navigator.push(
