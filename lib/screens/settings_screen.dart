@@ -735,7 +735,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
-            borderColor: Colors.transparent,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -783,44 +782,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
                 // Actions
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
-                      onPressed: () => NavigationService.pop(),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg,
-                          vertical: AppSpacing.md,
-                        ),
-                      ),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.7),
-                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                        ),
+                    Expanded(
+                      child: GlassButton(
+                        text: 'Cancel',
+                        height: 48,
+                        borderColor: AppColors.secondaryText,
+                        onPressed: () => NavigationService.pop(),
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.sm),
-                    TextButton(
-                      onPressed: () async {
-                        NavigationService.pop();
-                        await _clearCache();
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg,
-                          vertical: AppSpacing.md,
-                        ),
-                        backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.2),
-                      ),
-                      child: Text(
-                        'Clear',
-                        style: TextStyle(
-                          color: AppTheme.primaryColor,
-                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                          fontWeight: FontWeight.w600,
-                        ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: GlassButton(
+                        text: 'Clear',
+                        height: 48,
+                        onPressed: () async {
+                          NavigationService.pop();
+                          await _clearCache();
+                        },
                       ),
                     ),
                   ],
@@ -945,7 +924,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
-            borderColor: Colors.transparent,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1117,52 +1095,33 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
                 // Actions
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        confirmController.dispose();
-                        NavigationService.pop();
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg,
-                          vertical: AppSpacing.md,
-                        ),
-                      ),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.7),
-                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    TextButton(
-                      onPressed: () async {
-                        if (confirmController.text.trim() == 'DELETE') {
+                    Expanded(
+                      child: GlassButton(
+                        text: 'Cancel',
+                        height: 48,
+                        borderColor: AppColors.secondaryText,
+                        onPressed: () {
                           confirmController.dispose();
                           NavigationService.pop();
-                          await _deleteAllData();
-                        } else {
-                          _showSnackBar('❌ You must type DELETE to confirm');
-                        }
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg,
-                          vertical: AppSpacing.md,
-                        ),
-                        backgroundColor: Colors.red.withValues(alpha: 0.2),
+                        },
                       ),
-                      child: Text(
-                        'Delete Everything',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                          fontWeight: FontWeight.w600,
-                        ),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: GlassButton(
+                        text: 'Delete Everything',
+                        height: 48,
+                        borderColor: Colors.red.withValues(alpha: 0.8),
+                        onPressed: () async {
+                          if (confirmController.text.trim() == 'DELETE') {
+                            confirmController.dispose();
+                            NavigationService.pop();
+                            await _deleteAllData();
+                          } else {
+                            _showSnackBar('❌ You must type DELETE to confirm');
+                          }
+                        },
                       ),
                     ),
                   ],

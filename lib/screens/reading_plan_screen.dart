@@ -1193,39 +1193,17 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                     child: GlassButton(
                       text: 'Cancel',
                       height: 48,
+                      borderColor: AppColors.secondaryText,
                       onPressed: () => Navigator.of(context).pop(false),
                     ),
                   ),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.red.withValues(alpha: 0.2),
-                        borderRadius: AppRadius.largeCardRadius,
-                        border: Border.all(
-                          color: Colors.red,
-                          width: 2,
-                        ),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => Navigator.of(context).pop(true),
-                          borderRadius: AppRadius.largeCardRadius,
-                          child: Container(
-                            height: 48,
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Reset',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w700,
-                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                    child: GlassButton(
+                      text: 'Reset',
+                      height: 48,
+                      borderColor: Colors.red.withValues(alpha: 0.8),
+                      onPressed: () => Navigator.of(context).pop(true),
                     ),
                   ),
                 ],
