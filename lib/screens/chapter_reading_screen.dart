@@ -22,6 +22,7 @@ class ChapterReadingScreen extends ConsumerStatefulWidget {
   final int startChapter;
   final int endChapter;
   final String? readingId;
+  final int? initialVerseNumber;
 
   const ChapterReadingScreen({
     super.key,
@@ -29,6 +30,7 @@ class ChapterReadingScreen extends ConsumerStatefulWidget {
     required this.startChapter,
     required this.endChapter,
     this.readingId,
+    this.initialVerseNumber,
   });
 
   @override
@@ -58,6 +60,17 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
     _loadVerses();
     _checkCompletion();
     _initializeTts();
+
+    // Scroll to initial verse if provided
+    if (widget.initialVerseNumber != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            _scrollToVerseNumber(widget.initialVerseNumber!);
+          }
+        });
+      });
+    }
   }
 
   Future<void> _initializeTts() async {

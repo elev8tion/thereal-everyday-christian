@@ -12,6 +12,7 @@ import '../services/devotional_service.dart';
 import '../services/devotional_progress_service.dart';
 import '../services/reading_plan_service.dart';
 import '../services/reading_plan_progress_service.dart';
+import '../services/curated_reading_plan_loader.dart';
 import '../services/bible_loader_service.dart';
 import '../services/devotional_content_loader.dart';
 import '../services/preferences_service.dart';
@@ -211,6 +212,11 @@ final readingPlanProgressServiceProvider = Provider<ReadingPlanProgressService>(
   return ReadingPlanProgressService(database);
 });
 
+final curatedReadingPlanLoaderProvider = Provider<CuratedReadingPlanLoader>((ref) {
+  final database = ref.watch(databaseServiceProvider);
+  return CuratedReadingPlanLoader(database);
+});
+
 final prayerStreakServiceProvider = Provider<PrayerStreakService>((ref) {
   final database = ref.watch(databaseServiceProvider);
   return PrayerStreakService(database);
@@ -228,6 +234,7 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   final subscription = ref.read(subscriptionServiceProvider);
   final bibleLoader = ref.read(bibleLoaderServiceProvider);
   final devotionalLoader = ref.read(devotionalContentLoaderProvider);
+  final curatedPlanLoader = ref.read(curatedReadingPlanLoaderProvider);
 
   await database.initialize();
   await notifications.initialize();
@@ -254,6 +261,9 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
 
   // Load devotional content on first launch
   await devotionalLoader.loadDevotionals();
+
+  // Load curated reading plans on first launch (idempotent)
+  await curatedPlanLoader.ensureCuratedPlansLoaded();
 });
 
 // Devotional Progress Providers
