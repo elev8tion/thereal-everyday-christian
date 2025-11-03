@@ -7,6 +7,7 @@ import '../components/frosted_glass_card.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glassmorphic_fab_menu.dart';
+import '../components/category_badge.dart';
 import '../components/standard_screen_header.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_gradients.dart';
@@ -197,7 +198,29 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     );
   }
 
+  Widget _buildDay() {
+    return Row(
+      children: [
+        const SizedBox(width: AppSpacing.md),
+        ClearGlassCard(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: AutoSizeText(
+              'Day ${_currentDay + 1}',
+              style: TextStyle(
+                color: AppColors.primaryText,
+                fontWeight: FontWeight.w600,
+                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.normal),
+      ],
+    );
+  }
+
   Widget _buildDevotionalCard(Devotional devotional) {
+    final progressService = ref.read(devotionalProgressServiceProvider);
 
     return FrostedGlassCard(
       child: Column(
@@ -210,7 +233,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title
+                // Title and subtitle
                 Text(
                   devotional.title,
                   style: TextStyle(
@@ -221,10 +244,21 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                   softWrap: true,
                   overflow: TextOverflow.visible,
                 ),
+                const SizedBox(height: 4),
+                Text(
+                  devotional.subtitle,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                    color: Colors.white.withValues(alpha: 0.9),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
 
                 const SizedBox(height: AppSpacing.xxl),
 
-                // 1. Opening Scripture
+                // Today's Verse container
                 Container(
                   padding: AppSpacing.screenPadding,
                   decoration: BoxDecoration(
@@ -241,13 +275,13 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                       Row(
                         children: [
                           Icon(
-                            Icons.menu_book,
+                            Icons.format_quote,
                             color: AppTheme.goldColor,
                             size: ResponsiveUtils.iconSize(context, 20),
                           ),
                           const SizedBox(width: AppSpacing.sm),
                           Text(
-                            'Opening Scripture',
+                            'Today\'s Verse',
                             style: TextStyle(
                               fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                               fontWeight: FontWeight.w600,
@@ -258,7 +292,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                       ),
                       const SizedBox(height: AppSpacing.md),
                       Text(
-                        '"${devotional.openingScriptureText}"',
+                        '"${devotional.verse}"',
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                           color: AppColors.primaryText,
@@ -271,7 +305,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                       ),
                       const SizedBox(height: AppSpacing.md),
                       Text(
-                        devotional.openingScriptureReference,
+                        devotional.verseReference,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                           color: AppTheme.goldColor,
@@ -284,71 +318,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
                 const SizedBox(height: AppSpacing.xxl),
 
-                // 2. Key Verse Spotlight
-                Container(
-                  padding: AppSpacing.screenPadding,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppTheme.goldColor.withValues(alpha: 0.2),
-                        AppTheme.goldColor.withValues(alpha: 0.1),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                    border: Border.all(
-                      color: AppTheme.goldColor.withValues(alpha: 0.8),
-                      width: 2,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star,
-                            color: AppTheme.goldColor,
-                            size: ResponsiveUtils.iconSize(context, 20),
-                          ),
-                          const SizedBox(width: AppSpacing.sm),
-                          Text(
-                            'Key Verse Spotlight',
-                            style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primaryText,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      Text(
-                        '"${devotional.keyVerseText}"',
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 17, minSize: 15, maxSize: 19),
-                          color: AppColors.primaryText,
-                          height: 1.5,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      Text(
-                        devotional.keyVerseReference,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                          color: AppTheme.goldColor,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: AppSpacing.xxl),
-
-                // 3. Reflection
+                // Reflection
                 Text(
                   'Reflection',
                   style: TextStyle(
@@ -358,8 +328,9 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
+
                 Text(
-                  devotional.reflection,
+                  devotional.content,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
                     color: Colors.white.withValues(alpha: 0.9),
@@ -368,262 +339,6 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                   ),
                   softWrap: true,
                   overflow: TextOverflow.visible,
-                ),
-
-                const SizedBox(height: AppSpacing.xxl),
-
-                // 4. Life Application
-                Container(
-                  padding: AppSpacing.screenPadding,
-                  decoration: BoxDecoration(
-                    gradient: AppGradients.glassVeryStrong,
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                    border: Border.all(
-                      color: Colors.blue.withValues(alpha: 0.5),
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.lightbulb_outline,
-                            color: Colors.blue.shade300,
-                            size: ResponsiveUtils.iconSize(context, 20),
-                          ),
-                          const SizedBox(width: AppSpacing.sm),
-                          Text(
-                            'Life Application',
-                            style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primaryText,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      Text(
-                        devotional.lifeApplication,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-                          color: Colors.white.withValues(alpha: 0.9),
-                          height: 1.6,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: AppSpacing.xxl),
-
-                // 5. Prayer
-                Container(
-                  padding: AppSpacing.screenPadding,
-                  decoration: BoxDecoration(
-                    gradient: AppGradients.glassStrong,
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                    border: Border.all(
-                      color: Colors.purple.withValues(alpha: 0.4),
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.favorite_border,
-                            color: Colors.purple.shade200,
-                            size: ResponsiveUtils.iconSize(context, 20),
-                          ),
-                          const SizedBox(width: AppSpacing.sm),
-                          Text(
-                            'Prayer',
-                            style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primaryText,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      Text(
-                        devotional.prayer,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-                          color: Colors.white.withValues(alpha: 0.9),
-                          height: 1.6,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: AppSpacing.xxl),
-
-                // 6. Action Step
-                Container(
-                  padding: AppSpacing.screenPadding,
-                  decoration: BoxDecoration(
-                    gradient: AppGradients.glassVeryStrong,
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                    border: Border.all(
-                      color: Colors.green.withValues(alpha: 0.5),
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Checkbox(
-                        value: devotional.actionStepCompleted,
-                        onChanged: (value) async {
-                          final service = ref.read(devotionalServiceProvider);
-                          await service.toggleActionStepCompleted(
-                            devotional.id,
-                            value ?? false,
-                          );
-                          ref.invalidate(allDevotionalsProvider);
-                        },
-                        fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                          if (states.contains(WidgetState.selected)) {
-                            return Colors.green;
-                          }
-                          return Colors.white.withValues(alpha: 0.3);
-                        }),
-                        checkColor: Colors.white,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 12),
-                            Text(
-                              'Today\'s Action Step',
-                              style: TextStyle(
-                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                                fontWeight: FontWeight.w700,
-                                color: Colors.green.shade300,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.sm),
-                            Text(
-                              devotional.actionStep,
-                              style: TextStyle(
-                                fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-                                color: Colors.white.withValues(alpha: 0.9),
-                                height: 1.6,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              softWrap: true,
-                              overflow: TextOverflow.visible,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: AppSpacing.xxl),
-
-                // 7. Going Deeper
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.explore,
-                          color: AppTheme.goldColor,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                        ),
-                        const SizedBox(width: AppSpacing.sm),
-                        Text(
-                          'Going Deeper',
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primaryText,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    Wrap(
-                      spacing: AppSpacing.sm,
-                      runSpacing: AppSpacing.sm,
-                      children: devotional.goingDeeper.map((reference) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md,
-                            vertical: AppSpacing.sm,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: AppGradients.glassVeryStrong,
-                            borderRadius: BorderRadius.circular(AppRadius.xs),
-                            border: Border.all(
-                              color: AppTheme.goldColor.withValues(alpha: 0.5),
-                              width: 1,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.arrow_forward,
-                                color: AppTheme.goldColor,
-                                size: ResponsiveUtils.iconSize(context, 16),
-                              ),
-                              const SizedBox(width: AppSpacing.xs),
-                              Text(
-                                reference,
-                                style: TextStyle(
-                                  fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
-                                  color: AppColors.primaryText,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: AppSpacing.xl),
-
-                // 8. Reading Time
-                Row(
-                  children: [
-                    Icon(
-                      Icons.schedule,
-                      color: Colors.white.withValues(alpha: 0.5),
-                      size: ResponsiveUtils.iconSize(context, 16),
-                    ),
-                    const SizedBox(width: AppSpacing.xs),
-                    Text(
-                      devotional.readingTime,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                        color: AppColors.secondaryText,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
