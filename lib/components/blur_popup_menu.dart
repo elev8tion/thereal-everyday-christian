@@ -82,9 +82,7 @@ class _BlurPopupMenuState extends State<BlurPopupMenu> {
                               : Colors.white.withValues(alpha: 0.2),
                           borderRadius: AppRadius.largeCardRadius,
                           border: Border.all(
-                            color: Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white24
-                                : Colors.white54,
+                            color: AppTheme.goldColor,
                             width: 2,
                           ),
                         ),
