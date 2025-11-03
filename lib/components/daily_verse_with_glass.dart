@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../theme/app_theme.dart';
 import 'glass/static_liquid_glass_lens.dart';
 import 'category_badge.dart';
+import 'dark_glass_container.dart';
 
 class DailyVerseWithGlassDecoration extends HookWidget {
   final String verse;
@@ -107,16 +108,9 @@ class DailyVerseWithGlassDecoration extends HookWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              Container(
+              DarkGlassContainer(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  borderRadius: AppRadius.mediumRadius,
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.1),
-                    width: 1,
-                  ),
-                ),
+                borderRadius: AppRadius.md,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

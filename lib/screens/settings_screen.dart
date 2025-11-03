@@ -20,6 +20,7 @@ import '../utils/responsive_utils.dart';
 import '../widgets/time_picker/time_range_sheet.dart';
 import '../widgets/time_picker/time_range_sheet_style.dart';
 import '../components/glass_button.dart';
+import '../components/dark_glass_container.dart';
 import 'paywall_screen.dart';
 import '../utils/blur_dialog_utils.dart';
 
@@ -290,17 +291,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget _buildSliderTile(String title, String subtitle, double value, double min, double max, Function(double) onChanged) {
     final textSize = ref.watch(textSizeProvider);
 
-    return Container(
+    return DarkGlassContainer(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: AppSpacing.cardPadding,
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.1),
-        borderRadius: AppRadius.mediumRadius,
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
-          width: 1,
-        ),
-      ),
+      borderRadius: AppRadius.md,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

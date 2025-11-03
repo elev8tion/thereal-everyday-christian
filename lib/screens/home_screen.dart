@@ -9,6 +9,7 @@ import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/gradient_background.dart';
 import '../components/glassmorphic_fab_menu.dart';
+import '../components/dark_glass_container.dart';
 import '../core/navigation/app_routes.dart';
 import '../core/providers/app_providers.dart';
 import '../core/navigation/navigation_service.dart';
@@ -774,16 +775,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ],
                 ),
                 const SizedBox(height: AppSpacing.xl),
-                Container(
-                  padding: AppSpacing.cardPadding,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    borderRadius: AppRadius.mediumRadius,
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.1),
-                      width: 1,
-                    ),
-                  ),
+                DarkGlassContainer(
+                  borderRadius: AppRadius.md,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

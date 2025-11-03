@@ -340,25 +340,32 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          Text(
-            '"${devotional.openingScriptureText}"',
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-              color: AppColors.primaryText,
-              height: 1.5,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w500,
-            ),
-            softWrap: true,
-            overflow: TextOverflow.visible,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            devotional.openingScriptureReference,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-              color: AppTheme.goldColor,
-              fontWeight: FontWeight.w600,
+          DarkGlassContainer(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '"${devotional.openingScriptureText}"',
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                    color: AppColors.primaryText,
+                    height: 1.5,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  devotional.openingScriptureReference,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    color: AppTheme.goldColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -392,24 +399,31 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          Text(
-            '"${devotional.keyVerseText}"',
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 17, minSize: 15, maxSize: 19),
-              color: AppColors.primaryText,
-              height: 1.5,
-              fontWeight: FontWeight.w600,
-            ),
-            softWrap: true,
-            overflow: TextOverflow.visible,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            devotional.keyVerseReference,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-              color: AppTheme.goldColor,
-              fontWeight: FontWeight.w700,
+          DarkGlassContainer(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '"${devotional.keyVerseText}"',
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 17, minSize: 15, maxSize: 19),
+                    color: AppColors.primaryText,
+                    height: 1.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  devotional.keyVerseReference,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    color: AppTheme.goldColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -475,16 +489,18 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          Text(
-            devotional.lifeApplication,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-              color: Colors.white.withValues(alpha: 0.9),
-              height: 1.6,
-              fontWeight: FontWeight.w400,
+          DarkGlassContainer(
+            child: Text(
+              devotional.lifeApplication,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                color: Colors.white.withValues(alpha: 0.9),
+                height: 1.6,
+                fontWeight: FontWeight.w400,
+              ),
+              softWrap: true,
+              overflow: TextOverflow.visible,
             ),
-            softWrap: true,
-            overflow: TextOverflow.visible,
           ),
         ],
       ),
@@ -517,17 +533,19 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          Text(
-            devotional.prayer,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-              color: Colors.white.withValues(alpha: 0.9),
-              height: 1.6,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w400,
+          DarkGlassContainer(
+            child: Text(
+              devotional.prayer,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                color: Colors.white.withValues(alpha: 0.9),
+                height: 1.6,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w400,
+              ),
+              softWrap: true,
+              overflow: TextOverflow.visible,
             ),
-            softWrap: true,
-            overflow: TextOverflow.visible,
           ),
         ],
       ),
