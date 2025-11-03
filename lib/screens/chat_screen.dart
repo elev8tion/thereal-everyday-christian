@@ -15,6 +15,9 @@ import '../components/gradient_background.dart';
 import '../components/base_bottom_sheet.dart';
 import '../components/glass_effects/glass_dialog.dart';
 import '../components/glass_card.dart';
+import '../components/frosted_glass_card.dart';
+import '../components/glass_button.dart';
+import '../utils/blur_dialog_utils.dart';
 import '../components/glass_streaming_message.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/scroll_to_bottom.dart';
@@ -2679,51 +2682,57 @@ class ChatScreen extends HookConsumerWidget {
     }
 
     // Show confirmation dialog if there's content
-    showGlassDialog(
+    showBlurredDialog(
       context: context,
-      child: GlassContainer(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AutoSizeText(
-              'Start New Conversation?',
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.w700,
-                fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-              ),
-              maxLines: 1,
-              minFontSize: 16,
-              maxFontSize: 24,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 16),
-            AutoSizeText(
-              'Your current conversation will be saved to history.\n\nStart a fresh conversation?',
-              style: TextStyle(
-                color: AppColors.secondaryText,
-                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                fontWeight: FontWeight.w500,
-                height: 1.5,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 4,
-              minFontSize: 11,
-              maxFontSize: 16,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GlassDialogButton(
-                  text: 'Cancel',
-                  onTap: () => Navigator.pop(context),
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: FrostedGlassCard(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AutoSizeText(
+                'Start New Conversation?',
+                style: TextStyle(
+                  color: AppColors.primaryText,
+                  fontWeight: FontWeight.w700,
+                  fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                 ),
-                GlassDialogButton(
-                  text: 'New Chat',
-                  isPrimary: true,
-                  onTap: () async {
+                maxLines: 1,
+                minFontSize: 16,
+                maxFontSize: 24,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 16),
+              AutoSizeText(
+                'Your current conversation will be saved to history.\n\nStart a fresh conversation?',
+                style: TextStyle(
+                  color: AppColors.secondaryText,
+                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  fontWeight: FontWeight.w500,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 4,
+                minFontSize: 11,
+                maxFontSize: 16,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: GlassButton(
+                      text: 'Cancel',
+                      height: 48,
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: GlassButton(
+                      text: 'New Chat',
+                      height: 48,
+                      onPressed: () async {
                     debugPrint('✅ User confirmed new conversation');
                     Navigator.pop(context);
 
@@ -2801,11 +2810,13 @@ class ChatScreen extends HookConsumerWidget {
                     }
 
                     debugPrint('✅ Started new conversation: $newSessionId');
-                  },
-                ),
-              ],
-            ),
-          ],
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
