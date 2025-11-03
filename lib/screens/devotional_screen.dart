@@ -101,6 +101,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                     right: AppSpacing.xl,
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildHeader(streakAsync, totalCompletedAsync),
                       const SizedBox(height: AppSpacing.xxl),
@@ -299,19 +300,84 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
   // Title Card
   Widget _buildTitleCard(Devotional devotional) {
+    // Split title into two lines at "a " if it exists
+    final titleParts = _splitTitle(devotional.title);
+
     return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Text(
-        devotional.title,
-        style: TextStyle(
-          fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-          fontWeight: FontWeight.w800,
-          color: AppColors.primaryText,
-        ),
-        softWrap: true,
-        overflow: TextOverflow.visible,
+      padding: AppSpacing.screenPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            titleParts['first']!,
+            style: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
+              fontWeight: FontWeight.w800,
+              color: AppColors.primaryText,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.left,
+          ),
+          Text(
+            titleParts['second']!,
+            style: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
+              fontWeight: FontWeight.w800,
+              color: AppColors.primaryText,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.left,
+          ),
+        ],
       ),
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.2);
+  }
+
+  // Helper to split title intelligently
+  Map<String, String> _splitTitle(String title) {
+    // Try to split after "a " or "an " for natural phrasing
+    final aIndex = title.toLowerCase().indexOf(' a ');
+    final anIndex = title.toLowerCase().indexOf(' an ');
+
+    if (aIndex != -1) {
+      final splitPoint = aIndex + 2; // Include "a"
+      return {
+        'first': title.substring(0, splitPoint).trim(),
+        'second': title.substring(splitPoint).trim(),
+      };
+    } else if (anIndex != -1) {
+      final splitPoint = anIndex + 3; // Include "an"
+      return {
+        'first': title.substring(0, splitPoint).trim(),
+        'second': title.substring(splitPoint).trim(),
+      };
+    } else {
+      // Fallback: split as evenly as possible by character length
+      final words = title.split(' ');
+      if (words.length <= 1) {
+        return {'first': title, 'second': ''};
+      }
+
+      // Find the split point closest to half the character length
+      final halfLength = title.length / 2;
+      int bestSplitIndex = 1;
+      int bestDifference = title.length;
+
+      int currentLength = words[0].length;
+      for (int i = 1; i < words.length; i++) {
+        final difference = (currentLength - halfLength).abs();
+        if (difference < bestDifference) {
+          bestDifference = difference.toInt();
+          bestSplitIndex = i;
+        }
+        currentLength += words[i].length + 1; // +1 for space
+      }
+
+      return {
+        'first': words.sublist(0, bestSplitIndex).join(' '),
+        'second': words.sublist(bestSplitIndex).join(' '),
+      };
+    }
   }
 
   // 1. Opening Scripture
