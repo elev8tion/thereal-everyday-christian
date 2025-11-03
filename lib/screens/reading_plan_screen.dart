@@ -1049,9 +1049,11 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       try {
         await planService.startPlan(plan.id);
 
-        // Check if readings exist, if not generate them based on plan category
-        final readings = await progressService.getTodaysReadings(plan.id);
-        if (readings.isEmpty) {
+        // Check if ANY readings exist for this plan (not just today's)
+        // This prevents overwriting curated plans that were loaded from JSON
+        final allReadings = await planService.getReadingsForPlan(plan.id);
+        if (allReadings.isEmpty) {
+          // No readings exist - generate them based on plan category
           await progressService.generateReadingsForPlan(
             plan.id,
             plan.category,
