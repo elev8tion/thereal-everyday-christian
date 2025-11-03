@@ -637,44 +637,53 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          Wrap(
-            spacing: AppSpacing.sm,
-            runSpacing: AppSpacing.sm,
+          Column(
             children: devotional.goingDeeper.map((reference) {
               return GestureDetector(
                 onTap: () => _navigateToVerse(reference),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.sm,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    color: Colors.transparent,
                   ),
-                  decoration: BoxDecoration(
-                    gradient: AppGradients.glassVeryStrong,
-                    borderRadius: BorderRadius.circular(AppRadius.xs),
-                    border: Border.all(
-                      color: AppTheme.goldColor.withValues(alpha: 0.5),
-                      width: 1,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                  child: Column(
                     children: [
-                      Icon(
-                        Icons.arrow_forward,
-                        color: AppTheme.goldColor,
-                        size: ResponsiveUtils.iconSize(context, 16),
-                      ),
-                      const SizedBox(width: AppSpacing.xs),
-                      Flexible(
-                        child: Text(
-                          reference,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
-                            color: AppColors.primaryText,
-                            fontWeight: FontWeight.w600,
+                      Row(
+                        children: [
+                          // Reference text
+                          Expanded(
+                            child: Text(
+                              reference,
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
+
+                          // Chevron
+                          Icon(
+                            Icons.chevron_right,
+                            size: ResponsiveUtils.iconSize(context, 24),
+                            color: Colors.white.withValues(alpha: 0.6),
+                          ),
+                        ],
+                      ),
+
+                      // Divider
+                      const SizedBox(height: 12),
+                      Container(
+                        height: 1,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.white.withValues(alpha: 0.0),
+                              Colors.white.withValues(alpha: 0.2),
+                              Colors.white.withValues(alpha: 0.0),
+                            ],
+                          ),
                         ),
                       ),
                     ],
