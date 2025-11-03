@@ -539,6 +539,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               return Colors.white.withValues(alpha: 0.3);
             }),
             checkColor: Colors.white,
+            shape: const CircleBorder(),
           ),
           Expanded(
             child: Column(
@@ -832,6 +833,23 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   Widget _buildProgressIndicator(List<Devotional> devotionals) {
+    // Get current devotional's date to determine the month
+    final currentDevotional = devotionals[_currentDay];
+    final currentDate = DateTime.parse(currentDevotional.date);
+
+    // Filter devotionals for the current month
+    final monthlyDevotionals = devotionals.where((d) {
+      final date = DateTime.parse(d.date);
+      return date.year == currentDate.year && date.month == currentDate.month;
+    }).toList();
+
+    // Find the current day's index within the monthly devotionals
+    final monthlyIndex = monthlyDevotionals.indexWhere((d) => d.id == currentDevotional.id);
+
+    // Get month name
+    final monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final monthName = monthNames[currentDate.month - 1];
+
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
@@ -841,7 +859,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Progress',
+                '$monthName ${currentDate.year} Progress',
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                   fontWeight: FontWeight.w700,
@@ -849,7 +867,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 ),
               ),
               Text(
-                '${_currentDay + 1} of ${devotionals.length}',
+                '${monthlyIndex + 1} of ${monthlyDevotionals.length}',
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
@@ -860,7 +878,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
           ),
           const SizedBox(height: AppSpacing.md),
           LinearProgressIndicator(
-            value: (_currentDay + 1) / devotionals.length,
+            value: (monthlyIndex + 1) / monthlyDevotionals.length,
             backgroundColor: Colors.white.withValues(alpha: 0.2),
             valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
             borderRadius: BorderRadius.circular(AppRadius.xs / 2),
@@ -879,10 +897,11 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               return Wrap(
                 spacing: spacing,
                 runSpacing: runSpacing,
-                children: List.generate(devotionals.length, (index) {
-                  final devotional = devotionals[index];
+                children: List.generate(monthlyDevotionals.length, (index) {
+                  final devotional = monthlyDevotionals[index];
                   final isCompleted = devotional.isCompleted;
-                  final isCurrent = index == _currentDay;
+                  final isCurrent = index == monthlyIndex;
+                  final dayOfMonth = DateTime.parse(devotional.date).day;
 
                   return Container(
                     width: itemWidth,
@@ -910,7 +929,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                               size: ResponsiveUtils.iconSize(context, 20),
                             )
                           : Text(
-                              '${index + 1}',
+                              '$dayOfMonth',
                               style: TextStyle(
                                 color: isCurrent
                                     ? AppTheme.primaryColor
@@ -1019,13 +1038,16 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   /// Navigate to a Bible verse from a reference string
-  /// Examples: "John 3:16", "1 Thessalonians 5:18", "Psalm 136:1"
+  /// Examples: "John 3:16", "1 Thessalonians 5:18 - Give thanks", "Psalm 136:1 - His loving kindness"
   void _navigateToVerse(String reference) {
     try {
+      // Remove any text after " - " (e.g., "Psalm 136:1 - His loving kindness" -> "Psalm 136:1")
+      final cleanReference = reference.split(' - ').first.trim();
+
       // Parse the reference (e.g., "1 Thessalonians 5:18")
-      final parts = reference.split(':');
+      final parts = cleanReference.split(':');
       if (parts.length != 2) {
-        debugPrint('⚠️ Invalid reference format: $reference');
+        debugPrint('⚠️ Invalid reference format: $cleanReference');
         return;
       }
 
