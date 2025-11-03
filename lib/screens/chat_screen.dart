@@ -36,6 +36,7 @@ import '../components/standard_screen_header.dart';
 import '../components/chat_action_buttons_header.dart';
 import '../components/verse_context_message.dart';
 import '../models/verse_context.dart';
+import '../services/chat_share_service.dart';
 
 class ChatScreen extends HookConsumerWidget {
   final VerseContext? verseContext; // Optional verse context for verse discussion
@@ -1154,7 +1155,7 @@ class ChatScreen extends HookConsumerWidget {
     }
 
     // Share conversation directly
-    Future<void> shareConversation() async {
+    Future<void> shareText() async {
       if (sessionId.value == null) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -1379,6 +1380,60 @@ class ChatScreen extends HookConsumerWidget {
       }
     }
 
+    // Share specific message exchange as branded image with QR code
+    Future<void> shareMessageExchange(int aiMessageIndex) async {
+      try {
+        final chatShareService = ChatShareService();
+
+        // Get the AI message and find its corresponding user message
+        final aiMessage = messages.value[aiMessageIndex];
+
+        // Find the user message that comes before this AI message
+        ChatMessage? userMessage;
+        for (int i = aiMessageIndex - 1; i >= 0; i--) {
+          if (messages.value[i].type == MessageType.user) {
+            userMessage = messages.value[i];
+            break;
+          }
+        }
+
+        if (userMessage == null) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Could not find the question for this response'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          }
+          return;
+        }
+
+        // Create the exchange (user question + AI response)
+        final exchangeMessages = [userMessage, aiMessage];
+
+        // Create shareable widgets
+        final messageWidgets = chatShareService.createShareableMessageWidgets(exchangeMessages);
+
+        // Share the exchange
+        await chatShareService.shareChat(
+          context: context,
+          messages: exchangeMessages,
+          messageWidgets: messageWidgets,
+        );
+      } catch (e) {
+        debugPrint('Error sharing message exchange: $e');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to share. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+
     // Show chat options menu
     void showChatOptions() {
       showCustomBottomSheet(
@@ -1433,17 +1488,17 @@ class ChatScreen extends HookConsumerWidget {
                   ),
                   borderRadius: AppRadius.mediumRadius,
                 ),
-                child: const Icon(Icons.share, color: AppTheme.accentColor),
+                child: const Icon(Icons.text_snippet, color: AppTheme.accentColor),
               ),
               title: const Text(
-                'Share Conversation',
+                'Share Text',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
               ),
               subtitle: Text(
-                'Share via system share sheet',
+                'Share as plain text',
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -1451,7 +1506,7 @@ class ChatScreen extends HookConsumerWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                shareConversation();
+                shareText();
               },
             ),
             const SizedBox(height: 16),
@@ -1536,6 +1591,7 @@ class ChatScreen extends HookConsumerWidget {
                           isStreamingComplete.value,
                           streamedText.value,
                           regenerateResponse,
+                          shareMessageExchange,
                           regeneratedMessageId.value,
                         ),
                         // Add spacing at bottom to prevent last message from being hidden by floating input
@@ -1765,6 +1821,7 @@ class ChatScreen extends HookConsumerWidget {
     bool isStreamingComplete,
     String streamedText,
     Future<void> Function(int) onRegenerateResponse,
+    Future<void> Function(int) onShareExchange,
     String? regeneratedMessageId,
   ) {
     return SliverPadding(
@@ -1777,7 +1834,7 @@ class ChatScreen extends HookConsumerWidget {
               return _buildTypingIndicator();
             }
 
-            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, regeneratedMessageId);
+            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId);
           },
           childCount: messages.length + (isTyping ? 1 : 0),
         ),
@@ -1795,6 +1852,7 @@ class ChatScreen extends HookConsumerWidget {
     bool isStreamingComplete,
     String streamedText,
     Future<void> Function(int) onRegenerateResponse,
+    Future<void> Function(int) onShareExchange,
     String? regeneratedMessageId,
   ) {
     return ListView.builder(
@@ -1815,7 +1873,7 @@ class ChatScreen extends HookConsumerWidget {
           return _buildTypingIndicator();
         }
 
-        return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, regeneratedMessageId);
+        return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId);
       },
     );
   }
@@ -1825,6 +1883,7 @@ class ChatScreen extends HookConsumerWidget {
     ChatMessage message,
     int index,
     Future<void> Function(int) onRegenerateResponse,
+    Future<void> Function(int) onShareExchange,
     String? regeneratedMessageId,
   ) {
     final bool isRegeneratedMessage = regeneratedMessageId != null && message.id == regeneratedMessageId;
@@ -1914,6 +1973,40 @@ class ChatScreen extends HookConsumerWidget {
                       onTap: () {
                         Navigator.pop(context);
                         onRegenerateResponse(index);
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    ListTile(
+                      leading: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              AppTheme.goldColor.withValues(alpha: 0.3),
+                              AppTheme.goldColor.withValues(alpha: 0.1),
+                            ],
+                          ),
+                          borderRadius: AppRadius.mediumRadius,
+                        ),
+                        child: const Icon(Icons.share, color: AppTheme.goldColor),
+                      ),
+                      title: const Text(
+                        'Share Exchange',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryText,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Share this message exchange as image',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                          color: AppColors.secondaryText,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        onShareExchange(index);
                       },
                     ),
                     const SizedBox(height: 16),
