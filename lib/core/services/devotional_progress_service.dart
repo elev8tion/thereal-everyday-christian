@@ -202,20 +202,36 @@ class DevotionalProgressService {
     return maps.map((map) => _devotionalFromMap(map)).toList();
   }
 
-  /// Get today's devotional
+  /// Get today's devotional based on current date
   Future<Devotional?> getTodaysDevotional() async {
     final today = DateTime.now();
-    final startOfDay = DateTime(today.year, today.month, today.day);
-    final endOfDay = startOfDay.add(const Duration(days: 1));
+    final todayString = '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
 
     final db = await _database.database;
     final maps = await db.query(
       'devotionals',
-      where: 'date >= ? AND date < ?',
-      whereArgs: [
-        startOfDay.millisecondsSinceEpoch,
-        endOfDay.millisecondsSinceEpoch,
-      ],
+      where: 'date = ?',
+      whereArgs: [todayString],
+      limit: 1,
+    );
+
+    if (maps.isNotEmpty) {
+      return _devotionalFromMap(maps.first);
+    }
+    return null;
+  }
+
+  /// Get the most recent devotional that has a date on or before today
+  Future<Devotional?> getMostRecentAvailableDevotional() async {
+    final today = DateTime.now();
+    final todayString = '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+
+    final db = await _database.database;
+    final maps = await db.query(
+      'devotionals',
+      where: 'date <= ?',
+      whereArgs: [todayString],
+      orderBy: 'date DESC',
       limit: 1,
     );
 

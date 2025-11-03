@@ -28,9 +28,27 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   bool _isInitialized = false;
 
   void _initializeCurrentDay(List<Devotional> devotionals) {
-    final firstIncomplete = devotionals.indexWhere((d) => !d.isCompleted);
+    final today = DateTime.now();
+    final todayString = '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+
+    // Find today's devotional or the most recent one available
+    int todayIndex = devotionals.indexWhere((d) => d.date == todayString);
+
+    if (todayIndex == -1) {
+      // Today's devotional not found, find the most recent one that's not in the future
+      todayIndex = devotionals.lastIndexWhere((d) {
+        final devotionalDate = DateTime.parse(d.date);
+        return devotionalDate.isBefore(today) || devotionalDate.isAtSameMomentAs(today);
+      });
+    }
+
+    // If still not found (all devotionals are in the future), show the first one
+    if (todayIndex == -1) {
+      todayIndex = 0;
+    }
+
     setState(() {
-      _currentDay = firstIncomplete != -1 ? firstIncomplete : devotionals.length - 1;
+      _currentDay = todayIndex;
       _isInitialized = true;
     });
   }
@@ -127,7 +145,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                       const SizedBox(height: AppSpacing.xl),
 
                       // Navigation Buttons
-                      _buildNavigationButtons(devotionals.length),
+                      _buildNavigationButtons(devotionals.length, devotionals),
                       const SizedBox(height: AppSpacing.xl),
 
                       // Progress Indicator
@@ -761,7 +779,20 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
           );
   }
 
-  Widget _buildNavigationButtons(int totalDevotionals) {
+  Widget _buildNavigationButtons(int totalDevotionals, List<Devotional> devotionals) {
+    // Check if the next devotional is in the future
+    bool canGoForward = false;
+    if (_currentDay < totalDevotionals - 1) {
+      final nextDevotional = devotionals[_currentDay + 1];
+      final nextDate = DateTime.parse(nextDevotional.date);
+      final today = DateTime.now();
+      final todayDate = DateTime(today.year, today.month, today.day);
+      final nextDateOnly = DateTime(nextDate.year, nextDate.month, nextDate.day);
+
+      // Allow navigation if next devotional's date is today or in the past
+      canGoForward = nextDateOnly.isBefore(todayDate) || nextDateOnly.isAtSameMomentAs(todayDate);
+    }
+
     return Row(
       children: [
         Expanded(
@@ -795,10 +826,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 )
               : const SizedBox(),
         ),
-        if (_currentDay > 0 && _currentDay < totalDevotionals - 1)
+        if (_currentDay > 0 && canGoForward)
           const SizedBox(width: AppSpacing.lg),
         Expanded(
-          child: _currentDay < totalDevotionals - 1
+          child: canGoForward
               ? GestureDetector(
                   onTap: () {
                     setState(() {
