@@ -108,6 +108,48 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
     'Revelation': 'New Testament',
   };
 
+  // Book abbreviations (2 letters max)
+  static const Map<String, String> _bookAbbreviations = {
+    'Genesis': 'Ge', 'Exodus': 'Ex', 'Leviticus': 'Le', 'Numbers': 'Nu',
+    'Deuteronomy': 'De', 'Joshua': 'Jo', 'Judges': 'Jg', 'Ruth': 'Ru',
+    '1 Samuel': '1S', '2 Samuel': '2S', '1 Kings': '1K', '2 Kings': '2K',
+    '1 Chronicles': '1C', '2 Chronicles': '2C', 'Ezra': 'Ez', 'Nehemiah': 'Ne',
+    'Esther': 'Es', 'Job': 'Jb', 'Psalms': 'Ps', 'Proverbs': 'Pr',
+    'Ecclesiastes': 'Ec', 'Song of Solomon': 'So', 'Isaiah': 'Is', 'Jeremiah': 'Je',
+    'Lamentations': 'La', 'Ezekiel': 'Ek', 'Daniel': 'Da', 'Hosea': 'Ho',
+    'Joel': 'Jl', 'Amos': 'Am', 'Obadiah': 'Ob', 'Jonah': 'Jn',
+    'Micah': 'Mi', 'Nahum': 'Na', 'Habakkuk': 'Hb', 'Zephaniah': 'Zp',
+    'Haggai': 'Hg', 'Zechariah': 'Zc', 'Malachi': 'Ml',
+    'Matthew': 'Mt', 'Mark': 'Mk', 'Luke': 'Lk', 'John': 'Jh',
+    'Acts': 'Ac', 'Romans': 'Ro', '1 Corinthians': '1Co', '2 Corinthians': '2Co',
+    'Galatians': 'Ga', 'Ephesians': 'Ep', 'Philippians': 'Ph', 'Colossians': 'Co',
+    '1 Thessalonians': '1Th', '2 Thessalonians': '2Th', '1 Timothy': '1Ti', '2 Timothy': '2Ti',
+    'Titus': 'Ti', 'Philemon': 'Pm', 'Hebrews': 'He', 'James': 'Ja',
+    '1 Peter': '1P', '2 Peter': '2P', '1 John': '1J', '2 John': '2J',
+    '3 John': '3J', 'Jude': 'Ju', 'Revelation': 'Re',
+  };
+
+  // Chapter counts for each book
+  static const Map<String, int> _bookChapterCounts = {
+    'Genesis': 50, 'Exodus': 40, 'Leviticus': 27, 'Numbers': 36,
+    'Deuteronomy': 34, 'Joshua': 24, 'Judges': 21, 'Ruth': 4,
+    '1 Samuel': 31, '2 Samuel': 24, '1 Kings': 22, '2 Kings': 25,
+    '1 Chronicles': 29, '2 Chronicles': 36, 'Ezra': 10, 'Nehemiah': 13,
+    'Esther': 10, 'Job': 42, 'Psalms': 150, 'Proverbs': 31,
+    'Ecclesiastes': 12, 'Song of Solomon': 8, 'Isaiah': 66, 'Jeremiah': 52,
+    'Lamentations': 5, 'Ezekiel': 48, 'Daniel': 12, 'Hosea': 14,
+    'Joel': 3, 'Amos': 9, 'Obadiah': 1, 'Jonah': 4,
+    'Micah': 7, 'Nahum': 3, 'Habakkuk': 3, 'Zephaniah': 3,
+    'Haggai': 2, 'Zechariah': 14, 'Malachi': 4,
+    'Matthew': 28, 'Mark': 16, 'Luke': 24, 'John': 21,
+    'Acts': 28, 'Romans': 16, '1 Corinthians': 16, '2 Corinthians': 13,
+    'Galatians': 6, 'Ephesians': 6, 'Philippians': 4, 'Colossians': 4,
+    '1 Thessalonians': 5, '2 Thessalonians': 3, '1 Timothy': 6, '2 Timothy': 4,
+    'Titus': 3, 'Philemon': 1, 'Hebrews': 13, 'James': 5,
+    '1 Peter': 5, '2 Peter': 3, '1 John': 5, '2 John': 1,
+    '3 John': 1, 'Jude': 1, 'Revelation': 22,
+  };
+
   @override
   void initState() {
     super.initState();
@@ -486,16 +528,111 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
       );
     }
 
-    return GridView.builder(
-      padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.8,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ),
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       itemCount: books.length,
-      itemBuilder: (context, index) => _buildBookCard(books[index]),
+      itemBuilder: (context, index) => _buildBookListItem(books[index]),
+    );
+  }
+
+  Widget _buildBookListItem(String book) {
+    final abbreviation = _bookAbbreviations[book] ?? 'Bk';
+    final chapterCount = _bookChapterCounts[book] ?? 0;
+
+    return GestureDetector(
+      onTap: () => _showChapterSelector(book),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                // Icon with abbreviation
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppTheme.goldColor.withValues(alpha: 0.3),
+                        AppTheme.goldColor.withValues(alpha: 0.15),
+                      ],
+                    ),
+                    borderRadius: AppRadius.mediumRadius,
+                    border: Border.all(
+                      color: AppTheme.goldColor.withValues(alpha: 0.4),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      abbreviation,
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.goldColor,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: AppSpacing.lg),
+
+                // Book name and chapter count
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        book,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '$chapterCount chapter${chapterCount == 1 ? '' : 's'}',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                          color: Colors.white.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Chevron
+                Icon(
+                  Icons.chevron_right,
+                  size: ResponsiveUtils.iconSize(context, 24),
+                  color: Colors.white.withValues(alpha: 0.6),
+                ),
+              ],
+            ),
+
+            // Divider
+            const SizedBox(height: 12),
+            Container(
+              height: 1,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withValues(alpha: 0.0),
+                    Colors.white.withValues(alpha: 0.2),
+                    Colors.white.withValues(alpha: 0.0),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
