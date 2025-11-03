@@ -556,17 +556,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppTheme.goldColor.withValues(alpha: 0.3),
-                        AppTheme.goldColor.withValues(alpha: 0.15),
-                      ],
-                    ),
+                    color: Colors.white.withValues(alpha: 0.1),
                     borderRadius: AppRadius.mediumRadius,
-                    border: Border.all(
-                      color: AppTheme.goldColor.withValues(alpha: 0.4),
-                      width: 1.5,
-                    ),
                   ),
                   child: Center(
                     child: Text(
@@ -574,7 +565,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                         fontWeight: FontWeight.w700,
-                        color: AppTheme.goldColor,
+                        color: Colors.white.withValues(alpha: 0.9),
                       ),
                     ),
                   ),
