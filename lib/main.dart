@@ -22,6 +22,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:upgrader/upgrader.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,7 +84,13 @@ class MyApp extends ConsumerWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: const SplashScreen(),
+      home: UpgradeAlert(
+        upgrader: Upgrader(
+          durationUntilAlertAgain: const Duration(days: 3),
+          minAppVersion: '1.0.0',
+        ),
+        child: const SplashScreen(),
+      ),
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case AppRoutes.splash:
