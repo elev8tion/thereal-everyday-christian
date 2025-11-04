@@ -56,23 +56,12 @@ class SplashScreen extends HookConsumerWidget {
         final currentRoute = ModalRoute.of(context)?.settings.name;
         if (currentRoute != AppRoutes.splash && currentRoute != '/') return;
 
-        // Check if user has accepted all legal agreements
+        // Check if user has completed onboarding (which now includes legal agreements)
         final prefsService = await PreferencesService.getInstance();
-        final hasAcceptedLegalAgreements = prefsService.hasAcceptedLegalAgreements();
-
-        if (!hasAcceptedLegalAgreements) {
-          // Show legal agreements screen
-          if (_hasNavigated || disposed) return;
-          _hasNavigated = true;
-          NavigationService.pushReplacementNamed(AppRoutes.legalAgreements);
-          return;
-        }
-
-        // Check if user has completed onboarding
         final hasCompletedOnboarding = prefsService.hasCompletedOnboarding();
 
         if (!hasCompletedOnboarding) {
-          // First time user - show onboarding
+          // First time user - show unified interactive onboarding
           if (_hasNavigated || disposed) return;
           _hasNavigated = true;
           NavigationService.pushReplacementNamed(AppRoutes.onboarding);

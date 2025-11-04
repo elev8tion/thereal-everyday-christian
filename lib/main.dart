@@ -8,7 +8,7 @@ import 'package:everyday_christian/screens/chat_screen.dart';
 import 'package:everyday_christian/screens/devotional_screen.dart';
 import 'package:everyday_christian/screens/home_screen.dart';
 import 'package:everyday_christian/screens/legal_agreements_screen.dart';
-import 'package:everyday_christian/screens/onboarding_screen.dart';
+import 'package:everyday_christian/screens/unified_interactive_onboarding_screen.dart';
 import 'package:everyday_christian/screens/prayer_journal_screen.dart';
 import 'package:everyday_christian/screens/profile_screen.dart';
 import 'package:everyday_christian/screens/reading_plan_screen.dart';
@@ -95,10 +95,8 @@ class MyApp extends ConsumerWidget {
         switch (settings.name) {
           case AppRoutes.splash:
             return MaterialPageRoute(builder: (_) => const SplashScreen());
-          case AppRoutes.legalAgreements:
-            return MaterialPageRoute(builder: (_) => const LegalAgreementsScreen());
           case AppRoutes.onboarding:
-            return MaterialPageRoute(builder: (_) => const OnboardingScreen());
+            return MaterialPageRoute(builder: (_) => const UnifiedInteractiveOnboardingScreen());
           case AppRoutes.home:
             return MaterialPageRoute(builder: (_) => const HomeScreen());
           case AppRoutes.chat:
