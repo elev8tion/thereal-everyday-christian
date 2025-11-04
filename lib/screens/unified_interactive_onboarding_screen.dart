@@ -34,13 +34,10 @@ class _UnifiedInteractiveOnboardingScreenState
   bool _privacyChecked = false;
   bool _ageChecked = false;
 
-  // Page 2: Topic selection
-  final Set<String> _selectedTopics = {};
-
-  // Page 3: Devotional demo
+  // Page 2: Devotional demo
   bool _devotionalCompleted = false;
 
-  // Page 4: AI chat demo
+  // Page 3: AI chat demo
   bool _chatDemoSent = false;
   String _aiResponse = '';
 
@@ -59,7 +56,7 @@ class _UnifiedInteractiveOnboardingScreenState
       _termsChecked && _privacyChecked && _ageChecked;
 
   void _nextPage() {
-    if (_currentPage < 4) {
+    if (_currentPage < 3) {
       _pageController.nextPage(
         duration: AppAnimations.normal,
         curve: Curves.easeInOut,
@@ -84,11 +81,6 @@ class _UnifiedInteractiveOnboardingScreenState
 
     // Save legal agreements
     await prefsService.saveLegalAgreementAcceptance(true);
-
-    // Save selected topics (stored as comma-separated string)
-    if (_selectedTopics.isNotEmpty) {
-      await prefsService.prefs?.setStringList('selected_topics', _selectedTopics.toList());
-    }
 
     // Save name if provided
     final firstName = _nameController.text.trim();
@@ -152,7 +144,6 @@ class _UnifiedInteractiveOnboardingScreenState
                     },
                     children: [
                       _buildLegalPage(),
-                      _buildTopicSelectionPage(),
                       _buildDevotionalDemoPage(),
                       _buildAIChatDemoPage(),
                       _buildPersonalizationPage(),
@@ -165,7 +156,7 @@ class _UnifiedInteractiveOnboardingScreenState
                   padding: const EdgeInsets.only(bottom: AppSpacing.xl),
                   child: SmoothPageIndicator(
                     controller: _pageController,
-                    count: 5,
+                    count: 4,
                     effect: WormEffect(
                       dotColor: AppColors.primaryText.withValues(alpha: 0.3),
                       activeDotColor: AppTheme.goldColor,
@@ -225,10 +216,10 @@ class _UnifiedInteractiveOnboardingScreenState
 
           // Subtitle
           Text(
-            'Bible study, prayer & devotionals',
+            'Bible Study, Prayer, & Devotionals',
             style: TextStyle(
               fontSize: 16,
-              color: AppColors.secondaryText,
+              color: AppTheme.goldColor,
               fontWeight: FontWeight.w400,
             ),
             textAlign: TextAlign.center,
@@ -431,219 +422,128 @@ class _UnifiedInteractiveOnboardingScreenState
     }
   }
 
-  // PAGE 2: Topic Selection
-  Widget _buildTopicSelectionPage() {
-    final topics = [
-      TopicData('Overcoming Anxiety', Icons.psychology),
-      TopicData('Growing in Faith', Icons.auto_awesome),
-      TopicData('Strengthening Relationships', Icons.favorite),
-      TopicData('Deepening Prayer Life', Icons.wb_twilight),
-      TopicData('Finding Purpose', Icons.explore),
-      TopicData('Healing & Comfort', Icons.healing),
-    ];
-
+  // PAGE 2: Devotional Demo
+  Widget _buildDevotionalDemoPage() {
     return SingleChildScrollView(
-      padding: AppSpacing.screenPadding,
-      child: Column(
-        children: [
-          const SizedBox(height: AppSpacing.xxl),
-
-          Text(
-            'What brings you here?',
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 24,
-                  minSize: 20, maxSize: 28),
-              fontWeight: FontWeight.w700,
-              color: AppColors.primaryText,
-            ),
-          ),
-
-          const SizedBox(height: AppSpacing.md),
-
-          Text(
-            'Select topics that matter to you',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 15,
-              color: AppColors.secondaryText,
-            ),
-          ),
-
-          const SizedBox(height: AppSpacing.xxl),
-
-          // Grid of topic cards
-          Wrap(
-            spacing: AppSpacing.md,
-            runSpacing: AppSpacing.md,
-            alignment: WrapAlignment.center,
-            children: topics
-                .map((topic) => _buildTopicCard(topic.title, topic.icon))
-                .toList(),
-          ),
-
-          const SizedBox(height: AppSpacing.xxxl),
-
-          // Buttons
-          Row(
-            children: [
-              Expanded(
-                child: GlassButton(
-                  text: 'Skip',
-                  onPressed: _nextPage,
-                  borderColor: AppColors.subtleBorder,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: GlassButton(
-                  text: 'Next',
-                  onPressed: _nextPage,
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: AppSpacing.xl),
-        ],
+      padding: const EdgeInsets.only(
+        top: AppSpacing.xl,
+        left: AppSpacing.xl,
+        right: AppSpacing.xl,
       ),
-    );
-  }
-
-  Widget _buildTopicCard(String title, IconData icon) {
-    final isSelected = _selectedTopics.contains(title);
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          if (isSelected) {
-            _selectedTopics.remove(title);
-          } else {
-            _selectedTopics.add(title);
-          }
-        });
-        HapticFeedback.lightImpact();
-      },
-      child: FrostedGlassCard(
-        borderColor:
-            isSelected ? AppTheme.goldColor : AppColors.subtleBorder,
-        intensity: isSelected ? GlassIntensity.strong : GlassIntensity.light,
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.4,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header (scrollable, like devotional_screen.dart)
+          Column(
             children: [
-              Icon(
-                icon,
-                color: isSelected
-                    ? AppTheme.goldColor
-                    : AppColors.secondaryText,
-                size: 36,
+              Text(
+                'Try Your First Devotional',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 24,
+                      minSize: 20, maxSize: 28),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryText,
+                ),
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                title,
+                'Daily devotionals help you start each day with hope',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColors.primaryText,
-                  fontSize: 13,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                  height: 1.3,
+                  fontSize: 15,
+                  color: AppColors.secondaryText,
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  // PAGE 3: Devotional Demo
-  Widget _buildDevotionalDemoPage() {
-    return SingleChildScrollView(
-      padding: AppSpacing.screenPadding,
-      child: Column(
-        children: [
           const SizedBox(height: AppSpacing.xxl),
 
+          // Devotional Title (scrollable, like devotional_screen.dart)
           Text(
-            'Try Your First Devotional',
-            textAlign: TextAlign.center,
+            'Cultivating a',
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 24,
                   minSize: 20, maxSize: 28),
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w800,
               color: AppColors.primaryText,
+              height: 1.2,
             ),
+            textAlign: TextAlign.left,
           ),
-
-          const SizedBox(height: AppSpacing.lg),
-
           Text(
-            'Daily devotionals help you start each day with hope',
-            textAlign: TextAlign.center,
+            'Thankful Heart',
             style: TextStyle(
-              fontSize: 15,
-              color: AppColors.secondaryText,
+              fontSize: ResponsiveUtils.fontSize(context, 24,
+                  minSize: 20, maxSize: 28),
+              fontWeight: FontWeight.w800,
+              color: AppColors.primaryText,
+              height: 1.2,
             ),
+            textAlign: TextAlign.left,
           ),
+          const SizedBox(height: AppSpacing.xl),
 
-          const SizedBox(height: AppSpacing.xxl),
-
-          // Devotional preview card
-          FrostedGlassCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Cultivating a\nThankful Heart',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primaryText,
-                    height: 1.2,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
+          // Opening Scripture section
                 Row(
                   children: [
                     Icon(Icons.menu_book,
-                        size: 16, color: AppTheme.goldColor),
-                    const SizedBox(width: AppSpacing.xs),
+                        size: ResponsiveUtils.iconSize(context, 20),
+                        color: AppTheme.goldColor),
+                    const SizedBox(width: AppSpacing.sm),
                     Text(
-                      'Psalm 107:1',
+                      'Opening Scripture',
                       style: TextStyle(
-                        fontSize: 14,
-                        color: AppTheme.goldColor,
+                        fontSize: ResponsiveUtils.fontSize(context, 14,
+                            minSize: 12, maxSize: 16),
                         fontWeight: FontWeight.w600,
+                        color: AppColors.primaryText,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  '"Give thanks to the LORD, for he is good, for his loving kindness endures forever."',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: AppColors.secondaryText,
-                    fontStyle: FontStyle.italic,
-                    height: 1.5,
+                const SizedBox(height: AppSpacing.md),
+                DarkGlassContainer(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '"Give thanks to the LORD, for he is good, for his loving kindness endures forever."',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 16,
+                              minSize: 14, maxSize: 18),
+                          color: AppColors.primaryText,
+                          height: 1.5,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        'Psalm 107:1',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 13,
+                              minSize: 11, maxSize: 15),
+                          color: AppTheme.goldColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
+
+                // Reflection preview
                 Text(
-                  'Gratitude doesn\'t always come naturally—especially when life feels overwhelming. Yet Psalm 107 opens with a powerful invitation: give thanks. Not because everything is perfect, but because God is good...',
+                  'Gratitude doesn\'t always come naturally—especially when life feels overwhelming. Yet Psalm 107 opens with a powerful invitation: give thanks...',
                   style: TextStyle(
                     fontSize: 15,
                     color: AppColors.primaryText,
                     height: 1.5,
                   ),
-                  maxLines: 4,
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
-              ],
-            ),
-          ),
 
           const SizedBox(height: AppSpacing.xl),
 
@@ -676,36 +576,47 @@ class _UnifiedInteractiveOnboardingScreenState
     );
   }
 
-  // PAGE 4: AI Chat Demo
+  // PAGE 3: AI Chat Demo
   Widget _buildAIChatDemoPage() {
-    return SingleChildScrollView(
-      padding: AppSpacing.screenPadding,
-      child: Column(
-        children: [
-          const SizedBox(height: AppSpacing.xxl),
-
-          Text(
-            'Ask Me Anything',
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 24,
-                  minSize: 20, maxSize: 28),
-              fontWeight: FontWeight.w700,
-              color: AppColors.primaryText,
-            ),
+    return Column(
+      children: [
+        // Fixed header
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.xl,
           ),
-
-          const SizedBox(height: AppSpacing.lg),
-
-          Text(
-            'Get biblical guidance 24/7',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 15,
-              color: AppColors.secondaryText,
-            ),
+          child: Column(
+            children: [
+              Text(
+                'Ask Me Anything',
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 24,
+                      minSize: 20, maxSize: 28),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryText,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                'Get biblical guidance 24/7',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: AppColors.secondaryText,
+                ),
+              ),
+            ],
           ),
+        ),
 
-          const SizedBox(height: AppSpacing.xxl),
+        // Scrollable content
+        Expanded(
+          child: SingleChildScrollView(
+            padding: AppSpacing.screenPadding,
+            child: Column(
+              children: [
 
           // User message
           FrostedGlassCard(
@@ -834,12 +745,15 @@ class _UnifiedInteractiveOnboardingScreenState
           ),
 
           const SizedBox(height: AppSpacing.xl),
-        ],
-      ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  // PAGE 5: Personalization
+  // PAGE 4: Personalization
   Widget _buildPersonalizationPage() {
     return SingleChildScrollView(
       padding: AppSpacing.screenPadding,
@@ -968,13 +882,5 @@ class _UnifiedInteractiveOnboardingScreenState
       ),
     );
   }
-}
-
-// Helper class for topic data
-class TopicData {
-  final String title;
-  final IconData icon;
-
-  TopicData(this.title, this.icon);
 }
 
