@@ -4,12 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 import '../components/chat_share_widget.dart';
 import '../models/chat_message.dart';
+import '../core/services/database_service.dart';
 
 /// Service for capturing and sharing chat conversations with branding
 class ChatShareService {
   final ScreenshotController _screenshotController = ScreenshotController();
+  final DatabaseService? _databaseService;
+  final _uuid = const Uuid();
+
+  ChatShareService({DatabaseService? databaseService})
+      : _databaseService = databaseService;
 
   ScreenshotController get controller => _screenshotController;
 
@@ -18,6 +25,7 @@ class ChatShareService {
     required BuildContext context,
     required List<ChatMessage> messages,
     required List<Widget> messageWidgets,
+    String? sessionId,
   }) async {
     try {
       // Capture the widget as an image
@@ -49,6 +57,11 @@ class ChatShareService {
         subject: 'My Everyday Christian Conversation',
       );
 
+      // Track the share in database if sessionId provided
+      if (sessionId != null && _databaseService != null) {
+        await _trackShare(sessionId);
+      }
+
       // Clean up temporary file after a delay
       Future.delayed(const Duration(seconds: 30), () {
         if (imageFile.existsSync()) {
@@ -58,6 +71,21 @@ class ChatShareService {
     } catch (e) {
       debugPrint('Error sharing chat: $e');
       rethrow;
+    }
+  }
+
+  /// Track a chat share in the database
+  Future<void> _trackShare(String sessionId) async {
+    try {
+      final db = await _databaseService!.database;
+      await db.insert('shared_chats', {
+        'id': _uuid.v4(),
+        'session_id': sessionId,
+        'shared_at': DateTime.now().millisecondsSinceEpoch,
+      });
+    } catch (e) {
+      debugPrint('Error tracking share: $e');
+      // Don't rethrow - sharing succeeded, tracking failure shouldn't break UX
     }
   }
 

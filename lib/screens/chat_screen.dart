@@ -1386,7 +1386,8 @@ class ChatScreen extends HookConsumerWidget {
     // Share specific message exchange as branded image with QR code
     Future<void> shareMessageExchange(int aiMessageIndex) async {
       try {
-        final chatShareService = ChatShareService();
+        final dbService = ref.read(databaseServiceProvider);
+        final chatShareService = ChatShareService(databaseService: dbService);
 
         // Get the AI message and find its corresponding user message
         final aiMessage = messages.value[aiMessageIndex];
@@ -1423,6 +1424,7 @@ class ChatScreen extends HookConsumerWidget {
           context: context,
           messages: exchangeMessages,
           messageWidgets: messageWidgets,
+          sessionId: sessionId.value,
         );
       } catch (e) {
         debugPrint('Error sharing message exchange: $e');

@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 9;
+  static const int _databaseVersion = 10;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -282,6 +282,19 @@ class DatabaseHelper {
 
       await db.execute('CREATE INDEX idx_chat_messages_session ON chat_messages(session_id)');
       await db.execute('CREATE INDEX idx_chat_messages_timestamp ON chat_messages(timestamp DESC)');
+
+      // Shared chats tracking
+      await db.execute('''
+        CREATE TABLE shared_chats (
+          id TEXT PRIMARY KEY,
+          session_id TEXT NOT NULL,
+          shared_at INTEGER NOT NULL,
+          FOREIGN KEY (session_id) REFERENCES chat_sessions (id) ON DELETE CASCADE
+        )
+      ''');
+
+      await db.execute('CREATE INDEX idx_shared_chats_session ON shared_chats(session_id)');
+      await db.execute('CREATE INDEX idx_shared_chats_timestamp ON shared_chats(shared_at DESC)');
 
       // ==================== PRAYER TABLES ====================
 
@@ -749,6 +762,30 @@ class DatabaseHelper {
         _logger.info('✅ Migration v8→v9 complete: Devotionals table updated to 8-section format');
       } catch (e) {
         _logger.error('Migration v8→v9 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 10) {
+      try {
+        // v9→v10: Add shared_chats table for tracking chat shares
+        _logger.info('Migrating v9→v10: Adding shared_chats table');
+
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS shared_chats (
+            id TEXT PRIMARY KEY,
+            session_id TEXT NOT NULL,
+            shared_at INTEGER NOT NULL,
+            FOREIGN KEY (session_id) REFERENCES chat_sessions (id) ON DELETE CASCADE
+          )
+        ''');
+
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_shared_chats_session ON shared_chats(session_id)');
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_shared_chats_timestamp ON shared_chats(shared_at DESC)');
+
+        _logger.info('✅ Migration v9→v10 complete: shared_chats table created');
+      } catch (e) {
+        _logger.error('Migration v9→v10 failed: $e');
         rethrow;
       }
     }

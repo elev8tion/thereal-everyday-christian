@@ -167,15 +167,21 @@ class _StaticLiquidGlassLensState extends State<StaticLiquidGlassLens> {
             backgroundImage: capturedBackground,
           );
 
-          return CustomPaint(
-            size: Size(widgetWidth, widgetHeight),
-            painter: ShaderPainter(shader.shader),
-            child: widget.child,
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(40), // Rounded corners to hide RepaintBoundary artifacts
+            child: CustomPaint(
+              size: Size(widgetWidth, widgetHeight),
+              painter: ShaderPainter(shader.shader),
+              child: widget.child,
+            ),
           );
         }
 
         // Fallback: just show the child without effect
-        return widget.child;
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: widget.child,
+        );
       },
     );
   }

@@ -1,5 +1,7 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/gradient_background.dart';
@@ -611,142 +613,299 @@ class _UnifiedInteractiveOnboardingScreenState
           ),
         ),
 
-        // Scrollable content
+        // Chat messages (matching chat_screen.dart design)
         Expanded(
           child: SingleChildScrollView(
-            padding: AppSpacing.screenPadding,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               children: [
-
-          // User message
-          FrostedGlassCard(
-            intensity: GlassIntensity.light,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 16,
-                      backgroundColor:
-                          AppTheme.goldColor.withValues(alpha: 0.3),
-                      child: Icon(Icons.person,
-                          size: 18, color: AppTheme.goldColor),
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    Text(
-                      'You:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryText,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  'How do I overcome worry?',
-                  style: TextStyle(
-                    color: AppColors.primaryText,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          if (_chatDemoSent) ...[
-            const SizedBox(height: AppSpacing.md),
-
-            // AI Response
-            BlurFade(
-              delay: const Duration(milliseconds: 300),
-              isVisible: _chatDemoSent,
-              child: FrostedGlassCard(
-                intensity: GlassIntensity.medium,
-                borderColor: AppTheme.goldColor.withValues(alpha: 0.6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+                if (_chatDemoSent) ...[
+                  // User message bubble (only shows after send is tapped)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: AppTheme.goldColor,
-                          child: const Icon(Icons.auto_awesome,
-                              size: 18, color: Colors.white),
+                        Flexible(
+                          child: Container(
+                            padding: AppSpacing.cardPadding,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppTheme.primaryColor.withValues(alpha: 0.8),
+                                  AppTheme.primaryColor.withValues(alpha: 0.6),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(8),
+                                bottomLeft: Radius.circular(AppRadius.lg),
+                                bottomRight: Radius.circular(AppRadius.lg),
+                              ),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.3),
+                                width: 1,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.1),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Text(
+                              'How do I overcome worry?',
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 15,
+                                    minSize: 13, maxSize: 17),
+                                color: AppColors.primaryText,
+                                height: 1.4,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
                         ),
-                        const SizedBox(width: AppSpacing.sm),
-                        Text(
-                          'AI Guide:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryText,
-                            fontSize: 14,
+                        const SizedBox(width: AppSpacing.md),
+                        Container(
+                          width: 40,
+                          height: 40,
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppTheme.goldColor.withValues(alpha: 0.3),
+                                AppTheme.goldColor.withValues(alpha: 0.1),
+                              ],
+                            ),
+                            borderRadius: AppRadius.mediumRadius,
+                            border: Border.all(
+                              color: AppTheme.goldColor.withValues(alpha: 0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(AppRadius.sm),
+                            child: Image.asset(
+                              'assets/images/logo_cropped.png',
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      _aiResponse,
-                      style: TextStyle(
-                        color: AppColors.primaryText,
-                        fontSize: 15,
-                        height: 1.5,
+                  ),
+                ],
+
+                if (_chatDemoSent) ...[
+                  // AI message bubble (matching chat_screen.dart lines 2062-2117)
+                  BlurFade(
+                    delay: const Duration(milliseconds: 300),
+                    isVisible: _chatDemoSent,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppTheme.goldColor.withValues(alpha: 0.3),
+                                  AppTheme.goldColor.withValues(alpha: 0.1),
+                                ],
+                              ),
+                              borderRadius: AppRadius.mediumRadius,
+                            ),
+                            child: Icon(
+                              Icons.auto_awesome,
+                              color: AppColors.secondaryText,
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.md),
+                          Flexible(
+                            child: Container(
+                              padding: AppSpacing.cardPadding,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.white.withValues(alpha: 0.2),
+                                    Colors.white.withValues(alpha: 0.1),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  topRight: Radius.circular(20),
+                                  bottomLeft: Radius.circular(AppRadius.lg),
+                                  bottomRight: Radius.circular(AppRadius.lg),
+                                ),
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: 0.3),
+                                  width: 1,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.1),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                _aiResponse,
+                                style: TextStyle(
+                                  fontSize: ResponsiveUtils.fontSize(context, 15,
+                                      minSize: 13, maxSize: 17),
+                                  color: AppColors.primaryText,
+                                  height: 1.4,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                ],
+
+                if (_chatDemoSent) ...[
+                  const SizedBox(height: AppSpacing.xl),
+
+                  // Next button (only shows after demo is triggered)
+                  BlurFade(
+                    delay: const Duration(milliseconds: 500),
+                    isVisible: _chatDemoSent,
+                    child: GlassButton(
+                      text: 'Next',
+                      borderColor: AppTheme.goldColor,
+                      onPressed: _nextPage,
+                    ),
+                  ),
+                ],
+
+                const SizedBox(height: AppSpacing.xl),
+              ],
             ),
-          ],
+          ),
+        ),
 
-          const SizedBox(height: AppSpacing.xxl),
-
-          // Premium badge
-          FrostedGlassCard(
-            intensity: GlassIntensity.light,
-            borderColor: AppTheme.goldColor,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.star, color: AppTheme.goldColor, size: 16),
-                const SizedBox(width: AppSpacing.xs),
-                Text(
-                  'Premium Feature - 3-Day Free Trial',
-                  style: TextStyle(
-                    color: AppTheme.goldColor,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
+        // Input field (matching chat_screen.dart lines 2189-2263)
+        Container(
+          padding: const EdgeInsets.only(
+            left: AppSpacing.md,
+            right: AppSpacing.md,
+            top: AppSpacing.md,
+            bottom: AppSpacing.md,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppRadius.xl + 1),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.white.withValues(alpha: 0.2),
+                            Colors.white.withValues(alpha: 0.1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(AppRadius.xl + 1),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.3),
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.15),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        enabled: false, // Disabled for demo
+                        controller: TextEditingController(
+                          text: _chatDemoSent ? '' : 'How do I overcome worry?',
+                        ),
+                        style: TextStyle(
+                          color: AppColors.primaryText,
+                          fontSize: ResponsiveUtils.fontSize(context, 15,
+                              minSize: 13, maxSize: 17),
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Scripture Chat...',
+                          hintStyle: TextStyle(
+                            color: AppColors.tertiaryText,
+                            fontSize: ResponsiveUtils.fontSize(context, 15,
+                                minSize: 13, maxSize: 17),
+                          ),
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 15,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: AppSpacing.xl),
-
-          // Action button
-          GlassButton(
-            text: _chatDemoSent ? 'Next' : 'Try It',
-            onPressed: () {
-              if (!_chatDemoSent) {
-                setState(() {
-                  _chatDemoSent = true;
-                  _animateAIChatResponse();
-                });
-                HapticFeedback.mediumImpact();
-              } else {
-                _nextPage();
-              }
-            },
-          ),
-
-          const SizedBox(height: AppSpacing.xl),
-              ],
-            ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              GestureDetector(
+                onTap: _chatDemoSent ? null : () {
+                  setState(() {
+                    _chatDemoSent = true;
+                    _animateAIChatResponse();
+                  });
+                  HapticFeedback.mediumImpact();
+                },
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.2 : 0.3),
+                        AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.05 : 0.1),
+                      ],
+                    ),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.2 : 0.3),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.send,
+                    color: AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.5 : 1.0),
+                    size: 20,
+                  ),
+                ).animate(
+                  onPlay: (controller) => _chatDemoSent ? null : controller.repeat(),
+                ).scale(
+                  duration: const Duration(milliseconds: 1000),
+                  begin: const Offset(1.0, 1.0),
+                  end: const Offset(1.08, 1.08),
+                  curve: Curves.easeInOut,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -764,15 +923,15 @@ class _UnifiedInteractiveOnboardingScreenState
           // Logo again
           StaticLiquidGlassLens(
             backgroundKey: _backgroundKey,
-            width: 120,
-            height: 120,
+            width: 150,
+            height: 150,
             effectSize: 3.0,
             dispersionStrength: 0.3,
             blurIntensity: 0.05,
             child: Image.asset(
               'assets/images/logo_transparent.png',
-              width: 120,
-              height: 120,
+              width: 150,
+              height: 150,
               fit: BoxFit.contain,
             ),
           ),

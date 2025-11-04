@@ -176,6 +176,18 @@ final answeredPrayersCountProvider = FutureProvider<int>((ref) async {
   return await service.getAnsweredPrayerCount();
 });
 
+/// Provider for count of shared chats
+final sharedChatsCountProvider = FutureProvider<int>((ref) async {
+  final database = ref.watch(databaseServiceProvider);
+  final db = await database.database;
+
+  final result = await db.rawQuery(
+    'SELECT COUNT(*) as count FROM shared_chats',
+  );
+
+  return result.first['count'] as int? ?? 0;
+});
+
 /// Provider for count of active reading plans
 final activeReadingPlansCountProvider = FutureProvider<int>((ref) async {
   final plans = await ref.watch(activeReadingPlansProvider.future);

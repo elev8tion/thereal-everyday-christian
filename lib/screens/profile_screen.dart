@@ -83,7 +83,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   // Build achievements list based on real stats
-  List<Achievement> _buildAchievements(int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive, int devotionalStreak, int totalPrayers) {
+  List<Achievement> _buildAchievements(int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive, int devotionalStreak, int totalPrayers, int sharedChats) {
     return [
       Achievement(
         title: 'Prayer Warrior',
@@ -130,6 +130,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         progress: readingPlansActive >= 5 ? 5 : readingPlansActive,
         total: 5,
       ),
+      Achievement(
+        title: 'Conversation Sharer',
+        description: 'Share 10 conversations',
+        icon: Icons.share,
+        color: Colors.teal,
+        isUnlocked: sharedChats >= 10,
+        progress: sharedChats >= 10 ? 10 : sharedChats,
+        total: 10,
+      ),
     ];
   }
 
@@ -142,6 +151,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final devotionalsCompleted = ref.watch(totalDevotionalsCompletedProvider);
     final prayerStreak = ref.watch(currentPrayerStreakProvider);
     final readingPlansActive = ref.watch(activeReadingPlansCountProvider);
+    final sharedChats = ref.watch(sharedChatsCountProvider);
 
     return Scaffold(
       body: GestureDetector(
@@ -178,6 +188,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               readingPlansActive: readingPlansActive,
                               devotionalStreak: devotionalStreak,
                               totalPrayers: totalPrayers,
+                              sharedChats: sharedChats,
                             ),
                             const SizedBox(height: AppSpacing.xxl),
                             _buildMenuSection(),
@@ -386,6 +397,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     required AsyncValue<int> readingPlansActive,
     required AsyncValue<int> devotionalStreak,
     required AsyncValue<int> totalPrayers,
+    required AsyncValue<int> sharedChats,
   }) {
     // Build achievements list with real data
     final achievements = _buildAchievements(
@@ -395,6 +407,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       readingPlansActive.value ?? 0,
       devotionalStreak.value ?? 0,
       totalPrayers.value ?? 0,
+      sharedChats.value ?? 0,
     );
 
     return Column(
