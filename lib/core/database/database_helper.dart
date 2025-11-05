@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 10;
+  static const int _databaseVersion = 11;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -295,6 +295,19 @@ class DatabaseHelper {
 
       await db.execute('CREATE INDEX idx_shared_chats_session ON shared_chats(session_id)');
       await db.execute('CREATE INDEX idx_shared_chats_timestamp ON shared_chats(shared_at DESC)');
+
+      // Shared verses tracking
+      await db.execute('''
+        CREATE TABLE shared_verses (
+          id TEXT PRIMARY KEY,
+          verse_id INTEGER NOT NULL,
+          shared_at INTEGER NOT NULL,
+          FOREIGN KEY (verse_id) REFERENCES bible_verses (id) ON DELETE CASCADE
+        )
+      ''');
+
+      await db.execute('CREATE INDEX idx_shared_verses_verse ON shared_verses(verse_id)');
+      await db.execute('CREATE INDEX idx_shared_verses_timestamp ON shared_verses(shared_at DESC)');
 
       // ==================== PRAYER TABLES ====================
 
@@ -786,6 +799,30 @@ class DatabaseHelper {
         _logger.info('✅ Migration v9→v10 complete: shared_chats table created');
       } catch (e) {
         _logger.error('Migration v9→v10 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 11) {
+      try {
+        // v10→v11: Add shared_verses table for tracking verse shares
+        _logger.info('Migrating v10→v11: Adding shared_verses table');
+
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS shared_verses (
+            id TEXT PRIMARY KEY,
+            verse_id INTEGER NOT NULL,
+            shared_at INTEGER NOT NULL,
+            FOREIGN KEY (verse_id) REFERENCES bible_verses (id) ON DELETE CASCADE
+          )
+        ''');
+
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_shared_verses_verse ON shared_verses(verse_id)');
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_shared_verses_timestamp ON shared_verses(shared_at DESC)');
+
+        _logger.info('✅ Migration v10→v11 complete: shared_verses table created');
+      } catch (e) {
+        _logger.error('Migration v10→v11 failed: $e');
         rethrow;
       }
     }

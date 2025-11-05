@@ -22,6 +22,8 @@ import '../core/providers/app_providers.dart';
 import '../utils/responsive_utils.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../utils/blur_dialog_utils.dart';
+import '../services/verse_share_service.dart';
+import '../core/services/database_service.dart';
 
 // Provider for all saved verses
 final filteredVersesProvider = FutureProvider.autoDispose<List<BibleVerse>>((ref) async {
@@ -38,11 +40,15 @@ class VerseLibraryScreen extends ConsumerStatefulWidget {
 
 class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with TickerProviderStateMixin {
   late TabController _tabController;
+  late VerseShareService _verseShareService;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _verseShareService = VerseShareService(
+      databaseService: DatabaseService.instance,
+    );
   }
 
   @override
@@ -608,7 +614,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             ),
             ListTile(
               leading: _buildSheetIcon(Icons.share),
-              title: const Text('Share with Friends', style: TextStyle(color: Colors.white)),
+              title: const Text('Share Text', style: TextStyle(color: Colors.white)),
               onTap: () async {
                 NavigationService.pop();
                 final shareText = '"${verse.text}"\n\n— ${verse.reference}';
@@ -630,6 +636,38 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                     message: 'Verse shared!',
                     icon: Icons.share,
                     iconColor: AppTheme.primaryColor,
+                  );
+                } catch (e) {
+                  if (!mounted) return;
+                  AppSnackBar.showError(
+                    context,
+                    message: 'Unable to share verse: $e',
+                  );
+                }
+              },
+            ),
+            ListTile(
+              leading: _buildSheetIcon(Icons.image),
+              title: const Text('Share as Image', style: TextStyle(color: Colors.white)),
+              onTap: () async {
+                NavigationService.pop();
+                try {
+                  await _verseShareService.shareVerse(
+                    context: context,
+                    verse: verse,
+                    showThemes: verse.themes.isNotEmpty,
+                  );
+
+                  await ref.read(unifiedVerseServiceProvider).recordSharedVerse(verse);
+                  ref.invalidate(sharedVersesProvider);
+                  ref.invalidate(sharedVersesCountProvider);
+
+                  if (!mounted) return;
+                  AppSnackBar.show(
+                    context,
+                    message: 'Verse shared as image!',
+                    icon: Icons.image,
+                    iconColor: AppTheme.goldColor,
                   );
                 } catch (e) {
                   if (!mounted) return;
