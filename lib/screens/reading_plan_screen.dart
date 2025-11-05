@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
+import '../components/dark_glass_container.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glassmorphic_fab_menu.dart';
@@ -203,7 +204,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stack) => Text('Error loading activity data: $error'),
                 data: (heatmapData) {
-                  return FrostedGlassCard(
+                  return DarkGlassContainer(
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     child: CalendarHeatmapWidget(
                       activityData: heatmapData,
@@ -372,7 +373,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
 
     final progress = (plan.completedReadings / plan.totalReadings).clamp(0.0, 1.0);
 
-    return FrostedGlassCard(
+    return DarkGlassContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -523,7 +524,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       margin: const EdgeInsets.only(bottom: 16),
       child: GestureDetector(
         onTap: () => _openChapterReader(context, reading),
-        child: FrostedGlassCard(
+        child: DarkGlassContainer(
           child: Row(
             children: [
               Container(
@@ -633,7 +634,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
     // Check if there's already an active plan (for Explore tab)
     final currentPlanAsync = !isActive ? ref.watch(currentReadingPlanProvider) : null;
 
-    return FrostedGlassCard(
+    return DarkGlassContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -924,7 +925,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildEmptyReadingsMessage() {
-    return FrostedGlassCard(
+    return DarkGlassContainer(
       child: Column(
         children: [
           Icon(
