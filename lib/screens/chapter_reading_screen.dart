@@ -6,9 +6,11 @@ import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/audio_control_pill.dart';
 import '../components/glass_icon_avatar.dart';
+import '../components/fab_tooltip.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
+import '../core/services/preferences_service.dart';
 import '../services/bible_chapter_service.dart';
 import '../models/bible_verse.dart';
 import '../models/verse_context.dart';
@@ -61,6 +63,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   late AnimationController _iconAnimationController;
   Timer? _longPressTimer;
 
+  // Verse tutorial tooltip state
+  bool _showVerseTutorial = false;
+
   @override
   void initState() {
     super.initState();
@@ -74,6 +79,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     _loadVerses();
     _checkCompletion();
     _initializeTts();
+    _checkShowVerseTutorial();
 
     // Scroll to initial verse if provided
     if (widget.initialVerseNumber != null) {
@@ -218,6 +224,34 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     );
   }
 
+  /// Check if verse tutorial should be shown
+  Future<void> _checkShowVerseTutorial() async {
+    final prefsService = await PreferencesService.getInstance();
+
+    // Check if verse tutorial has been shown before
+    if (!prefsService.hasVerseTutorialShown() && mounted) {
+      // Delay showing tooltip to give UI time to settle
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (mounted) {
+          setState(() {
+            _showVerseTutorial = true;
+          });
+        }
+      });
+    }
+  }
+
+  /// Dismiss the verse tutorial tooltip
+  Future<void> _dismissVerseTutorial() async {
+    setState(() {
+      _showVerseTutorial = false;
+    });
+
+    // Mark as shown so it doesn't appear again
+    final prefsService = await PreferencesService.getInstance();
+    await prefsService.setVerseTutorialShown();
+  }
+
   @override
   Widget build(BuildContext context) {
     final totalChapters = widget.endChapter - widget.startChapter + 1;
@@ -292,6 +326,20 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
               },
             ),
           ),
+
+          // Verse tutorial tooltip
+          if (_showVerseTutorial)
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 200,
+              left: 24,
+              right: 24,
+              child: GestureDetector(
+                onTap: _dismissVerseTutorial,
+                child: const FabTooltip(
+                  message: 'Hold verse for 1 sec to reveal actions ✨',
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -856,6 +904,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
           _activeVerseIndex = verseIndex;
         });
         _iconAnimationController.forward();
+
+        // Dismiss tutorial tooltip when user completes their first long-press
+        if (_showVerseTutorial) {
+          _dismissVerseTutorial();
+        }
       }
     });
   }

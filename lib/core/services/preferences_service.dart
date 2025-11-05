@@ -52,6 +52,7 @@ class PreferencesService {
   static const String _termsAcceptedKey = 'terms_accepted_v1.0';
   static const String _legalAgreementsKey = 'legal_agreements_accepted_v1.0';
   static const String _fabTutorialShownKey = 'fab_tutorial_shown';
+  static const String _verseTutorialShownKey = 'verse_tutorial_shown';
 
   // Default values
   static const String _defaultThemeMode = 'dark';
@@ -570,6 +571,33 @@ class PreferencesService {
   Future<bool> setFabTutorialShown() async {
     try {
       final result = await _preferences?.setBool(_fabTutorialShownKey, true);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // VERSE LONG-PRESS TUTORIAL METHODS
+  // ============================================================================
+
+  /// Check if verse long-press tutorial has been shown to user
+  ///
+  /// Returns true if tutorial has been shown, false otherwise.
+  bool hasVerseTutorialShown() {
+    try {
+      return _preferences?.getBool(_verseTutorialShownKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Mark verse long-press tutorial as shown
+  ///
+  /// Returns true if save was successful, false otherwise.
+  Future<bool> setVerseTutorialShown() async {
+    try {
+      final result = await _preferences?.setBool(_verseTutorialShownKey, true);
       return result ?? false;
     } catch (e) {
       return false;
