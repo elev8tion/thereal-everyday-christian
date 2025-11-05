@@ -160,26 +160,6 @@ class DatabaseHelper {
         )
       ''');
 
-      // Shared verse history
-      await db.execute('''
-        CREATE TABLE shared_verses (
-          id TEXT PRIMARY KEY,
-          verse_id INTEGER,
-          book TEXT NOT NULL,
-          chapter INTEGER NOT NULL,
-          verse_number INTEGER NOT NULL,
-          reference TEXT NOT NULL,
-          translation TEXT NOT NULL,
-          text TEXT NOT NULL,
-          themes TEXT,
-          channel TEXT,
-          shared_at INTEGER NOT NULL,
-          FOREIGN KEY (verse_id) REFERENCES bible_verses (id) ON DELETE SET NULL
-        )
-      ''');
-
-      await db.execute('CREATE INDEX idx_shared_verses_shared_at ON shared_verses(shared_at DESC)');
-
       // Daily verses
       await db.execute('''
         CREATE TABLE daily_verses (
