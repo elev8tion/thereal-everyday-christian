@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 11;
+  static const int _databaseVersion = 12;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -308,6 +308,19 @@ class DatabaseHelper {
 
       await db.execute('CREATE INDEX idx_shared_verses_verse ON shared_verses(verse_id)');
       await db.execute('CREATE INDEX idx_shared_verses_timestamp ON shared_verses(shared_at DESC)');
+
+      // Shared devotionals tracking
+      await db.execute('''
+        CREATE TABLE shared_devotionals (
+          id TEXT PRIMARY KEY,
+          devotional_id TEXT NOT NULL,
+          shared_at INTEGER NOT NULL,
+          FOREIGN KEY (devotional_id) REFERENCES devotionals (id) ON DELETE CASCADE
+        )
+      ''');
+
+      await db.execute('CREATE INDEX idx_shared_devotionals_devotional ON shared_devotionals(devotional_id)');
+      await db.execute('CREATE INDEX idx_shared_devotionals_timestamp ON shared_devotionals(shared_at DESC)');
 
       // ==================== PRAYER TABLES ====================
 
@@ -823,6 +836,30 @@ class DatabaseHelper {
         _logger.info('✅ Migration v10→v11 complete: shared_verses table created');
       } catch (e) {
         _logger.error('Migration v10→v11 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 12) {
+      try {
+        // v11→v12: Add shared_devotionals table for tracking devotional shares
+        _logger.info('Migrating v11→v12: Adding shared_devotionals table');
+
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS shared_devotionals (
+            id TEXT PRIMARY KEY,
+            devotional_id TEXT NOT NULL,
+            shared_at INTEGER NOT NULL,
+            FOREIGN KEY (devotional_id) REFERENCES devotionals (id) ON DELETE CASCADE
+          )
+        ''');
+
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_shared_devotionals_devotional ON shared_devotionals(devotional_id)');
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_shared_devotionals_timestamp ON shared_devotionals(shared_at DESC)');
+
+        _logger.info('✅ Migration v11→v12 complete: shared_devotionals table created');
+      } catch (e) {
+        _logger.error('Migration v11→v12 failed: $e');
         rethrow;
       }
     }

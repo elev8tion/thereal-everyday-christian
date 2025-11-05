@@ -16,6 +16,9 @@ import '../core/providers/app_providers.dart';
 import '../core/models/devotional.dart';
 import '../utils/responsive_utils.dart';
 import 'chapter_reading_screen.dart';
+import '../services/devotional_share_service.dart';
+import '../core/services/database_service.dart';
+import '../core/widgets/app_snackbar.dart';
 
 class DevotionalScreen extends ConsumerStatefulWidget {
   const DevotionalScreen({super.key});
@@ -27,6 +30,15 @@ class DevotionalScreen extends ConsumerStatefulWidget {
 class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   int _currentDay = 0;
   bool _isInitialized = false;
+  late DevotionalShareService _devotionalShareService;
+
+  @override
+  void initState() {
+    super.initState();
+    _devotionalShareService = DevotionalShareService(
+      databaseService: DatabaseService.instance,
+    );
+  }
 
   void _initializeCurrentDay(List<Devotional> devotionals) {
     final today = DateTime.now();
@@ -54,6 +66,30 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     });
   }
 
+  Future<void> _shareDevotional(Devotional devotional) async {
+    try {
+      await _devotionalShareService.shareDevotional(
+        context: context,
+        devotional: devotional,
+        showFullReflection: false,
+      );
+
+      if (!mounted) return;
+      AppSnackBar.show(
+        context,
+        message: 'Devotional shared!',
+        icon: Icons.share,
+        iconColor: AppTheme.goldColor,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      AppSnackBar.showError(
+        context,
+        message: 'Unable to share devotional: $e',
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final devotionalsAsync = ref.watch(allDevotionalsProvider);
@@ -72,7 +108,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                     padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                     child: Column(
                       children: [
-                        _buildHeader(streakAsync, totalCompletedAsync),
+                        _buildHeader(streakAsync, totalCompletedAsync, null),
                         const SizedBox(height: AppSpacing.xxl),
                         _buildEmptyState(),
                       ],
@@ -103,7 +139,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildHeader(streakAsync, totalCompletedAsync),
+                      _buildHeader(streakAsync, totalCompletedAsync, currentDevotional),
                       const SizedBox(height: AppSpacing.xxl),
 
                       // Devotional Title Card
@@ -161,7 +197,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                 child: Column(
                   children: [
-                    _buildHeader(streakAsync, totalCompletedAsync),
+                    _buildHeader(streakAsync, totalCompletedAsync, null),
                     const SizedBox(height: AppSpacing.xxl),
                     const Center(
                       child: CircularProgressIndicator(
@@ -175,7 +211,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
                 child: Column(
                   children: [
-                    _buildHeader(streakAsync, totalCompletedAsync),
+                    _buildHeader(streakAsync, totalCompletedAsync, null),
                     const SizedBox(height: AppSpacing.xxl),
                     _buildErrorState(error),
                   ],
@@ -197,11 +233,19 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   Widget _buildHeader(
     AsyncValue<int> streakAsync,
     AsyncValue<int> totalCompletedAsync,
+    Devotional? currentDevotional,
   ) {
     return StandardScreenHeader(
       title: 'Daily Devotional',
       subtitle: '', // Not used because we provide customSubtitle
       showFAB: false, // FAB is positioned separately
+      trailingWidget: currentDevotional != null
+          ? IconButton(
+              icon: const Icon(Icons.share, color: AppTheme.goldColor),
+              onPressed: () => _shareDevotional(currentDevotional),
+              tooltip: 'Share Devotional',
+            )
+          : null,
       customSubtitle: Row(
         children: [
           Flexible(
