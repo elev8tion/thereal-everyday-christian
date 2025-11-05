@@ -71,33 +71,25 @@ class _BlurPopupMenuState extends State<BlurPopupMenu> {
                 width: widget.menuWidth,
                 child: Material(
                   color: Colors.transparent,
-                  child: ClipRRect(
-                    borderRadius: AppRadius.largeCardRadius,
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white.withValues(alpha: 0.1)
-                              : Colors.white.withValues(alpha: 0.2),
-                          borderRadius: AppRadius.largeCardRadius,
-                          border: Border.all(
-                            color: AppTheme.goldColor,
-                            width: 2,
-                          ),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            for (int i = 0; i < widget.items.length; i++) ...[
-                              _buildMenuItem(widget.items[i]),
-                              if (i < widget.items.length - 1)
-                                SizedBox(height: widget.itemSpacing),
-                            ],
-                          ],
-                        ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      borderRadius: AppRadius.largeCardRadius,
+                      border: Border.all(
+                        color: AppTheme.goldColor,
+                        width: 1,
                       ),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (int i = 0; i < widget.items.length; i++) ...[
+                          _buildMenuItem(widget.items[i]),
+                          if (i < widget.items.length - 1)
+                            SizedBox(height: widget.itemSpacing),
+                        ],
+                      ],
                     ),
                   ),
                 ),
