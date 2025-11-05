@@ -10,6 +10,7 @@ import '../components/glass_button.dart';
 import '../components/gradient_background.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/dark_glass_container.dart';
+import '../components/fab_tooltip.dart';
 import '../core/navigation/app_routes.dart';
 import '../core/providers/app_providers.dart';
 import '../core/navigation/navigation_service.dart';
@@ -27,11 +28,13 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey _backgroundKey = GlobalKey();
+  bool _showFabTooltip = false;
 
   @override
   void initState() {
     super.initState();
     _checkShowTrialWelcome();
+    _checkShowFabTooltip();
   }
 
   Future<void> _checkShowTrialWelcome() async {
@@ -66,6 +69,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
       }
     }
+  }
+
+  Future<void> _checkShowFabTooltip() async {
+    // Wait longer to ensure trial welcome dialog is shown/dismissed first
+    await Future.delayed(const Duration(milliseconds: 1500));
+
+    if (!mounted) return;
+
+    final prefsService = await PreferencesService.getInstance();
+
+    // Check if FAB tutorial has been shown before
+    if (!prefsService.hasFabTutorialShown() && mounted) {
+      setState(() {
+        _showFabTooltip = true;
+      });
+    }
+  }
+
+  void _dismissFabTooltip() async {
+    setState(() {
+      _showFabTooltip = false;
+    });
+
+    // Mark as shown so it doesn't appear again
+    final prefsService = await PreferencesService.getInstance();
+    await prefsService.setFabTutorialShown();
   }
 
   @override
@@ -103,8 +132,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Positioned(
             top: MediaQuery.of(context).padding.top + AppSpacing.xl,
             left: AppSpacing.xl,
-            child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+            child: GlassmorphicFABMenu(
+              onMenuOpened: _dismissFabTooltip,
+            ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
           ),
+          // FAB Tooltip for first-time users
+          if (_showFabTooltip)
+            Positioned(
+              top: MediaQuery.of(context).padding.top + AppSpacing.xl + 80, // Position below FAB
+              left: AppSpacing.xl,
+              child: const FabTooltip(
+                message: 'Tap here to navigate ✨',
+              ),
+            ),
         ],
       ),
     );

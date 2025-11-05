@@ -16,7 +16,9 @@ import '../utils/responsive_utils.dart';
 /// - Responsive sizing
 /// - Haptic feedback
 class GlassmorphicFABMenu extends StatefulWidget {
-  const GlassmorphicFABMenu({super.key});
+  final VoidCallback? onMenuOpened;
+
+  const GlassmorphicFABMenu({super.key, this.onMenuOpened});
 
   @override
   State<GlassmorphicFABMenu> createState() => _GlassmorphicFABMenuState();
@@ -115,6 +117,8 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
     if (_isVisible) {
       _showOverlay();
       _controller.forward();
+      // Notify that menu was opened (for first-time user tutorial)
+      widget.onMenuOpened?.call();
     } else {
       _controller.reverse().then((_) {
         _removeOverlay();

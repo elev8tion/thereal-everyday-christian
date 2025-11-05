@@ -51,6 +51,7 @@ class PreferencesService {
   static const String _readingPlanTimeKey = 'reading_plan_notification_time';
   static const String _termsAcceptedKey = 'terms_accepted_v1.0';
   static const String _legalAgreementsKey = 'legal_agreements_accepted_v1.0';
+  static const String _fabTutorialShownKey = 'fab_tutorial_shown';
 
   // Default values
   static const String _defaultThemeMode = 'dark';
@@ -543,6 +544,33 @@ class PreferencesService {
     try {
       final bool? accepted = _preferences?.getBool(_legalAgreementsKey);
       return accepted ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // FAB TUTORIAL METHODS
+  // ============================================================================
+
+  /// Check if FAB menu tutorial has been shown to user
+  ///
+  /// Returns true if tutorial has been shown, false otherwise.
+  bool hasFabTutorialShown() {
+    try {
+      return _preferences?.getBool(_fabTutorialShownKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Mark FAB menu tutorial as shown
+  ///
+  /// Returns true if save was successful, false otherwise.
+  Future<bool> setFabTutorialShown() async {
+    try {
+      final result = await _preferences?.setBool(_fabTutorialShownKey, true);
+      return result ?? false;
     } catch (e) {
       return false;
     }
