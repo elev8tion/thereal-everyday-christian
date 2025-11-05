@@ -450,7 +450,7 @@ class _UnifiedInteractiveOnboardingScreenState
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'Daily devotionals help you start each day with hope',
+                'Here\'s a preview of a daily devotional to start your day with the word',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 15,
@@ -802,11 +802,12 @@ class _UnifiedInteractiveOnboardingScreenState
 
         // Input field (matching chat_screen.dart lines 2189-2263)
         Container(
+          clipBehavior: Clip.none,
           padding: const EdgeInsets.only(
             left: AppSpacing.md,
             right: AppSpacing.md,
             top: AppSpacing.md,
-            bottom: AppSpacing.md,
+            bottom: AppSpacing.xl, // Extra padding for glow
           ),
           child: Row(
             children: [
@@ -867,42 +868,117 @@ class _UnifiedInteractiveOnboardingScreenState
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
-              GestureDetector(
-                onTap: _chatDemoSent ? null : () {
-                  setState(() {
-                    _chatDemoSent = true;
-                    _animateAIChatResponse();
-                  });
-                  HapticFeedback.mediumImpact();
-                },
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.2 : 0.3),
-                        AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.05 : 0.1),
-                      ],
+              Padding(
+                padding: const EdgeInsets.all(8.0), // Extra space for glow overflow
+                child: GestureDetector(
+                  onTap: _chatDemoSent ? null : () {
+                    setState(() {
+                      _chatDemoSent = true;
+                      _animateAIChatResponse();
+                    });
+                    HapticFeedback.mediumImpact();
+                  },
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                    // Ripple ring effect (outer)
+                    if (!_chatDemoSent)
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppTheme.goldColor.withValues(alpha: 0.6),
+                            width: 2,
+                          ),
+                        ),
+                      ).animate(
+                        onPlay: (controller) => controller.repeat(),
+                      ).fadeOut(
+                        duration: const Duration(milliseconds: 1500),
+                        curve: Curves.easeOut,
+                      ).scale(
+                        duration: const Duration(milliseconds: 1500),
+                        begin: const Offset(1.0, 1.0),
+                        end: const Offset(1.6, 1.6),
+                        curve: Curves.easeOut,
+                      ),
+
+                    // Ripple ring effect (middle)
+                    if (!_chatDemoSent)
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppTheme.goldColor.withValues(alpha: 0.5),
+                            width: 2,
+                          ),
+                        ),
+                      ).animate(
+                        onPlay: (controller) => controller.repeat(),
+                      ).fadeOut(
+                        delay: const Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 1500),
+                        curve: Curves.easeOut,
+                      ).scale(
+                        delay: const Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 1500),
+                        begin: const Offset(1.0, 1.0),
+                        end: const Offset(1.6, 1.6),
+                        curve: Curves.easeOut,
+                      ),
+
+                    // Main button with breathing glow
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.2 : 0.4),
+                            AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.05 : 0.2),
+                          ],
+                        ),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.2 : 0.5),
+                          width: 1.5,
+                        ),
+                        boxShadow: _chatDemoSent ? null : [
+                          BoxShadow(
+                            color: AppTheme.goldColor.withValues(alpha: 0.5),
+                            blurRadius: 16,
+                            spreadRadius: 3,
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        Icons.send,
+                        color: AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.5 : 1.0),
+                        size: 20,
+                      ),
+                    ).animate(
+                      onPlay: (controller) => _chatDemoSent ? null : controller.repeat(reverse: true),
+                    ).boxShadow(
+                      duration: const Duration(milliseconds: 1200),
+                      begin: BoxShadow(
+                        color: AppTheme.goldColor.withValues(alpha: 0.5),
+                        blurRadius: 16,
+                        spreadRadius: 3,
+                      ),
+                      end: BoxShadow(
+                        color: AppTheme.goldColor.withValues(alpha: 0.8),
+                        blurRadius: 24,
+                        spreadRadius: 5,
+                      ),
+                      curve: Curves.easeInOut,
                     ),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.2 : 0.3),
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.send,
-                    color: AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.5 : 1.0),
-                    size: 20,
-                  ),
-                ).animate(
-                  onPlay: (controller) => _chatDemoSent ? null : controller.repeat(),
-                ).scale(
-                  duration: const Duration(milliseconds: 1000),
-                  begin: const Offset(1.0, 1.0),
-                  end: const Offset(1.08, 1.08),
-                  curve: Curves.easeInOut,
+                  ],
+                ),
                 ),
               ),
             ],
