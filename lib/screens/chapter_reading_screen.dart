@@ -326,20 +326,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
               },
             ),
           ),
-
-          // Verse tutorial tooltip
-          if (_showVerseTutorial)
-            Positioned(
-              top: MediaQuery.of(context).padding.top + 200,
-              left: 24,
-              right: 24,
-              child: GestureDetector(
-                onTap: _dismissVerseTutorial,
-                child: const FabTooltip(
-                  message: 'Hold verse for 1 sec to reveal actions ✨',
-                ),
-              ),
-            ),
         ],
       ),
     );
@@ -567,6 +553,19 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Verse tutorial tooltip
+            if (_showVerseTutorial)
+              GestureDetector(
+                onTap: _dismissVerseTutorial,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: const FabTooltip(
+                    message: 'Press & hold verse for actions ✨',
+                    pointingDown: true,
+                  ),
+                ),
+              ),
+
             // Scrollable verses area
             Expanded(
               child: GestureDetector(
