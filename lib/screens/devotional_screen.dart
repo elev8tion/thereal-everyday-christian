@@ -19,6 +19,8 @@ import 'chapter_reading_screen.dart';
 import '../services/devotional_share_service.dart';
 import '../core/services/database_service.dart';
 import '../core/widgets/app_snackbar.dart';
+import '../components/base_bottom_sheet.dart';
+import '../core/navigation/navigation_service.dart';
 
 class DevotionalScreen extends ConsumerStatefulWidget {
   const DevotionalScreen({super.key});
@@ -66,6 +68,37 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     });
   }
 
+  void _showDevotionalOptions() {
+    final devotionalsAsync = ref.read(allDevotionalsProvider);
+
+    devotionalsAsync.whenData((devotionals) {
+      if (devotionals.isEmpty || _currentDay >= devotionals.length) return;
+      final currentDevotional = devotionals[_currentDay];
+
+      showCustomBottomSheet(
+        context: context,
+        title: 'Devotional Options',
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: _buildSheetIcon(Icons.share),
+                title: const Text('Share Devotional', style: TextStyle(color: Colors.white)),
+                onTap: () async {
+                  NavigationService.pop();
+                  await _shareDevotional(currentDevotional);
+                },
+              ),
+              const SizedBox(height: AppSpacing.xl),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
   Future<void> _shareDevotional(Devotional devotional) async {
     try {
       await _devotionalShareService.shareDevotional(
@@ -88,6 +121,31 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
         message: 'Unable to share devotional: $e',
       );
     }
+  }
+
+  Widget _buildSheetIcon(IconData icon, {Color? iconColor}) {
+    final baseColor = iconColor ?? AppTheme.primaryColor;
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            baseColor.withValues(alpha: 0.24),
+            baseColor.withValues(alpha: 0.08),
+          ],
+        ),
+        borderRadius: AppRadius.mediumRadius,
+        border: Border.all(
+          color: baseColor.withValues(alpha: 0.25),
+          width: 1,
+        ),
+      ),
+      child: Icon(
+        icon,
+        color: baseColor,
+        size: ResponsiveUtils.iconSize(context, 20),
+      ),
+    );
   }
 
   @override
@@ -239,13 +297,20 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
       title: 'Daily Devotional',
       subtitle: '', // Not used because we provide customSubtitle
       showFAB: false, // FAB is positioned separately
-      trailingWidget: currentDevotional != null
-          ? IconButton(
-              icon: const Icon(Icons.share, color: AppTheme.goldColor),
-              onPressed: () => _shareDevotional(currentDevotional),
-              tooltip: 'Share Devotional',
-            )
-          : null,
+      trailingWidget: Container(
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.1),
+          borderRadius: AppRadius.mediumRadius,
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.2),
+            width: 1,
+          ),
+        ),
+        child: IconButton(
+          icon: Icon(Icons.more_vert, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
+          onPressed: _showDevotionalOptions,
+        ),
+      ),
       customSubtitle: Row(
         children: [
           Flexible(
