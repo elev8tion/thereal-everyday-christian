@@ -36,7 +36,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   void initState() {
     super.initState();
     _devotionalShareService = DevotionalShareService(
-      databaseService: DatabaseService.instance,
+      databaseService: DatabaseService(),
     );
   }
 

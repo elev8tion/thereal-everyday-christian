@@ -47,7 +47,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _verseShareService = VerseShareService(
-      databaseService: DatabaseService.instance,
+      databaseService: DatabaseService(),
     );
   }
 
