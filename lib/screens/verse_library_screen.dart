@@ -7,6 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
+import '../components/dark_glass_container.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/blur_popup_menu.dart';
@@ -291,7 +292,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Widget _buildVerseCard(BibleVerse verse, int index) {
-    return FrostedGlassCard(
+    return DarkGlassContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -418,7 +419,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         ? entry.channel!
         : '';
 
-    return FrostedGlassCard(
+    return DarkGlassContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
