@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../components/gradient_background.dart';
@@ -37,7 +38,8 @@ class ChapterReadingScreen extends ConsumerStatefulWidget {
   ConsumerState<ChapterReadingScreen> createState() => _ChapterReadingScreenState();
 }
 
-class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
+class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
+    with SingleTickerProviderStateMixin {
   final BibleChapterService _chapterService = BibleChapterService();
   final PageController _pageController = PageController();
   final ScrollController _scrollController = ScrollController();
@@ -54,9 +56,21 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
   // Keys for verse widgets (for auto-scroll)
   final Map<int, GlobalKey> _verseKeys = {};
 
+  // Long-press verse interaction state
+  int? _activeVerseIndex;
+  late AnimationController _iconAnimationController;
+  Timer? _longPressTimer;
+
   @override
   void initState() {
     super.initState();
+
+    // Initialize icon animation controller (700ms like FAB menu)
+    _iconAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+
     _loadVerses();
     _checkCompletion();
     _initializeTts();
@@ -71,6 +85,17 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
         });
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _longPressTimer?.cancel();
+    _iconAnimationController.dispose();
+    _pageController.dispose();
+    _scrollController.dispose();
+    _ttsService.stop(); // Stop audio when leaving screen
+    _ttsService.dispose();
+    super.dispose();
   }
 
   Future<void> _initializeTts() async {
@@ -191,14 +216,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       curve: Curves.easeInOut,
       alignment: 0.2, // Keep verse near top of viewport
     );
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _scrollController.dispose();
-    _ttsService.stop(); // Stop audio when leaving screen
-    super.dispose();
   }
 
   @override
@@ -504,22 +521,27 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
           children: [
             // Scrollable verses area
             Expanded(
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                padding: const EdgeInsets.only(
-                  left: 4.0,
-                  top: 0,
-                  right: 8.0,
-                  bottom: 0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Verses
-                    ...verses.asMap().entries.map((entry) {
+              child: GestureDetector(
+                onTap: _dismissActiveVerse,
+                behavior: HitTestBehavior.opaque,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.only(
+                    left: 4.0,
+                    top: 0,
+                    right: 8.0,
+                    bottom: 0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Verses
+                      ...verses.asMap().entries.map((entry) {
                 final verseIndex = entry.key;
                 final verse = entry.value;
                 final isCurrentVerse = _isAudioPlaying && verseIndex == _currentPlayingVerseIndex;
+
+                final isActive = _activeVerseIndex == verseIndex;
 
                 return Padding(
                   key: _verseKeys[verseIndex],
@@ -539,12 +561,12 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                         : null,
                     padding: isCurrentVerse ? const EdgeInsets.all(8.0) : EdgeInsets.zero,
                     child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Verse number and favorite button column
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      // Verse number and action icons column
                       Column(
                         children: [
-                          // Verse number with glassmorphic style (matching FAB)
+                          // Verse number with glassmorphic style (always visible)
                           Padding(
                             padding: const EdgeInsets.only(top: 2),
                             child: Container(
@@ -584,53 +606,90 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
                             ),
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          // Favorite button
-                          _buildFavoriteButton(verse),
-                          const SizedBox(height: 4),
-                          // User avatar with logo - tap to discuss verse
-                          GestureDetector(
-                            onTap: () => _navigateToVerseDiscussion(verse),
-                            child: Container(
-                              width: 36,
-                              height: 36,
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppTheme.goldColor.withValues(alpha: 0.3),
-                                    AppTheme.goldColor.withValues(alpha: 0.1),
-                                  ],
-                                ),
-                                borderRadius: AppRadius.smallRadius,
-                                border: Border.all(
-                                  color: AppTheme.goldColor.withValues(alpha: 0.3),
-                                  width: 1,
-                                ),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(AppRadius.xs),
-                                child: Image.asset(
-                                  'assets/images/logo_cropped.png',
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                          // Animated icons (only shown when verse is active)
+                          if (isActive) ...[
+                            const SizedBox(height: 4),
+                            // Favorite button with animation
+                            AnimatedBuilder(
+                              animation: _iconAnimationController,
+                              builder: (context, child) {
+                                return Transform.scale(
+                                  scale: _iconAnimationController.value,
+                                  child: Opacity(
+                                    opacity: _iconAnimationController.value,
+                                    child: GestureDetector(
+                                      onTap: () => _performVerseAction(() async {
+                                        if (verse.id != null) {
+                                          await ref.read(unifiedVerseServiceProvider).toggleFavorite(verse.id!);
+                                          ref.invalidate(favoriteVersesProvider);
+                                        }
+                                      }),
+                                      child: _buildFavoriteButton(verse),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                          ),
+                            const SizedBox(height: 4),
+                            // Chat icon with animation
+                            AnimatedBuilder(
+                              animation: _iconAnimationController,
+                              builder: (context, child) {
+                                return Transform.scale(
+                                  scale: _iconAnimationController.value,
+                                  child: Opacity(
+                                    opacity: _iconAnimationController.value,
+                                    child: GestureDetector(
+                                      onTap: () => _performVerseAction(() => _navigateToVerseDiscussion(verse)),
+                                      child: Container(
+                                        width: 36,
+                                        height: 36,
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              AppTheme.goldColor.withValues(alpha: 0.3),
+                                              AppTheme.goldColor.withValues(alpha: 0.1),
+                                            ],
+                                          ),
+                                          borderRadius: AppRadius.smallRadius,
+                                          border: Border.all(
+                                            color: AppTheme.goldColor.withValues(alpha: 0.3),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(AppRadius.xs),
+                                          child: Image.asset(
+                                            'assets/images/logo_cropped.png',
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ],
                       ),
                       const SizedBox(width: 12),
 
-                      // Verse text with more room
+                      // Verse text with long-press gesture
                       Expanded(
-                        child: Text(
-                          verse.text,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
-                            height: 1.6,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.2,
+                        child: GestureDetector(
+                          onLongPressStart: (_) => _onVerseLongPressStart(verseIndex),
+                          onLongPressEnd: (_) => _onVerseLongPressEnd(),
+                          child: Text(
+                            verse.text,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+                              height: 1.6,
+                              color: isActive ? AppTheme.goldColor : Colors.white,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 0.2,
+                            ),
                           ),
                         ),
                       ),
@@ -641,6 +700,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
               }),
                   ],
                 ),
+              ),
               ),
             ),
           ],
@@ -785,6 +845,43 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen> {
       curve: Curves.easeInOut,
       alignment: 0.2, // Keep verse near top of viewport
     );
+  }
+
+  /// Handle long-press start on verse text
+  void _onVerseLongPressStart(int verseIndex) {
+    _longPressTimer?.cancel();
+    _longPressTimer = Timer(const Duration(milliseconds: 1000), () {
+      if (mounted) {
+        setState(() {
+          _activeVerseIndex = verseIndex;
+        });
+        _iconAnimationController.forward();
+      }
+    });
+  }
+
+  /// Handle long-press end on verse text
+  void _onVerseLongPressEnd() {
+    _longPressTimer?.cancel();
+  }
+
+  /// Dismiss active verse icons
+  void _dismissActiveVerse() {
+    if (_activeVerseIndex != null) {
+      _iconAnimationController.reverse().then((_) {
+        if (mounted) {
+          setState(() {
+            _activeVerseIndex = null;
+          });
+        }
+      });
+    }
+  }
+
+  /// Perform action on verse and dismiss
+  void _performVerseAction(VoidCallback action) {
+    action();
+    _dismissActiveVerse();
   }
 
   Widget _buildCompleteButton() {
