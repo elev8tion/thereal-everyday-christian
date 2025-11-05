@@ -87,7 +87,7 @@ class _BlurPopupMenuState extends State<BlurPopupMenu> {
                         for (int i = 0; i < widget.items.length; i++) ...[
                           _buildMenuItem(widget.items[i]),
                           if (i < widget.items.length - 1)
-                            SizedBox(height: widget.itemSpacing),
+                            _buildDivider(),
                         ],
                       ],
                     ),
@@ -133,6 +133,24 @@ class _BlurPopupMenuState extends State<BlurPopupMenu> {
                   ),
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Container(
+        height: 1,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.white.withValues(alpha: 0.0),
+              Colors.white.withValues(alpha: 0.2),
+              Colors.white.withValues(alpha: 0.0),
             ],
           ),
         ),
