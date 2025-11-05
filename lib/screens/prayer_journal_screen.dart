@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:share_plus/share_plus.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
+import '../components/dark_glass_container.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/category_badge.dart';
@@ -443,7 +444,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   Widget _buildPrayerCard(PrayerRequest prayer, int index) {
     final categoriesAsync = ref.watch(activeCategoriesProvider);
 
-    return FrostedGlassCard(
+    return DarkGlassContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
