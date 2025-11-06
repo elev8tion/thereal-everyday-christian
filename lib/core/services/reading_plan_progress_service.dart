@@ -303,6 +303,18 @@ class ReadingPlanProgressService {
         }
       }
 
+      // Validate if streak is still active (most recent completion within last day)
+      if (lastDate != null) {
+        final now = DateTime.now();
+        final today = DateTime(now.year, now.month, now.day);
+        final mostRecentDay = DateTime(lastDate.year, lastDate.month, lastDate.day);
+        final daysSinceMostRecent = today.difference(mostRecentDay).inDays;
+
+        if (daysSinceMostRecent > 1) {
+          return 0; // Streak is no longer active
+        }
+      }
+
       return streak;
     } catch (e) {
       throw Exception('Failed to get streak: $e');

@@ -158,16 +158,6 @@ class DevotionalProgressService {
       if (daysDiffFromMostRecent > 1) {
         return 0;
       }
-
-      // Also check the earliest devotional in the streak
-      if (lastScheduledDate != null) {
-        final daysSinceEarliest = today.difference(lastScheduledDate).inDays;
-
-        // The earliest devotional must not be too far in the past
-        if (daysSinceEarliest > 1) {
-          return 0;
-        }
-      }
     }
 
     return streak;
