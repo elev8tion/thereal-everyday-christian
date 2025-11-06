@@ -278,6 +278,25 @@ class ReadingPlanProgressService {
 
       if (readings.isEmpty) return 0;
 
+      // Check if the streak is still active (most recent completion was today or yesterday)
+      final mostRecentCompletedDate = DateTime.fromMillisecondsSinceEpoch(
+        readings.first['completed_date'] as int,
+      );
+      final mostRecentDay = DateTime(
+        mostRecentCompletedDate.year,
+        mostRecentCompletedDate.month,
+        mostRecentCompletedDate.day,
+      );
+
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      final daysSinceMostRecent = today.difference(mostRecentDay).inDays;
+
+      // If most recent completion was more than 1 day ago, streak is broken
+      if (daysSinceMostRecent > 1) {
+        return 0;
+      }
+
       int streak = 0;
       DateTime? lastDate;
 

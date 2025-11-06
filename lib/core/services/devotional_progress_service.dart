@@ -144,7 +144,7 @@ class DevotionalProgressService {
     final today = DateTime(now.year, now.month, now.day);
 
     if (sortedDevotionals.isNotEmpty) {
-      // Check both the most recent and earliest devotionals in the streak
+      // Check the most recent completed devotional
       final mostRecentDate = DateTime.parse(sortedDevotionals.first.date);
       final mostRecentDay = DateTime(mostRecentDate.year, mostRecentDate.month, mostRecentDate.day);
 
@@ -157,16 +157,6 @@ class DevotionalProgressService {
       // Allow completing future devotionals (people can be proactive)
       if (daysDiffFromMostRecent > 1) {
         return 0;
-      }
-
-      // Also check the earliest devotional in the streak
-      if (lastScheduledDate != null) {
-        final daysSinceEarliest = today.difference(lastScheduledDate).inDays;
-
-        // The earliest devotional must not be too far in the past
-        if (daysSinceEarliest > 1) {
-          return 0;
-        }
       }
     }
 
