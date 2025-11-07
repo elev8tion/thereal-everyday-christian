@@ -165,10 +165,10 @@ final sharedVersesCountProvider = FutureProvider<int>((ref) async {
 });
 
 /// Provider for count of saved/favorite verses
+/// OPTIMIZED: Uses COUNT query instead of fetching all verses
 final savedVersesCountProvider = FutureProvider<int>((ref) async {
   final service = ref.watch(unifiedVerseServiceProvider);
-  final verses = await service.getFavoriteVerses();
-  return verses.length;
+  return await service.getFavoriteVerseCount();
 });
 
 /// Provider for count of active prayers
