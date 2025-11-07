@@ -1383,6 +1383,62 @@ class ChatScreen extends HookConsumerWidget {
       }
     }
 
+    // Share entire conversation as branded image
+    Future<void> shareConversationAsImage() async {
+      if (messages.value.isEmpty) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No messages to share'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+        return;
+      }
+
+      try {
+        final dbService = ref.read(databaseServiceProvider);
+        final chatShareService = ChatShareService(databaseService: dbService);
+
+        // Filter out system messages
+        final shareableMessages = messages.value.where((m) => m.type != MessageType.system).toList();
+
+        if (shareableMessages.isEmpty) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('No messages to share'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          }
+          return;
+        }
+
+        // Create shareable widgets
+        final messageWidgets = chatShareService.createShareableMessageWidgets(shareableMessages);
+
+        // Share the entire conversation
+        await chatShareService.shareChat(
+          context: context,
+          messages: shareableMessages,
+          messageWidgets: messageWidgets,
+          sessionId: sessionId.value,
+        );
+      } catch (e) {
+        debugPrint('Error sharing conversation: $e');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to share. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+
     // Share specific message exchange as branded image with QR code
     Future<void> shareMessageExchange(int aiMessageIndex) async {
       try {
@@ -1512,6 +1568,40 @@ class ChatScreen extends HookConsumerWidget {
               onTap: () {
                 Navigator.pop(context);
                 shareText();
+              },
+            ),
+            const SizedBox(height: 8),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppTheme.goldColor.withValues(alpha: 0.3),
+                      AppTheme.goldColor.withValues(alpha: 0.1),
+                    ],
+                  ),
+                  borderRadius: AppRadius.mediumRadius,
+                ),
+                child: const Icon(Icons.image, color: AppTheme.goldColor),
+              ),
+              title: const Text(
+                'Share as Image',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryText,
+                ),
+              ),
+              subtitle: Text(
+                'Share conversation as branded image',
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                  color: AppColors.secondaryText,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                shareConversationAsImage();
               },
             ),
             const SizedBox(height: 16),
