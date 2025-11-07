@@ -9,10 +9,12 @@ import '../components/glassmorphic_fab_menu.dart';
 import '../components/category_badge.dart';
 import '../components/glass_button.dart';
 import '../components/base_bottom_sheet.dart';
+import '../components/achievement_badge.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
 import '../core/services/preferences_service.dart';
+import '../core/services/achievement_service.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/blur_dialog_utils.dart';
@@ -299,6 +301,80 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
+  /// Build achievement badges (all 6, colored if earned, grayed if not)
+  Widget _buildEarnedBadges() {
+    // Get achievement service
+    final achievementService = ref.watch(achievementServiceProvider);
+
+    return FutureBuilder<List<AchievementBadgeData>>(
+      future: _getEarnedBadges(achievementService),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const SizedBox.shrink();
+        }
+
+        return AchievementBadgeRow(badges: snapshot.data!);
+      },
+    );
+  }
+
+  /// Fetch all achievements and their completion counts from AchievementService
+  /// Shows ALL badges (colored if earned, grayed out if not)
+  Future<List<AchievementBadgeData>> _getEarnedBadges(AchievementService service) async {
+    final badges = <AchievementBadgeData>[];
+
+    // Always show all 6 badges (colored if earned, grayed if not)
+    final unbrokenCount = await service.getCompletionCount(AchievementType.unbroken);
+    badges.add(AchievementBadgeData(
+      icon: Icons.local_fire_department,
+      color: unbrokenCount > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.3),
+      completionCount: unbrokenCount,
+      title: 'Unbroken',
+    ));
+
+    final relentlessCount = await service.getCompletionCount(AchievementType.relentless);
+    badges.add(AchievementBadgeData(
+      icon: Icons.favorite,
+      color: relentlessCount > 0 ? Colors.pink : Colors.white.withValues(alpha: 0.3),
+      completionCount: relentlessCount,
+      title: 'Relentless',
+    ));
+
+    final curatorCount = await service.getCompletionCount(AchievementType.curator);
+    badges.add(AchievementBadgeData(
+      icon: Icons.book,
+      color: curatorCount > 0 ? Colors.blue : Colors.white.withValues(alpha: 0.3),
+      completionCount: curatorCount,
+      title: 'Curator',
+    ));
+
+    final dailyBreadCount = await service.getCompletionCount(AchievementType.dailyBread);
+    badges.add(AchievementBadgeData(
+      icon: Icons.auto_stories,
+      color: dailyBreadCount > 0 ? Colors.purple : Colors.white.withValues(alpha: 0.3),
+      completionCount: dailyBreadCount,
+      title: 'Daily Bread',
+    ));
+
+    final deepDiverCount = await service.getCompletionCount(AchievementType.deepDiver);
+    badges.add(AchievementBadgeData(
+      icon: Icons.stars,
+      color: deepDiverCount > 0 ? AppTheme.goldColor : Colors.white.withValues(alpha: 0.3),
+      completionCount: deepDiverCount,
+      title: 'Deep Diver',
+    ));
+
+    final discipleCount = await service.getCompletionCount(AchievementType.disciple);
+    badges.add(AchievementBadgeData(
+      icon: Icons.share,
+      color: discipleCount > 0 ? Colors.teal : Colors.white.withValues(alpha: 0.3),
+      completionCount: discipleCount,
+      title: 'Disciple',
+    ));
+
+    return badges;
+  }
+
   Widget _buildProfileCard() {
     return FrostedGlassCard(
       borderRadius: 32,
@@ -421,6 +497,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             color: AppColors.primaryText,
           ),
         ).animate().fadeIn(duration: AppAnimations.slow, delay: 1100.ms),
+
+        const SizedBox(height: 12),
+
+        // Earned achievement badges (directly under title)
+        _buildEarnedBadges()
+            .animate()
+            .fadeIn(duration: AppAnimations.slow, delay: 1150.ms),
 
         const SizedBox(height: AppSpacing.lg),
 

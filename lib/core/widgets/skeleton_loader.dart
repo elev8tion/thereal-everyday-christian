@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../theme/app_theme.dart';
+import '../../components/dark_glass_container.dart';
 
 class SkeletonLoader extends StatelessWidget {
   final double width;
@@ -50,15 +51,49 @@ class SkeletonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
+    return DarkGlassContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SkeletonLoader(height: 24, width: 200),
-          SizedBox(height: 8),
-          SkeletonLoader(height: 16),
-          SkeletonLoader(height: 16, width: 150),
+          // Category badge + menu button row
+          Row(
+            children: [
+              SkeletonLoader(
+                height: 24,
+                width: 80,
+                borderRadius: BorderRadius.circular(AppRadius.md + 2),
+              ),
+              const Spacer(),
+              SkeletonLoader(
+                height: 18,
+                width: 18,
+                borderRadius: BorderRadius.circular(AppRadius.xs),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          // Title
+          const SkeletonLoader(height: 18, width: 200),
+          const SizedBox(height: AppSpacing.sm),
+          // Description lines
+          const SkeletonLoader(height: 14),
+          const SizedBox(height: 4),
+          const SkeletonLoader(height: 14),
+          const SizedBox(height: 4),
+          const SkeletonLoader(height: 14, width: 150),
+          const SizedBox(height: AppSpacing.md),
+          // Date row
+          Row(
+            children: [
+              SkeletonLoader(
+                height: 14,
+                width: 14,
+                borderRadius: BorderRadius.circular(AppRadius.xs),
+              ),
+              const SizedBox(width: 4),
+              const SkeletonLoader(height: 12, width: 80),
+            ],
+          ),
         ],
       ),
     );
