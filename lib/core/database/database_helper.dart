@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 14;
+  static const int _databaseVersion = 16;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -333,6 +333,22 @@ class DatabaseHelper {
         )
       ''');
 
+      // Shared prayers tracking (v15)
+      await db.execute('''
+        CREATE TABLE shared_prayers (
+          id TEXT PRIMARY KEY,
+          prayer_id TEXT NOT NULL,
+          title TEXT NOT NULL,
+          category TEXT NOT NULL,
+          is_answered INTEGER NOT NULL,
+          shared_at INTEGER NOT NULL,
+          FOREIGN KEY (prayer_id) REFERENCES prayer_requests (id) ON DELETE CASCADE
+        )
+      ''');
+
+      await db.execute('CREATE INDEX idx_shared_prayers_prayer ON shared_prayers(prayer_id)');
+      await db.execute('CREATE INDEX idx_shared_prayers_timestamp ON shared_prayers(shared_at DESC)');
+
       // Prayer categories
       await db.execute('''
         CREATE TABLE prayer_categories (
@@ -399,6 +415,7 @@ class DatabaseHelper {
           estimated_time_per_day TEXT NOT NULL,
           total_readings INTEGER NOT NULL,
           completed_readings INTEGER NOT NULL DEFAULT 0,
+          is_completed INTEGER NOT NULL DEFAULT 0,
           is_started INTEGER NOT NULL DEFAULT 0,
           start_date INTEGER
         )
@@ -927,6 +944,47 @@ class DatabaseHelper {
         _logger.info('✅ Migration v13→v14 complete: achievement_completions table created');
       } catch (e) {
         _logger.error('Migration v13→v14 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 15) {
+      try {
+        // v14→v15: Add shared_prayers table for tracking prayer shares
+        _logger.info('Migrating v14→v15: Adding shared_prayers table');
+
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS shared_prayers (
+            id TEXT PRIMARY KEY,
+            prayer_id TEXT NOT NULL,
+            title TEXT NOT NULL,
+            category TEXT NOT NULL,
+            is_answered INTEGER NOT NULL,
+            shared_at INTEGER NOT NULL,
+            FOREIGN KEY (prayer_id) REFERENCES prayer_requests (id) ON DELETE CASCADE
+          )
+        ''');
+
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_shared_prayers_prayer ON shared_prayers(prayer_id)');
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_shared_prayers_timestamp ON shared_prayers(shared_at DESC)');
+
+        _logger.info('✅ Migration v14→v15 complete: shared_prayers table created');
+      } catch (e) {
+        _logger.error('Migration v14→v15 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 16) {
+      try {
+        // v15→v16: Add is_completed column to reading_plans table
+        _logger.info('Migrating v15→v16: Adding is_completed column to reading_plans');
+
+        await db.execute('ALTER TABLE reading_plans ADD COLUMN is_completed INTEGER NOT NULL DEFAULT 0');
+
+        _logger.info('✅ Migration v15→v16 complete: is_completed column added to reading_plans');
+      } catch (e) {
+        _logger.error('Migration v15→v16 failed: $e');
         rethrow;
       }
     }

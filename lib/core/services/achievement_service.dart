@@ -228,6 +228,43 @@ class AchievementService {
     }
   }
 
+  /// Check Disciple achievement (10 total shares across all types)
+  /// Counts shares from: shared_chats, shared_verses, shared_devotionals, shared_prayers
+  /// This method should be called after any share action
+  Future<void> checkAllSharesAchievement() async {
+    try {
+      final db = await _database.database;
+
+      // Count all share types in parallel
+      final results = await Future.wait([
+        db.rawQuery('SELECT COUNT(*) as count FROM shared_chats'),
+        db.rawQuery('SELECT COUNT(*) as count FROM shared_verses'),
+        db.rawQuery('SELECT COUNT(*) as count FROM shared_devotionals'),
+        db.rawQuery('SELECT COUNT(*) as count FROM shared_prayers'),
+      ]);
+
+      final chatShares = results[0].first['count'] as int? ?? 0;
+      final verseShares = results[1].first['count'] as int? ?? 0;
+      final devotionalShares = results[2].first['count'] as int? ?? 0;
+      final prayerShares = results[3].first['count'] as int? ?? 0;
+
+      final totalShares = chatShares + verseShares + devotionalShares + prayerShares;
+
+      if (totalShares >= 10) {
+        final completionCount = await getCompletionCount(AchievementType.disciple);
+        // Record if first completion or every 10 shares
+        if (completionCount == 0 || totalShares >= (completionCount + 1) * 10) {
+          await recordCompletion(
+            type: AchievementType.disciple,
+            progressValue: totalShares,
+          );
+        }
+      }
+    } catch (e) {
+      developer.log('Failed to check all shares achievement: $e', name: 'AchievementService');
+    }
+  }
+
   /// Clear all achievement completion data (for testing or factory reset)
   Future<void> clearAllCompletions() async {
     try {

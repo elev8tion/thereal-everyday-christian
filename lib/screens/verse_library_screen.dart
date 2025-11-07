@@ -24,6 +24,7 @@ import '../core/widgets/app_snackbar.dart';
 import '../utils/blur_dialog_utils.dart';
 import '../services/verse_share_service.dart';
 import '../core/services/database_service.dart';
+import '../core/services/achievement_service.dart';
 
 // Provider for all saved verses
 final filteredVersesProvider = FutureProvider.autoDispose<List<BibleVerse>>((ref) async {
@@ -46,8 +47,10 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    final databaseService = DatabaseService();
     _verseShareService = VerseShareService(
-      databaseService: DatabaseService(),
+      databaseService: databaseService,
+      achievementService: AchievementService(databaseService),
     );
   }
 
@@ -560,35 +563,6 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
     );
   }
 
-  Future<void> _toggleFavorite(BibleVerse verse) async {
-    if (verse.id == null) return;
-
-    final service = ref.read(unifiedVerseServiceProvider);
-
-    try {
-      final newStatus = await service.toggleFavorite(verse.id!);
-
-      // Refresh both tabs
-      ref.invalidate(filteredVersesProvider);
-      ref.invalidate(favoriteVersesProvider);
-      ref.invalidate(savedVersesCountProvider);
-
-      // Show feedback
-      if (!mounted) return;
-      AppSnackBar.show(
-        context,
-        message: newStatus ? 'Added to favorites' : 'Removed from favorites',
-        icon: newStatus ? Icons.favorite : Icons.heart_broken,
-      );
-    } catch (e) {
-      if (!mounted) return;
-      AppSnackBar.showError(
-        context,
-        message: 'Error updating favorite: $e',
-      );
-    }
-  }
-
   void _showShareOptions(BibleVerse verse) {
     showCustomBottomSheet(
       context: context,
@@ -658,7 +632,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                     showThemes: verse.themes.isNotEmpty,
                   );
 
-                  await ref.read(unifiedVerseServiceProvider).recordSharedVerse(verse);
+                  // VerseShareService already tracks the share and calls achievement service
                   ref.invalidate(sharedVersesProvider);
                   ref.invalidate(sharedVersesCountProvider);
 

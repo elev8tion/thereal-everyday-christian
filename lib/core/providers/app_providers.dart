@@ -83,7 +83,13 @@ final todaysVerseProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
 // Feature Services
 final prayerServiceProvider = Provider<PrayerService>((ref) {
   final database = ref.watch(databaseServiceProvider);
-  return PrayerService(database);
+  final achievementService = ref.watch(achievementServiceProvider);
+  final streakService = ref.watch(prayerStreakServiceProvider);
+  return PrayerService(
+    database,
+    achievementService: achievementService,
+    streakService: streakService,
+  );
 });
 
 final achievementServiceProvider = Provider<AchievementService>((ref) {
@@ -109,7 +115,8 @@ final bibleServiceProvider = Provider<VerseService>((ref) {
 
 // Unified Verse Service (modern, feature-complete - USE THIS for new features)
 final unifiedVerseServiceProvider = Provider<UnifiedVerseService>((ref) {
-  return UnifiedVerseService();
+  final achievementService = ref.watch(achievementServiceProvider);
+  return UnifiedVerseService(achievementService: achievementService);
 });
 
 // Verse Library Providers
@@ -183,16 +190,26 @@ final answeredPrayersCountProvider = FutureProvider<int>((ref) async {
   return await service.getAnsweredPrayerCount();
 });
 
-/// Provider for count of shared chats
+/// Provider for count of ALL shares (chats, verses, devotionals, prayers)
+/// Used for the Disciple achievement (10 total shares across all types)
 final sharedChatsCountProvider = FutureProvider<int>((ref) async {
   final database = ref.watch(databaseServiceProvider);
   final db = await database.database;
 
-  final result = await db.rawQuery(
-    'SELECT COUNT(*) as count FROM shared_chats',
-  );
+  // Count all share types in parallel
+  final results = await Future.wait([
+    db.rawQuery('SELECT COUNT(*) as count FROM shared_chats'),
+    db.rawQuery('SELECT COUNT(*) as count FROM shared_verses'),
+    db.rawQuery('SELECT COUNT(*) as count FROM shared_devotionals'),
+    db.rawQuery('SELECT COUNT(*) as count FROM shared_prayers'),
+  ]);
 
-  return result.first['count'] as int? ?? 0;
+  final chatShares = results[0].first['count'] as int? ?? 0;
+  final verseShares = results[1].first['count'] as int? ?? 0;
+  final devotionalShares = results[2].first['count'] as int? ?? 0;
+  final prayerShares = results[3].first['count'] as int? ?? 0;
+
+  return chatShares + verseShares + devotionalShares + prayerShares;
 });
 
 /// Provider for count of active reading plans
@@ -249,12 +266,20 @@ final devotionalContentLoaderProvider = Provider<DevotionalContentLoader>((ref) 
 
 final devotionalProgressServiceProvider = Provider<DevotionalProgressService>((ref) {
   final database = ref.watch(databaseServiceProvider);
-  return DevotionalProgressService(database);
+  final achievementService = ref.watch(achievementServiceProvider);
+  return DevotionalProgressService(
+    database,
+    achievementService: achievementService,
+  );
 });
 
 final readingPlanProgressServiceProvider = Provider<ReadingPlanProgressService>((ref) {
   final database = ref.watch(databaseServiceProvider);
-  return ReadingPlanProgressService(database);
+  final achievementService = ref.watch(achievementServiceProvider);
+  return ReadingPlanProgressService(
+    database,
+    achievementService: achievementService,
+  );
 });
 
 final curatedReadingPlanLoaderProvider = Provider<CuratedReadingPlanLoader>((ref) {

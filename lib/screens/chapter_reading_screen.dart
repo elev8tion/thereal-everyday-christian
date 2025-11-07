@@ -11,6 +11,7 @@ import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
 import '../core/services/preferences_service.dart';
+import '../core/services/database_service.dart';
 import '../services/bible_chapter_service.dart';
 import '../models/bible_verse.dart';
 import '../models/verse_context.dart';
@@ -153,12 +154,32 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     if (widget.readingId == null) return;
 
     try {
-      await _chapterService.markReadingComplete(widget.readingId!);
+      // Use ReadingPlanProgressService for proper achievement tracking
+      final progressService = ref.read(readingPlanProgressServiceProvider);
+
+      // First get the reading to find its plan_id
+      final db = await DatabaseService().database;
+      final readings = await db.query(
+        'daily_readings',
+        where: 'id = ?',
+        whereArgs: [widget.readingId!],
+      );
+
+      if (readings.isEmpty) {
+        throw Exception('Reading not found');
+      }
+
+      final planId = readings.first['plan_id'] as String;
+
+      // Mark complete using the proper service
+      await progressService.markDayComplete(widget.readingId!);
 
       // Refresh all plan-related providers to update progress
       ref.invalidate(currentReadingPlanProvider);
       ref.invalidate(activeReadingPlansProvider);
       ref.invalidate(allReadingPlansProvider);
+      ref.invalidate(todaysReadingsProvider(planId));
+      ref.invalidate(planProgressPercentageProvider(planId));
 
       if (mounted) {
         setState(() => _isCompleted = true);
@@ -171,7 +192,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       if (mounted) {
         AppSnackBar.showError(
           context,
-          message: 'Error: $e',
+          message: 'Error updating reading: $e',
         );
       }
     }

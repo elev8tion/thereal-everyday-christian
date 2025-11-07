@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:share_plus/share_plus.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/dark_glass_container.dart';
@@ -23,8 +22,10 @@ import '../core/models/prayer_request.dart';
 import '../core/models/prayer_category.dart';
 import '../core/providers/prayer_providers.dart';
 import '../core/providers/category_providers.dart';
+import '../core/providers/app_providers.dart';
 import '../core/widgets/skeleton_loader.dart';
 import '../utils/blur_dialog_utils.dart';
+import '../services/prayer_share_service.dart';
 
 class PrayerJournalScreen extends ConsumerStatefulWidget {
   const PrayerJournalScreen({super.key});
@@ -535,6 +536,11 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                         label: 'Answered',
                       ),
                       BlurPopupMenuItem(
+                        value: 'share',
+                        icon: Icons.share,
+                        label: 'Share',
+                      ),
+                      BlurPopupMenuItem(
                         value: 'delete',
                         icon: Icons.delete,
                         label: 'Delete',
@@ -545,6 +551,8 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                     onSelected: (value) {
                       if (value == 'mark_answered') {
                         _markPrayerAnswered(prayer);
+                      } else if (value == 'share') {
+                        _sharePrayer(prayer);
                       } else if (value == 'delete') {
                         _deletePrayer(prayer);
                       }
@@ -948,23 +956,25 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
 
   Future<void> _sharePrayer(PrayerRequest prayer) async {
     try {
-      final shareText = StringBuffer();
-      shareText.writeln('🙏 ${prayer.title}');
-      shareText.writeln();
-      shareText.writeln(prayer.description);
+      final databaseService = ref.read(databaseServiceProvider);
+      final achievementService = ref.read(achievementServiceProvider);
 
-      if (prayer.isAnswered && prayer.answerDescription != null && prayer.answerDescription!.isNotEmpty) {
-        shareText.writeln();
-        shareText.writeln('✅ Answered:');
-        shareText.writeln(prayer.answerDescription);
-      }
+      final shareService = PrayerShareService(
+        databaseService: databaseService,
+        achievementService: achievementService,
+      );
 
-      shareText.writeln();
-      shareText.writeln('Shared from Everyday Christian');
+      await shareService.sharePrayer(
+        context: context,
+        prayer: prayer,
+      );
 
-      await Share.share(
-        shareText.toString(),
-        subject: prayer.title,
+      if (!mounted) return;
+      AppSnackBar.show(
+        context,
+        message: 'Prayer shared successfully! 🙏',
+        icon: Icons.check_circle,
+        duration: const Duration(seconds: 2),
       );
     } catch (e) {
       if (!mounted) return;

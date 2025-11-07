@@ -2,14 +2,19 @@ import 'package:uuid/uuid.dart';
 import '../models/reading_plan.dart';
 import 'database_service.dart';
 import 'reading_plan_generator.dart';
+import 'achievement_service.dart';
 
 /// Service for tracking reading plan progress
 class ReadingPlanProgressService {
   final DatabaseService _database;
+  final AchievementService? _achievementService;
   final _uuid = const Uuid();
   late final ReadingPlanGenerator _generator;
 
-  ReadingPlanProgressService(this._database) {
+  ReadingPlanProgressService(
+    this._database, {
+    AchievementService? achievementService,
+  })  : _achievementService = achievementService {
     _generator = ReadingPlanGenerator(_database);
   }
 
@@ -593,15 +598,65 @@ class ReadingPlanProgressService {
       [planId],
     );
 
-    final completedCount = result.first['count'] as int;
+    final completedCount = (result.first['count'] as int?) ?? 0;
 
-    // Update plan
-    await db.update(
+    // Check if plan is now complete
+    final planResult = await db.query(
       'reading_plans',
-      {'completed_readings': completedCount},
       where: 'id = ?',
       whereArgs: [planId],
+      limit: 1,
     );
+
+    if (planResult.isNotEmpty) {
+      final totalReadings = (planResult.first['total_readings'] as int?) ?? 0;
+      final wasCompleted = (planResult.first['is_completed'] as int?) == 1;
+      final isNowComplete = completedCount >= totalReadings;
+
+      // Update plan with completion status
+      await db.update(
+        'reading_plans',
+        {
+          'completed_readings': completedCount,
+          'is_completed': isNowComplete ? 1 : 0,
+        },
+        where: 'id = ?',
+        whereArgs: [planId],
+      );
+
+      // Check for Deep Diver achievement if plan just completed
+      if (isNowComplete && !wasCompleted) {
+        await _checkReadingPlanAchievements();
+      }
+    }
+  }
+
+  /// Check reading plan achievements after completing a plan
+  Future<void> _checkReadingPlanAchievements() async {
+    if (_achievementService == null) return;
+
+    try {
+      // Check Deep Diver (5 reading plans completed)
+      final db = await _database.database;
+      final result = await db.rawQuery(
+        'SELECT COUNT(*) as count FROM reading_plans WHERE is_completed = 1',
+      );
+
+      final completedPlans = result.first['count'] as int? ?? 0;
+
+      if (completedPlans >= 5) {
+        final completionCount = await _achievementService!.getCompletionCount(AchievementType.deepDiver);
+        // Record if first completion or every 5 plans
+        if (completionCount == 0 || completedPlans >= (completionCount + 1) * 5) {
+          await _achievementService!.recordCompletion(
+            type: AchievementType.deepDiver,
+            progressValue: completedPlans,
+          );
+        }
+      }
+    } catch (e) {
+      print('Failed to check reading plan achievements: $e');
+    }
   }
 
   /// Helper method to convert map to DailyReading
