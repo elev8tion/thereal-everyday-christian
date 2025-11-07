@@ -86,7 +86,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   List<Achievement> _buildAchievements(int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive, int devotionalStreak, int totalPrayers, int sharedChats) {
     return [
       Achievement(
-        title: 'Prayer Warrior',
+        title: 'Unbroken',
         description: 'Maintain a 7-day prayer streak',
         icon: Icons.local_fire_department,
         color: Colors.orange,
@@ -95,7 +95,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 7,
       ),
       Achievement(
-        title: 'Prayer Champion',
+        title: 'Relentless',
         description: 'Log 50 prayers',
         icon: Icons.favorite,
         color: Colors.pink,
@@ -104,7 +104,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 50,
       ),
       Achievement(
-        title: 'Bible Scholar',
+        title: 'Curator',
         description: 'Save 100 Bible verses',
         icon: Icons.book,
         color: Colors.blue,
@@ -113,7 +113,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 100,
       ),
       Achievement(
-        title: 'Faithful Friend',
+        title: 'Daily Bread',
         description: 'Complete 30 devotionals${devotionalStreak > 0 ? ' • 🔥 $devotionalStreak day${devotionalStreak > 1 ? 's' : ''} streak' : ''}',
         icon: Icons.auto_stories,
         color: Colors.purple,
@@ -122,7 +122,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 30,
       ),
       Achievement(
-        title: 'Scripture Master',
+        title: 'Deep Diver',
         description: 'Start 5 reading plans',
         icon: Icons.stars,
         color: AppTheme.goldColor,
@@ -131,7 +131,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 5,
       ),
       Achievement(
-        title: 'Conversation Sharer',
+        title: 'Disciple',
         description: 'Share 10 conversations',
         icon: Icons.share,
         color: Colors.teal,
