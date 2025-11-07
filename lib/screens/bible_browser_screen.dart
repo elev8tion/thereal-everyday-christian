@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
@@ -297,10 +298,18 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
             SafeArea(
               child: Column(
                 children: [
-                  _buildHeader(),
-                  _buildSearchBar(),
+                  _buildHeader()
+                      .animate()
+                      .fadeIn(duration: AppAnimations.normal)
+                      .slideY(begin: -0.2, end: 0),
+                  _buildSearchBar()
+                      .animate()
+                      .fadeIn(duration: AppAnimations.normal, delay: 100.ms)
+                      .slideY(begin: -0.2, end: 0),
                   // TabBar always visible
-                  _buildTabBar(),
+                  _buildTabBar()
+                      .animate()
+                      .fadeIn(duration: AppAnimations.normal, delay: 200.ms),
                   Expanded(
                     child: _isLoading
                         ? const Center(child: CircularProgressIndicator())

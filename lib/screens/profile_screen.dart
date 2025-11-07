@@ -320,59 +320,63 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   /// Fetch all achievements and their completion counts from AchievementService
   /// Shows ALL badges (colored if earned, grayed out if not)
+  /// Optimized: Fetches all counts in parallel for better performance
   Future<List<AchievementBadgeData>> _getEarnedBadges(AchievementService service) async {
-    final badges = <AchievementBadgeData>[];
+    // Fetch all counts in parallel instead of sequentially
+    final results = await Future.wait([
+      service.getCompletionCount(AchievementType.unbroken),
+      service.getCompletionCount(AchievementType.relentless),
+      service.getCompletionCount(AchievementType.curator),
+      service.getCompletionCount(AchievementType.dailyBread),
+      service.getCompletionCount(AchievementType.deepDiver),
+      service.getCompletionCount(AchievementType.disciple),
+    ]);
 
-    // Always show all 6 badges (colored if earned, grayed if not)
-    final unbrokenCount = await service.getCompletionCount(AchievementType.unbroken);
-    badges.add(AchievementBadgeData(
-      icon: Icons.local_fire_department,
-      color: unbrokenCount > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.3),
-      completionCount: unbrokenCount,
-      title: 'Unbroken',
-    ));
+    final unbrokenCount = results[0];
+    final relentlessCount = results[1];
+    final curatorCount = results[2];
+    final dailyBreadCount = results[3];
+    final deepDiverCount = results[4];
+    final discipleCount = results[5];
 
-    final relentlessCount = await service.getCompletionCount(AchievementType.relentless);
-    badges.add(AchievementBadgeData(
-      icon: Icons.favorite,
-      color: relentlessCount > 0 ? Colors.pink : Colors.white.withValues(alpha: 0.3),
-      completionCount: relentlessCount,
-      title: 'Relentless',
-    ));
-
-    final curatorCount = await service.getCompletionCount(AchievementType.curator);
-    badges.add(AchievementBadgeData(
-      icon: Icons.book,
-      color: curatorCount > 0 ? Colors.blue : Colors.white.withValues(alpha: 0.3),
-      completionCount: curatorCount,
-      title: 'Curator',
-    ));
-
-    final dailyBreadCount = await service.getCompletionCount(AchievementType.dailyBread);
-    badges.add(AchievementBadgeData(
-      icon: Icons.auto_stories,
-      color: dailyBreadCount > 0 ? Colors.purple : Colors.white.withValues(alpha: 0.3),
-      completionCount: dailyBreadCount,
-      title: 'Daily Bread',
-    ));
-
-    final deepDiverCount = await service.getCompletionCount(AchievementType.deepDiver);
-    badges.add(AchievementBadgeData(
-      icon: Icons.stars,
-      color: deepDiverCount > 0 ? AppTheme.goldColor : Colors.white.withValues(alpha: 0.3),
-      completionCount: deepDiverCount,
-      title: 'Deep Diver',
-    ));
-
-    final discipleCount = await service.getCompletionCount(AchievementType.disciple);
-    badges.add(AchievementBadgeData(
-      icon: Icons.share,
-      color: discipleCount > 0 ? Colors.teal : Colors.white.withValues(alpha: 0.3),
-      completionCount: discipleCount,
-      title: 'Disciple',
-    ));
-
-    return badges;
+    return [
+      AchievementBadgeData(
+        icon: Icons.local_fire_department,
+        color: unbrokenCount > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.3),
+        completionCount: unbrokenCount,
+        title: 'Unbroken',
+      ),
+      AchievementBadgeData(
+        icon: Icons.favorite,
+        color: relentlessCount > 0 ? Colors.pink : Colors.white.withValues(alpha: 0.3),
+        completionCount: relentlessCount,
+        title: 'Relentless',
+      ),
+      AchievementBadgeData(
+        icon: Icons.book,
+        color: curatorCount > 0 ? Colors.blue : Colors.white.withValues(alpha: 0.3),
+        completionCount: curatorCount,
+        title: 'Curator',
+      ),
+      AchievementBadgeData(
+        icon: Icons.auto_stories,
+        color: dailyBreadCount > 0 ? Colors.purple : Colors.white.withValues(alpha: 0.3),
+        completionCount: dailyBreadCount,
+        title: 'Daily Bread',
+      ),
+      AchievementBadgeData(
+        icon: Icons.stars,
+        color: deepDiverCount > 0 ? AppTheme.goldColor : Colors.white.withValues(alpha: 0.3),
+        completionCount: deepDiverCount,
+        title: 'Deep Diver',
+      ),
+      AchievementBadgeData(
+        icon: Icons.share,
+        color: discipleCount > 0 ? Colors.teal : Colors.white.withValues(alpha: 0.3),
+        completionCount: discipleCount,
+        title: 'Disciple',
+      ),
+    ];
   }
 
   Widget _buildProfileCard() {
