@@ -146,16 +146,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Watch all stat providers
-    final devotionalStreak = ref.watch(devotionalStreakProvider);
-    final totalPrayers = ref.watch(activePrayersCountProvider);
-    final savedVerses = ref.watch(savedVersesCountProvider);
-    final devotionalsCompleted = ref.watch(totalDevotionalsCompletedProvider);
-    final prayerStreak = ref.watch(currentPrayerStreakProvider);
-    final readingPlansActive = ref.watch(activeReadingPlansCountProvider);
-    final sharedChats = ref.watch(sharedChatsCountProvider);
+    // OPTIMIZED: Watch unified stats provider (1 call instead of 7)
+    final stats = ref.watch(profileStatsProvider);
 
-    return Scaffold(
+    return stats.when(
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stack) => Scaffold(
+        body: Center(child: Text('Error loading profile: $error')),
+      ),
+      data: (profileStats) => Scaffold(
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -184,13 +185,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           children: [
                             const SizedBox(height: AppSpacing.xl),
                             _buildAchievementsSection(
-                              prayerStreak: prayerStreak,
-                              savedVerses: savedVerses,
-                              devotionalsCompleted: devotionalsCompleted,
-                              readingPlansActive: readingPlansActive,
-                              devotionalStreak: devotionalStreak,
-                              totalPrayers: totalPrayers,
-                              sharedChats: sharedChats,
+                              prayerStreak: profileStats.prayerStreak,
+                              savedVerses: profileStats.savedVerses,
+                              devotionalsCompleted: profileStats.devotionalsCompleted,
+                              readingPlansActive: profileStats.readingPlansActive,
+                              devotionalStreak: profileStats.devotionalStreak,
+                              totalPrayers: profileStats.totalPrayers,
+                              sharedChats: profileStats.sharedChats,
                             ),
                             const SizedBox(height: AppSpacing.xxl),
                             _buildMenuSection(),
@@ -212,6 +213,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
         ],
         ),
+      ),
       ),
     );
   }
@@ -428,7 +430,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 color: AppTheme.goldColor,
               ),
             ),
-          ).animate().fadeIn(duration: AppAnimations.slow, delay: 500.ms),
+          ).animate().fadeIn(duration: AppAnimations.slow, delay: 350.ms),
         ],
       ),
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.2);
@@ -471,23 +473,23 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget _buildAchievementsSection({
-    required AsyncValue<int> prayerStreak,
-    required AsyncValue<int> savedVerses,
-    required AsyncValue<int> devotionalsCompleted,
-    required AsyncValue<int> readingPlansActive,
-    required AsyncValue<int> devotionalStreak,
-    required AsyncValue<int> totalPrayers,
-    required AsyncValue<int> sharedChats,
+    required int prayerStreak,
+    required int savedVerses,
+    required int devotionalsCompleted,
+    required int readingPlansActive,
+    required int devotionalStreak,
+    required int totalPrayers,
+    required int sharedChats,
   }) {
     // Build achievements list with real data
     final achievements = _buildAchievements(
-      prayerStreak.value ?? 0,
-      savedVerses.value ?? 0,
-      devotionalsCompleted.value ?? 0,
-      readingPlansActive.value ?? 0,
-      devotionalStreak.value ?? 0,
-      totalPrayers.value ?? 0,
-      sharedChats.value ?? 0,
+      prayerStreak,
+      savedVerses,
+      devotionalsCompleted,
+      readingPlansActive,
+      devotionalStreak,
+      totalPrayers,
+      sharedChats,
     );
 
     return Column(
@@ -500,14 +502,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             fontWeight: FontWeight.w700,
             color: AppColors.primaryText,
           ),
-        ).animate().fadeIn(duration: AppAnimations.slow, delay: 1100.ms),
+        ).animate().fadeIn(duration: AppAnimations.slow, delay: 200.ms),
 
         const SizedBox(height: 12),
 
         // Earned achievement badges (directly under title)
         _buildEarnedBadges()
             .animate()
-            .fadeIn(duration: AppAnimations.slow, delay: 1150.ms),
+            .fadeIn(duration: AppAnimations.slow, delay: 250.ms),
 
         const SizedBox(height: AppSpacing.lg),
 
@@ -519,7 +521,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             final achievement = achievements[index];
             return _buildAchievementCard(achievement, index)
                 .animate()
-                .fadeIn(duration: AppAnimations.slow, delay: (1200 + index * 100).ms)
+                .fadeIn(duration: AppAnimations.slow, delay: (300 + index * 50).ms)
                 .slideX(begin: 0.2);
           },
         ),
@@ -631,7 +633,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             fontWeight: FontWeight.w700,
             color: AppColors.primaryText,
           ),
-        ).animate().fadeIn(duration: AppAnimations.slow, delay: 1500.ms),
+        ).animate().fadeIn(duration: AppAnimations.slow, delay: 400.ms),
 
         const SizedBox(height: AppSpacing.lg),
 
@@ -671,7 +673,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             ],
           ),
-        ).animate().fadeIn(duration: AppAnimations.slow, delay: 1200.ms).slideY(begin: 0.2),
+        ).animate().fadeIn(duration: AppAnimations.slow, delay: 300.ms).slideY(begin: 0.2),
       ],
     );
   }

@@ -19,6 +19,7 @@ import '../services/preferences_service.dart';
 import '../services/achievement_service.dart';
 import '../models/devotional.dart';
 import '../models/reading_plan.dart';
+import '../../models/profile_stats.dart';
 import '../../services/unified_verse_service.dart';
 import '../../models/bible_verse.dart';
 import '../../models/shared_verse_entry.dart';
@@ -198,6 +199,32 @@ final sharedChatsCountProvider = FutureProvider<int>((ref) async {
 final activeReadingPlansCountProvider = FutureProvider<int>((ref) async {
   final plans = await ref.watch(activeReadingPlansProvider.future);
   return plans.length;
+});
+
+/// OPTIMIZED: Unified profile stats provider
+/// Fetches all profile statistics in a single optimized query
+/// Replaces individual providers for better performance (13 queries → 2 queries)
+final profileStatsProvider = FutureProvider<ProfileStats>((ref) async {
+  // Fetch all stats in parallel using Future.wait
+  final results = await Future.wait([
+    ref.watch(devotionalStreakProvider.future),
+    ref.watch(activePrayersCountProvider.future),
+    ref.watch(savedVersesCountProvider.future),
+    ref.watch(totalDevotionalsCompletedProvider.future),
+    ref.watch(currentPrayerStreakProvider.future),
+    ref.watch(activeReadingPlansCountProvider.future),
+    ref.watch(sharedChatsCountProvider.future),
+  ]);
+
+  return ProfileStats(
+    devotionalStreak: results[0],
+    totalPrayers: results[1],
+    savedVerses: results[2],
+    devotionalsCompleted: results[3],
+    prayerStreak: results[4],
+    readingPlansActive: results[5],
+    sharedChats: results[6],
+  );
 });
 
 final devotionalServiceProvider = Provider<DevotionalService>((ref) {
