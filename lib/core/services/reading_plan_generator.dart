@@ -1,7 +1,6 @@
 import 'package:uuid/uuid.dart';
 import '../models/reading_plan.dart';
 import 'database_service.dart';
-import 'package:sqflite/sqflite.dart';
 
 /// Service for generating daily readings for reading plans based on actual Bible data
 class ReadingPlanGenerator {

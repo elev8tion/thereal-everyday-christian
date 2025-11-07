@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
-import '../models/reading_plan.dart';
 import 'database_service.dart';
 
 /// Service for loading curated thematic reading plans from JSON

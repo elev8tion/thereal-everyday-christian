@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
-import '../utils/responsive_utils.dart';
 
 /// Compact frosted glass audio control pill matching app aesthetic
 class AudioControlPill extends StatelessWidget {
