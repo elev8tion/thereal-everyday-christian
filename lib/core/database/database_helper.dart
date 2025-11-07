@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 12;
+  static const int _databaseVersion = 13;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -281,6 +281,14 @@ class DatabaseHelper {
         CREATE TABLE shared_verses (
           id TEXT PRIMARY KEY,
           verse_id INTEGER NOT NULL,
+          book TEXT NOT NULL,
+          chapter INTEGER NOT NULL,
+          verse_number INTEGER NOT NULL,
+          reference TEXT NOT NULL,
+          translation TEXT NOT NULL,
+          text TEXT NOT NULL,
+          themes TEXT,
+          channel TEXT NOT NULL,
           shared_at INTEGER NOT NULL,
           FOREIGN KEY (verse_id) REFERENCES bible_verses (id) ON DELETE CASCADE
         )
@@ -840,6 +848,44 @@ class DatabaseHelper {
         _logger.info('✅ Migration v11→v12 complete: shared_devotionals table created');
       } catch (e) {
         _logger.error('Migration v11→v12 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 13) {
+      try {
+        // v12→v13: Fix shared_verses table schema to include all required columns
+        _logger.info('Migrating v12→v13: Updating shared_verses table schema');
+
+        // Drop the old 3-column table
+        await db.execute('DROP TABLE IF EXISTS shared_verses');
+        await db.execute('DROP INDEX IF EXISTS idx_shared_verses_verse');
+        await db.execute('DROP INDEX IF EXISTS idx_shared_verses_timestamp');
+
+        // Recreate with all 11 columns needed by unified_verse_service.dart
+        await db.execute('''
+          CREATE TABLE shared_verses (
+            id TEXT PRIMARY KEY,
+            verse_id INTEGER NOT NULL,
+            book TEXT NOT NULL,
+            chapter INTEGER NOT NULL,
+            verse_number INTEGER NOT NULL,
+            reference TEXT NOT NULL,
+            translation TEXT NOT NULL,
+            text TEXT NOT NULL,
+            themes TEXT,
+            channel TEXT NOT NULL,
+            shared_at INTEGER NOT NULL,
+            FOREIGN KEY (verse_id) REFERENCES bible_verses (id) ON DELETE CASCADE
+          )
+        ''');
+
+        await db.execute('CREATE INDEX idx_shared_verses_verse ON shared_verses(verse_id)');
+        await db.execute('CREATE INDEX idx_shared_verses_timestamp ON shared_verses(shared_at DESC)');
+
+        _logger.info('✅ Migration v12→v13 complete: shared_verses table updated with full schema');
+      } catch (e) {
+        _logger.error('Migration v12→v13 failed: $e');
         rethrow;
       }
     }
