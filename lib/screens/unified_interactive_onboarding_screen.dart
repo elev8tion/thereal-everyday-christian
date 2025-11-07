@@ -602,7 +602,7 @@ class _UnifiedInteractiveOnboardingScreenState
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'Get biblical guidance 24/7',
+                'Intelligent Scripture Chat 24/7',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 15,
