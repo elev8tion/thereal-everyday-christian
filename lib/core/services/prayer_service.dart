@@ -3,13 +3,22 @@ import '../models/prayer_request.dart';
 import 'database_service.dart';
 import '../error/error_handler.dart';
 import '../logging/app_logger.dart';
+import 'achievement_service.dart';
+import 'prayer_streak_service.dart';
 
 class PrayerService {
   final DatabaseService _database;
+  final AchievementService? _achievementService;
+  final PrayerStreakService? _streakService;
   final Uuid _uuid = const Uuid();
   final AppLogger _logger = AppLogger.instance;
 
-  PrayerService(this._database);
+  PrayerService(
+    this._database, {
+    AchievementService? achievementService,
+    PrayerStreakService? streakService,
+  })  : _achievementService = achievementService,
+        _streakService = streakService;
 
   Future<List<PrayerRequest>> getActivePrayers({String? categoryFilter}) async {
     return await ErrorHandler.handleAsync(
@@ -99,9 +108,47 @@ class PrayerService {
         final db = await _database.database;
         await db.insert('prayer_requests', _prayerRequestToMap(prayer));
         _logger.info('Added new prayer: ${prayer.title}', context: 'PrayerService');
+
+        // Check for achievement completion
+        await _checkPrayerAchievements();
       },
       context: 'PrayerService.addPrayer',
     );
+  }
+
+  /// Check prayer-based achievements after adding a prayer
+  Future<void> _checkPrayerAchievements() async {
+    if (_achievementService == null || _streakService == null) return;
+
+    try {
+      // Check Unbroken (7-day prayer streak)
+      final streak = await _streakService!.getCurrentStreak();
+      if (streak >= 7) {
+        final completionCount = await _achievementService!.getCompletionCount(AchievementType.unbroken);
+        // Only record if not already completed at this streak level
+        if (completionCount == 0 || streak > completionCount * 7) {
+          await _achievementService!.recordCompletion(
+            type: AchievementType.unbroken,
+            progressValue: streak,
+          );
+        }
+      }
+
+      // Check Relentless (50 total prayers)
+      final totalPrayers = await getPrayerCount();
+      if (totalPrayers >= 50) {
+        final completionCount = await _achievementService!.getCompletionCount(AchievementType.relentless);
+        // Only record if not already completed at this prayer count level
+        if (completionCount == 0 || totalPrayers >= (completionCount + 1) * 50) {
+          await _achievementService!.recordCompletion(
+            type: AchievementType.relentless,
+            progressValue: totalPrayers,
+          );
+        }
+      }
+    } catch (e) {
+      _logger.error('Failed to check prayer achievements: $e', context: 'PrayerService');
+    }
   }
 
   Future<void> updatePrayer(PrayerRequest prayer) async {

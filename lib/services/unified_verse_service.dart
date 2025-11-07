@@ -4,11 +4,16 @@ import 'package:uuid/uuid.dart';
 import '../core/database/database_helper.dart';
 import '../models/bible_verse.dart';
 import '../models/shared_verse_entry.dart';
+import '../core/services/achievement_service.dart';
 
 /// Unified service for managing Bible verses with FTS5 search, bookmarks, and themes
 class UnifiedVerseService {
   final DatabaseHelper _db = DatabaseHelper.instance;
   final Uuid _uuid = const Uuid();
+  final AchievementService? _achievementService;
+
+  UnifiedVerseService({AchievementService? achievementService})
+      : _achievementService = achievementService;
 
   // ============================================================================
   // SEARCH METHODS
@@ -205,6 +210,11 @@ class UnifiedVerseService {
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    // Check for sharing achievements (counts ALL share types)
+    if (_achievementService != null) {
+      await _achievementService!.checkAllSharesAchievement();
+    }
   }
 
   /// Remove a single shared verse entry
@@ -290,6 +300,31 @@ class UnifiedVerseService {
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    // Check for Curator achievement (100 saved verses)
+    await _checkVerseAchievements();
+  }
+
+  /// Check verse-based achievements after saving a verse
+  Future<void> _checkVerseAchievements() async {
+    if (_achievementService == null) return;
+
+    try {
+      // Check Curator (100 saved verses)
+      final totalSaved = await getFavoriteVerseCount();
+      if (totalSaved >= 100) {
+        final completionCount = await _achievementService!.getCompletionCount(AchievementType.curator);
+        // Only record if not already completed at this verse count level
+        if (completionCount == 0 || totalSaved >= (completionCount + 1) * 100) {
+          await _achievementService!.recordCompletion(
+            type: AchievementType.curator,
+            progressValue: totalSaved,
+          );
+        }
+      }
+    } catch (e) {
+      print('Failed to check verse achievements: $e');
+    }
   }
 
   /// Remove verse from favorites

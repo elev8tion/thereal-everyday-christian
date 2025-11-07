@@ -8,15 +8,20 @@ import 'package:uuid/uuid.dart';
 import '../components/verse_share_widget.dart';
 import '../models/bible_verse.dart';
 import '../core/services/database_service.dart';
+import '../core/services/achievement_service.dart';
 
 /// Service for capturing and sharing Bible verses with branding
 class VerseShareService {
   final ScreenshotController _screenshotController = ScreenshotController();
   final DatabaseService? _databaseService;
+  final AchievementService? _achievementService;
   final _uuid = const Uuid();
 
-  VerseShareService({DatabaseService? databaseService})
-      : _databaseService = databaseService;
+  VerseShareService({
+    DatabaseService? databaseService,
+    AchievementService? achievementService,
+  })  : _databaseService = databaseService,
+        _achievementService = achievementService;
 
   ScreenshotController get controller => _screenshotController;
 
@@ -104,6 +109,11 @@ class VerseShareService {
         'channel': 'share_sheet',
         'shared_at': DateTime.now().millisecondsSinceEpoch,
       });
+
+      // Check for sharing achievements (counts ALL share types)
+      if (_achievementService != null) {
+        await _achievementService!.checkAllSharesAchievement();
+      }
     } catch (e) {
       debugPrint('Error tracking verse share: $e');
       // Don't rethrow - sharing succeeded, tracking failure shouldn't break UX

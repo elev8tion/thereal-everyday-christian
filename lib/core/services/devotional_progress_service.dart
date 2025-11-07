@@ -1,11 +1,16 @@
 import '../models/devotional.dart';
 import 'database_service.dart';
+import 'achievement_service.dart';
 
 /// Service for tracking devotional completion progress
 class DevotionalProgressService {
   final DatabaseService _database;
+  final AchievementService? _achievementService;
 
-  DevotionalProgressService(this._database);
+  DevotionalProgressService(
+    this._database, {
+    AchievementService? achievementService,
+  }) : _achievementService = achievementService;
 
   /// Mark a devotional as complete with the current timestamp
   Future<void> markAsComplete(String devotionalId) async {
@@ -22,6 +27,47 @@ class DevotionalProgressService {
       whereArgs: [devotionalId],
     );
 
+    // Check for Daily Bread achievement (30 devotionals in one month)
+    await _checkDevotionalAchievements();
+  }
+
+  /// Check devotional-based achievements after completing a devotional
+  Future<void> _checkDevotionalAchievements() async {
+    if (_achievementService == null) return;
+
+    try {
+      // Check Daily Bread (30 devotionals in current month)
+      final now = DateTime.now();
+      final firstDayOfMonth = DateTime(now.year, now.month, 1);
+      final lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+
+      final db = await _database.database;
+      final result = await db.rawQuery('''
+        SELECT COUNT(*) as count
+        FROM devotionals
+        WHERE is_completed = 1
+        AND completed_date >= ?
+        AND completed_date <= ?
+      ''', [
+        firstDayOfMonth.millisecondsSinceEpoch,
+        lastDayOfMonth.millisecondsSinceEpoch,
+      ]);
+
+      final completedThisMonth = result.first['count'] as int? ?? 0;
+
+      if (completedThisMonth >= 30) {
+        final completionCount = await _achievementService!.getCompletionCount(AchievementType.dailyBread);
+        // Record if first completion or every 30 devotionals
+        if (completionCount == 0 || completedThisMonth >= (completionCount + 1) * 30) {
+          await _achievementService!.recordCompletion(
+            type: AchievementType.dailyBread,
+            progressValue: completedThisMonth,
+          );
+        }
+      }
+    } catch (e) {
+      print('Failed to check devotional achievements: $e');
+    }
   }
 
   /// Mark a devotional as incomplete

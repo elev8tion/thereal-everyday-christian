@@ -969,6 +969,9 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         prayer: prayer,
       );
 
+      // Invalidate shared count providers for achievements
+      ref.invalidate(sharedChatsCountProvider);
+
       if (!mounted) return;
       AppSnackBar.show(
         context,

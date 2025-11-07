@@ -18,6 +18,7 @@ import '../utils/responsive_utils.dart';
 import 'chapter_reading_screen.dart';
 import '../services/devotional_share_service.dart';
 import '../core/services/database_service.dart';
+import '../core/services/achievement_service.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../components/base_bottom_sheet.dart';
 import '../core/navigation/navigation_service.dart';
@@ -37,8 +38,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   @override
   void initState() {
     super.initState();
+    final databaseService = DatabaseService();
     _devotionalShareService = DevotionalShareService(
-      databaseService: DatabaseService(),
+      databaseService: databaseService,
+      achievementService: AchievementService(databaseService),
     );
   }
 

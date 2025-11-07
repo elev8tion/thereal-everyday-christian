@@ -1399,7 +1399,11 @@ class ChatScreen extends HookConsumerWidget {
 
       try {
         final dbService = ref.read(databaseServiceProvider);
-        final chatShareService = ChatShareService(databaseService: dbService);
+        final achievementService = ref.read(achievementServiceProvider);
+        final chatShareService = ChatShareService(
+          databaseService: dbService,
+          achievementService: achievementService,
+        );
 
         // Filter out system messages
         final shareableMessages = messages.value.where((m) => m.type != MessageType.system).toList();
@@ -1443,7 +1447,11 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> shareMessageExchange(int aiMessageIndex) async {
       try {
         final dbService = ref.read(databaseServiceProvider);
-        final chatShareService = ChatShareService(databaseService: dbService);
+        final achievementService = ref.read(achievementServiceProvider);
+        final chatShareService = ChatShareService(
+          databaseService: dbService,
+          achievementService: achievementService,
+        );
 
         // Get the AI message and find its corresponding user message
         final aiMessage = messages.value[aiMessageIndex];

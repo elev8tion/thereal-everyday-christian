@@ -134,7 +134,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       Achievement(
         title: 'Disciple',
-        description: 'Share 10 conversations',
+        description: 'Share 10 items (verses, chats, prayers, or devotionals)',
         icon: Icons.share,
         color: Colors.teal,
         isUnlocked: sharedChats >= 10,
@@ -530,7 +530,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget _buildAchievementCard(Achievement achievement, int index) {
-    return Container(
+    Widget card = Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: AppSpacing.cardPadding,
       decoration: const BoxDecoration(
@@ -538,7 +538,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       child: Row(
         children: [
-          // Icon
+          // Icon with glow effect for unlocked achievements
           Container(
             width: 50,
             height: 50,
@@ -547,6 +547,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ? achievement.color.withValues(alpha: 0.2)
                   : Colors.white.withValues(alpha: 0.1),
               borderRadius: AppRadius.mediumRadius,
+              boxShadow: achievement.isUnlocked
+                  ? [
+                      BoxShadow(
+                        color: achievement.color.withValues(alpha: 0.4),
+                        blurRadius: 8,
+                        spreadRadius: 0,
+                      ),
+                    ]
+                  : null,
             ),
             child: Icon(
               achievement.icon,
@@ -620,6 +629,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ],
       ),
     );
+
+    // Add subtle pulse animation for unlocked achievements
+    if (achievement.isUnlocked) {
+      return card
+          .animate(onPlay: (controller) => controller.repeat())
+          .shimmer(
+            duration: const Duration(milliseconds: 2000),
+            color: achievement.color.withValues(alpha: 0.3),
+            angle: 0,
+          );
+    }
+
+    return card;
   }
 
   Widget _buildMenuSection() {

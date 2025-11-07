@@ -8,15 +8,20 @@ import 'package:uuid/uuid.dart';
 import '../components/chat_share_widget.dart';
 import '../models/chat_message.dart';
 import '../core/services/database_service.dart';
+import '../core/services/achievement_service.dart';
 
 /// Service for capturing and sharing chat conversations with branding
 class ChatShareService {
   final ScreenshotController _screenshotController = ScreenshotController();
   final DatabaseService? _databaseService;
+  final AchievementService? _achievementService;
   final _uuid = const Uuid();
 
-  ChatShareService({DatabaseService? databaseService})
-      : _databaseService = databaseService;
+  ChatShareService({
+    DatabaseService? databaseService,
+    AchievementService? achievementService,
+  })  : _databaseService = databaseService,
+        _achievementService = achievementService;
 
   ScreenshotController get controller => _screenshotController;
 
@@ -83,6 +88,11 @@ class ChatShareService {
         'session_id': sessionId,
         'shared_at': DateTime.now().millisecondsSinceEpoch,
       });
+
+      // Check for Disciple achievement (10 total shares across all types)
+      if (_achievementService != null) {
+        await _achievementService!.checkAllSharesAchievement();
+      }
     } catch (e) {
       debugPrint('Error tracking share: $e');
       // Don't rethrow - sharing succeeded, tracking failure shouldn't break UX

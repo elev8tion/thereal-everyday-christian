@@ -635,6 +635,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   // VerseShareService already tracks the share and calls achievement service
                   ref.invalidate(sharedVersesProvider);
                   ref.invalidate(sharedVersesCountProvider);
+                  ref.invalidate(sharedChatsCountProvider); // For Disciple achievement (all share types)
 
                   if (!mounted) return;
                   AppSnackBar.show(

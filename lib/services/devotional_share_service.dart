@@ -8,15 +8,20 @@ import 'package:uuid/uuid.dart';
 import '../components/devotional_share_widget.dart';
 import '../core/models/devotional.dart';
 import '../core/services/database_service.dart';
+import '../core/services/achievement_service.dart';
 
 /// Service for capturing and sharing devotionals with branding
 class DevotionalShareService {
   final ScreenshotController _screenshotController = ScreenshotController();
   final DatabaseService? _databaseService;
+  final AchievementService? _achievementService;
   final _uuid = const Uuid();
 
-  DevotionalShareService({DatabaseService? databaseService})
-      : _databaseService = databaseService;
+  DevotionalShareService({
+    DatabaseService? databaseService,
+    AchievementService? achievementService,
+  })  : _databaseService = databaseService,
+        _achievementService = achievementService;
 
   ScreenshotController get controller => _screenshotController;
 
@@ -83,6 +88,11 @@ class DevotionalShareService {
         'devotional_id': devotionalId,
         'shared_at': DateTime.now().millisecondsSinceEpoch,
       });
+
+      // Check for sharing achievements (counts ALL share types)
+      if (_achievementService != null) {
+        await _achievementService!.checkAllSharesAchievement();
+      }
     } catch (e) {
       debugPrint('Error tracking devotional share: $e');
       // Don't rethrow - sharing succeeded, tracking failure shouldn't break UX
