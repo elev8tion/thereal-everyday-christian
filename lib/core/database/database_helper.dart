@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 13;
+  static const int _databaseVersion = 14;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -454,6 +454,22 @@ class DatabaseHelper {
 
       await db.execute('CREATE INDEX idx_search_history ON search_history(created_at DESC)');
 
+      // ==================== ACHIEVEMENTS ====================
+
+      // Achievement completions table (tracks when users complete/earn achievements)
+      await db.execute('''
+        CREATE TABLE achievement_completions (
+          id TEXT PRIMARY KEY,
+          achievement_type TEXT NOT NULL,
+          completed_at INTEGER NOT NULL,
+          completion_count INTEGER NOT NULL,
+          progress_at_completion INTEGER NOT NULL
+        )
+      ''');
+
+      await db.execute('CREATE INDEX idx_achievement_completions_type ON achievement_completions(achievement_type)');
+      await db.execute('CREATE INDEX idx_achievement_completions_timestamp ON achievement_completions(completed_at DESC)');
+
       // ==================== ADDITIONAL PERFORMANCE INDEXES ====================
       // These indexes improve query performance for common operations
 
@@ -886,6 +902,31 @@ class DatabaseHelper {
         _logger.info('✅ Migration v12→v13 complete: shared_verses table updated with full schema');
       } catch (e) {
         _logger.error('Migration v12→v13 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 14) {
+      try {
+        // v13→v14: Add achievement_completions table for tracking achievement progress
+        _logger.info('Migrating v13→v14: Adding achievement_completions table');
+
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS achievement_completions (
+            id TEXT PRIMARY KEY,
+            achievement_type TEXT NOT NULL,
+            completed_at INTEGER NOT NULL,
+            completion_count INTEGER NOT NULL,
+            progress_at_completion INTEGER NOT NULL
+          )
+        ''');
+
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_achievement_completions_type ON achievement_completions(achievement_type)');
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_achievement_completions_timestamp ON achievement_completions(completed_at DESC)');
+
+        _logger.info('✅ Migration v13→v14 complete: achievement_completions table created');
+      } catch (e) {
+        _logger.error('Migration v13→v14 failed: $e');
         rethrow;
       }
     }

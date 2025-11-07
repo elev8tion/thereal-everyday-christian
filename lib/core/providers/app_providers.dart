@@ -16,6 +16,7 @@ import '../services/curated_reading_plan_loader.dart';
 import '../services/bible_loader_service.dart';
 import '../services/devotional_content_loader.dart';
 import '../services/preferences_service.dart';
+import '../services/achievement_service.dart';
 import '../models/devotional.dart';
 import '../models/reading_plan.dart';
 import '../../services/unified_verse_service.dart';
@@ -82,6 +83,11 @@ final todaysVerseProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
 final prayerServiceProvider = Provider<PrayerService>((ref) {
   final database = ref.watch(databaseServiceProvider);
   return PrayerService(database);
+});
+
+final achievementServiceProvider = Provider<AchievementService>((ref) {
+  final database = ref.watch(databaseServiceProvider);
+  return AchievementService(database);
 });
 
 // TODO: REFACTOR - Multiple verse services exist with overlapping functionality
