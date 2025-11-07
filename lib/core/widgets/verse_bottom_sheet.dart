@@ -530,35 +530,50 @@ class VerseBottomSheet extends ConsumerWidget {
     final shareText = '"${verse.text}"\n\n${verse.reference} (WEB)\n\nShared from Everyday Christian';
 
     try {
-      await SharePlus.instance.share(
+      final result = await SharePlus.instance.share(
         ShareParams(
           text: shareText,
         ),
       );
 
-      final appVerse = app_models.BibleVerse(
-        id: verse.id,
-        book: verse.book,
-        chapter: verse.chapter,
-        verseNumber: verse.verseNumber,
-        text: verse.text,
-        translation: verse.translation,
-        reference: verse.reference,
-        themes: verse.themes,
-        category: verse.themes.isNotEmpty ? verse.themes.first : 'general',
-      );
+      // Only proceed if share was successful (not dismissed/cancelled)
+      if (result.status == ShareResultStatus.success) {
+        final appVerse = app_models.BibleVerse(
+          id: verse.id,
+          book: verse.book,
+          chapter: verse.chapter,
+          verseNumber: verse.verseNumber,
+          text: verse.text,
+          translation: verse.translation,
+          reference: verse.reference,
+          themes: verse.themes,
+          category: verse.themes.isNotEmpty ? verse.themes.first : 'general',
+        );
 
-      await ref.read(unifiedVerseServiceProvider).recordSharedVerse(appVerse);
-      ref.invalidate(sharedVersesProvider);
-      ref.invalidate(sharedVersesCountProvider);
+        await ref.read(unifiedVerseServiceProvider).recordSharedVerse(appVerse);
 
-      if (!context.mounted) return;
-      AppSnackBar.show(
-        context,
-        message: 'Verse shared!',
-        icon: Icons.share,
-        iconColor: AppTheme.primaryColor,
-      );
+        // Remove from saved verses after successful share
+        if (verse.id != null) {
+          try {
+            await ref.read(unifiedVerseServiceProvider).removeFromFavorites(verse.id!);
+          } catch (removeError) {
+            // Silently handle removal errors
+          }
+        }
+
+        ref.invalidate(sharedVersesProvider);
+        ref.invalidate(sharedVersesCountProvider);
+        ref.invalidate(favoriteVersesProvider);
+        ref.invalidate(savedVersesCountProvider);
+
+        if (!context.mounted) return;
+        AppSnackBar.show(
+          context,
+          message: 'Verse shared and moved to Shared tab!',
+          icon: Icons.share,
+          iconColor: AppTheme.primaryColor,
+        );
+      }
     } catch (e) {
       if (!context.mounted) return;
       AppSnackBar.showError(
