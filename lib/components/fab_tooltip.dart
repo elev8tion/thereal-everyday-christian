@@ -26,35 +26,44 @@ class FabTooltip extends StatelessWidget {
         children: [
           // Arrow at top if pointing down
           if (pointingDown) ...[
-            // Tooltip content with pulse animation
-            DarkGlassContainer(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            margin: EdgeInsets.zero,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.touch_app,
-                  color: AppTheme.goldColor,
-                  size: ResponsiveUtils.iconSize(context, 20),
+            // Tooltip content with pulse animation and red border
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(
+                  color: Colors.red,
+                  width: 1,
                 ),
-                const SizedBox(width: 8),
-                Flexible(
-                  child: Text(
-                    message,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                      fontWeight: FontWeight.w600,
+              ),
+              child: DarkGlassContainer(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                margin: EdgeInsets.zero,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.touch_app,
+                      color: AppTheme.goldColor,
+                      size: ResponsiveUtils.iconSize(context, 20),
                     ),
-                  ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        message,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )
+              ),
+            )
           .animate()
-          .fadeIn(duration: 400.ms, delay: 200.ms)
-          .slideY(begin: 0.3, end: 0, duration: 400.ms, delay: 200.ms)
+          .fadeIn(duration: 600.ms, delay: 300.ms, curve: Curves.easeOut)
+          .slideY(begin: -0.1, end: 0, duration: 600.ms, delay: 300.ms, curve: Curves.easeOutCubic)
           .then() // Start pulse after initial animation
           .animate(onPlay: (controller) => controller.repeat(reverse: true))
           .scaleXY(
@@ -92,30 +101,39 @@ class FabTooltip extends StatelessWidget {
 
             const SizedBox(height: 4),
 
-            // Tooltip content with pulse animation
-            DarkGlassContainer(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              margin: EdgeInsets.zero,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.touch_app,
-                    color: AppTheme.goldColor,
-                    size: ResponsiveUtils.iconSize(context, 20),
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      message,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                        fontWeight: FontWeight.w600,
+            // Tooltip content with pulse animation and red border
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(
+                  color: Colors.red,
+                  width: 1,
+                ),
+              ),
+              child: DarkGlassContainer(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                margin: EdgeInsets.zero,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.touch_app,
+                      color: AppTheme.goldColor,
+                      size: ResponsiveUtils.iconSize(context, 20),
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        message,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
             .animate()

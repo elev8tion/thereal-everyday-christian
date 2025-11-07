@@ -1239,7 +1239,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
-            borderColor: Colors.transparent,
+            borderColor: AppTheme.goldColor,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1556,7 +1556,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
-            borderColor: Colors.transparent,
+            borderColor: AppTheme.goldColor,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -4013,7 +4013,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             maxWidth: ResponsiveUtils.maxContentWidth(context),
           ),
           child: FrostedGlassCard(
-            borderColor: Colors.transparent,
+            borderColor: AppTheme.goldColor,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
