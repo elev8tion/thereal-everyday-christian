@@ -78,9 +78,30 @@ class VerseShareService {
   Future<void> _trackShare(int verseId) async {
     try {
       final db = await _databaseService!.database;
+
+      // Fetch the full verse data to populate all required columns
+      final verses = await db.query(
+        'bible_verses',
+        where: 'id = ?',
+        whereArgs: [verseId],
+        limit: 1,
+      );
+
+      if (verses.isEmpty) return;
+
+      final verseData = verses.first;
+
       await db.insert('shared_verses', {
         'id': _uuid.v4(),
         'verse_id': verseId,
+        'book': verseData['book'] as String,
+        'chapter': verseData['chapter'] as int,
+        'verse_number': verseData['verse'] as int,
+        'reference': '${verseData['book']} ${verseData['chapter']}:${verseData['verse']}',
+        'translation': verseData['version'] as String,
+        'text': verseData['text'] as String,
+        'themes': verseData['themes'] as String?, // May be null
+        'channel': 'share_sheet',
         'shared_at': DateTime.now().millisecondsSinceEpoch,
       });
     } catch (e) {
