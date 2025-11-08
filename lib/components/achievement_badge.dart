@@ -58,33 +58,40 @@ class AchievementBadge extends StatelessWidget {
             ),
           ),
 
-          // Completion count badge (frosted glass style, only if earned more than once)
-          if (completionCount > 1)
+          // Completion count badge (CategoryBadge style, only if earned)
+          if (completionCount > 0)
             Positioned(
-              right: -4,
-              bottom: -4,
+              right: -6,
+              top: -6,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      color.withValues(alpha: 0.25),
+                      color.withValues(alpha: 0.15),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    width: 1.5,
+                    color: color.withValues(alpha: 0.6),
+                    width: 2,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
+                      color: color.withValues(alpha: 0.2),
+                      blurRadius: 6,
+                      spreadRadius: 0,
                     ),
                   ],
                 ),
                 child: Text(
-                  '×$completionCount',
+                  '$completionCount',
                   style: const TextStyle(
                     fontSize: 10,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                     height: 1,
                   ),
