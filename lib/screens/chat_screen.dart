@@ -39,6 +39,7 @@ import '../components/standard_screen_header.dart';
 import '../components/chat_action_buttons_header.dart';
 import '../components/verse_context_message.dart';
 import '../models/verse_context.dart';
+import '../core/widgets/app_snackbar.dart';
 import '../services/chat_share_service.dart';
 
 class ChatScreen extends HookConsumerWidget {
@@ -916,53 +917,10 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> exportConversation() async {
       if (sessionId.value == null) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 2),
-              margin: const EdgeInsets.all(16),
-              padding: EdgeInsets.zero,
-              content: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF1E293B), // slate-800
-                      Color(0xFF0F172A), // slate-900
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppTheme.goldColor.withValues(alpha: 0.3),
-                    width: 1,
-                  ),
-                ),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Colors.white70,
-                      size: 20,
-                    ),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'No conversation to export',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          AppSnackBar.show(
+            context,
+            message: 'No conversation to export',
+            icon: Icons.info_outline,
           );
         }
         return;
@@ -974,53 +932,10 @@ class ChatScreen extends HookConsumerWidget {
 
         if (exportText.isEmpty) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                behavior: SnackBarBehavior.floating,
-                duration: const Duration(seconds: 2),
-                margin: const EdgeInsets.all(16),
-                padding: EdgeInsets.zero,
-                content: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xFF1E293B), // slate-800
-                        Color(0xFF0F172A), // slate-900
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppTheme.goldColor.withValues(alpha: 0.3),
-                      width: 1,
-                    ),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: Colors.white70,
-                        size: 20,
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'No messages to export',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            AppSnackBar.show(
+              context,
+              message: 'No messages to export',
+              icon: Icons.info_outline,
             );
           }
           return;
@@ -1085,14 +1000,21 @@ class ChatScreen extends HookConsumerWidget {
                       GlassDialogButton(
                         text: 'Share',
                         isPrimary: true,
-                        onTap: () {
+                        onTap: () async {
                           Navigator.pop(context);
-                          SharePlus.instance.share(
+                          await SharePlus.instance.share(
                             ShareParams(
                               text: exportText,
                               subject: 'Biblical AI Conversation Export',
                             ),
                           );
+                          if (context.mounted) {
+                            AppSnackBar.show(
+                              context,
+                              message: 'Conversation exported successfully',
+                              icon: Icons.check_circle_outline,
+                            );
+                          }
                         },
                       ),
                     ],
@@ -1105,53 +1027,9 @@ class ChatScreen extends HookConsumerWidget {
       } catch (e) {
         debugPrint('❌ Failed to export conversation: $e');
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 3),
-              margin: const EdgeInsets.all(16),
-              padding: EdgeInsets.zero,
-              content: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF1E293B), // slate-800
-                      Color(0xFF0F172A), // slate-900
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.red.withValues(alpha: 0.5),
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      color: Colors.red.shade300,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'Failed to export: $e',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          AppSnackBar.showError(
+            context,
+            message: 'Failed to export: $e',
           );
         }
       }
@@ -1161,53 +1039,10 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> shareText() async {
       if (sessionId.value == null) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 2),
-              margin: const EdgeInsets.all(16),
-              padding: EdgeInsets.zero,
-              content: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF1E293B), // slate-800
-                      Color(0xFF0F172A), // slate-900
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppTheme.goldColor.withValues(alpha: 0.3),
-                    width: 1,
-                  ),
-                ),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Colors.white70,
-                      size: 20,
-                    ),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'No conversation to share',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          AppSnackBar.show(
+            context,
+            message: 'No conversation to share',
+            icon: Icons.info_outline,
           );
         }
         return;
@@ -1219,53 +1054,10 @@ class ChatScreen extends HookConsumerWidget {
 
         if (exportText.isEmpty) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                behavior: SnackBarBehavior.floating,
-                duration: const Duration(seconds: 2),
-                margin: const EdgeInsets.all(16),
-                padding: EdgeInsets.zero,
-                content: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xFF1E293B), // slate-800
-                        Color(0xFF0F172A), // slate-900
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppTheme.goldColor.withValues(alpha: 0.3),
-                      width: 1,
-                    ),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: Colors.white70,
-                        size: 20,
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'No messages to share',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            AppSnackBar.show(
+              context,
+              message: 'No messages to share',
+              icon: Icons.info_outline,
             );
           }
           return;
@@ -1279,105 +1071,18 @@ class ChatScreen extends HookConsumerWidget {
         );
 
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 2),
-              margin: const EdgeInsets.all(16),
-              padding: EdgeInsets.zero,
-              content: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF1E293B), // slate-800
-                      Color(0xFF0F172A), // slate-900
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppTheme.goldColor.withValues(alpha: 0.3),
-                    width: 1,
-                  ),
-                ),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle,
-                      color: AppTheme.goldColor,
-                      size: 20,
-                    ),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        '📤 Conversation shared',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          AppSnackBar.show(
+            context,
+            message: 'Conversation shared successfully',
+            icon: Icons.check_circle_outline,
           );
         }
       } catch (e) {
         debugPrint('❌ Failed to share conversation: $e');
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 3),
-              margin: const EdgeInsets.all(16),
-              padding: EdgeInsets.zero,
-              content: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF1E293B), // slate-800
-                      Color(0xFF0F172A), // slate-900
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.red.withValues(alpha: 0.5),
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      color: Colors.red.shade300,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'Failed to share: $e',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          AppSnackBar.showError(
+            context,
+            message: 'Failed to share: $e',
           );
         }
       }
@@ -1387,11 +1092,10 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> shareConversationAsImage() async {
       if (messages.value.isEmpty) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No messages to share'),
-              backgroundColor: Colors.orange,
-            ),
+          AppSnackBar.show(
+            context,
+            message: 'No messages to share',
+            icon: Icons.info_outline,
           );
         }
         return;
@@ -1410,11 +1114,10 @@ class ChatScreen extends HookConsumerWidget {
 
         if (shareableMessages.isEmpty) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('No messages to share'),
-                backgroundColor: Colors.orange,
-              ),
+            AppSnackBar.show(
+              context,
+              message: 'No messages to share',
+              icon: Icons.info_outline,
             );
           }
           return;
@@ -1430,14 +1133,20 @@ class ChatScreen extends HookConsumerWidget {
           messageWidgets: messageWidgets,
           sessionId: sessionId.value,
         );
+
+        if (context.mounted) {
+          AppSnackBar.show(
+            context,
+            message: 'Conversation image shared successfully',
+            icon: Icons.check_circle_outline,
+          );
+        }
       } catch (e) {
         debugPrint('Error sharing conversation: $e');
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to share. Please try again.'),
-              backgroundColor: Colors.red,
-            ),
+          AppSnackBar.showError(
+            context,
+            message: 'Failed to share. Please try again.',
           );
         }
       }
@@ -1467,11 +1176,9 @@ class ChatScreen extends HookConsumerWidget {
 
         if (userMessage == null) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Could not find the question for this response'),
-                backgroundColor: Colors.orange,
-              ),
+            AppSnackBar.showError(
+              context,
+              message: 'Could not find the question for this response',
             );
           }
           return;
@@ -1490,14 +1197,22 @@ class ChatScreen extends HookConsumerWidget {
           messageWidgets: messageWidgets,
           sessionId: sessionId.value,
         );
+
+        // Show success message
+        if (context.mounted) {
+          AppSnackBar.show(
+            context,
+            message: 'Message exchange shared successfully!',
+            icon: Icons.share,
+            iconColor: AppTheme.goldColor,
+          );
+        }
       } catch (e) {
         debugPrint('Error sharing message exchange: $e');
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to share. Please try again.'),
-              backgroundColor: Colors.red,
-            ),
+          AppSnackBar.showError(
+            context,
+            message: 'Failed to share. Please try again.',
           );
         }
       }
@@ -2033,13 +1748,11 @@ class ChatScreen extends HookConsumerWidget {
                         Navigator.pop(context);
                         await Clipboard.setData(ClipboardData(text: message.content));
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text('Message copied to clipboard'),
-                              backgroundColor: AppTheme.primaryColor,
-                              behavior: SnackBarBehavior.floating,
-                              duration: const Duration(seconds: 2),
-                            ),
+                          AppSnackBar.show(
+                            context,
+                            message: 'Message copied to clipboard',
+                            icon: Icons.content_copy,
+                            iconColor: AppTheme.primaryColor,
                           );
                         }
                       },
