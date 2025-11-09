@@ -1,5 +1,5 @@
 -- Update all book names in kc_edc_spanish_bible.db to Spanish
--- Based on Reina Valera naming conventions
+-- Modern Spanish book naming conventions
 -- Run with: sqlite3 assets/kc_edc_spanish_bible.db < assets/update_spanish_book_names.sql
 
 BEGIN TRANSACTION;
@@ -80,13 +80,13 @@ SET value = '2025-11-09',
 WHERE key = 'book_names_updated';
 
 INSERT OR REPLACE INTO translation_metadata (key, value, last_updated)
-VALUES ('book_names_language', 'Spanish (Reina Valera style)', datetime('now'));
+VALUES ('book_names_language', 'Spanish', datetime('now'));
 
 INSERT OR REPLACE INTO translation_metadata (key, value, last_updated)
 VALUES ('version', '1.4.0', datetime('now'));
 
 INSERT OR REPLACE INTO translation_metadata (key, value, last_updated)
-VALUES ('version_1.4.0_changes', 'Converted all 66 book names to Spanish (Reina Valera naming)', datetime('now'));
+VALUES ('version_1.4.0_changes', 'Converted all 66 book names to Spanish', datetime('now'));
 
 COMMIT;
 
