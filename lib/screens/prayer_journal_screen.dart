@@ -466,7 +466,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                       orElse: () => categories.isNotEmpty ? categories.first : _getDefaultCategory(),
                     );
                     return CategoryBadge(
-                      text: category.name,
+                      text: _getLocalizedCategoryName(category.name),
                       badgeColor: category.color,
                       icon: category.icon,
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -755,13 +755,18 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                           SizedBox(
                             height: ResponsiveUtils.scaleSize(context, 40, minScale: 0.9, maxScale: 1.2),
                             child: BlurDropdown(
-                              value: categories.firstWhere((c) => c.id == selectedCategoryId, orElse: () => categories.first).name,
-                              items: categories.map((category) => category.name).toList(),
+                              value: _getLocalizedCategoryName(categories.firstWhere((c) => c.id == selectedCategoryId, orElse: () => categories.first).name),
+                              items: categories.map((category) => _getLocalizedCategoryName(category.name)).toList(),
                               hint: l10n.selectCategory,
                               onChanged: (value) {
                                 if (value != null) {
                                   setState(() {
-                                    selectedCategoryId = categories.firstWhere((c) => c.name == value).id;
+                                    // Find category by matching localized name back to English
+                                    final matchedCategory = categories.firstWhere(
+                                      (c) => _getLocalizedCategoryName(c.name) == value,
+                                      orElse: () => categories.first,
+                                    );
+                                    selectedCategoryId = matchedCategory.id;
                                   });
                                 }
                               },
@@ -1112,6 +1117,36 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
     }
   }
 
+
+  String _getLocalizedCategoryName(String englishName) {
+    final l10n = AppLocalizations.of(context);
+    switch (englishName.toLowerCase()) {
+      case 'family':
+        return l10n.family;
+      case 'health':
+        return l10n.health;
+      case 'work':
+        return l10n.work;
+      case 'ministry':
+        return l10n.ministry;
+      case 'thanksgiving':
+        return l10n.thanksgiving;
+      case 'intercession':
+        return l10n.intercession;
+      case 'finances':
+        return l10n.finances;
+      case 'relationships':
+        return l10n.relationships;
+      case 'guidance':
+        return l10n.guidance;
+      case 'protection':
+        return l10n.protection;
+      case 'general':
+        return l10n.general;
+      default:
+        return englishName; // Fallback to original name
+    }
+  }
 
   PrayerCategory _getDefaultCategory() {
     return PrayerCategory(

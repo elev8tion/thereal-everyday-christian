@@ -360,8 +360,8 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
                       l10n.localeName == 'es'
                           ? 'assets/images/logo_spanish.png'
                           : 'assets/images/logo_cropped.png',
-                      width: l10n.localeName == 'es' ? 70 : 64,
-                      height: l10n.localeName == 'es' ? 70 : 64,
+                      width: 64,
+                      height: 64,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         // Fallback to icon if logo fails to load

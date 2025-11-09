@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+
   "appName": "EVERYDAY",
   "@appName": {
     "description": "First part of app name on splash screen"
@@ -24,6 +25,7 @@
   "@builtWithFaith": {
     "description": "Footer message on splash screen"
   },
+
   "faithGuidedCompanion": "Your faith-guided companion for life's moments",
   "@faithGuidedCompanion": {
     "description": "Onboarding subtitle"
@@ -60,6 +62,7 @@
   "@continueAsGuest": {
     "description": "Skip onboarding option"
   },
+
   "welcomeBack": "Welcome Back",
   "@welcomeBack": {
     "description": "Auth screen title"
@@ -128,6 +131,7 @@
   "@or": {
     "description": "Divider text between options"
   },
+
   "riseAndShine": "Rise and shine",
   "@riseAndShine": {
     "description": "Morning greeting"
@@ -256,6 +260,7 @@
   "@startSpiritualConversation": {
     "description": "Chat CTA button"
   },
+
   "biblicalAIGuidance": "Biblical AI Guidance",
   "@biblicalAIGuidance": {
     "description": "Chat screen title"
@@ -276,6 +281,7 @@
   "@chatWelcomeMessage": {
     "description": "Welcome message content"
   },
+
   "bringRequestsToGod": "Plan Pray Reflect",
   "@bringRequestsToGod": {
     "description": "Prayer journal subtitle"
@@ -395,12 +401,6 @@
     "description": "Prayer category"
   },
   "general": "General",
-  "work": "Work",
-  "ministry": "Ministry",
-  "thanksgiving": "Thanksgiving",
-  "intercession": "Intercession",
-  "finances": "Finances",
-  "relationships": "Relationships",
   "@general": {
     "description": "Prayer category"
   },
@@ -422,6 +422,7 @@
       }
     }
   },
+
   "dayStreakCount": "{count} day streak",
   "@dayStreakCount": {
     "description": "Streak count",
@@ -524,6 +525,7 @@
   "@errorLoadingDevotionals": {
     "description": "Error state title"
   },
+
   "growInGodsWord": "Grow in God's word daily",
   "@growInGodsWord": {
     "description": "Reading plan subtitle"
@@ -658,6 +660,7 @@
       }
     }
   },
+
   "verseLibrary": "Verse Library",
   "@verseLibrary": {
     "description": "Screen title"
@@ -766,6 +769,7 @@
   "@createImageQuote": {
     "description": "Share option"
   },
+
   "notifications": "Notifications",
   "@notifications": {
     "description": "Settings section title"
@@ -1010,6 +1014,7 @@
   "@openingTermsOfService": {
     "description": "Snackbar message"
   },
+
   "yourSpiritualJourney": "Your Spiritual Journey",
   "@yourSpiritualJourney": {
     "description": "Section title"
@@ -1126,6 +1131,7 @@
       }
     }
   },
+
   "nameDeleted": "Name deleted successfully",
   "@nameDeleted": {
     "description": "Name deletion success message"
@@ -1192,6 +1198,7 @@
       }
     }
   },
+
   "bibleBrowser": "Bible Browser",
   "@bibleBrowser": {
     "description": "Bible browser screen title"
@@ -1264,6 +1271,7 @@
       }
     }
   },
+
   "chapterPlaybackComplete": "Chapter playback complete",
   "@chapterPlaybackComplete": {
     "description": "Audio playback completion message"
@@ -1364,6 +1372,7 @@
       }
     }
   },
+
   "devotionalOptions": "Devotional Options",
   "@devotionalOptions": {
     "description": "Devotional options bottom sheet title"
@@ -1424,1012 +1433,9 @@
       }
     }
   },
+
   "error": "Error",
   "@error": {
     "description": "Generic error label"
-  },
-  "filterByCategory": "Filter by Category",
-  "@filterByCategory": {
-    "description": "Prayer journal category filter label"
-  },
-  "clearFilter": "Clear Filter",
-  "@clearFilter": {
-    "description": "Clear category filter button"
-  },
-  "loading": "Loading...",
-  "@loading": {
-    "description": "Generic loading text"
-  },
-  "share": "Share",
-  "@share": {
-    "description": "Share action label"
-  },
-  "selectCategory": "Select Category",
-  "@selectCategory": {
-    "description": "Category selection dropdown hint"
-  },
-  "errorLoadingCategories": "Error loading categories",
-  "@errorLoadingCategories": {
-    "description": "Category loading error message"
-  },
-  "prayerAddedSuccessfully": "Prayer added successfully",
-  "@prayerAddedSuccessfully": {
-    "description": "Prayer addition success message"
-  },
-  "errorAddingPrayer": "Error adding prayer: {error}",
-  "@errorAddingPrayer": {
-    "description": "Prayer addition error message",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
-  },
-  "prayerMarkedAnswered": "Prayer marked as answered! 🙏",
-  "@prayerMarkedAnswered": {
-    "description": "Prayer marked answered success message"
-  },
-  "prayerSharedSuccessfully": "Prayer shared successfully! 🙏",
-  "@prayerSharedSuccessfully": {
-    "description": "Prayer share success message"
-  },
-  "unableToSharePrayer": "Unable to share prayer: {error}",
-  "@unableToSharePrayer": {
-    "description": "Prayer share error message",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
-  },
-  "deletePrayer": "Delete Prayer",
-  "@deletePrayer": {
-    "description": "Delete prayer dialog title"
-  },
-  "deletePrayerConfirmation": "Are you sure you want to delete \"{title}\"?",
-  "@deletePrayerConfirmation": {
-    "description": "Delete prayer confirmation message",
-    "placeholders": {
-      "title": {
-        "type": "String",
-        "example": "Prayer for healing"
-      }
-    }
-  },
-  "prayerDeleted": "Prayer deleted",
-  "@prayerDeleted": {
-    "description": "Prayer deletion success message"
-  },
-  "errorDeletingPrayer": "Error deleting prayer: {error}",
-  "@errorDeletingPrayer": {
-    "description": "Prayer deletion error message",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Database error"
-      }
-    }
-  },
-  "unableToLoadPrayers": "Unable to load prayers",
-  "@unableToLoadPrayers": {
-    "description": "Prayer loading error message"
-  },
-  "unableToLoadAnsweredPrayers": "Unable to load answered prayers",
-  "@unableToLoadAnsweredPrayers": {
-    "description": "Answered prayers loading error message"
-  },
-  "paywallTitle": "Premium",
-  "@paywallTitle": {
-    "description": "Paywall screen title"
-  },
-  "paywallSubtitle": "Unlock AI chat features",
-  "@paywallSubtitle": {
-    "description": "Paywall screen subtitle"
-  },
-  "paywallTrialDaysLeft": "{days} days left in trial",
-  "@paywallTrialDaysLeft": {
-    "description": "Trial days remaining badge",
-    "placeholders": {
-      "days": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "paywallTrialBlockedMessage": "Welcome back!\n\nYour trial has been used on this device.\nSubscribe to continue using AI chat.",
-  "@paywallTrialBlockedMessage": {
-    "description": "Message shown when trial was already used"
-  },
-  "paywallTrialEndedMessage": "Your trial has ended.\nUpgrade to continue using AI chat.",
-  "@paywallTrialEndedMessage": {
-    "description": "Message shown when trial has expired"
-  },
-  "paywallMessagesLeft": "Messages\nLeft",
-  "@paywallMessagesLeft": {
-    "description": "Messages remaining stat label"
-  },
-  "paywallUsedThisMonth": "Used This\nMonth",
-  "@paywallUsedThisMonth": {
-    "description": "Messages used this month label"
-  },
-  "paywallUsedInTrial": "Used in\nTrial",
-  "@paywallUsedInTrial": {
-    "description": "Messages used in trial label"
-  },
-  "paywallMonthlyLimit": "Monthly\nLimit",
-  "@paywallMonthlyLimit": {
-    "description": "Monthly message limit label"
-  },
-  "paywallTrialDaysLeft2": "Trial Days\nLeft",
-  "@paywallTrialDaysLeft2": {
-    "description": "Trial days remaining stat label"
-  },
-  "paywallPerYear": "per year",
-  "@paywallPerYear": {
-    "description": "Per year pricing label"
-  },
-  "paywallPricingDisclaimer": "(pricing may vary by region and currency)",
-  "@paywallPricingDisclaimer": {
-    "description": "Pricing disclaimer"
-  },
-  "paywall150MessagesPerMonth": "150 AI messages per month",
-  "@paywall150MessagesPerMonth": {
-    "description": "Monthly message limit feature"
-  },
-  "paywallLessThan3PerMonth": "Less than $3 per month",
-  "@paywallLessThan3PerMonth": {
-    "description": "Cost breakdown message"
-  },
-  "paywallWhatsIncluded": "What's Included",
-  "@paywallWhatsIncluded": {
-    "description": "Features section title"
-  },
-  "paywallFeatureIntelligentChat": "Intelligent Scripture Chat",
-  "@paywallFeatureIntelligentChat": {
-    "description": "Feature title"
-  },
-  "paywallFeatureIntelligentChatDesc": "Custom Real World Pastoral Training",
-  "@paywallFeatureIntelligentChatDesc": {
-    "description": "Feature description"
-  },
-  "paywallFeature150Messages": "150 Messages Monthly",
-  "@paywallFeature150Messages": {
-    "description": "Feature title"
-  },
-  "paywallFeature150MessagesDesc": "More than enough for daily conversations",
-  "@paywallFeature150MessagesDesc": {
-    "description": "Feature description"
-  },
-  "paywallFeatureContextAware": "Context-Aware Responses",
-  "@paywallFeatureContextAware": {
-    "description": "Feature title"
-  },
-  "paywallFeatureContextAwareDesc": "Biblical intelligence tailored to provide insight",
-  "@paywallFeatureContextAwareDesc": {
-    "description": "Feature description"
-  },
-  "paywallFeatureCrisisDetection": "Crisis Detection",
-  "@paywallFeatureCrisisDetection": {
-    "description": "Feature title"
-  },
-  "paywallFeatureCrisisDetectionDesc": "Built-in safeguards and professional referrals",
-  "@paywallFeatureCrisisDetectionDesc": {
-    "description": "Feature description"
-  },
-  "paywallFeatureFullBibleAccess": "Full Bible Access",
-  "@paywallFeatureFullBibleAccess": {
-    "description": "Feature title"
-  },
-  "paywallFeatureFullBibleAccessDesc": "All free features remain available",
-  "@paywallFeatureFullBibleAccessDesc": {
-    "description": "Feature description"
-  },
-  "paywallProcessing": "Processing...",
-  "@paywallProcessing": {
-    "description": "Processing purchase button text"
-  },
-  "paywallStartPremiumButton": "Start Premium - {price}/year",
-  "@paywallStartPremiumButton": {
-    "description": "Start premium subscription button",
-    "placeholders": {
-      "price": {
-        "type": "String",
-        "example": "$35.99"
-      }
-    }
-  },
-  "paywallRestorePurchase": "Restore Previous Purchase",
-  "@paywallRestorePurchase": {
-    "description": "Restore purchase button text"
-  },
-  "paywallSubscriptionTerms": "Payment will be charged to your App Store account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in your App Store account settings.",
-  "@paywallSubscriptionTerms": {
-    "description": "Subscription terms and conditions"
-  },
-  "paywallPremiumActivatedSuccess": "Premium activated! 150 Messages Monthly.",
-  "@paywallPremiumActivatedSuccess": {
-    "description": "Premium activation success message"
-  },
-  "paywallPurchaseFailed": "Purchase failed. Please try again.",
-  "@paywallPurchaseFailed": {
-    "description": "Purchase failure error message"
-  },
-  "paywallPurchaseRestoredSuccess": "Purchase restored successfully!",
-  "@paywallPurchaseRestoredSuccess": {
-    "description": "Purchase restore success message"
-  },
-  "paywallNoPreviousPurchaseFound": "No previous purchase found.",
-  "@paywallNoPreviousPurchaseFound": {
-    "description": "No previous purchase error message"
-  },
-
-  "everydayVerses": "Everyday verses",
-  "@everydayVerses": {
-    "description": "Verse library subtitle"
-  },
-  "shared": "Shared",
-  "@shared": {
-    "description": "Shared verses tab label"
-  },
-  "noSharedVersesYet": "No shared verses yet",
-  "@noSharedVersesYet": {
-    "description": "Empty shared verses state title"
-  },
-  "noSavedVersesYet": "No saved verses yet",
-  "@noSavedVersesYet": {
-    "description": "Empty saved verses state title"
-  },
-  "saveVersesWhileReading": "💡 Save verses while reading to build your collection",
-  "@saveVersesWhileReading": {
-    "description": "Empty saved verses state subtitle"
-  },
-  "somethingWentWrong": "Something went wrong",
-  "@somethingWentWrong": {
-    "description": "Generic error title"
-  },
-  "verseCopiedToClipboard": "Verse copied to clipboard",
-  "@verseCopiedToClipboard": {
-    "description": "Verse copied success message"
-  },
-  "shareText": "Share Text",
-  "@shareText": {
-    "description": "Share as text option"
-  },
-  "unableToShareVerse": "Unable to share verse: {error}",
-  "@unableToShareVerse": {
-    "description": "Verse share error message",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
-  },
-  "verseLibraryOptions": "Verse Library Options",
-  "@verseLibraryOptions": {
-    "description": "Verse library options bottom sheet title"
-  },
-  "aboutVerseLibrary": "About Verse Library",
-  "@aboutVerseLibrary": {
-    "description": "About verse library menu option"
-  },
-  "viewSharedHistory": "View shared history",
-  "@viewSharedHistory": {
-    "description": "View shared history menu option"
-  },
-  "clearSavedVerses": "Clear saved verses",
-  "@clearSavedVerses": {
-    "description": "Clear saved verses menu option"
-  },
-  "clearSharedHistory": "Clear shared history",
-  "@clearSharedHistory": {
-    "description": "Clear shared history menu option"
-  },
-  "removedFromSharedHistory": "Removed from shared history",
-  "@removedFromSharedHistory": {
-    "description": "Shared verse deleted success message"
-  },
-  "unableToRemoveSharedVerse": "Unable to remove shared verse: {error}",
-  "@unableToRemoveSharedVerse": {
-    "description": "Shared verse deletion error message",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Database error"
-      }
-    }
-  },
-  "unableToRemoveVerse": "Unable to remove verse: {error}",
-  "@unableToRemoveVerse": {
-    "description": "Verse deletion error message",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Database error"
-      }
-    }
-  },
-  "clearSharedHistoryQuestion": "Clear shared history?",
-  "@clearSharedHistoryQuestion": {
-    "description": "Clear shared history dialog title"
-  },
-  "clearSharedHistoryConfirmation": "This removes every verse from your Shared tab. Future shares will continue to appear here.",
-  "@clearSharedHistoryConfirmation": {
-    "description": "Clear shared history dialog message"
-  },
-  "clearAll": "Clear All",
-  "@clearAll": {
-    "description": "Clear all button text"
-  },
-  "sharedHistoryCleared": "Shared history cleared",
-  "@sharedHistoryCleared": {
-    "description": "Shared history cleared success message"
-  },
-  "unableToClearSharedHistory": "Unable to clear shared history: {error}",
-  "@unableToClearSharedHistory": {
-    "description": "Clear shared history error message",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Database error"
-      }
-    }
-  },
-  "clearSavedVersesQuestion": "Clear saved verses?",
-  "@clearSavedVersesQuestion": {
-    "description": "Clear saved verses dialog title"
-  },
-  "clearSavedVersesConfirmation": "This will remove every verse from your Saved list. You can always add them again later.",
-  "@clearSavedVersesConfirmation": {
-    "description": "Clear saved verses dialog message"
-  },
-  "savedVersesCleared": "Saved verses cleared",
-  "@savedVersesCleared": {
-    "description": "Saved verses cleared success message"
-  },
-  "unableToClearSavedVerses": "Unable to clear saved verses: {error}",
-  "@unableToClearSavedVerses": {
-    "description": "Clear saved verses error message",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Database error"
-      }
-    }
-  },
-
-  "welcomeToEverydayChristian": "Welcome to Everyday Christian",
-  "@welcomeToEverydayChristian": {
-    "description": "Onboarding welcome title"
-  },
-  "dailyScriptureGuidance": "Bible Study, Prayer, & Devotionals",
-  "@dailyScriptureGuidance": {
-    "description": "Onboarding subtitle"
-  },
-  "beforeWeBeginReview": "Before we begin, please review:",
-  "@beforeWeBeginReview": {
-    "description": "Legal agreements introduction"
-  },
-  "acceptTermsOfService": "I accept the Terms of Service",
-  "@acceptTermsOfService": {
-    "description": "Terms checkbox label"
-  },
-  "acceptPrivacyPolicy": "I accept the Privacy Policy",
-  "@acceptPrivacyPolicy": {
-    "description": "Privacy checkbox label"
-  },
-  "confirmAge13Plus": "I confirm I am 13+ years old",
-  "@confirmAge13Plus": {
-    "description": "Age confirmation checkbox label"
-  },
-  "crisisResources": "Crisis Resources",
-  "@crisisResources": {
-    "description": "Crisis resources section title"
-  },
-  "crisisResourcesText": "If you're in crisis, please contact:\n\n988 Suicide & Crisis Lifeline\nCall or text 988\n\nCrisis Text Line\nText HOME to 741741\n\nRAINN National Sexual Assault Hotline\nCall 800-656-4673\n\nThis app provides structured tools for faith practices but is not a substitute for professional help.",
-  "@crisisResourcesText": {
-    "description": "Crisis resources contact information"
-  },
-  "acceptAndContinue": "Accept & Continue",
-  "@acceptAndContinue": {
-    "description": "Legal agreements accept button"
-  },
-  "view": "View",
-  "@view": {
-    "description": "View document link text"
-  },
-  "tryYourFirstDevotional": "Try Your First Devotional",
-  "@tryYourFirstDevotional": {
-    "description": "Devotional demo page title"
-  },
-  "devotionalPreviewDesc": "Here's a preview of a daily devotional to start your day with the word",
-  "@devotionalPreviewDesc": {
-    "description": "Devotional demo page description"
-  },
-  "demoDevotionalTitle1": "Cultivating a",
-  "@demoDevotionalTitle1": {
-    "description": "Demo devotional title line 1"
-  },
-  "demoDevotionalTitle2": "Thankful Heart",
-  "@demoDevotionalTitle2": {
-    "description": "Demo devotional title line 2"
-  },
-  "demoReflectionText": "Gratitude doesn't always come naturally—especially when life feels overwhelming. Yet Psalm 107 opens with a powerful invitation: give thanks...",
-  "@demoReflectionText": {
-    "description": "Demo devotional reflection preview"
-  },
-  "completedExclamation": "✓ Completed!",
-  "@completedExclamation": {
-    "description": "Completed button text"
-  },
-  "next": "Next",
-  "@next": {
-    "description": "Next button text"
-  },
-  "askMeAnything": "Ask Me Anything",
-  "@askMeAnything": {
-    "description": "AI chat demo page title"
-  },
-  "intelligentScriptureChat": "Intelligent Scripture Chat 24/7",
-  "@intelligentScriptureChat": {
-    "description": "AI chat demo page subtitle"
-  },
-  "demoChatUserMessage": "How do I overcome worry?",
-  "@demoChatUserMessage": {
-    "description": "Demo chat user message"
-  },
-  "demoChatAIResponse": "Great question! The Bible offers beautiful wisdom on overcoming worry. In Philippians 4:6-7, we're reminded to bring our concerns to God through prayer with thanksgiving, and His peace will guard our hearts...",
-  "@demoChatAIResponse": {
-    "description": "Demo chat AI response"
-  },
-  "scriptureChatPlaceholder": "Scripture Chat...",
-  "@scriptureChatPlaceholder": {
-    "description": "Chat input placeholder"
-  },
-  "youreAllSet": "You're All Set!",
-  "@youreAllSet": {
-    "description": "Final onboarding page title"
-  },
-  "oneLastThing": "One last thing...",
-  "@oneLastThing": {
-    "description": "Final onboarding page subtitle"
-  },
-  "whatShouldWeCallYou": "What should we call you?",
-  "@whatShouldWeCallYou": {
-    "description": "Name input prompt"
-  },
-  "firstNameOptional": "First name (optional)",
-  "@firstNameOptional": {
-    "description": "Name input placeholder"
-  },
-  "spiritualJourneyStartsNow": "Your spiritual journey starts now!",
-  "@spiritualJourneyStartsNow": {
-    "description": "Final onboarding encouragement"
-  },
-  "subscriptionTitle": "Subscription",
-  "@subscriptionTitle": {
-    "description": "Subscription settings screen title"
-  },
-  "subscriptionSubtitle": "Manage your premium access",
-  "@subscriptionSubtitle": {
-    "description": "Subscription settings screen subtitle"
-  },
-  "subscriptionStatusPremiumActive": "Premium Active",
-  "@subscriptionStatusPremiumActive": {
-    "description": "Premium subscription active status"
-  },
-  "subscriptionStatusPremiumActiveDesc": "Enjoy unlimited AI guidance",
-  "@subscriptionStatusPremiumActiveDesc": {
-    "description": "Premium subscription active description"
-  },
-  "subscriptionStatusFreeTrial": "Free Trial",
-  "@subscriptionStatusFreeTrial": {
-    "description": "Free trial status"
-  },
-  "subscriptionStatusTrialDaysRemaining": "{days} days remaining",
-  "@subscriptionStatusTrialDaysRemaining": {
-    "description": "Trial days remaining status",
-    "placeholders": {
-      "days": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "subscriptionStatusTrialExpired": "Trial Expired",
-  "@subscriptionStatusTrialExpired": {
-    "description": "Trial expired status"
-  },
-  "subscriptionStatusTrialExpiredDesc": "Upgrade to continue using AI chat",
-  "@subscriptionStatusTrialExpiredDesc": {
-    "description": "Trial expired description"
-  },
-  "subscriptionStatusFreeVersion": "Free Version",
-  "@subscriptionStatusFreeVersion": {
-    "description": "Free version status"
-  },
-  "subscriptionStatusFreeVersionDesc": "Start your free trial",
-  "@subscriptionStatusFreeVersionDesc": {
-    "description": "Free version description"
-  },
-  "subscriptionMessagesLeft": "Messages\nLeft",
-  "@subscriptionMessagesLeft": {
-    "description": "Messages remaining label"
-  },
-  "subscriptionUsedThisMonth": "Used This\nMonth",
-  "@subscriptionUsedThisMonth": {
-    "description": "Messages used this month label"
-  },
-  "subscriptionUsedToday": "Used\nToday",
-  "@subscriptionUsedToday": {
-    "description": "Messages used today label"
-  },
-  "subscriptionMonthlyLimit": "Monthly\nLimit",
-  "@subscriptionMonthlyLimit": {
-    "description": "Monthly message limit label"
-  },
-  "subscriptionTrialDaysLeft": "Trial Days\nLeft",
-  "@subscriptionTrialDaysLeft": {
-    "description": "Trial days remaining label"
-  },
-  "subscriptionYourPremiumBenefits": "Your Premium Benefits",
-  "@subscriptionYourPremiumBenefits": {
-    "description": "Premium benefits section title"
-  },
-  "subscriptionUpgradeToPremium": "Upgrade to Premium",
-  "@subscriptionUpgradeToPremium": {
-    "description": "Upgrade to premium section title"
-  },
-  "subscriptionBenefitIntelligentChat": "Intelligent Scripture Chat",
-  "@subscriptionBenefitIntelligentChat": {
-    "description": "Benefit title"
-  },
-  "subscriptionBenefitIntelligentChatDesc": "Custom Real World Pastoral Training",
-  "@subscriptionBenefitIntelligentChatDesc": {
-    "description": "Benefit description"
-  },
-  "subscriptionBenefit150Messages": "150 Messages Monthly",
-  "@subscriptionBenefit150Messages": {
-    "description": "Benefit title"
-  },
-  "subscriptionBenefit150MessagesDesc": "More than enough for daily conversations",
-  "@subscriptionBenefit150MessagesDesc": {
-    "description": "Benefit description"
-  },
-  "subscriptionBenefitContextAware": "Context-Aware Responses",
-  "@subscriptionBenefitContextAware": {
-    "description": "Benefit title"
-  },
-  "subscriptionBenefitContextAwareDesc": "Biblical intelligence tailored to provide insight",
-  "@subscriptionBenefitContextAwareDesc": {
-    "description": "Benefit description"
-  },
-  "subscriptionBenefitCrisisDetection": "Crisis Detection",
-  "@subscriptionBenefitCrisisDetection": {
-    "description": "Benefit title"
-  },
-  "subscriptionBenefitCrisisDetectionDesc": "Built-in safeguards and referrals",
-  "@subscriptionBenefitCrisisDetectionDesc": {
-    "description": "Benefit description"
-  },
-  "subscriptionBenefitFullBibleAccess": "Full Bible Access",
-  "@subscriptionBenefitFullBibleAccess": {
-    "description": "Benefit title"
-  },
-  "subscriptionBenefitFullBibleAccessDesc": "All free features remain available",
-  "@subscriptionBenefitFullBibleAccessDesc": {
-    "description": "Benefit description"
-  },
-  "subscriptionSubscribeNowButton": "Subscribe Now - ~$35.99/year*",
-  "@subscriptionSubscribeNowButton": {
-    "description": "Subscribe now button text"
-  },
-  "subscriptionStartFreeTrialButton": "Start Free Trial",
-  "@subscriptionStartFreeTrialButton": {
-    "description": "Start free trial button text"
-  },
-  "subscriptionManageButton": "Manage Subscription",
-  "@subscriptionManageButton": {
-    "description": "Manage subscription button text"
-  },
-  "subscriptionRenewalInfoPremium": "Your subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.",
-  "@subscriptionRenewalInfoPremium": {
-    "description": "Premium subscription renewal info"
-  },
-  "subscriptionRenewalInfoTrial": "Start your 3-day free trial with 15 AI messages total (use anytime). After trial: ~$35.99/year (pricing may vary by region and currency) for 150 messages per month. Cancel anytime in App Store settings.",
-  "@subscriptionRenewalInfoTrial": {
-    "description": "Trial subscription info"
-  },
-  "subscriptionUnableToOpenSettings": "Unable to open subscription settings",
-  "@subscriptionUnableToOpenSettings": {
-    "description": "Error message when unable to open subscription settings"
-  },
-
-  "legalAgreements": "Legal Agreements",
-  "@legalAgreements": {
-    "description": "Legal agreements screen title"
-  },
-  "pleaseReviewAndAccept": "Please review and accept to continue",
-  "@pleaseReviewAndAccept": {
-    "description": "Legal agreements screen subtitle"
-  },
-  "importantInformation": "Important Information",
-  "@importantInformation": {
-    "description": "Legal agreements intro section title"
-  },
-  "legalIntroText": "Before using Everyday Christian, please understand the following disclaimers and accept our terms of service.",
-  "@legalIntroText": {
-    "description": "Legal agreements intro section text"
-  },
-  "notProfessionalCounseling": "Not Professional Counseling",
-  "@notProfessionalCounseling": {
-    "description": "Disclaimer section title"
-  },
-  "notProfessionalCounselingDesc": "This app provides biblical guidance and spiritual support. It is NOT a substitute for professional mental health services, medical advice, or crisis intervention.",
-  "@notProfessionalCounselingDesc": {
-    "description": "Disclaimer section description"
-  },
-  "noMedicalLegalAdvice": "No Medical or Legal Advice",
-  "@noMedicalLegalAdvice": {
-    "description": "Disclaimer section title"
-  },
-  "noMedicalLegalAdviceDesc": "Information provided is for spiritual guidance only. Always consult qualified professionals for medical, legal, or financial matters.",
-  "@noMedicalLegalAdviceDesc": {
-    "description": "Disclaimer section description"
-  },
-  "aiLimitations": "AI Limitations",
-  "@aiLimitations": {
-    "description": "Disclaimer section title"
-  },
-  "aiLimitationsDesc": "Responses are generated by AI and may occasionally be inaccurate or incomplete. Use discernment and verify important information with trusted sources.",
-  "@aiLimitationsDesc": {
-    "description": "Disclaimer section description"
-  },
-  "recommendedUse": "Recommended Use",
-  "@recommendedUse": {
-    "description": "Disclaimer section title"
-  },
-  "recommendedUseDesc": "Best used as a companion to regular prayer, Bible study, and fellowship with a local church community. Not a replacement for spiritual community.",
-  "@recommendedUseDesc": {
-    "description": "Disclaimer section description"
-  },
-  "crisis988Title": "988 Suicide & Crisis Lifeline",
-  "@crisis988Title": {
-    "description": "Crisis resource title"
-  },
-  "crisis988Desc": "Tap to call or text 988",
-  "@crisis988Desc": {
-    "description": "Crisis resource description"
-  },
-  "crisisTextLine": "Crisis Text Line",
-  "@crisisTextLine": {
-    "description": "Crisis resource title"
-  },
-  "crisisTextLineDesc": "Tap to text HOME to 741741",
-  "@crisisTextLineDesc": {
-    "description": "Crisis resource description"
-  },
-  "emergencyServices": "Emergency Services",
-  "@emergencyServices": {
-    "description": "Crisis resource title"
-  },
-  "emergencyServicesDesc": "Tap to call 911",
-  "@emergencyServicesDesc": {
-    "description": "Crisis resource description"
-  },
-  "acceptanceRequired": "Acceptance Required",
-  "@acceptanceRequired": {
-    "description": "Consent section title"
-  },
-  "haveReadAndAgree": "I have read and agree to the ",
-  "@haveReadAndAgree": {
-    "description": "Checkbox label prefix for terms/privacy"
-  },
-  "confirmAge18Plus": "I confirm that I am 18 years of age or older",
-  "@confirmAge18Plus": {
-    "description": "Age confirmation checkbox label"
-  },
-  "pleaseAcceptAllRequired": "Please accept all required items to continue",
-  "@pleaseAcceptAllRequired": {
-    "description": "Validation error message"
-  },
-  "failedToSaveAcceptance": "Failed to save acceptance. Please try again.",
-  "@failedToSaveAcceptance": {
-    "description": "Error message for acceptance save failure"
-  },
-  "unableToCall988": "Unable to make call. Please dial 988 manually.",
-  "@unableToCall988": {
-    "description": "Error message for 988 call failure"
-  },
-  "unableToTextCrisisLine": "Unable to open messaging. Please text HOME to 741741 manually.",
-  "@unableToTextCrisisLine": {
-    "description": "Error message for crisis text line failure"
-  },
-  "unableToCall911": "Unable to make call. Please dial 911 manually.",
-  "@unableToCall911": {
-    "description": "Error message for 911 call failure"
-  },
-  "chatFailedToSend": "Failed to send message. Please try again.",
-  "@chatFailedToSend": {
-    "description": "Error message when chat message fails to send"
-  },
-  "trialFeatureMessages": "15 AI messages over 3 days",
-  "@trialFeatureMessages": {
-    "description": "Trial feature: message limit description"
-  },
-  "trialFeatureScripture": "Scripture interpretation & guidance",
-  "@trialFeatureScripture": {
-    "description": "Trial feature: scripture interpretation"
-  },
-  "trialFeaturePrayer": "Prayer support & encouragement",
-  "@trialFeaturePrayer": {
-    "description": "Trial feature: prayer support"
-  },
-  "trialPricingAfterTrial": "After trial: ~$35.99/year for 150 messages/month",
-  "@trialPricingAfterTrial": {
-    "description": "Trial pricing information shown in dialog"
-  },
-
-  "faqSubtitle": "Find answers to common questions",
-  "@faqSubtitle": {
-    "description": "FAQ dialog subtitle"
-  },
-  "faqGettingStarted": "Getting Started",
-  "@faqGettingStarted": {
-    "description": "FAQ section title"
-  },
-  "faqBibleReading": "Bible Reading",
-  "@faqBibleReading": {
-    "description": "FAQ section title"
-  },
-  "faqPrayerJournal": "Prayer Journal",
-  "@faqPrayerJournal": {
-    "description": "FAQ section title"
-  },
-  "faqDevotionalsPlans": "Devotionals & Reading Plans",
-  "@faqDevotionalsPlans": {
-    "description": "FAQ section title"
-  },
-  "faqAIChatSupport": "AI Chat & Support",
-  "@faqAIChatSupport": {
-    "description": "FAQ section title"
-  },
-  "faqNotifications": "Notifications",
-  "@faqNotifications": {
-    "description": "FAQ section title"
-  },
-  "faqSettingsCustomization": "Settings & Customization",
-  "@faqSettingsCustomization": {
-    "description": "FAQ section title"
-  },
-  "faqDataPrivacy": "Data & Privacy",
-  "@faqDataPrivacy": {
-    "description": "FAQ section title"
-  },
-
-  "faqQ1": "How do I get started?",
-  "@faqQ1": {
-    "description": "FAQ question 1"
-  },
-  "faqA1": "Welcome! Start by exploring the Home screen where you'll find daily devotionals, verse of the day, and quick access to prayer and Bible reading. Navigate using the menu in the top left corner.",
-  "@faqA1": {
-    "description": "FAQ answer 1"
-  },
-  "faqQ2": "Is the app free to use?",
-  "@faqQ2": {
-    "description": "FAQ question 2"
-  },
-  "faqA2": "Yes! Everyday Christian offers a free trial with daily message limits for AI chat. Upgrade to Premium for unlimited AI conversations and full access to all features.",
-  "@faqA2": {
-    "description": "FAQ answer 2"
-  },
-  "faqQ3": "Which Bible version is used?",
-  "@faqQ3": {
-    "description": "FAQ question 3"
-  },
-  "faqA3": "The app uses the World English Bible (WEB), a modern public domain translation that's faithful to the original texts and easy to read.",
-  "@faqA3": {
-    "description": "FAQ answer 3"
-  },
-
-  "faqQ4": "Can I read the Bible offline?",
-  "@faqQ4": {
-    "description": "FAQ question 4"
-  },
-  "faqA4": "Yes! The entire Bible is downloaded when you first install the app. You can read all 66 books, chapters, and verses without an internet connection.",
-  "@faqA4": {
-    "description": "FAQ answer 4"
-  },
-  "faqQ5": "How do I search for verses?",
-  "@faqQ5": {
-    "description": "FAQ question 5"
-  },
-  "faqA5": "Navigate to the Bible section from the home menu. Use the search bar to find verses by keywords, or browse by book, chapter, and verse.",
-  "@faqA5": {
-    "description": "FAQ answer 5"
-  },
-  "faqQ6": "Can I change the Bible version?",
-  "@faqQ6": {
-    "description": "FAQ question 6"
-  },
-  "faqA6": "The World English Bible (WEB) is currently the only version available. This ensures consistent offline access and optimal performance.",
-  "@faqA6": {
-    "description": "FAQ answer 6"
-  },
-
-  "faqQ7": "How do I add a prayer?",
-  "@faqQ7": {
-    "description": "FAQ question 7"
-  },
-  "faqA7": "Open the Prayer Journal from the home menu and tap the floating + button. Enter your prayer title, description, and choose a category (Personal, Family, Health, etc.), then save.",
-  "@faqA7": {
-    "description": "FAQ answer 7"
-  },
-  "faqQ8": "Can I mark prayers as answered?",
-  "@faqQ8": {
-    "description": "FAQ question 8"
-  },
-  "faqA8": "Yes! Open any prayer and tap \"Mark as Answered\". You can add a description of how God answered your prayer. View all answered prayers in the \"Answered\" tab.",
-  "@faqA8": {
-    "description": "FAQ answer 8"
-  },
-  "faqQ9": "How do I export my prayer journal?",
-  "@faqQ9": {
-    "description": "FAQ question 9"
-  },
-  "faqA9": "Go to Settings > Data & Privacy > Export Data. This creates a formatted text file containing all your prayers (both active and answered) that you can save or share.",
-  "@faqA9": {
-    "description": "FAQ answer 9"
-  },
-  "faqQ10": "Can I organize prayers by category?",
-  "@faqQ10": {
-    "description": "FAQ question 10"
-  },
-  "faqA10": "Yes! Each prayer can be assigned to a category. Use the category filter at the top of the Prayer Journal to view prayers by specific categories.",
-  "@faqA10": {
-    "description": "FAQ answer 10"
-  },
-
-  "faqQ11": "Where can I find daily devotionals?",
-  "@faqQ11": {
-    "description": "FAQ question 11"
-  },
-  "faqA11": "Daily devotionals appear on your Home screen. You can mark devotionals as completed to track your progress and build your devotional streak.",
-  "@faqA11": {
-    "description": "FAQ answer 11"
-  },
-  "faqQ12": "How do reading plans work?",
-  "@faqQ12": {
-    "description": "FAQ question 12"
-  },
-  "faqA12": "Choose a reading plan from the Reading Plans section. Tap \"Start Plan\" to begin. The app tracks your progress as you complete daily readings. Only one plan can be active at a time.",
-  "@faqA12": {
-    "description": "FAQ answer 12"
-  },
-  "faqQ13": "Can I track my devotional streak?",
-  "@faqQ13": {
-    "description": "FAQ question 13"
-  },
-  "faqA13": "Yes! The app automatically tracks how many consecutive days you've completed devotionals. View your current streak on your Profile screen.",
-  "@faqA13": {
-    "description": "FAQ answer 13"
-  },
-
-  "faqQ14": "What can I ask the AI?",
-  "@faqQ14": {
-    "description": "FAQ question 14"
-  },
-  "faqA14": "You can ask about Scripture interpretation, prayer requests, life challenges, faith questions, and daily encouragement. The AI provides biblically-grounded guidance and support.",
-  "@faqA14": {
-    "description": "FAQ answer 14"
-  },
-  "faqQ15": "How many messages can I send?",
-  "@faqQ15": {
-    "description": "FAQ question 15"
-  },
-  "faqA15": "Free users have a daily message limit. Premium subscribers get unlimited messages. Check Settings > Subscription to see your current plan and remaining messages.",
-  "@faqA15": {
-    "description": "FAQ answer 15"
-  },
-  "faqQ16": "Are my conversations saved?",
-  "@faqQ16": {
-    "description": "FAQ question 16"
-  },
-  "faqA16": "Yes! All your AI conversations are saved to your device. Each chat creates a new session that you can access from the conversation history.",
-  "@faqA16": {
-    "description": "FAQ answer 16"
-  },
-
-  "faqQ17": "How do I change notification times?",
-  "@faqQ17": {
-    "description": "FAQ question 17"
-  },
-  "faqA17": "Go to Settings > Notifications > Notification Time. Select your preferred time for daily reminders.",
-  "@faqA17": {
-    "description": "FAQ answer 17"
-  },
-  "faqQ18": "Can I turn off specific notifications?",
-  "@faqQ18": {
-    "description": "FAQ question 18"
-  },
-  "faqA18": "Yes! In Settings > Notifications, you can toggle each notification type (Daily Devotional, Prayer Reminders, Verse of the Day) independently.",
-  "@faqA18": {
-    "description": "FAQ answer 18"
-  },
-  "faqQ19": "Why aren't I receiving notifications?",
-  "@faqQ19": {
-    "description": "FAQ question 19"
-  },
-  "faqA19": "Check your device settings to ensure notifications are enabled for Everyday Christian. Also verify that each notification type is enabled in Settings > Notifications.",
-  "@faqA19": {
-    "description": "FAQ answer 19"
-  },
-
-  "faqQ20": "How do I adjust text size?",
-  "@faqQ20": {
-    "description": "FAQ question 20"
-  },
-  "faqA20": "Go to Settings > Appearance > Text Size. Use the slider to adjust text size throughout the app from 80% to 150% of normal size.",
-  "@faqA20": {
-    "description": "FAQ answer 20"
-  },
-  "faqQ21": "Can I add a profile picture?",
-  "@faqQ21": {
-    "description": "FAQ question 21"
-  },
-  "faqA21": "Yes! Tap your profile avatar in Settings or on your Profile screen. Choose to take a photo or select one from your gallery.",
-  "@faqA21": {
-    "description": "FAQ answer 21"
-  },
-  "faqQ22": "What does offline mode do?",
-  "@faqQ22": {
-    "description": "FAQ question 22"
-  },
-  "faqA22": "Offline mode allows you to use core features (Bible reading, viewing saved prayers and devotionals) without an internet connection. AI chat requires internet.",
-  "@faqA22": {
-    "description": "FAQ answer 22"
-  },
-
-  "faqQ23": "Is my data private and secure?",
-  "@faqQ23": {
-    "description": "FAQ question 23"
-  },
-  "faqA23": "Yes! Your prayers, notes, and personal data are stored securely on your device. We never sell your information to third parties.",
-  "@faqA23": {
-    "description": "FAQ answer 23"
-  },
-  "faqQ24": "What data is stored on my device?",
-  "@faqQ24": {
-    "description": "FAQ question 24"
-  },
-  "faqA24": "The Bible content, your prayers, conversation history, reading plan progress, devotional completion records, and app preferences are all stored locally.",
-  "@faqA24": {
-    "description": "FAQ answer 24"
-  },
-  "faqQ25": "What's the difference between Clear Cache and Delete All Data?",
-  "@faqQ25": {
-    "description": "FAQ question 25"
-  },
-  "faqA25": "Clear Cache removes temporary files (image cache, temp directories) to free up storage space. Your prayers, settings, and all personal data remain safe. Delete All Data permanently erases everything including prayers, conversations, settings, and resets the app to factory defaults.",
-  "@faqA25": {
-    "description": "FAQ answer 25"
-  },
-  "faqQ26": "How do I clear cached data?",
-  "@faqQ26": {
-    "description": "FAQ question 26"
-  },
-  "faqA26": "Go to Settings > Data & Privacy > Clear Cache. This removes temporary files and image cache to free up storage space. Your prayers, conversations, and personal data are NOT deleted - only temporary cache files are removed.",
-  "@faqA26": {
-    "description": "FAQ answer 26"
-  },
-  "faqQ27": "How do I delete all my data?",
-  "@faqQ27": {
-    "description": "FAQ question 27"
-  },
-  "faqA27": "Go to Settings > Data & Privacy > Delete All Data. You'll be asked to type \"DELETE\" to confirm. This permanently erases all prayers, conversations, reading plans, favorites, settings, and profile picture. Export your prayer journal first if you want to keep a backup. This action cannot be undone.",
-  "@faqA27": {
-    "description": "FAQ answer 27"
   }
 }

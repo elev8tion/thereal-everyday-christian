@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/models/prayer_category.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 
 class CategoryFilterChip extends StatelessWidget {
   final PrayerCategory category;
@@ -13,6 +14,36 @@ class CategoryFilterChip extends StatelessWidget {
     required this.isSelected,
     required this.onTap,
   });
+
+  String _getLocalizedCategoryName(BuildContext context, String englishName) {
+    final l10n = AppLocalizations.of(context);
+    switch (englishName.toLowerCase()) {
+      case 'family':
+        return l10n.family;
+      case 'health':
+        return l10n.health;
+      case 'work':
+        return l10n.work;
+      case 'ministry':
+        return l10n.ministry;
+      case 'thanksgiving':
+        return l10n.thanksgiving;
+      case 'intercession':
+        return l10n.intercession;
+      case 'finances':
+        return l10n.finances;
+      case 'relationships':
+        return l10n.relationships;
+      case 'guidance':
+        return l10n.guidance;
+      case 'protection':
+        return l10n.protection;
+      case 'general':
+        return l10n.general;
+      default:
+        return englishName;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +96,7 @@ class CategoryFilterChip extends StatelessWidget {
             ),
             const SizedBox(width: 6),
             Text(
-              category.name,
+              _getLocalizedCategoryName(context, category.name),
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,

@@ -285,7 +285,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
-  String get addPrayerButton => 'Agregar Oración';
+  String get addPrayerButton => 'Agregar';
 
   @override
   String get markAnswered => 'Marcar Respondida';
@@ -317,6 +317,24 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get general => 'General';
+
+  @override
+  String get work => 'Trabajo';
+
+  @override
+  String get ministry => 'Ministerio';
+
+  @override
+  String get thanksgiving => 'Acción de Gracias';
+
+  @override
+  String get intercession => 'Intercesión';
+
+  @override
+  String get finances => 'Finanzas';
+
+  @override
+  String get relationships => 'Relaciones';
 
   @override
   String get today => 'Hoy';

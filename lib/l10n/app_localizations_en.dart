@@ -318,6 +318,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get general => 'General';
 
   @override
+  String get work => 'Work';
+
+  @override
+  String get ministry => 'Ministry';
+
+  @override
+  String get thanksgiving => 'Thanksgiving';
+
+  @override
+  String get intercession => 'Intercession';
+
+  @override
+  String get finances => 'Finances';
+
+  @override
+  String get relationships => 'Relationships';
+
+  @override
   String get today => 'Today';
 
   @override

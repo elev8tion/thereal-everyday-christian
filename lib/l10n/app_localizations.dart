@@ -686,6 +686,42 @@ abstract class AppLocalizations {
   /// **'General'**
   String get general;
 
+  /// No description provided for @work.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get work;
+
+  /// No description provided for @ministry.
+  ///
+  /// In en, this message translates to:
+  /// **'Ministry'**
+  String get ministry;
+
+  /// No description provided for @thanksgiving.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanksgiving'**
+  String get thanksgiving;
+
+  /// No description provided for @intercession.
+  ///
+  /// In en, this message translates to:
+  /// **'Intercession'**
+  String get intercession;
+
+  /// No description provided for @finances.
+  ///
+  /// In en, this message translates to:
+  /// **'Finances'**
+  String get finances;
+
+  /// No description provided for @relationships.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationships'**
+  String get relationships;
+
   /// Date label
   ///
   /// In en, this message translates to:
