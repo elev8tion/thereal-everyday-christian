@@ -449,85 +449,97 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         Row(
           children: [
             Expanded(
-              child: FrostedGlassCard(
-                padding: const EdgeInsets.all(12),
-                onTap: () => NavigationService.goToChat(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClearGlassCard(
-                      padding: const EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.chat_bubble_outline,
-                        size: ResponsiveUtils.iconSize(context, 20),
-                        color: AppColors.primaryText,
+              child: SizedBox(
+                height: ResponsiveUtils.scaleSize(context, 160, minScale: 0.9, maxScale: 1.2),
+                child: FrostedGlassCard(
+                  padding: const EdgeInsets.all(12),
+                  onTap: () => NavigationService.goToChat(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClearGlassCard(
+                        padding: const EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.chat_bubble_outline,
+                          size: ResponsiveUtils.iconSize(context, 20),
+                          color: AppColors.primaryText,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      l10n.biblicalChat,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        l10n.biblicalChat,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.biblicalChatDesc,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                        color: AppColors.secondaryText,
-                        height: 1.3,
+                      const SizedBox(height: 4),
+                      Flexible(
+                        child: Text(
+                          l10n.biblicalChatDesc,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            color: AppColors.secondaryText,
+                            height: 1.3,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
-              child: FrostedGlassCard(
-                padding: const EdgeInsets.all(12),
-                onTap: () => NavigationService.goToDevotional(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClearGlassCard(
-                      padding: const EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.auto_stories,
-                        size: ResponsiveUtils.iconSize(context, 20),
-                        color: AppColors.primaryText,
+              child: SizedBox(
+                height: ResponsiveUtils.scaleSize(context, 160, minScale: 0.9, maxScale: 1.2),
+                child: FrostedGlassCard(
+                  padding: const EdgeInsets.all(12),
+                  onTap: () => NavigationService.goToDevotional(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClearGlassCard(
+                        padding: const EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.auto_stories,
+                          size: ResponsiveUtils.iconSize(context, 20),
+                          color: AppColors.primaryText,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      l10n.dailyDevotional,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        l10n.dailyDevotional,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.dailyDevotionalDesc,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                        color: AppColors.secondaryText,
-                        height: 1.3,
+                      const SizedBox(height: 4),
+                      Flexible(
+                        child: Text(
+                          l10n.dailyDevotionalDesc,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            color: AppColors.secondaryText,
+                            height: 1.3,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -537,85 +549,97 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         Row(
           children: [
             Expanded(
-              child: FrostedGlassCard(
-                padding: const EdgeInsets.all(12),
-                onTap: () => NavigationService.goToPrayerJournal(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClearGlassCard(
-                      padding: const EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.favorite_outline,
-                        size: ResponsiveUtils.iconSize(context, 20),
-                        color: AppColors.primaryText,
+              child: SizedBox(
+                height: ResponsiveUtils.scaleSize(context, 160, minScale: 0.9, maxScale: 1.2),
+                child: FrostedGlassCard(
+                  padding: const EdgeInsets.all(12),
+                  onTap: () => NavigationService.goToPrayerJournal(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClearGlassCard(
+                        padding: const EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.favorite_outline,
+                          size: ResponsiveUtils.iconSize(context, 20),
+                          color: AppColors.primaryText,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      l10n.prayerJournal,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        l10n.prayerJournal,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.prayerJournalDesc,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                        color: AppColors.secondaryText,
-                        height: 1.3,
+                      const SizedBox(height: 4),
+                      Flexible(
+                        child: Text(
+                          l10n.prayerJournalDesc,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            color: AppColors.secondaryText,
+                            height: 1.3,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
-              child: FrostedGlassCard(
-                padding: const EdgeInsets.all(12),
-                onTap: () => NavigationService.goToReadingPlan(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClearGlassCard(
-                      padding: const EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.library_books_outlined,
-                        size: ResponsiveUtils.iconSize(context, 20),
-                        color: AppColors.primaryText,
+              child: SizedBox(
+                height: ResponsiveUtils.scaleSize(context, 160, minScale: 0.9, maxScale: 1.2),
+                child: FrostedGlassCard(
+                  padding: const EdgeInsets.all(12),
+                  onTap: () => NavigationService.goToReadingPlan(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClearGlassCard(
+                        padding: const EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.library_books_outlined,
+                          size: ResponsiveUtils.iconSize(context, 20),
+                          color: AppColors.primaryText,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      l10n.readingPlans,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        l10n.readingPlans,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.readingPlansDesc,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                        color: AppColors.secondaryText,
-                        height: 1.3,
+                      const SizedBox(height: 4),
+                      Flexible(
+                        child: Text(
+                          l10n.readingPlansDesc,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            color: AppColors.secondaryText,
+                            height: 1.3,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

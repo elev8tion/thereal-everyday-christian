@@ -67,6 +67,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   // Verse tutorial tooltip state
   bool _showVerseTutorial = false;
 
+  // Flag to ensure we only load verses once
+  bool _hasLoadedVerses = false;
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +80,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       duration: const Duration(milliseconds: 700),
     );
 
-    _loadVerses();
     _checkCompletion();
     _initializeTts();
     _checkShowVerseTutorial();
@@ -91,6 +93,17 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
           }
         });
       });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Load verses after dependencies are available (including AppLocalizations)
+    if (!_hasLoadedVerses) {
+      _loadVerses();
+      _hasLoadedVerses = true;
     }
   }
 

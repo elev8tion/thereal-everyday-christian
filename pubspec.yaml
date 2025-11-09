@@ -95,6 +95,7 @@ flutter:
     - assets/devotionals/
     - assets/reading_plans/
     - assets/bible.db
+    - assets/kc_edc_spanish_bible.db
     - .env
 
   shaders:
