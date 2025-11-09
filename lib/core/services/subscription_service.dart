@@ -694,12 +694,6 @@ class SubscriptionService {
     return DateTime.tryParse(dateString);
   }
 
-  /// Update trial reset date (for daily message counter)
-  Future<void> _updateTrialResetDate() async {
-    final today = DateTime.now().toIso8601String().substring(0, 10);
-    await _prefs?.setString(_keyTrialLastResetDate, today);
-  }
-
   /// Update premium reset date (for monthly message counter)
   Future<void> _updatePremiumResetDate() async {
     final thisMonth = DateTime.now().toIso8601String().substring(0, 7);

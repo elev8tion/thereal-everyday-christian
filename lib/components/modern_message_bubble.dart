@@ -5,6 +5,7 @@ import '../theme/app_theme.dart';
 import '../models/chat_message.dart';
 import '../models/bible_verse.dart';
 import '../utils/blur_dialog_utils.dart';
+import '../l10n/app_localizations.dart';
 
 class ModernMessageBubble extends StatelessWidget {
   final ChatMessage message;
@@ -154,6 +155,8 @@ class ModernMessageBubble extends StatelessWidget {
   }
 
   void _showMessageOptions(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     showBlurredBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -199,7 +202,7 @@ class ModernMessageBubble extends StatelessWidget {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: const Text('Message copied to clipboard'),
+                        content: Text(l10n.verseCopiedToClipboard),
                         backgroundColor: AppTheme.primaryColor,
                         behavior: SnackBarBehavior.floating,
                         duration: const Duration(seconds: 2),

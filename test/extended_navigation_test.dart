@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:everyday_christian/screens/devotional_screen.dart';
 
 void main() {
   group('Test 3: Extended Section Navigation', () {

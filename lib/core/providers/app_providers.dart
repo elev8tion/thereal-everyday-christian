@@ -1,4 +1,5 @@
 import 'dart:developer' as developer;
+import 'dart:ui' show PlatformDispatcher, Locale;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/connectivity_service.dart';
@@ -555,30 +556,53 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 }
 
 // Language Provider
-final languageProvider = StateNotifierProvider<LanguageNotifier, String>((ref) {
+final languageProvider = StateNotifierProvider<LanguageNotifier, Locale>((ref) {
   final preferencesAsync = ref.watch(preferencesServiceProvider);
   return LanguageNotifier(preferencesAsync);
 });
 
-class LanguageNotifier extends StateNotifier<String> {
+class LanguageNotifier extends StateNotifier<Locale> {
   final AsyncValue<PreferencesService> _preferencesAsync;
   PreferencesService? _preferences;
 
-  LanguageNotifier(this._preferencesAsync) : super('English') {
+  LanguageNotifier(this._preferencesAsync) : super(const Locale('en')) {
     _initializeLanguage();
   }
 
-  /// Initialize language from saved preferences
+  /// Initialize language from saved preferences or detect system language on first run
   Future<void> _initializeLanguage() async {
-    _preferencesAsync.whenData((prefs) {
+    _preferencesAsync.whenData((prefs) async {
       _preferences = prefs;
-      state = prefs.loadLanguage();
+      final savedLanguage = prefs.loadLanguage();
+
+      // Check if this is first run (language preference not set)
+      if (savedLanguage == 'English') {
+        // Check if this is truly first run or if user explicitly chose English
+        final hasSetLanguage = prefs.prefs?.containsKey('language_preference') ?? false;
+
+        if (!hasSetLanguage) {
+          // First run - detect system language
+          final systemLocale = PlatformDispatcher.instance.locale;
+          final systemLanguageCode = systemLocale.languageCode;
+
+          // If system language is Spanish, set to Spanish
+          if (systemLanguageCode == 'es') {
+            await prefs.setLanguage('es');
+            state = const Locale('es');
+            return;
+          }
+        }
+      }
+
+      // Use saved preference (convert to language code)
+      final languageCode = prefs.getLanguage();
+      state = Locale(languageCode);
     });
   }
 
-  /// Set language preference
-  Future<void> setLanguage(String language) async {
-    state = language;
+  /// Set language preference (accepts language code like 'en' or 'es')
+  Future<void> setLanguage(String languageCode) async {
+    state = Locale(languageCode);
 
     if (_preferences == null) {
       developer.log(
@@ -588,14 +612,20 @@ class LanguageNotifier extends StateNotifier<String> {
       return;
     }
 
-    final success = await _preferences!.saveLanguage(language);
+    final success = await _preferences!.setLanguage(languageCode);
     if (!success) {
       developer.log(
-        'Failed to persist language preference: $language',
+        'Failed to persist language preference: $languageCode',
         name: 'AppProviders.language',
         level: 900,
       );
     }
+  }
+
+  /// Toggle between English and Spanish
+  Future<void> toggleLanguage() async {
+    final newLanguage = state.languageCode == 'en' ? 'es' : 'en';
+    await setLanguage(newLanguage);
   }
 }
 

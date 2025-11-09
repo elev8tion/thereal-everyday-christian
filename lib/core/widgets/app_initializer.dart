@@ -4,6 +4,7 @@ import '../providers/app_providers.dart';
 import '../error/app_error.dart';
 import '../../components/gradient_background.dart';
 import '../../theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 
 class AppInitializer extends ConsumerWidget {
   final Widget child;
@@ -30,6 +31,7 @@ class _LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -41,7 +43,9 @@ class _LoadingScreen extends StatelessWidget {
                 children: [
                   // Logo (clean, minimal)
                   Image.asset(
-                    'assets/images/logo_transparent.png',
+                    l10n.localeName == 'es'
+                        ? 'assets/images/logo_spanish.png'
+                        : 'assets/images/logo_transparent.png',
                     width: 140,
                     height: 140,
                     fit: BoxFit.contain,

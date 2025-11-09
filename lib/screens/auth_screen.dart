@@ -10,6 +10,7 @@ import '../core/navigation/navigation_service.dart';
 import '../core/navigation/app_routes.dart';
 import '../utils/responsive_utils.dart';
 import '../core/widgets/app_snackbar.dart';
+import '../l10n/app_localizations.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});
@@ -43,6 +44,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     ref.listen<AuthState>(authServiceProvider, (previous, next) {
       next.when(
         initial: () {},
@@ -95,7 +98,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
                         ),
                         const SizedBox(height: AppSpacing.lg),
                         Text(
-                          'Welcome Back',
+                          l10n.welcomeBack,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 28, minSize: 24, maxSize: 32),
                             fontWeight: FontWeight.bold,
@@ -104,7 +107,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
                         ),
                         const SizedBox(height: AppSpacing.sm),
                         Text(
-                          'Sign in to continue your spiritual journey',
+                          l10n.signInToContinue,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                             color: AppColors.secondaryText,
@@ -130,7 +133,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
 
                   // Privacy note
                   Text(
-                    'Your spiritual conversations remain completely private on your device',
+                    l10n.privacyNote,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),

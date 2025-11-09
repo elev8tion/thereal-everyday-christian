@@ -5,7 +5,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/gradient_background.dart';
-import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glass/static_liquid_glass_lens.dart';
 import '../components/animations/blur_fade.dart';
@@ -15,6 +14,7 @@ import '../core/navigation/navigation_service.dart';
 import '../core/navigation/app_routes.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
+import '../l10n/app_localizations.dart';
 
 /// Unified interactive onboarding screen combining legal agreements and feature tour
 class UnifiedInteractiveOnboardingScreen extends StatefulWidget {
@@ -100,15 +100,15 @@ class _UnifiedInteractiveOnboardingScreenState
   }
 
   void _animateAIChatResponse() {
+    final l10n = AppLocalizations.of(context);
     setState(() {
-      _aiResponse = 'Great question! The Bible offers beautiful wisdom on overcoming worry. '
-          'In Philippians 4:6-7, we\'re reminded to bring our concerns to God through prayer '
-          'with thanksgiving, and His peace will guard our hearts...';
+      _aiResponse = l10n.demoChatAIResponse;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -145,10 +145,10 @@ class _UnifiedInteractiveOnboardingScreenState
                       setState(() => _currentPage = index);
                     },
                     children: [
-                      _buildLegalPage(),
-                      _buildDevotionalDemoPage(),
-                      _buildAIChatDemoPage(),
-                      _buildPersonalizationPage(),
+                      _buildLegalPage(l10n),
+                      _buildDevotionalDemoPage(l10n),
+                      _buildAIChatDemoPage(l10n),
+                      _buildPersonalizationPage(l10n),
                     ],
                   ),
                 ),
@@ -177,7 +177,7 @@ class _UnifiedInteractiveOnboardingScreenState
   }
 
   // PAGE 1: Legal Agreements
-  Widget _buildLegalPage() {
+  Widget _buildLegalPage(AppLocalizations l10n) {
     return SingleChildScrollView(
       padding: AppSpacing.screenPadding,
       child: Column(
@@ -193,7 +193,9 @@ class _UnifiedInteractiveOnboardingScreenState
             dispersionStrength: 0.3,
             blurIntensity: 0.05,
             child: Image.asset(
-              'assets/images/logo_transparent.png',
+              l10n.localeName == 'es'
+                  ? 'assets/images/logo_spanish.png'
+                  : 'assets/images/logo_transparent.png',
               width: 150,
               height: 150,
               fit: BoxFit.contain,
@@ -204,7 +206,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
           // Welcome title
           Text(
-            'Welcome to Everyday Christian',
+            l10n.welcomeToEverydayChristian,
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 28,
                   minSize: 24, maxSize: 32),
@@ -218,7 +220,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
           // Subtitle
           Text(
-            'Bible Study, Prayer, & Devotionals',
+            l10n.dailyScriptureGuidance,
             style: TextStyle(
               fontSize: 16,
               color: AppTheme.goldColor,
@@ -230,7 +232,7 @@ class _UnifiedInteractiveOnboardingScreenState
           const SizedBox(height: AppSpacing.xxl),
 
           Text(
-            'Before we begin, please review:',
+            l10n.beforeWeBeginReview,
             style: TextStyle(
               fontSize: 15,
               color: AppColors.primaryText,
@@ -247,7 +249,7 @@ class _UnifiedInteractiveOnboardingScreenState
               setState(() => _termsChecked = value ?? false);
               HapticFeedback.lightImpact();
             },
-            label: 'I accept the Terms of Service',
+            label: l10n.acceptTermsOfService,
             onViewTapped: () => _openLegalDoc('terms'),
           ),
           const SizedBox(height: 12),
@@ -270,7 +272,7 @@ class _UnifiedInteractiveOnboardingScreenState
               setState(() => _privacyChecked = value ?? false);
               HapticFeedback.lightImpact();
             },
-            label: 'I accept the Privacy Policy',
+            label: l10n.acceptPrivacyPolicy,
             onViewTapped: () => _openLegalDoc('privacy'),
           ),
           const SizedBox(height: 12),
@@ -293,7 +295,7 @@ class _UnifiedInteractiveOnboardingScreenState
               setState(() => _ageChecked = value ?? false);
               HapticFeedback.lightImpact();
             },
-            label: 'I confirm I am 13+ years old',
+            label: l10n.confirmAge13Plus,
           ),
 
           const SizedBox(height: AppSpacing.xl),
@@ -307,7 +309,7 @@ class _UnifiedInteractiveOnboardingScreenState
                       color: AppTheme.goldColor, size: 20),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
-                    'Crisis Resources',
+                    l10n.crisisResources,
                     style: TextStyle(
                       color: AppColors.primaryText,
                       fontWeight: FontWeight.w600,
@@ -322,10 +324,7 @@ class _UnifiedInteractiveOnboardingScreenState
                 Padding(
                   padding: const EdgeInsets.all(AppSpacing.md),
                   child: Text(
-                    'If you\'re in crisis, please contact:\n\n'
-                    '988 Suicide & Crisis Lifeline\n'
-                    'Call or text 988\n\n'
-                    'This app provides spiritual guidance but is not a substitute for professional help.',
+                    l10n.crisisResourcesText,
                     style: TextStyle(
                       color: AppColors.secondaryText,
                       fontSize: 13,
@@ -341,7 +340,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
           // Next button
           GlassButton(
-            text: 'Accept & Continue',
+            text: l10n.acceptAndContinue,
             onPressed: _canProceedFromLegal ? _nextPage : null,
           ),
 
@@ -357,6 +356,7 @@ class _UnifiedInteractiveOnboardingScreenState
     required String label,
     VoidCallback? onViewTapped,
   }) {
+    final l10n = AppLocalizations.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -398,7 +398,7 @@ class _UnifiedInteractiveOnboardingScreenState
                 GestureDetector(
                   onTap: onViewTapped,
                   child: Text(
-                    'View',
+                    l10n.view,
                     style: TextStyle(
                       color: AppTheme.goldColor,
                       fontSize: 14,
@@ -425,7 +425,7 @@ class _UnifiedInteractiveOnboardingScreenState
   }
 
   // PAGE 2: Devotional Demo
-  Widget _buildDevotionalDemoPage() {
+  Widget _buildDevotionalDemoPage(AppLocalizations l10n) {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(
         top: AppSpacing.xl,
@@ -439,7 +439,7 @@ class _UnifiedInteractiveOnboardingScreenState
           Column(
             children: [
               Text(
-                'Try Your First Devotional',
+                l10n.tryYourFirstDevotional,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 24,
@@ -450,7 +450,7 @@ class _UnifiedInteractiveOnboardingScreenState
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'Here\'s a preview of a daily devotional to start your day with the word',
+                l10n.devotionalPreviewDesc,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 15,
@@ -463,7 +463,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
           // Devotional Title (scrollable, like devotional_screen.dart)
           Text(
-            'Cultivating a',
+            l10n.demoDevotionalTitle1,
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 24,
                   minSize: 20, maxSize: 28),
@@ -474,7 +474,7 @@ class _UnifiedInteractiveOnboardingScreenState
             textAlign: TextAlign.left,
           ),
           Text(
-            'Thankful Heart',
+            l10n.demoDevotionalTitle2,
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 24,
                   minSize: 20, maxSize: 28),
@@ -494,7 +494,7 @@ class _UnifiedInteractiveOnboardingScreenState
                         color: AppTheme.goldColor),
                     const SizedBox(width: AppSpacing.sm),
                     Text(
-                      'Opening Scripture',
+                      l10n.openingScripture,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 14,
                             minSize: 12, maxSize: 16),
@@ -537,7 +537,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
                 // Reflection preview
                 Text(
-                  'Gratitude doesn\'t always come naturally—especially when life feels overwhelming. Yet Psalm 107 opens with a powerful invitation: give thanks...',
+                  l10n.demoReflectionText,
                   style: TextStyle(
                     fontSize: 15,
                     color: AppColors.primaryText,
@@ -551,7 +551,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
           // Mark complete button
           GlassButton(
-            text: _devotionalCompleted ? '✓ Completed!' : 'Mark as Complete',
+            text: _devotionalCompleted ? l10n.completedExclamation : l10n.markAsCompleted,
             onPressed: () {
               if (!_devotionalCompleted) {
                 setState(() => _devotionalCompleted = true);
@@ -567,7 +567,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
           // Next button
           GlassButton(
-            text: 'Next',
+            text: l10n.next,
             onPressed: _nextPage,
             borderColor: AppColors.subtleBorder,
           ),
@@ -579,7 +579,7 @@ class _UnifiedInteractiveOnboardingScreenState
   }
 
   // PAGE 3: AI Chat Demo
-  Widget _buildAIChatDemoPage() {
+  Widget _buildAIChatDemoPage(AppLocalizations l10n) {
     return Column(
       children: [
         // Fixed header
@@ -591,7 +591,7 @@ class _UnifiedInteractiveOnboardingScreenState
           child: Column(
             children: [
               Text(
-                'Ask Me Anything',
+                l10n.askMeAnything,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 24,
                       minSize: 20, maxSize: 28),
@@ -602,7 +602,7 @@ class _UnifiedInteractiveOnboardingScreenState
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'Intelligent Scripture Chat 24/7',
+                l10n.intelligentScriptureChat,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 15,
@@ -658,7 +658,7 @@ class _UnifiedInteractiveOnboardingScreenState
                               ],
                             ),
                             child: Text(
-                              'How do I overcome worry?',
+                              l10n.demoChatUserMessage,
                               style: TextStyle(
                                 fontSize: ResponsiveUtils.fontSize(context, 15,
                                     minSize: 13, maxSize: 17),
@@ -787,7 +787,7 @@ class _UnifiedInteractiveOnboardingScreenState
                     delay: const Duration(milliseconds: 500),
                     isVisible: _chatDemoSent,
                     child: GlassButton(
-                      text: 'Next',
+                      text: l10n.next,
                       borderColor: AppTheme.goldColor,
                       onPressed: _nextPage,
                     ),
@@ -840,7 +840,7 @@ class _UnifiedInteractiveOnboardingScreenState
                       child: TextField(
                         enabled: false, // Disabled for demo
                         controller: TextEditingController(
-                          text: _chatDemoSent ? '' : 'How do I overcome worry?',
+                          text: _chatDemoSent ? '' : l10n.demoChatUserMessage,
                         ),
                         style: TextStyle(
                           color: AppColors.primaryText,
@@ -848,7 +848,7 @@ class _UnifiedInteractiveOnboardingScreenState
                               minSize: 13, maxSize: 17),
                         ),
                         decoration: InputDecoration(
-                          hintText: 'Scripture Chat...',
+                          hintText: l10n.scriptureChatPlaceholder,
                           hintStyle: TextStyle(
                             color: AppColors.tertiaryText,
                             fontSize: ResponsiveUtils.fontSize(context, 15,
@@ -989,7 +989,7 @@ class _UnifiedInteractiveOnboardingScreenState
   }
 
   // PAGE 4: Personalization
-  Widget _buildPersonalizationPage() {
+  Widget _buildPersonalizationPage(AppLocalizations l10n) {
     return SingleChildScrollView(
       padding: AppSpacing.screenPadding,
       child: Column(
@@ -1005,7 +1005,9 @@ class _UnifiedInteractiveOnboardingScreenState
             dispersionStrength: 0.3,
             blurIntensity: 0.05,
             child: Image.asset(
-              'assets/images/logo_transparent.png',
+              l10n.localeName == 'es'
+                  ? 'assets/images/logo_spanish.png'
+                  : 'assets/images/logo_transparent.png',
               width: 150,
               height: 150,
               fit: BoxFit.contain,
@@ -1015,7 +1017,7 @@ class _UnifiedInteractiveOnboardingScreenState
           const SizedBox(height: AppSpacing.xxl),
 
           Text(
-            'You\'re All Set!',
+            l10n.youreAllSet,
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 28,
                   minSize: 24, maxSize: 32),
@@ -1027,7 +1029,7 @@ class _UnifiedInteractiveOnboardingScreenState
           const SizedBox(height: AppSpacing.lg),
 
           Text(
-            'One last thing...',
+            l10n.oneLastThing,
             style: TextStyle(
               fontSize: 16,
               color: AppColors.secondaryText,
@@ -1037,7 +1039,7 @@ class _UnifiedInteractiveOnboardingScreenState
           const SizedBox(height: AppSpacing.xxl),
 
           Text(
-            'What should we call you?',
+            l10n.whatShouldWeCallYou,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -1070,7 +1072,7 @@ class _UnifiedInteractiveOnboardingScreenState
                     ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
               ),
               decoration: InputDecoration(
-                hintText: 'First name (optional)',
+                hintText: l10n.firstNameOptional,
                 hintStyle: TextStyle(
                   color: AppColors.tertiaryText,
                   fontSize: ResponsiveUtils.fontSize(context, 15,
@@ -1095,7 +1097,7 @@ class _UnifiedInteractiveOnboardingScreenState
           const SizedBox(height: AppSpacing.lg),
 
           Text(
-            'Your spiritual journey starts now!',
+            l10n.spiritualJourneyStartsNow,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 15,
@@ -1108,7 +1110,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
           // Get started button
           GlassButton(
-            text: 'Begin Your Journey',
+            text: l10n.beginYourJourney,
             onPressed: _completeOnboarding,
           ),
 

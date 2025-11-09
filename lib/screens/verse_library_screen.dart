@@ -3,13 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/dark_glass_container.dart';
 import '../components/clear_glass_card.dart';
-import '../components/glassmorphic_fab_menu.dart';
 import '../components/blur_popup_menu.dart';
 import '../components/base_bottom_sheet.dart';
 import '../components/glass_button.dart';
@@ -25,6 +23,7 @@ import '../utils/blur_dialog_utils.dart';
 import '../services/verse_share_service.dart';
 import '../core/services/database_service.dart';
 import '../core/services/achievement_service.dart';
+import '../l10n/app_localizations.dart';
 
 // Provider for all saved verses
 final filteredVersesProvider = FutureProvider.autoDispose<List<BibleVerse>>((ref) async {
@@ -89,9 +88,10 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Widget _buildHeader() {
+    final l10n = AppLocalizations.of(context);
     return StandardScreenHeader(
-      title: 'Verse Library',
-      subtitle: 'Everyday verses',
+      title: l10n.verseLibrary,
+      subtitle: l10n.everydayVerses,
       trailingWidget: Container(
         decoration: BoxDecoration(
           color: Colors.white.withValues(alpha: 0.1),
@@ -111,6 +111,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
 
 
   Widget _buildTabBar() {
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: AppSpacing.horizontalXl,
       child: FrostedGlassCard(
@@ -133,9 +134,9 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             fontWeight: FontWeight.w600,
             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
           ),
-          tabs: const [
-            Tab(text: 'Saved Verses'),
-            Tab(text: 'Shared'),
+          tabs: [
+            Tab(text: l10n.savedVerses),
+            Tab(text: l10n.shared),
           ],
         ),
       ),
@@ -143,6 +144,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Widget _buildSharedVerses() {
+    final l10n = AppLocalizations.of(context);
     final sharedAsync = ref.watch(sharedVersesProvider);
 
     return sharedAsync.when(
@@ -150,8 +152,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         if (entries.isEmpty) {
           return _buildEmptyState(
             icon: Icons.history_toggle_off,
-            title: 'No shared verses yet',
-            subtitle: 'Share verses to keep a quick-access history here.',
+            title: l10n.noSharedVersesYet,
+            subtitle: 'Share verses to keep a quick-access history here.', // TODO: Add l10n key: shareVersesToQuickAccess
           );
         }
 
@@ -182,6 +184,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   // Widget _buildAllVerses() { ... }
 
   Widget _buildSavedVerses() {
+    final l10n = AppLocalizations.of(context);
     final favoritesAsync = ref.watch(favoriteVersesProvider);
 
     return favoritesAsync.when(
@@ -189,8 +192,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         if (verses.isEmpty) {
           return _buildEmptyState(
             icon: Icons.favorite_outline,
-            title: 'No saved verses yet',
-            subtitle: '💡 Save verses while reading to build your collection',
+            title: l10n.noSavedVersesYet,
+            subtitle: l10n.saveVersesWhileReading,
           );
         }
 
@@ -263,6 +266,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Widget _buildErrorState(String error) {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(40),
@@ -276,7 +280,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             ),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              'Something went wrong',
+              l10n.somethingWentWrong,
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                 fontWeight: FontWeight.w700,
@@ -301,6 +305,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Widget _buildVerseCard(BibleVerse verse, int index) {
+    final l10n = AppLocalizations.of(context);
     return DarkGlassContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -344,16 +349,16 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 ),
                 // 3-dot menu for actions
                 BlurPopupMenu(
-                  items: const [
+                  items: [
                     BlurPopupMenuItem(
                       value: 'share',
                       icon: Icons.share,
-                      label: 'Share',
+                      label: l10n.share,
                     ),
                     BlurPopupMenuItem(
                       value: 'delete',
                       icon: Icons.delete,
-                      label: 'Delete',
+                      label: l10n.delete,
                       iconColor: Colors.red,
                       textColor: Colors.red,
                     ),
@@ -420,6 +425,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Widget _buildSharedVerseCard(SharedVerseEntry entry, int index) {
+    final l10n = AppLocalizations.of(context);
     final verse = entry.toBibleVerse();
     final sharedTimestamp = DateFormat('MMM d, yyyy • h:mm a').format(entry.sharedAt);
 
@@ -485,16 +491,16 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 ),
                 // 3-dot menu for actions
                 BlurPopupMenu(
-                  items: const [
+                  items: [
                     BlurPopupMenuItem(
                       value: 'share',
                       icon: Icons.share,
-                      label: 'Share',
+                      label: l10n.share,
                     ),
                     BlurPopupMenuItem(
                       value: 'delete',
                       icon: Icons.delete,
-                      label: 'Delete',
+                      label: l10n.delete,
                       iconColor: Colors.red,
                       textColor: Colors.red,
                     ),
@@ -564,9 +570,10 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   void _showShareOptions(BibleVerse verse) {
+    final l10n = AppLocalizations.of(context);
     showCustomBottomSheet(
       context: context,
-      title: 'Share Verse',
+      title: l10n.shareVerseTitle,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 20),
         child: Column(
@@ -574,7 +581,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
           children: [
             ListTile(
               leading: _buildSheetIcon(Icons.copy),
-              title: const Text('Copy to Clipboard', style: TextStyle(color: Colors.white)),
+              title: Text(l10n.copyToClipboard, style: const TextStyle(color: Colors.white)),
               onTap: () {
                 final text = '"${verse.text}"\n\n${verse.reference} (${verse.translation})';
                 Clipboard.setData(ClipboardData(text: text));
@@ -582,13 +589,13 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 if (!mounted) return;
                 AppSnackBar.show(
                   context,
-                  message: 'Verse copied to clipboard',
+                  message: l10n.verseCopiedToClipboard,
                 );
               },
             ),
             ListTile(
               leading: _buildSheetIcon(Icons.share),
-              title: const Text('Share Text', style: TextStyle(color: Colors.white)),
+              title: Text(l10n.shareText, style: const TextStyle(color: Colors.white)),
               onTap: () async {
                 NavigationService.pop();
                 final shareText = '"${verse.text}"\n\n— ${verse.reference}';
@@ -626,7 +633,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                     if (!mounted) return;
                     AppSnackBar.show(
                       context,
-                      message: 'Verse shared and moved to Shared tab!',
+                      message: 'Verse shared and moved to Shared tab!', // TODO: Add l10n key: verseSharedAndMovedToSharedTab
                       icon: Icons.share,
                       iconColor: AppTheme.primaryColor,
                     );
@@ -635,14 +642,14 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   if (!mounted) return;
                   AppSnackBar.showError(
                     context,
-                    message: 'Unable to share verse: $e',
+                    message: l10n.unableToShareVerse(e.toString()),
                   );
                 }
               },
             ),
             ListTile(
               leading: _buildSheetIcon(Icons.image),
-              title: const Text('Share as Image', style: TextStyle(color: Colors.white)),
+              title: Text('Share as Image', style: const TextStyle(color: Colors.white)), // TODO: Add l10n key: shareAsImage
               onTap: () async {
                 NavigationService.pop();
                 try {
@@ -677,7 +684,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   if (!mounted) return;
                   AppSnackBar.show(
                     context,
-                    message: 'Verse shared as image and moved to Shared tab!',
+                    message: 'Verse shared as image and moved to Shared tab!', // TODO: Add l10n key: verseSharedAsImageAndMovedToSharedTab
                     icon: Icons.image,
                     iconColor: AppTheme.goldColor,
                   );
@@ -685,7 +692,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   if (!mounted) return;
                   AppSnackBar.showError(
                     context,
-                    message: 'Unable to share verse: $e',
+                    message: l10n.unableToShareVerse(e.toString()),
                   );
                 }
               },
@@ -698,9 +705,10 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   void _showVerseOptions() {
+    final l10n = AppLocalizations.of(context);
     showCustomBottomSheet(
       context: context,
-      title: 'Verse Library Options',
+      title: l10n.verseLibraryOptions,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 20),
         child: Column(
@@ -708,15 +716,15 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
           children: [
             ListTile(
               leading: _buildSheetIcon(Icons.info_outline),
-              title: const Text(
-                'About Verse Library',
-                style: TextStyle(
+              title: Text(
+                l10n.aboutVerseLibrary,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
               ),
               subtitle: Text(
-                'Browse and manage your saved verses',
+                'Browse and manage your saved verses', // TODO: Add l10n key: browseAndManageYourSavedVerses
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -727,15 +735,15 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             const SizedBox(height: AppSpacing.md),
             ListTile(
               leading: _buildSheetIcon(Icons.collections_bookmark),
-              title: const Text(
-                'View shared history',
-                style: TextStyle(
+              title: Text(
+                l10n.viewSharedHistory,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
               ),
               subtitle: Text(
-                'Jump to your recently shared verses',
+                'Jump to your recently shared verses', // TODO: Add l10n key: jumpToRecentlySharedVerses
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -749,15 +757,15 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             const SizedBox(height: AppSpacing.md),
             ListTile(
               leading: _buildSheetIcon(Icons.delete_forever, iconColor: Colors.redAccent),
-              title: const Text(
-                'Clear saved verses',
-                style: TextStyle(
+              title: Text(
+                l10n.clearSavedVerses,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
               ),
               subtitle: Text(
-                'Remove all verses from your saved collection',
+                'Remove all verses from your saved collection', // TODO: Add l10n key: removeAllVersesFromSavedCollection
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -771,15 +779,15 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             const SizedBox(height: AppSpacing.md),
             ListTile(
               leading: _buildSheetIcon(Icons.delete_sweep, iconColor: Colors.redAccent),
-              title: const Text(
-                'Clear shared history',
-                style: TextStyle(
+              title: Text(
+                l10n.clearSharedHistory,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
               ),
               subtitle: Text(
-                'Remove every verse from shared activity',
+                'Remove every verse from shared activity', // TODO: Add l10n key: removeEveryVerseFromSharedActivity
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -821,6 +829,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   }
 
   Future<void> _deleteSharedVerse(String shareId) async {
+    final l10n = AppLocalizations.of(context);
     try {
       final service = ref.read(unifiedVerseServiceProvider);
       await service.deleteSharedVerse(shareId);
@@ -831,7 +840,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
       if (!mounted) return;
       AppSnackBar.show(
         context,
-        message: 'Removed from shared history',
+        message: l10n.removedFromSharedHistory,
         icon: Icons.delete_outline,
         iconColor: Colors.redAccent,
       );
@@ -839,13 +848,14 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
       if (!mounted) return;
       AppSnackBar.showError(
         context,
-        message: 'Unable to remove shared verse: $e',
+        message: l10n.unableToRemoveSharedVerse(e.toString()),
       );
     }
   }
 
   Future<void> _deleteSavedVerse(BibleVerse verse) async {
     if (verse.id == null) return;
+    final l10n = AppLocalizations.of(context);
 
     try {
       final service = ref.read(unifiedVerseServiceProvider);
@@ -858,19 +868,20 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
       if (!mounted) return;
       AppSnackBar.show(
         context,
-        message: 'Removed from Verse Library',
+        message: l10n.removedFromVerseLibrary,
         icon: Icons.heart_broken,
       );
     } catch (e) {
       if (!mounted) return;
       AppSnackBar.showError(
         context,
-        message: 'Unable to remove verse: $e',
+        message: l10n.unableToRemoveVerse(e.toString()),
       );
     }
   }
 
   Future<void> _confirmClearSharedVerses() async {
+    final l10n = AppLocalizations.of(context);
     final shouldClear = await showBlurredDialog<bool>(
       context: context,
       builder: (context) => Dialog(
@@ -890,7 +901,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Text(
-                      'Clear shared history?',
+                      l10n.clearSharedHistoryQuestion,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
                         fontWeight: FontWeight.w700,
@@ -902,7 +913,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(
-                'This removes every verse from your Shared tab. Future shares will continue to appear here.',
+                l10n.clearSharedHistoryConfirmation,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
@@ -914,7 +925,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 children: [
                   Expanded(
                     child: GlassButton(
-                      text: 'Cancel',
+                      text: l10n.cancel,
                       height: 48,
                       onPressed: () => Navigator.pop(context, false),
                     ),
@@ -931,9 +942,9 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                         ),
                       ),
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text(
-                        'Clear All',
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                      child: Text(
+                        l10n.clearAll,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -956,7 +967,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         if (!mounted) return;
         AppSnackBar.show(
           context,
-          message: 'Shared history cleared',
+          message: l10n.sharedHistoryCleared,
           icon: Icons.delete_sweep,
           iconColor: Colors.redAccent,
         );
@@ -964,13 +975,14 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         if (!mounted) return;
         AppSnackBar.showError(
           context,
-          message: 'Unable to clear shared history: $e',
+          message: l10n.unableToClearSharedHistory(e.toString()),
         );
       }
     }
   }
 
   Future<void> _confirmClearSavedVerses() async {
+    final l10n = AppLocalizations.of(context);
     final shouldClear = await showBlurredDialog<bool>(
       context: context,
       builder: (context) => Dialog(
@@ -990,7 +1002,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Text(
-                      'Clear saved verses?',
+                      l10n.clearSavedVersesQuestion,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
                         fontWeight: FontWeight.w700,
@@ -1002,7 +1014,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(
-                'This will remove every verse from your Saved list. You can always add them again later.',
+                l10n.clearSavedVersesConfirmation,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
@@ -1014,7 +1026,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 children: [
                   Expanded(
                     child: GlassButton(
-                      text: 'Cancel',
+                      text: l10n.cancel,
                       height: 48,
                       onPressed: () => Navigator.pop(context, false),
                     ),
@@ -1031,9 +1043,9 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                         ),
                       ),
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text(
-                        'Clear All',
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                      child: Text(
+                        l10n.clearAll,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -1055,7 +1067,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         if (!mounted) return;
         AppSnackBar.show(
           context,
-          message: 'Saved verses cleared',
+          message: l10n.savedVersesCleared,
           icon: Icons.delete_forever,
           iconColor: Colors.redAccent,
         );
@@ -1063,7 +1075,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         if (!mounted) return;
         AppSnackBar.showError(
           context,
-          message: 'Unable to clear saved verses: $e',
+          message: l10n.unableToClearSavedVerses(e.toString()),
         );
       }
     }

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/app_routes.dart';
 import '../utils/responsive_utils.dart';
+import '../l10n/app_localizations.dart';
 
 /// Glassmorphic Floating Action Button Menu
 ///
@@ -30,63 +31,66 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
   bool _isVisible = false;
   OverlayEntry? _overlayEntry;
 
-  // Menu items matching your app routes
-  final List<MenuOption> _menuOptions = [
-    MenuOption(
-      title: "Home",
-      icon: Icons.home,
-      color: AppTheme.goldColor,
-      route: AppRoutes.home,
-    ),
-    MenuOption(
-      title: "Bible Reading",
-      icon: Icons.menu_book,
-      color: Colors.orange,
-      route: AppRoutes.bibleBrowser,
-    ),
-    MenuOption(
-      title: "Biblical Chat",
-      icon: Icons.chat_bubble_outline,
-      color: Colors.blue,
-      route: AppRoutes.chat,
-    ),
-    MenuOption(
-      title: "Prayer Journal",
-      icon: Icons.favorite_outline,
-      color: Colors.red,
-      route: AppRoutes.prayerJournal,
-    ),
-    MenuOption(
-      title: "Daily Devotional",
-      icon: Icons.auto_stories,
-      color: Colors.green,
-      route: AppRoutes.devotional,
-    ),
-    MenuOption(
-      title: "Reading Plans",
-      icon: Icons.library_books_outlined,
-      color: Colors.purple,
-      route: AppRoutes.readingPlan,
-    ),
-    MenuOption(
-      title: "Verse Library",
-      icon: Icons.search,
-      color: AppTheme.goldColor,
-      route: AppRoutes.verseLibrary,
-    ),
-    MenuOption(
-      title: "Profile",
-      icon: Icons.person_outline,
-      color: Colors.teal,
-      route: AppRoutes.profile,
-    ),
-    MenuOption(
-      title: "Settings",
-      icon: Icons.settings_outlined,
-      color: Colors.grey,
-      route: AppRoutes.settings,
-    ),
-  ];
+  // Menu items matching your app routes (now a method to access l10n)
+  List<MenuOption> _getMenuOptions(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return [
+      MenuOption(
+        title: l10n.readBible, // "Read Bible" - using quick action key
+        icon: Icons.home,
+        color: AppTheme.goldColor,
+        route: AppRoutes.home,
+      ),
+      MenuOption(
+        title: l10n.bibleBrowser, // "Bible Browser"
+        icon: Icons.menu_book,
+        color: Colors.orange,
+        route: AppRoutes.bibleBrowser,
+      ),
+      MenuOption(
+        title: l10n.biblicalChat, // "Biblical Chat"
+        icon: Icons.chat_bubble_outline,
+        color: Colors.blue,
+        route: AppRoutes.chat,
+      ),
+      MenuOption(
+        title: l10n.prayerJournal, // "Prayer Journal"
+        icon: Icons.favorite_outline,
+        color: Colors.red,
+        route: AppRoutes.prayerJournal,
+      ),
+      MenuOption(
+        title: l10n.dailyDevotional, // "Daily Devotional"
+        icon: Icons.auto_stories,
+        color: Colors.green,
+        route: AppRoutes.devotional,
+      ),
+      MenuOption(
+        title: l10n.readingPlans, // "Reading Plans"
+        icon: Icons.library_books_outlined,
+        color: Colors.purple,
+        route: AppRoutes.readingPlan,
+      ),
+      MenuOption(
+        title: l10n.verseLibrary, // "Verse Library"
+        icon: Icons.search,
+        color: AppTheme.goldColor,
+        route: AppRoutes.verseLibrary,
+      ),
+      MenuOption(
+        title: l10n.profile, // "Profile"
+        icon: Icons.person_outline,
+        color: Colors.teal,
+        route: AppRoutes.profile,
+      ),
+      MenuOption(
+        title: l10n.settings, // "Settings"
+        icon: Icons.settings_outlined,
+        color: Colors.grey,
+        route: AppRoutes.settings,
+      ),
+    ];
+  }
 
   @override
   void initState() {
@@ -175,7 +179,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
     // Safety check: don't build if widget is disposed
     if (!mounted) return [];
 
-    final options = _menuOptions; // Don't reverse, show in order
+    final options = _getMenuOptions(context); // Don't reverse, show in order
 
     // Position from top-left where FAB is located
     final double leftPadding = ResponsiveUtils.scaleSize(context, 20, minScale: 0.8, maxScale: 1.2);
@@ -316,6 +320,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return AnimatedScale(
       scale: _isVisible ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 700),
@@ -352,10 +357,12 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Image.asset(
-                      'assets/images/logo_cropped.png',
-                      width: 64,
-                      height: 64,
-                      fit: BoxFit.contain,
+                      l10n.localeName == 'es'
+                          ? 'assets/images/logo_spanish.png'
+                          : 'assets/images/logo_cropped.png',
+                      width: l10n.localeName == 'es' ? 70 : 64,
+                      height: l10n.localeName == 'es' ? 70 : 64,
+                      fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         // Fallback to icon if logo fails to load
                         return const Icon(

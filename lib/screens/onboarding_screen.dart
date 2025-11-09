@@ -9,6 +9,7 @@ import '../components/glass/static_liquid_glass_lens.dart';
 import '../components/biometric_setup_dialog.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
+import '../l10n/app_localizations.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -55,6 +56,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -100,7 +102,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       SizedBox(height: isVerySmallScreen ? 12 : (isSmallScreen ? 16 : AppSpacing.xxl)),
 
                       Text(
-                        'Your faith-guided companion for life\'s moments',
+                        l10n.faithGuidedCompanion,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 14, maxSize: 20),
@@ -118,8 +120,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         isVisible: _showFeatures,
                         child: _buildFeatureItem(
                           icon: Icons.chat_bubble_outline,
-                          title: 'AI Biblical Guidance',
-                          description: 'Get personalized Bible verses and wisdom for any situation',
+                          title: l10n.aiBiblicalGuidance,
+                          description: l10n.aiBiblicalGuidanceDesc,
                         ),
                       ),
                       SizedBox(height: isVerySmallScreen ? 12 : (isSmallScreen ? 16 : AppSpacing.xl)),
@@ -128,8 +130,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         isVisible: _showFeatures,
                         child: _buildFeatureItem(
                           icon: Icons.auto_stories,
-                          title: 'Daily Verses',
-                          description: 'Receive encouraging Scripture at 9:30 AM or your preferred time',
+                          title: l10n.dailyVerses,
+                          description: l10n.dailyVersesDesc,
                         ),
                       ),
                       SizedBox(height: isVerySmallScreen ? 12 : (isSmallScreen ? 16 : AppSpacing.xl)),
@@ -138,8 +140,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         isVisible: _showFeatures,
                         child: _buildFeatureItem(
                           icon: Icons.lock_outline,
-                          title: 'Complete Privacy',
-                          description: 'All your spiritual conversations stay on your device',
+                          title: l10n.completePrivacy,
+                          description: l10n.completePrivacyDesc,
                         ),
                       ),
 
@@ -170,7 +172,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
                             ),
                             decoration: InputDecoration(
-                              hintText: 'First name (optional)',
+                              hintText: l10n.firstNameOptional,
                               hintStyle: TextStyle(
                                 color: AppColors.tertiaryText,
                                 fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
@@ -194,7 +196,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                       // Get started button
                       GlassButton(
-                        text: 'Begin Your Journey',
+                        text: l10n.beginYourJourney,
                         onPressed: () async {
                           // Prevent double navigation
                           if (_isNavigating) return;

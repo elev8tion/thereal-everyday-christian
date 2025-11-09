@@ -21,6 +21,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:upgrader/upgrader.dart';
+import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,11 +55,15 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textSize = ref.watch(textSizeProvider);
+    final locale = ref.watch(languageProvider);
 
     return MaterialApp(
       title: 'Everyday Christian',
       debugShowCheckedModeBanner: false,
       navigatorKey: NavigationService.navigatorKey,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: locale,
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(

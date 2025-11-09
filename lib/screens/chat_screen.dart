@@ -18,8 +18,6 @@ import '../components/glass_card.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../utils/blur_dialog_utils.dart';
-import '../components/glass_streaming_message.dart';
-import '../components/glassmorphic_fab_menu.dart';
 import '../components/scroll_to_bottom.dart';
 import '../components/is_typing_indicator.dart';
 import '../components/time_and_status.dart';
@@ -35,12 +33,12 @@ import '../components/chat_screen_lockout_overlay.dart';
 import '../components/progress_ring_send_button.dart';
 import '../components/floating_message_badge.dart';
 import '../core/services/subscription_service.dart';
-import '../components/standard_screen_header.dart';
 import '../components/chat_action_buttons_header.dart';
 import '../components/verse_context_message.dart';
 import '../models/verse_context.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../services/chat_share_service.dart';
+import '../l10n/app_localizations.dart';
 
 class ChatScreen extends HookConsumerWidget {
   final VerseContext? verseContext; // Optional verse context for verse discussion
@@ -50,14 +48,16 @@ class ChatScreen extends HookConsumerWidget {
     this.verseContext,
   });
 
-  ChatMessage _createWelcomeMessage() {
+  ChatMessage _createWelcomeMessage(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return ChatMessage.system(
-      content: 'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+      content: '${l10n.peaceBeWithYou}\n\n${l10n.chatWelcomeMessage}',
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final messageController = useTextEditingController();
     final scrollController = useScrollController();
     final messages = useState<List<ChatMessage>>([]);
@@ -120,7 +120,7 @@ class ChatScreen extends HookConsumerWidget {
           // Only add welcome message if NOT navigated from verse
           if (verseContext == null) {
             final welcomeMessage = ChatMessage.system(
-              content: 'Peace be with you.\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+              content: '${l10n.peaceBeWithYou}\n\n${l10n.chatWelcomeMessage}',
               sessionId: newSessionId,
             );
             await conversationService.saveMessage(welcomeMessage);
@@ -136,7 +136,7 @@ class ChatScreen extends HookConsumerWidget {
           debugPrint('❌ Stack trace: $stackTrace');
           // Fallback to in-memory
           if (verseContext == null) {
-            messages.value = [_createWelcomeMessage()];
+            messages.value = [_createWelcomeMessage(context)];
           } else {
             messages.value = [];
           }
@@ -299,10 +299,10 @@ class ChatScreen extends HookConsumerWidget {
                       size: ResponsiveUtils.iconSize(context, 20),
                     ),
                     const SizedBox(width: 12),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        'Failed to send message. Please try again.',
-                        style: TextStyle(
+                        l10n.chatFailedToSend,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -1592,86 +1592,6 @@ class ChatScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildAppBar(
-    BuildContext context,
-    ValueNotifier<List<ChatMessage>> messages,
-    ValueNotifier<String?> sessionId,
-    ConversationService conversationService,
-    VoidCallback onShowOptions,
-  ) {
-    return Container(
-      padding: AppSpacing.screenPadding,
-      child: Row(
-        children: [
-          const GlassmorphicFABMenu(),
-          const Spacer(),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withValues(alpha: 0.2),
-                  Colors.white.withValues(alpha: 0.1),
-                ],
-              ),
-              borderRadius: AppRadius.mediumRadius,
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.2),
-                width: 1,
-              ),
-            ),
-            child: IconButton(
-              icon: Icon(Icons.more_vert, color: Colors.white, size: ResponsiveUtils.iconSize(context, 20)),
-              onPressed: onShowOptions,
-              tooltip: 'Chat Options',
-            ),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withValues(alpha: 0.2),
-                  Colors.white.withValues(alpha: 0.1),
-                ],
-              ),
-              borderRadius: AppRadius.mediumRadius,
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.2),
-                width: 1,
-              ),
-            ),
-            child: IconButton(
-              icon: Icon(Icons.history, color: Colors.white, size: ResponsiveUtils.iconSize(context, 20)),
-              onPressed: () => _showConversationHistory(context, messages, sessionId, conversationService),
-              tooltip: 'Conversation History',
-            ),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppTheme.goldColor.withValues(alpha: 0.3),
-                  AppTheme.goldColor.withValues(alpha: 0.1),
-                ],
-              ),
-              borderRadius: AppRadius.mediumRadius,
-              border: Border.all(
-                color: AppTheme.goldColor.withValues(alpha: 0.4),
-                width: 1,
-              ),
-            ),
-            child: IconButton(
-              icon: Icon(Icons.add, color: AppColors.primaryText, size: ResponsiveUtils.iconSize(context, 20)),
-              onPressed: () => _startNewConversation(context, messages, sessionId, conversationService),
-              tooltip: 'New Conversation',
-            ),
-          ),
-        ],
-      ),
-    ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
-  }
-
   // Sliver version for CustomScrollView
   Widget _buildMessagesSliver(
     BuildContext context,
@@ -1699,42 +1619,6 @@ class ChatScreen extends HookConsumerWidget {
           childCount: messages.length + (isTyping ? 1 : 0),
         ),
       ),
-    );
-  }
-
-  // Keep original for reference (can be removed later)
-  Widget _buildMessagesList(
-    BuildContext context,
-    ScrollController scrollController,
-    List<ChatMessage> messages,
-    bool isTyping,
-    bool isStreaming,
-    bool isStreamingComplete,
-    String streamedText,
-    Future<void> Function(int) onRegenerateResponse,
-    Future<void> Function(int) onShareExchange,
-    String? regeneratedMessageId,
-  ) {
-    return ListView.builder(
-      controller: scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      itemCount: messages.length + (isStreaming ? 1 : (isTyping ? 1 : 0)),
-      itemBuilder: (listContext, index) {
-        // Show streaming message while streaming
-        if (index == messages.length && isStreaming) {
-          return GlassStreamingMessage(
-            streamedText: streamedText,
-            isComplete: isStreamingComplete,
-          );
-        }
-
-        // Show typing indicator as fallback
-        if (index == messages.length && isTyping) {
-          return _buildTypingIndicator();
-        }
-
-        return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId);
-      },
     );
   }
 
@@ -2037,7 +1921,6 @@ class ChatScreen extends HookConsumerWidget {
       builder: (context, ref, child) {
         final remainingMessages = ref.watch(remainingMessagesProvider);
         final isPremium = ref.watch(isPremiumProvider);
-        final isInTrial = ref.watch(isInTrialProvider);
 
         return Container(
           color: Colors.transparent, // Fully transparent background

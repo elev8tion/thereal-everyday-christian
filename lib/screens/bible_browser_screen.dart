@@ -14,6 +14,7 @@ import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/bible_reference_parser.dart';
 import '../utils/blur_dialog_utils.dart';
+import '../l10n/app_localizations.dart';
 
 /// Free Bible Browser - allows users to browse and read any Bible chapter
 class BibleBrowserScreen extends ConsumerStatefulWidget {
@@ -341,6 +342,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   /// Build search overlay that covers TabBarView
   Widget _buildSearchOverlay() {
+    final l10n = AppLocalizations.of(context);
     return Positioned.fill(
       child: _isSearchingVerses
           ? Center(
@@ -350,7 +352,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                   const CircularProgressIndicator(),
                   const SizedBox(height: 16),
                   Text(
-                    'Searching verses...',
+                    l10n.searchingVerses,
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                       color: Colors.white.withValues(alpha: 0.7),
@@ -381,13 +383,15 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   }
 
   Widget _buildHeader() {
-    return const StandardScreenHeader(
-      title: 'Bible Browser',
-      subtitle: 'Read any chapter freely',
+    final l10n = AppLocalizations.of(context);
+    return StandardScreenHeader(
+      title: l10n.bibleBrowser,
+      subtitle: l10n.readAnyChapterFreely,
     );
   }
 
   Widget _buildSearchBar() {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
@@ -417,7 +421,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                   fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Search books...',
+                  hintText: l10n.searchBooks,
                   hintStyle: TextStyle(
                     color: AppColors.tertiaryText,
                     fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
@@ -469,6 +473,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   }
 
   Widget _buildTabBar() {
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: AppSpacing.horizontalXl,
       child: FrostedGlassCard(
@@ -491,9 +496,9 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
             fontWeight: FontWeight.w600,
             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
           ),
-          tabs: const [
-            Tab(text: 'Old Testament'),
-            Tab(text: 'New Testament'),
+          tabs: [
+            Tab(text: l10n.oldTestament),
+            Tab(text: l10n.newTestament),
           ],
         ),
       ),
@@ -501,6 +506,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   }
 
   Widget _buildTestamentView(List<String> books) {
+    final l10n = AppLocalizations.of(context);
     if (books.isEmpty) {
       return Center(
         child: Padding(
@@ -515,7 +521,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               ),
               const SizedBox(height: 16),
               Text(
-                'No books found',
+                l10n.noBooksFound,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
                   fontWeight: FontWeight.w600,
@@ -524,7 +530,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               ),
               const SizedBox(height: 8),
               Text(
-                'Try a different search term',
+                l10n.tryDifferentSearchTerm,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: Colors.white.withValues(alpha: 0.7),
@@ -544,6 +550,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   }
 
   Widget _buildBookListItem(String book) {
+    final l10n = AppLocalizations.of(context);
     final abbreviation = _bookAbbreviations[book] ?? 'Bk';
     final chapterCount = _bookChapterCounts[book] ?? 0;
 
@@ -596,7 +603,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '$chapterCount chapter${chapterCount == 1 ? '' : 's'}',
+                        chapterCount == 1 ? l10n.chapterCount(chapterCount) : l10n.chaptersCount(chapterCount),
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                           color: Colors.white.withValues(alpha: 0.7),
@@ -666,6 +673,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   }
 
   Future<void> _showChapterSelector(String book) async {
+    final l10n = AppLocalizations.of(context);
     final chapterCount = await _bibleService.getChapterCount(book);
 
     if (!mounted) return;
@@ -704,7 +712,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  'Select Chapter - $book',
+                  l10n.selectChapterBook(book),
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                     fontWeight: FontWeight.w700,
@@ -771,6 +779,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   }
 
   Widget _buildVerseResults() {
+    final l10n = AppLocalizations.of(context);
     if (_verseSearchResults.isEmpty) {
       return Center(
         child: Padding(
@@ -785,7 +794,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               ),
               const SizedBox(height: 16),
               Text(
-                'No verses found',
+                l10n.noVersesFound,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
                   fontWeight: FontWeight.w600,
@@ -794,7 +803,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               ),
               const SizedBox(height: 8),
               Text(
-                'Try a different search term',
+                l10n.tryDifferentSearchTerm,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: Colors.white.withValues(alpha: 0.7),
@@ -813,7 +822,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Text(
-            '${_verseSearchResults.length} verses found',
+            l10n.versesFoundCount(_verseSearchResults.length),
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
               fontWeight: FontWeight.w600,

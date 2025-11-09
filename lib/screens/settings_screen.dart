@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
@@ -23,8 +22,10 @@ import '../widgets/time_picker/time_range_sheet.dart';
 import '../widgets/time_picker/time_range_sheet_style.dart';
 import '../components/glass_button.dart';
 import '../components/dark_glass_container.dart';
+import '../components/blur_dropdown.dart';
 import 'paywall_screen.dart';
 import '../utils/blur_dialog_utils.dart';
+import '../l10n/app_localizations.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -74,15 +75,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Widget _buildAppBar() {
-    return const StandardScreenHeader(
-      title: 'Settings',
-      subtitle: 'Customize your app experience',
+    final l10n = AppLocalizations.of(context);
+    return StandardScreenHeader(
+      title: l10n.settings,
+      subtitle: l10n.settingsSubtitle,
       showFAB: false, // FAB is positioned separately
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
 
 
   Widget _buildSettingsContent() {
+    final l10n = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.only(
         top: AppSpacing.xl,
@@ -95,13 +99,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           _buildAppBar(),
           const SizedBox(height: AppSpacing.xxl),
           _buildSettingsSection(
-            'Notifications',
+            l10n.notifications,
             Icons.notifications,
             [
               _buildNotificationTile(
                 icon: Icons.wb_sunny_outlined,
-                title: 'Daily Devotional',
-                subtitle: 'Morning inspiration to start your day',
+                title: l10n.dailyDevotional,
+                subtitle: l10n.dailyDevotionalNotificationDesc,
                 isEnabled: ref.watch(dailyNotificationsProvider),
                 currentTime: ref.watch(devotionalTimeProvider),
                 onToggle: (value) => ref.read(dailyNotificationsProvider.notifier).toggle(value),
@@ -109,8 +113,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
               _buildNotificationTile(
                 icon: Icons.favorite_border,
-                title: 'Prayer Reminders',
-                subtitle: 'Gentle nudges to pause and pray',
+                title: l10n.prayerReminders,
+                subtitle: l10n.prayerRemindersNotificationDesc,
                 isEnabled: ref.watch(prayerRemindersProvider),
                 currentTime: ref.watch(prayerTimeProvider),
                 onToggle: (value) => ref.read(prayerRemindersProvider.notifier).toggle(value),
@@ -118,8 +122,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
               _buildNotificationTile(
                 icon: Icons.auto_awesome,
-                title: 'Verse of the Day',
-                subtitle: 'Daily scripture to reflect on',
+                title: l10n.verseOfTheDaySetting,
+                subtitle: l10n.verseOfTheDayNotificationDesc,
                 isEnabled: ref.watch(verseOfTheDayProvider),
                 currentTime: ref.watch(verseTimeProvider),
                 onToggle: (value) => ref.read(verseOfTheDayProvider.notifier).toggle(value),
@@ -127,8 +131,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
               _buildNotificationTile(
                 icon: Icons.menu_book_outlined,
-                title: 'Reading Plan',
-                subtitle: 'Stay on track with your Bible reading',
+                title: l10n.readingPlan,
+                subtitle: l10n.readingPlanNotificationDesc,
                 isEnabled: ref.watch(readingPlanRemindersProvider),
                 currentTime: ref.watch(readingPlanTimeProvider),
                 onToggle: (value) => ref.read(readingPlanRemindersProvider.notifier).toggle(value),
@@ -138,11 +142,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           const SizedBox(height: AppSpacing.xxl),
           _buildSettingsSection(
-            'Subscription',
+            l10n.subscription,
             Icons.workspace_premium,
             [
               _buildNavigationTile(
-                'Manage Subscription',
+                l10n.manageSubscription,
                 _getSubscriptionStatus(ref),
                 Icons.arrow_forward_ios,
                 () {
@@ -159,20 +163,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           const SizedBox(height: AppSpacing.xxl),
           _buildSettingsSection(
-            'Bible Settings',
+            l10n.bibleSettings,
             Icons.menu_book,
             [
-              _buildInfoTile('Bible Version', 'WEB'),
+              _buildInfoTile(l10n.bibleVersion, l10n.webBibleVersion),
+              _buildLanguageTile(),
             ],
           ),
           const SizedBox(height: AppSpacing.xxl),
           _buildSettingsSection(
-            'Appearance',
+            l10n.appearance,
             Icons.palette,
             [
               _buildSliderTile(
-                'Text Size',
-                'Adjust text size throughout the app',
+                l10n.textSize,
+                l10n.textSizeDesc,
                 ref.watch(textSizeProvider),
                 0.8,
                 1.5,
@@ -182,25 +187,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           const SizedBox(height: AppSpacing.xxl),
           _buildSettingsSection(
-            'Data & Privacy',
+            l10n.dataPrivacy,
             Icons.security,
             [
               _buildAppLockTile(),
               _buildActionTile(
-                'Clear Cache',
-                'Free up storage space',
+                l10n.clearCache,
+                l10n.clearCacheDesc,
                 Icons.delete_outline,
                 () => _showClearCacheDialog(),
               ),
               _buildActionTile(
-                'Export Data',
-                'Backup your prayers and notes',
+                l10n.exportData,
+                l10n.exportDataDesc,
                 Icons.download,
                 () => _exportUserData(),
               ),
               _buildActionTile(
-                'Delete All Data',
-                '⚠️ Permanently delete all your data',
+                l10n.deleteAllData,
+                l10n.deleteAllDataDesc,
                 Icons.warning_amber_rounded,
                 () => _showDeleteAllDataDialog(),
                 isDestructive: true,
@@ -209,24 +214,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           const SizedBox(height: AppSpacing.xxl),
           _buildSettingsSection(
-            'Support',
+            l10n.support,
             Icons.help,
             [
               _buildActionTile(
-                'Help & FAQ',
-                'Get answers to common questions',
+                l10n.helpFAQ,
+                l10n.helpFAQDesc,
                 Icons.help_outline,
                 () => _showHelpDialog(),
               ),
               _buildActionTile(
-                'Contact Support',
-                'Get help with technical issues',
+                l10n.contactSupport,
+                l10n.contactSupportDesc,
                 Icons.email,
                 () => _contactSupport(),
               ),
               _buildActionTile(
-                'Rate App',
-                'Share your feedback on the App Store',
+                l10n.rateApp,
+                l10n.rateAppDesc,
                 Icons.star_outline,
                 () => _rateApp(),
               ),
@@ -234,19 +239,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           const SizedBox(height: AppSpacing.xxl),
           _buildSettingsSection(
-            'About',
+            l10n.about,
             Icons.info,
             [
-              _buildInfoTile('Version', '1.0.0'),
+              _buildInfoTile(l10n.versionLabel, l10n.version),
               _buildActionTile(
-                'Privacy Policy',
-                'Read our privacy policy',
+                l10n.privacyPolicy,
+                l10n.privacyPolicyDesc,
                 Icons.privacy_tip,
                 () => _showPrivacyPolicy(),
               ),
               _buildActionTile(
-                'Terms of Service',
-                'Read terms and conditions',
+                l10n.termsOfService,
+                l10n.termsOfServiceDesc,
                 Icons.description,
                 () => _showTermsOfService(),
               ),
@@ -523,6 +528,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Widget _buildAppLockTile() {
+    final l10n = AppLocalizations.of(context);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -554,7 +561,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'App Lock',
+                  l10n.appLock,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                     fontWeight: FontWeight.w600,
@@ -563,7 +570,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'Require Face ID / Touch ID to open app',
+                  l10n.appLockDesc,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                     color: AppColors.tertiaryText,
@@ -756,6 +763,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Future<void> _showTimePicker(String currentTime, Function(String) onChanged) async {
+    final l10n = AppLocalizations.of(context);
     final parts = currentTime.split(':');
     final initialTime = TimeOfDay(
       hour: int.parse(parts[0]),
@@ -796,8 +804,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       use24HourFormat: false,
 
       // Custom button text
-      confirmButtonText: 'Set Time',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: l10n.setTime,
+      cancelButtonText: l10n.cancel,
 
       // Enable haptic feedback
       enableHapticFeedback: true,
@@ -956,8 +964,95 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
+  Widget _buildLanguageTile() {
+    final currentLocale = ref.watch(languageProvider);
+    final l10n = AppLocalizations.of(context);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: AppSpacing.cardPadding,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withValues(alpha: 0.1),
+            Colors.white.withValues(alpha: 0.05),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: AppRadius.mediumRadius,
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.language,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryText,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.languageDesc,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                    color: AppColors.secondaryText,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: BlurDropdown(
+              value: currentLocale.languageCode == 'en' ? 'English' : 'Español',
+              items: const ['English', 'Español'],
+              onChanged: (String? newLanguage) async {
+                if (newLanguage != null) {
+                  final languageCode = newLanguage == 'English' ? 'en' : 'es';
+                  if (languageCode != currentLocale.languageCode) {
+                    await ref.read(languageProvider.notifier).setLanguage(languageCode);
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            languageCode == 'en'
+                              ? 'Language changed to English'
+                              : 'Idioma cambiado a Español',
+                          ),
+                          backgroundColor: AppTheme.primaryColor,
+                          behavior: SnackBarBehavior.floating,
+                          duration: const Duration(seconds: 2),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppRadius.md),
+                          ),
+                        ),
+                      );
+                    }
+                  }
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   void _showClearCacheDialog() {
+    final l10n = AppLocalizations.of(context);
+
     showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
@@ -993,7 +1088,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     const SizedBox(width: AppSpacing.md),
                     Text(
-                      'Clear Cache',
+                      l10n.clearCacheDialogTitle,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                         fontWeight: FontWeight.w700,
@@ -1004,7 +1099,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
-                  'This will free up storage space but may require re-downloading some content.',
+                  l10n.clearCacheDialogMessage,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                     color: Colors.white.withValues(alpha: 0.7),
@@ -1017,7 +1112,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   children: [
                     Expanded(
                       child: GlassButton(
-                        text: 'Cancel',
+                        text: l10n.cancel,
                         height: 48,
                         onPressed: () => NavigationService.pop(),
                       ),
@@ -1025,7 +1120,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: GlassButton(
-                        text: 'Clear',
+                        text: l10n.clear,
                         height: 48,
                         onPressed: () async {
                           NavigationService.pop();
@@ -1143,6 +1238,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _showDeleteAllDataDialog() {
+    final l10n = AppLocalizations.of(context);
     final confirmController = TextEditingController();
 
     showBlurredDialog(
@@ -1181,7 +1277,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     const SizedBox(width: AppSpacing.md),
                     Text(
-                      'Delete All Data',
+                      l10n.deleteAllData,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                         fontWeight: FontWeight.w700,
@@ -1329,7 +1425,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   children: [
                     Expanded(
                       child: GlassButton(
-                        text: 'Cancel',
+                        text: l10n.cancel,
                         height: 48,
                         onPressed: () {
                           confirmController.dispose();
@@ -1340,7 +1436,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: GlassButton(
-                        text: 'Delete',
+                        text: l10n.delete,
                         height: 48,
                         borderColor: Colors.red.withValues(alpha: 0.8),
                         onPressed: () async {
@@ -1468,6 +1564,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _showHelpDialog() {
+    final l10n = AppLocalizations.of(context);
+
     showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
@@ -1505,7 +1603,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     const SizedBox(width: AppSpacing.md),
                     Text(
-                      'Help & FAQ',
+                      l10n.helpFAQ,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                         fontWeight: FontWeight.w700,
@@ -1516,7 +1614,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
-                  'Find answers to common questions',
+                  l10n.faqSubtitle,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                     color: Colors.white.withValues(alpha: 0.7),
@@ -1529,143 +1627,62 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildFAQSection('Getting Started', [
-                          _FAQItem(
-                            question: 'How do I get started?',
-                            answer: 'Welcome! Start by exploring the Home screen where you\'ll find daily devotionals, verse of the day, and quick access to prayer and Bible reading. Navigate using the menu in the top left corner.',
-                          ),
-                          _FAQItem(
-                            question: 'Is the app free to use?',
-                            answer: 'Yes! Everyday Christian offers a free trial with daily message limits for AI chat. Upgrade to Premium for unlimited AI conversations and full access to all features.',
-                          ),
-                          _FAQItem(
-                            question: 'Which Bible version is used?',
-                            answer: 'The app uses the World English Bible (WEB), a modern public domain translation that\'s faithful to the original texts and easy to read.',
-                          ),
+                        _buildFAQSection(l10n.faqGettingStarted, [
+                          _FAQItem(question: l10n.faqQ1, answer: l10n.faqA1),
+                          _FAQItem(question: l10n.faqQ2, answer: l10n.faqA2),
+                          _FAQItem(question: l10n.faqQ3, answer: l10n.faqA3),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
 
-                        _buildFAQSection('Bible Reading', [
-                          _FAQItem(
-                            question: 'Can I read the Bible offline?',
-                            answer: 'Yes! The entire Bible is downloaded when you first install the app. You can read all 66 books, chapters, and verses without an internet connection.',
-                          ),
-                          _FAQItem(
-                            question: 'How do I search for verses?',
-                            answer: 'Navigate to the Bible section from the home menu. Use the search bar to find verses by keywords, or browse by book, chapter, and verse.',
-                          ),
-                          _FAQItem(
-                            question: 'Can I change the Bible version?',
-                            answer: 'The World English Bible (WEB) is currently the only version available. This ensures consistent offline access and optimal performance.',
-                          ),
+                        _buildFAQSection(l10n.faqBibleReading, [
+                          _FAQItem(question: l10n.faqQ4, answer: l10n.faqA4),
+                          _FAQItem(question: l10n.faqQ5, answer: l10n.faqA5),
+                          _FAQItem(question: l10n.faqQ6, answer: l10n.faqA6),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
 
-                        _buildFAQSection('Prayer Journal', [
-                          _FAQItem(
-                            question: 'How do I add a prayer?',
-                            answer: 'Open the Prayer Journal from the home menu and tap the floating + button. Enter your prayer title, description, and choose a category (Personal, Family, Health, etc.), then save.',
-                          ),
-                          _FAQItem(
-                            question: 'Can I mark prayers as answered?',
-                            answer: 'Yes! Open any prayer and tap "Mark as Answered". You can add a description of how God answered your prayer. View all answered prayers in the "Answered" tab.',
-                          ),
-                          _FAQItem(
-                            question: 'How do I export my prayer journal?',
-                            answer: 'Go to Settings > Data & Privacy > Export Data. This creates a formatted text file containing all your prayers (both active and answered) that you can save or share.',
-                          ),
-                          _FAQItem(
-                            question: 'Can I organize prayers by category?',
-                            answer: 'Yes! Each prayer can be assigned to a category. Use the category filter at the top of the Prayer Journal to view prayers by specific categories.',
-                          ),
+                        _buildFAQSection(l10n.faqPrayerJournal, [
+                          _FAQItem(question: l10n.faqQ7, answer: l10n.faqA7),
+                          _FAQItem(question: l10n.faqQ8, answer: l10n.faqA8),
+                          _FAQItem(question: l10n.faqQ9, answer: l10n.faqA9),
+                          _FAQItem(question: l10n.faqQ10, answer: l10n.faqA10),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
 
-                        _buildFAQSection('Devotionals & Reading Plans', [
-                          _FAQItem(
-                            question: 'Where can I find daily devotionals?',
-                            answer: 'Daily devotionals appear on your Home screen. You can mark devotionals as completed to track your progress and build your devotional streak.',
-                          ),
-                          _FAQItem(
-                            question: 'How do reading plans work?',
-                            answer: 'Choose a reading plan from the Reading Plans section. Tap "Start Plan" to begin. The app tracks your progress as you complete daily readings. Only one plan can be active at a time.',
-                          ),
-                          _FAQItem(
-                            question: 'Can I track my devotional streak?',
-                            answer: 'Yes! The app automatically tracks how many consecutive days you\'ve completed devotionals. View your current streak on your Profile screen.',
-                          ),
+                        _buildFAQSection(l10n.faqDevotionalsPlans, [
+                          _FAQItem(question: l10n.faqQ11, answer: l10n.faqA11),
+                          _FAQItem(question: l10n.faqQ12, answer: l10n.faqA12),
+                          _FAQItem(question: l10n.faqQ13, answer: l10n.faqA13),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
 
-                        _buildFAQSection('AI Chat & Support', [
-                          _FAQItem(
-                            question: 'What can I ask the AI?',
-                            answer: 'You can ask about Scripture interpretation, prayer requests, life challenges, faith questions, and daily encouragement. The AI provides biblically-grounded guidance and support.',
-                          ),
-                          _FAQItem(
-                            question: 'How many messages can I send?',
-                            answer: 'Free users have a daily message limit. Premium subscribers get unlimited messages. Check Settings > Subscription to see your current plan and remaining messages.',
-                          ),
-                          _FAQItem(
-                            question: 'Are my conversations saved?',
-                            answer: 'Yes! All your AI conversations are saved to your device. Each chat creates a new session that you can access from the conversation history.',
-                          ),
+                        _buildFAQSection(l10n.faqAIChatSupport, [
+                          _FAQItem(question: l10n.faqQ14, answer: l10n.faqA14),
+                          _FAQItem(question: l10n.faqQ15, answer: l10n.faqA15),
+                          _FAQItem(question: l10n.faqQ16, answer: l10n.faqA16),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
 
-                        _buildFAQSection('Notifications', [
-                          _FAQItem(
-                            question: 'How do I change notification times?',
-                            answer: 'Go to Settings > Notifications > Notification Time. Select your preferred time for daily reminders.',
-                          ),
-                          _FAQItem(
-                            question: 'Can I turn off specific notifications?',
-                            answer: 'Yes! In Settings > Notifications, you can toggle each notification type (Daily Devotional, Prayer Reminders, Verse of the Day) independently.',
-                          ),
-                          _FAQItem(
-                            question: 'Why aren\'t I receiving notifications?',
-                            answer: 'Check your device settings to ensure notifications are enabled for Everyday Christian. Also verify that each notification type is enabled in Settings > Notifications.',
-                          ),
+                        _buildFAQSection(l10n.faqNotifications, [
+                          _FAQItem(question: l10n.faqQ17, answer: l10n.faqA17),
+                          _FAQItem(question: l10n.faqQ18, answer: l10n.faqA18),
+                          _FAQItem(question: l10n.faqQ19, answer: l10n.faqA19),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
 
-                        _buildFAQSection('Settings & Customization', [
-                          _FAQItem(
-                            question: 'How do I adjust text size?',
-                            answer: 'Go to Settings > Appearance > Text Size. Use the slider to adjust text size throughout the app from 80% to 150% of normal size.',
-                          ),
-                          _FAQItem(
-                            question: 'Can I add a profile picture?',
-                            answer: 'Yes! Tap your profile avatar in Settings or on your Profile screen. Choose to take a photo or select one from your gallery.',
-                          ),
-                          _FAQItem(
-                            question: 'What does offline mode do?',
-                            answer: 'Offline mode allows you to use core features (Bible reading, viewing saved prayers and devotionals) without an internet connection. AI chat requires internet.',
-                          ),
+                        _buildFAQSection(l10n.faqSettingsCustomization, [
+                          _FAQItem(question: l10n.faqQ20, answer: l10n.faqA20),
+                          _FAQItem(question: l10n.faqQ21, answer: l10n.faqA21),
+                          _FAQItem(question: l10n.faqQ22, answer: l10n.faqA22),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
 
-                        _buildFAQSection('Data & Privacy', [
-                          _FAQItem(
-                            question: 'Is my data private and secure?',
-                            answer: 'Yes! Your prayers, notes, and personal data are stored securely on your device. We never sell your information to third parties.',
-                          ),
-                          _FAQItem(
-                            question: 'What data is stored on my device?',
-                            answer: 'The Bible content, your prayers, conversation history, reading plan progress, devotional completion records, and app preferences are all stored locally.',
-                          ),
-                          _FAQItem(
-                            question: 'What\'s the difference between Clear Cache and Delete All Data?',
-                            answer: 'Clear Cache removes temporary files (image cache, temp directories) to free up storage space. Your prayers, settings, and all personal data remain safe. Delete All Data permanently erases everything including prayers, conversations, settings, and resets the app to factory defaults.',
-                          ),
-                          _FAQItem(
-                            question: 'How do I clear cached data?',
-                            answer: 'Go to Settings > Data & Privacy > Clear Cache. This removes temporary files and image cache to free up storage space. Your prayers, conversations, and personal data are NOT deleted - only temporary cache files are removed.',
-                          ),
-                          _FAQItem(
-                            question: 'How do I delete all my data?',
-                            answer: 'Go to Settings > Data & Privacy > Delete All Data. You\'ll be asked to type "DELETE" to confirm. This permanently erases all prayers, conversations, reading plans, favorites, settings, and profile picture. Export your prayer journal first if you want to keep a backup. This action cannot be undone.',
-                          ),
+                        _buildFAQSection(l10n.faqDataPrivacy, [
+                          _FAQItem(question: l10n.faqQ23, answer: l10n.faqA23),
+                          _FAQItem(question: l10n.faqQ24, answer: l10n.faqA24),
+                          _FAQItem(question: l10n.faqQ25, answer: l10n.faqA25),
+                          _FAQItem(question: l10n.faqQ26, answer: l10n.faqA26),
+                          _FAQItem(question: l10n.faqQ27, answer: l10n.faqA27),
                         ]),
                       ],
                     ),
@@ -1676,7 +1693,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
                 // Close Button
                 GlassButton(
-                  text: 'Close',
+                  text: l10n.close,
                   height: 48,
                   onPressed: () => NavigationService.pop(),
                 ),

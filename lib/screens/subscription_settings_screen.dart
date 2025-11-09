@@ -17,19 +17,20 @@ import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glass_section_header.dart';
-import '../components/glassmorphic_fab_menu.dart';
 import '../components/standard_screen_header.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_gradients.dart';
 import '../core/providers/app_providers.dart';
 import '../utils/responsive_utils.dart';
 import 'paywall_screen.dart';
+import '../l10n/app_localizations.dart';
 
 class SubscriptionSettingsScreen extends ConsumerWidget {
   const SubscriptionSettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final isPremium = ref.watch(isPremiumProvider);
     final isInTrial = ref.watch(isInTrialProvider);
     final hasTrialExpired = ref.watch(hasTrialExpiredProvider);
@@ -54,6 +55,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                         // Status Header
                         _buildStatusHeader(
                           context: context,
+                          l10n: l10n,
                           isPremium: isPremium,
                           isInTrial: isInTrial,
                           hasTrialExpired: hasTrialExpired,
@@ -64,6 +66,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                         // Stats Cards
                         _buildStatsCards(
                           context: context,
+                          l10n: l10n,
                           isPremium: isPremium,
                           remainingMessages: remainingMessages,
                           messagesUsed: messagesUsed,
@@ -73,19 +76,19 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
 
                         // What You Get Section
                         GlassSectionHeader(
-                          title: isPremium ? 'Your Premium Benefits' : 'Upgrade to Premium',
+                          title: isPremium ? l10n.subscriptionYourPremiumBenefits : l10n.subscriptionUpgradeToPremium,
                           icon: Icons.workspace_premium,
                         ),
                         const SizedBox(height: AppSpacing.lg),
-                        _buildBenefitsList(isPremium),
+                        _buildBenefitsList(l10n, isPremium),
                         const SizedBox(height: AppSpacing.xxl),
 
                         // Action Buttons
                         if (!isPremium) ...[
                           GlassButton(
                             text: hasTrialExpired
-                                ? 'Subscribe Now - ~\$35.99/year*'
-                                : 'Start Free Trial',
+                                ? l10n.subscriptionSubscribeNowButton
+                                : l10n.subscriptionStartFreeTrialButton,
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
@@ -99,8 +102,8 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                           const SizedBox(height: AppSpacing.lg),
                         ] else ...[
                           GlassButton(
-                            text: 'Manage Subscription',
-                            onPressed: () => _openManageSubscription(context),
+                            text: l10n.subscriptionManageButton,
+                            onPressed: () => _openManageSubscription(context, l10n),
                           ),
                           const SizedBox(height: AppSpacing.lg),
                         ],
@@ -119,8 +122,8 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                               const SizedBox(height: AppSpacing.sm),
                               AutoSizeText(
                                 isPremium
-                                    ? 'Your subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.'
-                                    : 'Start your 3-day free trial with 15 AI messages total (use anytime). After trial: ~\$35.99/year (pricing may vary by region and currency) for 150 messages per month. Cancel anytime in App Store settings.',
+                                    ? l10n.subscriptionRenewalInfoPremium
+                                    : l10n.subscriptionRenewalInfoTrial,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: AppColors.secondaryText,
@@ -149,15 +152,17 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
 
   /// Build custom app bar
   Widget _buildAppBar(BuildContext context) {
-    return const StandardScreenHeader(
-      title: 'Subscription',
-      subtitle: 'Manage your premium access',
+    final l10n = AppLocalizations.of(context);
+    return StandardScreenHeader(
+      title: l10n.subscriptionTitle,
+      subtitle: l10n.subscriptionSubtitle,
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
 
   /// Build status header
   Widget _buildStatusHeader({
     required BuildContext context,
+    required AppLocalizations l10n,
     required bool isPremium,
     required bool isInTrial,
     required bool hasTrialExpired,
@@ -166,17 +171,17 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
     String status;
     String subtitle;
     if (isPremium) {
-      status = 'Premium Active';
-      subtitle = 'Enjoy unlimited AI guidance';
+      status = l10n.subscriptionStatusPremiumActive;
+      subtitle = l10n.subscriptionStatusPremiumActiveDesc;
     } else if (isInTrial) {
-      status = 'Free Trial';
-      subtitle = '$trialDaysRemaining days remaining';
+      status = l10n.subscriptionStatusFreeTrial;
+      subtitle = l10n.subscriptionStatusTrialDaysRemaining(trialDaysRemaining);
     } else if (hasTrialExpired) {
-      status = 'Trial Expired';
-      subtitle = 'Upgrade to continue using AI chat';
+      status = l10n.subscriptionStatusTrialExpired;
+      subtitle = l10n.subscriptionStatusTrialExpiredDesc;
     } else {
-      status = 'Free Version';
-      subtitle = 'Start your free trial';
+      status = l10n.subscriptionStatusFreeVersion;
+      subtitle = l10n.subscriptionStatusFreeVersionDesc;
     }
 
     return Column(
@@ -212,6 +217,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
   /// Build stats cards
   Widget _buildStatsCards({
     required BuildContext context,
+    required AppLocalizations l10n,
     required bool isPremium,
     required int remainingMessages,
     required int messagesUsed,
@@ -223,7 +229,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
           child: _buildStatCard(
             context: context,
             value: '$remainingMessages',
-            label: 'Messages\nLeft',
+            label: l10n.subscriptionMessagesLeft,
             icon: Icons.chat_bubble_outline,
             color: Colors.purple,
             delay: 400,
@@ -234,7 +240,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
           child: _buildStatCard(
             context: context,
             value: '$messagesUsed',
-            label: isPremium ? 'Used This\nMonth' : 'Used\nToday',
+            label: isPremium ? l10n.subscriptionUsedThisMonth : l10n.subscriptionUsedToday,
             icon: Icons.check_circle_outline,
             color: Colors.green,
             delay: 500,
@@ -245,7 +251,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
           child: _buildStatCard(
             context: context,
             value: isPremium ? '150' : '$trialDaysRemaining',
-            label: isPremium ? 'Monthly\nLimit' : 'Trial Days\nLeft',
+            label: isPremium ? l10n.subscriptionMonthlyLimit : l10n.subscriptionTrialDaysLeft,
             icon: isPremium ? Icons.all_inclusive : Icons.schedule,
             color: isPremium ? AppTheme.goldColor : Colors.blue,
             delay: 600,
@@ -325,32 +331,32 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
   }
 
   /// Build benefits list
-  Widget _buildBenefitsList(bool isPremium) {
+  Widget _buildBenefitsList(AppLocalizations l10n, bool isPremium) {
     final benefits = [
       {
         'icon': Icons.chat_bubble_outline,
-        'title': 'Intelligent Scripture Chat',
-        'subtitle': 'Custom Real World Pastoral Training',
+        'title': l10n.subscriptionBenefitIntelligentChat,
+        'subtitle': l10n.subscriptionBenefitIntelligentChatDesc,
       },
       {
         'icon': Icons.all_inclusive,
-        'title': '150 Messages Monthly',
-        'subtitle': 'More than enough for daily conversations',
+        'title': l10n.subscriptionBenefit150Messages,
+        'subtitle': l10n.subscriptionBenefit150MessagesDesc,
       },
       {
         'icon': Icons.psychology,
-        'title': 'Context-Aware Responses',
-        'subtitle': 'Biblical intelligence tailored to provide insight',
+        'title': l10n.subscriptionBenefitContextAware,
+        'subtitle': l10n.subscriptionBenefitContextAwareDesc,
       },
       {
         'icon': Icons.shield_outlined,
-        'title': 'Crisis Detection',
-        'subtitle': 'Built-in safeguards and referrals',
+        'title': l10n.subscriptionBenefitCrisisDetection,
+        'subtitle': l10n.subscriptionBenefitCrisisDetectionDesc,
       },
       {
         'icon': Icons.book_outlined,
-        'title': 'Full Bible Access',
-        'subtitle': 'All free features remain available',
+        'title': l10n.subscriptionBenefitFullBibleAccess,
+        'subtitle': l10n.subscriptionBenefitFullBibleAccessDesc,
       },
     ];
 
@@ -428,7 +434,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
   }
 
   /// Open manage subscription (App Store)
-  Future<void> _openManageSubscription(BuildContext context) async {
+  Future<void> _openManageSubscription(BuildContext context, AppLocalizations l10n) async {
     final Uri url = Uri.parse('https://apps.apple.com/account/subscriptions');
 
     try {
@@ -437,8 +443,8 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Unable to open subscription settings'),
+            SnackBar(
+              content: Text(l10n.subscriptionUnableToOpenSettings),
               backgroundColor: Colors.orange,
             ),
           );
@@ -448,7 +454,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text('${l10n.error}: $e'),
             backgroundColor: Colors.red,
           ),
         );

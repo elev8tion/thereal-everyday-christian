@@ -10,6 +10,7 @@ import '../core/widgets/app_initializer.dart';
 import '../core/services/preferences_service.dart';
 import '../hooks/animation_hooks.dart';
 import '../utils/responsive_utils.dart';
+import '../l10n/app_localizations.dart';
 
 class SplashScreen extends HookConsumerWidget {
   const SplashScreen({super.key});
@@ -19,6 +20,7 @@ class SplashScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
 
     // Use custom hook for combined fade and scale animations
     final animations = useFadeAndScale(
@@ -166,7 +168,7 @@ class SplashScreen extends HookConsumerWidget {
 
                         // App name (clean, no card)
                         Text(
-                          'EVERYDAY',
+                          l10n.appName,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 26, minSize: 22, maxSize: 30),
                             fontWeight: FontWeight.w300,
@@ -176,7 +178,7 @@ class SplashScreen extends HookConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'CHRISTIAN',
+                          l10n.appNameSecond,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 36, minSize: 32, maxSize: 40),
                             fontWeight: FontWeight.bold,
@@ -203,7 +205,7 @@ class SplashScreen extends HookConsumerWidget {
 
                         // Loading text (simplified)
                         Text(
-                          'Loading...',
+                          l10n.loadingJourney,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                             color: AppColors.secondaryText,
@@ -226,36 +228,19 @@ class SplashScreen extends HookConsumerWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Version 1.0.0',
+                      l10n.version,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                         color: AppColors.secondaryText.withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: AppSpacing.sm),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Built with ',
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                            color: AppColors.secondaryText.withValues(alpha: 0.7),
-                          ),
-                        ),
-                        Icon(
-                          Icons.favorite,
-                          size: ResponsiveUtils.iconSize(context, 12),
-                          color: Colors.red.withValues(alpha: 0.7),
-                        ),
-                        Text(
-                          ' for faith',
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                            color: AppColors.secondaryText.withValues(alpha: 0.7),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      l10n.builtWithFaith,
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                        color: AppColors.secondaryText.withValues(alpha: 0.7),
+                      ),
                     ),
                   ],
                 ),

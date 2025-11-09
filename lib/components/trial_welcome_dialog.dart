@@ -4,6 +4,7 @@ import '../theme/app_theme.dart';
 import '../components/glass_button.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/blur_dialog_utils.dart';
+import '../l10n/app_localizations.dart';
 
 class TrialWelcomeDialog extends StatelessWidget {
   const TrialWelcomeDialog({super.key});
@@ -18,6 +19,7 @@ class TrialWelcomeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
@@ -73,7 +75,7 @@ class TrialWelcomeDialog extends StatelessWidget {
 
                   // Title
                   Text(
-                    'Welcome! Start Your Free Trial',
+                    l10n.subscriptionStartFreeTrialButton,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
@@ -86,7 +88,7 @@ class TrialWelcomeDialog extends StatelessWidget {
 
                   // Description
                   Text(
-                    'Experience AI-powered biblical guidance',
+                    l10n.aiBiblicalGuidanceDesc,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
@@ -97,11 +99,11 @@ class TrialWelcomeDialog extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xl),
 
                   // Features
-                  _buildFeature(context, Icons.chat_bubble, '15 AI messages over 3 days'),
+                  _buildFeature(context, l10n, Icons.chat_bubble, l10n.trialFeatureMessages),
                   const SizedBox(height: AppSpacing.md),
-                  _buildFeature(context, Icons.menu_book, 'Scripture interpretation & guidance'),
+                  _buildFeature(context, l10n, Icons.menu_book, l10n.trialFeatureScripture),
                   const SizedBox(height: AppSpacing.md),
-                  _buildFeature(context, Icons.favorite, 'Prayer support & encouragement'),
+                  _buildFeature(context, l10n, Icons.favorite, l10n.trialFeaturePrayer),
 
                   const SizedBox(height: AppSpacing.xl),
 
@@ -118,7 +120,7 @@ class TrialWelcomeDialog extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          'After trial: ~\$35.99/year for 150 messages/month',
+                          l10n.trialPricingAfterTrial,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
@@ -127,7 +129,7 @@ class TrialWelcomeDialog extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '(pricing may vary by region and currency)',
+                          l10n.paywallPricingDisclaimer,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 8, maxSize: 12),
@@ -145,7 +147,7 @@ class TrialWelcomeDialog extends StatelessWidget {
                   Column(
                     children: [
                       GlassButton(
-                        text: 'Start Free Trial',
+                        text: l10n.subscriptionStartFreeTrialButton,
                         onPressed: () => Navigator.of(context).pop(true),
                         height: 50,
                       ),
@@ -153,7 +155,7 @@ class TrialWelcomeDialog extends StatelessWidget {
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
                         child: Text(
-                          'Maybe Later',
+                          l10n.cancel,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                             color: AppColors.secondaryText,
@@ -171,7 +173,7 @@ class TrialWelcomeDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildFeature(BuildContext context, IconData icon, String text) {
+  Widget _buildFeature(BuildContext context, AppLocalizations l10n, IconData icon, String text) {
     return Row(
       children: [
         Icon(

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
-import '../utils/responsive_utils.dart';
 
 /// Achievement badge widget that displays an earned achievement icon
 /// with an optional count badge showing how many times it was earned

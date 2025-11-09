@@ -2,9 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:everyday_christian/core/services/notification_service.dart';
+import 'package:everyday_christian/core/services/database_service.dart';
 
 void main() {
   late NotificationService notificationService;
+  late DatabaseService databaseService;
 
   setUpAll(() {
     // Initialize timezone data for testing
@@ -13,7 +15,8 @@ void main() {
   });
 
   setUp(() {
-    notificationService = NotificationService();
+    databaseService = DatabaseService();
+    notificationService = NotificationService(databaseService);
   });
 
   group('Notification Service Initialization', () {
@@ -97,7 +100,6 @@ void main() {
         await notificationService.schedulePrayerReminder(
           hour: 12,
           minute: 0,
-          title: 'Test Prayer',
         );
         expect(true, isTrue);
       } catch (e) {
@@ -105,12 +107,11 @@ void main() {
       }
     });
 
-    test('should handle prayer title', () async {
+    test('should handle different times for prayer reminders', () async {
       try {
         await notificationService.schedulePrayerReminder(
           hour: 18,
           minute: 30,
-          title: 'Family Health',
         );
         expect(true, isTrue);
       } catch (e) {
@@ -118,12 +119,11 @@ void main() {
       }
     });
 
-    test('should handle empty prayer title', () async {
+    test('should handle early morning prayer time', () async {
       try {
         await notificationService.schedulePrayerReminder(
           hour: 10,
           minute: 0,
-          title: '',
         );
         expect(true, isTrue);
       } catch (e) {
@@ -131,12 +131,11 @@ void main() {
       }
     });
 
-    test('should handle long prayer title', () async {
+    test('should handle afternoon prayer time', () async {
       try {
         await notificationService.schedulePrayerReminder(
           hour: 15,
           minute: 45,
-          title: 'A very long prayer title that might need truncation in the notification',
         );
         expect(true, isTrue);
       } catch (e) {
@@ -184,7 +183,8 @@ void main() {
     test('should calculate next instance correctly for future time today', () {
       // The service should schedule for today if time hasn't passed
       try {
-        final service = NotificationService();
+        final db = DatabaseService();
+        final service = NotificationService(db);
         expect(service, isNotNull);
       } catch (e) {
         expect(e, isNotNull);
@@ -194,7 +194,8 @@ void main() {
     test('should calculate next instance correctly for past time today', () {
       // The service should schedule for tomorrow if time has passed
       try {
-        final service = NotificationService();
+        final db = DatabaseService();
+        final service = NotificationService(db);
         expect(service, isNotNull);
       } catch (e) {
         expect(e, isNotNull);
@@ -306,12 +307,11 @@ void main() {
       }
     });
 
-    test('should handle special characters in prayer title', () async {
+    test('should handle multiple prayer reminders at different times', () async {
       try {
         await notificationService.schedulePrayerReminder(
           hour: 10,
           minute: 0,
-          title: 'Prayer with "quotes" and \'apostrophes\'',
         );
         expect(true, isTrue);
       } catch (e) {
@@ -319,12 +319,11 @@ void main() {
       }
     });
 
-    test('should handle unicode characters in prayer title', () async {
+    test('should handle evening prayer reminder', () async {
       try {
         await notificationService.schedulePrayerReminder(
-          hour: 10,
-          minute: 0,
-          title: 'Oración por la familia 🙏',
+          hour: 20,
+          minute: 30,
         );
         expect(true, isTrue);
       } catch (e) {
@@ -335,7 +334,7 @@ void main() {
     test('should handle rapid successive scheduling', () async {
       try {
         await notificationService.scheduleDailyDevotional(hour: 8, minute: 0);
-        await notificationService.schedulePrayerReminder(hour: 12, minute: 0, title: 'Test');
+        await notificationService.schedulePrayerReminder(hour: 12, minute: 0);
         await notificationService.scheduleReadingPlanReminder(hour: 19, minute: 0);
         expect(true, isTrue);
       } catch (e) {

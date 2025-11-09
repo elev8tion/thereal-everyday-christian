@@ -7,11 +7,9 @@ import '../components/frosted_glass_card.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glassmorphic_fab_menu.dart';
-import '../components/category_badge.dart';
 import '../components/standard_screen_header.dart';
 import '../components/dark_glass_container.dart';
 import '../theme/app_theme.dart';
-import '../theme/app_gradients.dart';
 import '../core/providers/app_providers.dart';
 import '../core/models/devotional.dart';
 import '../utils/responsive_utils.dart';
@@ -22,6 +20,7 @@ import '../core/services/achievement_service.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../components/base_bottom_sheet.dart';
 import '../core/navigation/navigation_service.dart';
+import '../l10n/app_localizations.dart';
 
 class DevotionalScreen extends ConsumerStatefulWidget {
   const DevotionalScreen({super.key});
@@ -78,9 +77,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
       if (devotionals.isEmpty || _currentDay >= devotionals.length) return;
       final currentDevotional = devotionals[_currentDay];
 
+      final l10n = AppLocalizations.of(context);
       showCustomBottomSheet(
         context: context,
-        title: 'Devotional Options',
+        title: l10n.devotionalOptions,
         child: Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: Column(
@@ -88,7 +88,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             children: [
               ListTile(
                 leading: _buildSheetIcon(Icons.share),
-                title: const Text('Share Devotional', style: TextStyle(color: Colors.white)),
+                title: Text(l10n.shareDevotional, style: const TextStyle(color: Colors.white)),
                 onTap: () async {
                   NavigationService.pop();
                   await _shareDevotional(currentDevotional);
@@ -111,17 +111,19 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
       );
 
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
       AppSnackBar.show(
         context,
-        message: 'Devotional shared!',
+        message: l10n.devotionalShared,
         icon: Icons.share,
         iconColor: AppTheme.goldColor,
       );
     } catch (e) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
       AppSnackBar.showError(
         context,
-        message: 'Unable to share devotional: $e',
+        message: l10n.unableToShareDevotional(e.toString()),
       );
     }
   }
@@ -296,8 +298,9 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     AsyncValue<int> totalCompletedAsync,
     Devotional? currentDevotional,
   ) {
+    final l10n = AppLocalizations.of(context);
     return StandardScreenHeader(
-      title: 'Daily Devotional',
+      title: l10n.dailyDevotional,
       subtitle: '', // Not used because we provide customSubtitle
       showFAB: false, // FAB is positioned separately
       trailingWidget: Container(
@@ -329,7 +332,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                   const SizedBox(width: 4),
                   Flexible(
                     child: AutoSizeText(
-                      '$streak day streak',
+                      l10n.dayStreakCount(streak),
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 8, maxSize: 14),
                         color: AppColors.secondaryText,
@@ -349,7 +352,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
           Flexible(
             child: totalCompletedAsync.when(
               data: (total) => AutoSizeText(
-                '$total completed',
+                l10n.completed(total),
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 8, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -364,27 +367,6 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
           ),
         ],
       ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
-    );
-  }
-
-  Widget _buildDay() {
-    return Row(
-      children: [
-        const SizedBox(width: AppSpacing.md),
-        ClearGlassCard(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            child: AutoSizeText(
-              'Day ${_currentDay + 1}',
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.w600,
-                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.normal),
-      ],
     );
   }
 
@@ -494,6 +476,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
   // 1. Opening Scripture
   Widget _buildOpeningScripture(Devotional devotional) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
@@ -508,7 +491,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
-                'Opening Scripture',
+                l10n.openingScripture,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   fontWeight: FontWeight.w600,
@@ -553,6 +536,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
   // 2. Key Verse Spotlight
   Widget _buildKeyVerse(Devotional devotional) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
@@ -567,7 +551,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
-                'Key Verse Spotlight',
+                l10n.keyVerseSpotlight,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   fontWeight: FontWeight.w600,
@@ -611,13 +595,14 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
   // 3. Reflection
   Widget _buildReflection(Devotional devotional) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Reflection',
+            l10n.reflection,
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
               fontWeight: FontWeight.w700,
@@ -643,6 +628,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
   // 4. Life Application
   Widget _buildLifeApplication(Devotional devotional) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
@@ -657,7 +643,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
-                'Life Application',
+                l10n.lifeApplication,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                   fontWeight: FontWeight.w700,
@@ -687,6 +673,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
   // 5. Prayer
   Widget _buildPrayer(Devotional devotional) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
@@ -701,7 +688,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
-                'Prayer',
+                l10n.prayer,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                   fontWeight: FontWeight.w700,
@@ -732,6 +719,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
   // 6. Action Step (with checkbox)
   Widget _buildActionStep(Devotional devotional) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Row(
@@ -762,7 +750,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               children: [
                 const SizedBox(height: 12),
                 Text(
-                  'Today\'s Action Step',
+                  l10n.todaysActionStep,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                     fontWeight: FontWeight.w700,
@@ -791,6 +779,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
   // 7. Extended
   Widget _buildGoingDeeper(Devotional devotional) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
@@ -805,7 +794,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
-                'Extended',
+                l10n.extended,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                   fontWeight: FontWeight.w700,
@@ -901,11 +890,12 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   Widget _buildCompletionButton(Devotional devotional) {
+    final l10n = AppLocalizations.of(context);
     final progressService = ref.read(devotionalProgressServiceProvider);
 
     return !devotional.isCompleted
         ? GlassButton(
-            text: 'Mark as Completed',
+            text: l10n.markAsCompleted,
             onPressed: () async {
               await progressService.markAsComplete(devotional.id);
               // Refresh the providers
@@ -943,7 +933,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Devotional Completed',
+                              l10n.devotionalCompleted,
                               style: TextStyle(
                                 color: Colors.green,
                                 fontWeight: FontWeight.w600,
@@ -986,6 +976,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   Widget _buildNavigationButtons(int totalDevotionals, List<Devotional> devotionals) {
+    final l10n = AppLocalizations.of(context);
     // Check if the next devotional is in the future
     bool canGoForward = false;
     if (_currentDay < totalDevotionals - 1) {
@@ -1019,9 +1010,9 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                           size: ResponsiveUtils.iconSize(context, 16),
                         ),
                         const SizedBox(width: AppSpacing.sm),
-                        const Text(
-                          'Previous Day',
-                          style: TextStyle(
+                        Text(
+                          l10n.previousDay,
+                          style: const TextStyle(
                             color: AppColors.primaryText,
                             fontWeight: FontWeight.w600,
                           ),
@@ -1046,9 +1037,9 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Next Day',
-                          style: TextStyle(
+                        Text(
+                          l10n.nextDay,
+                          style: const TextStyle(
                             color: AppColors.primaryText,
                             fontWeight: FontWeight.w600,
                           ),
@@ -1070,6 +1061,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   Widget _buildProgressIndicator(List<Devotional> devotionals) {
+    final l10n = AppLocalizations.of(context);
     // Get current devotional's date to determine the month
     final currentDevotional = devotionals[_currentDay];
     final currentDate = DateTime.parse(currentDevotional.date);
@@ -1096,7 +1088,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '$monthName ${currentDate.year} Progress',
+                l10n.monthYearProgress(monthName, currentDate.year.toString()),
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                   fontWeight: FontWeight.w700,
@@ -1104,7 +1096,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 ),
               ),
               Text(
-                '${monthlyIndex + 1} of ${monthlyDevotionals.length}',
+                l10n.progressCount(monthlyIndex + 1, monthlyDevotionals.length),
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
@@ -1187,6 +1179,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   Widget _buildEmptyState() {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: FrostedGlassCard(
         padding: AppSpacing.screenPaddingLarge,
@@ -1200,7 +1193,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             ),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              'No Devotionals Available',
+              l10n.noDevotionalsAvailable,
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                 fontWeight: FontWeight.w700,
@@ -1209,7 +1202,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              'Check back later for daily devotionals',
+              l10n.checkBackForDevotionals,
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                 color: AppColors.secondaryText,
@@ -1223,6 +1216,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   Widget _buildErrorState(Object error) {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: FrostedGlassCard(
         padding: AppSpacing.screenPaddingLarge,
@@ -1236,7 +1230,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             ),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              'Error Loading Devotionals',
+              l10n.errorLoadingDevotionals,
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                 fontWeight: FontWeight.w700,
@@ -1259,18 +1253,19 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   String _formatCompletedDate(DateTime date) {
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
     final dateDay = DateTime(date.year, date.month, date.day);
 
     if (dateDay == today) {
-      return 'Completed today';
+      return l10n.completedToday;
     } else if (dateDay == yesterday) {
-      return 'Completed yesterday';
+      return l10n.completedYesterday;
     } else {
       final difference = today.difference(dateDay).inDays;
-      return 'Completed $difference days ago';
+      return l10n.completedDaysAgo(difference);
     }
   }
 

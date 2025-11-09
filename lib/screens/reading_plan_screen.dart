@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/dark_glass_container.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
-import '../components/glassmorphic_fab_menu.dart';
-import '../components/category_badge.dart';
 import '../components/standard_screen_header.dart';
 import '../components/calendar_heatmap_widget.dart';
 import '../components/reading_progress_stats_widget.dart';
@@ -20,6 +17,7 @@ import '../core/navigation/navigation_service.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/reading_reference_parser.dart';
 import '../utils/blur_dialog_utils.dart';
+import '../l10n/app_localizations.dart';
 
 class ReadingPlanScreen extends ConsumerStatefulWidget {
   const ReadingPlanScreen({super.key});
@@ -78,13 +76,15 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildHeader() {
-    return const StandardScreenHeader(
-      title: 'Reading Plans',
-      subtitle: 'Grow in God\'s word daily',
+    final l10n = AppLocalizations.of(context);
+    return StandardScreenHeader(
+      title: l10n.readingPlans,
+      subtitle: l10n.growInGodsWord,
     );
   }
 
   Widget _buildTabBar() {
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: AppSpacing.horizontalXl,
       child: FrostedGlassCard(
@@ -109,11 +109,11 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             fontWeight: FontWeight.w600,
             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
           ),
-          tabs: const [
-            Tab(text: 'Today'),
-            Tab(text: 'Progress'),
-            Tab(text: 'My Plans'),
-            Tab(text: 'Explore'),
+          tabs: [
+            Tab(text: l10n.todayTab),
+            Tab(text: l10n.progress),
+            Tab(text: l10n.myPlans),
+            Tab(text: l10n.explore),
           ],
         ),
       ),
@@ -121,6 +121,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildProgressTab() {
+    final l10n = AppLocalizations.of(context);
     final currentPlanAsync = ref.watch(currentReadingPlanProvider);
 
     return currentPlanAsync.when(
@@ -133,7 +134,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             title: 'No Progress to Track',
             subtitle: 'Start a reading plan to see your progress and statistics',
             action: () => _tabController.animateTo(3),
-            actionText: 'Explore Plans',
+            actionText: l10n.explorePlans,
           );
         }
 
@@ -168,7 +169,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
               // Statistics
               statsAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) => Text('Error loading stats: $error'),
+                error: (error, stack) => Text(l10n.errorWithMessage(error.toString())),
                 data: (stats) {
                   return estimatedDateAsync.when(
                     loading: () => ReadingProgressStatsWidget(stats: stats),
@@ -202,7 +203,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
               const SizedBox(height: AppSpacing.lg),
               heatmapAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) => Text('Error loading activity data: $error'),
+                error: (error, stack) => Text(l10n.errorWithMessage(error.toString())),
                 data: (heatmapData) {
                   return DarkGlassContainer(
                     padding: const EdgeInsets.all(AppSpacing.lg),
@@ -221,6 +222,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildTodayTab() {
+    final l10n = AppLocalizations.of(context);
     final currentPlanAsync = ref.watch(currentReadingPlanProvider);
 
     return currentPlanAsync.when(
@@ -230,10 +232,10 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         if (currentPlan == null) {
           return _buildEmptyState(
             icon: Icons.book_outlined,
-            title: 'No Active Reading Plan',
-            subtitle: 'Start a reading plan to see today\'s readings here',
+            title: l10n.noActiveReadingPlan,
+            subtitle: l10n.startReadingPlanPrompt,
             action: () => _tabController.animateTo(3),
-            actionText: 'Explore Plans',
+            actionText: l10n.explorePlans,
           );
         }
 
@@ -252,7 +254,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                   _buildCurrentPlanCard(currentPlan),
                   const SizedBox(height: AppSpacing.xxl),
                   Text(
-                    'Today\'s Readings',
+                    l10n.todaysReadings,
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                       fontWeight: FontWeight.w700,
@@ -280,6 +282,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildMyPlansTab() {
+    final l10n = AppLocalizations.of(context);
     final activePlansAsync = ref.watch(activeReadingPlansProvider);
 
     return activePlansAsync.when(
@@ -289,10 +292,10 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         if (activePlans.isEmpty) {
           return _buildEmptyState(
             icon: Icons.library_books_outlined,
-            title: 'No Active Plans',
-            subtitle: 'Start a reading plan to track your progress',
+            title: l10n.noActivePlans,
+            subtitle: l10n.startReadingPlanToTrack,
             action: () => _tabController.animateTo(3),
-            actionText: 'Explore Plans',
+            actionText: l10n.explorePlans,
           );
         }
 
@@ -367,6 +370,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildCurrentPlanCard(ReadingPlan plan) {
+    final l10n = AppLocalizations.of(context);
     final progressAsync = ref.watch(planProgressPercentageProvider(plan.id));
     final currentDayAsync = ref.watch(planCurrentDayProvider(plan.id));
     final streakAsync = ref.watch(planStreakProvider(plan.id));
@@ -432,7 +436,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'Day $day',
+                      l10n.dayNumber(day),
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                         color: AppColors.secondaryText,
@@ -475,7 +479,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Progress',
+                l10n.progress,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   fontWeight: FontWeight.w600,
@@ -501,7 +505,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
           const SizedBox(height: AppSpacing.sm),
           progressAsync.when(
             data: (percentage) => Text(
-              '${percentage.toStringAsFixed(1)}% complete',
+              l10n.percentComplete(percentage.toStringAsFixed(1)),
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                 color: Colors.white.withValues(alpha: 0.9),
@@ -627,6 +631,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildPlanCard(ReadingPlan plan, int index, {required bool isActive}) {
+    final l10n = AppLocalizations.of(context);
     final progressPercentageAsync = plan.isStarted
         ? ref.watch(planProgressPercentageProvider(plan.id))
         : null;
@@ -689,7 +694,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Progress',
+                    l10n.progress,
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                       fontWeight: FontWeight.w600,
@@ -716,7 +721,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                 const SizedBox(height: AppSpacing.sm),
                 progressPercentageAsync.when(
                   data: (percentage) => Text(
-                    '${percentage.toStringAsFixed(1)}% complete',
+                    l10n.percentComplete(percentage.toStringAsFixed(1)),
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                       color: Colors.white.withValues(alpha: 0.9),
@@ -736,7 +741,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                   children: [
                     Expanded(
                       child: GlassButton(
-                        text: 'Start Plan',
+                        text: l10n.startPlan,
                         height: 48,
                         onPressed: () => _handlePlanAction(plan),
                       ),
@@ -747,7 +752,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                   children: [
                     Expanded(
                       child: GlassButton(
-                        text: 'Start Plan',
+                        text: l10n.startPlan,
                         height: 48,
                         onPressed: () => _handlePlanAction(plan),
                       ),
@@ -764,7 +769,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                               ? 'Reset your current plan before starting a new one'
                               : '',
                           child: GlassButton(
-                            text: 'Start Plan',
+                            text: l10n.startPlan,
                             height: 48,
                             onPressed: hasActivePlan ? null : () => _handlePlanAction(plan),
                           ),
@@ -779,7 +784,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                 children: [
                   Expanded(
                     child: GlassButton(
-                      text: plan.isStarted ? 'Continue Reading' : 'Start Plan',
+                      text: plan.isStarted ? l10n.continueReading : l10n.startPlan,
                       height: 48,
                       onPressed: () => _handlePlanAction(plan),
                     ),
@@ -888,6 +893,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildErrorState(String error) {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(40),
@@ -901,7 +907,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             ),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              'Oops! Something went wrong',
+              l10n.oopsSomethingWrong,
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                 fontWeight: FontWeight.w700,
@@ -925,6 +931,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Widget _buildEmptyReadingsMessage() {
+    final l10n = AppLocalizations.of(context);
     return DarkGlassContainer(
       child: Column(
         children: [
@@ -935,7 +942,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
           ),
           const SizedBox(height: AppSpacing.lg),
           Text(
-            'All caught up!',
+            l10n.allCaughtUp,
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
               fontWeight: FontWeight.w700,
@@ -944,7 +951,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            'No readings scheduled for today',
+            l10n.noReadingsToday,
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
               color: AppColors.secondaryText,
@@ -957,6 +964,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
 
   /// Opens the chapter reader for a specific daily reading
   void _openChapterReader(BuildContext context, DailyReading reading) {
+    final l10n = AppLocalizations.of(context);
     try {
       final parsed = ReadingReferenceParser.fromDailyReading(
         reading.book,
@@ -972,13 +980,14 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
     } catch (e) {
       AppSnackBar.showError(
         context,
-        message: 'Could not open reading: $e',
+        message: l10n.errorWithMessage(e.toString()),
         duration: const Duration(seconds: 3),
       );
     }
   }
 
   Future<void> _toggleReadingComplete(DailyReading reading) async {
+    final l10n = AppLocalizations.of(context);
     // Get the current completion state (check optimistic state first)
     final currentlyCompleted = _optimisticCompletions[reading.id] ?? reading.isCompleted;
     final newCompletedState = !currentlyCompleted;
@@ -1017,8 +1026,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         AppSnackBar.show(
           context,
           message: currentlyCompleted
-              ? 'Marked as incomplete'
-              : 'Great job! Keep up the good work!',
+              ? l10n.markedAsIncomplete
+              : l10n.greatJobKeepUp,
           icon: currentlyCompleted ? Icons.remove_circle_outline : Icons.check_circle,
           duration: const Duration(seconds: 2),
         );
@@ -1032,13 +1041,14 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       if (mounted) {
         AppSnackBar.showError(
           context,
-          message: 'Error updating reading: $e',
+          message: l10n.errorWithMessage(e.toString()),
         );
       }
     }
   }
 
   Future<void> _handlePlanAction(ReadingPlan plan) async {
+    final l10n = AppLocalizations.of(context);
     if (plan.isStarted) {
       // Navigate to today's tab
       _tabController.animateTo(0);
@@ -1073,7 +1083,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         if (mounted) {
           AppSnackBar.show(
             context,
-            message: 'Reading plan started! Let\'s begin your journey.',
+            message: l10n.readingPlanStarted,
             duration: const Duration(seconds: 2),
           );
         }
@@ -1081,7 +1091,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         if (mounted) {
           AppSnackBar.showError(
             context,
-            message: 'Error starting plan: $e',
+            message: l10n.errorStartingPlan(e.toString()),
           );
         }
       }
@@ -1089,6 +1099,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   }
 
   Future<void> _showResetConfirmation(ReadingPlan plan) async {
+    final l10n = AppLocalizations.of(context);
     // Fetch current streak to show in confirmation
     final progressService = ref.read(readingPlanProgressServiceProvider);
     int streak = 0;
@@ -1115,7 +1126,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(
-                'Reset Reading Plan?',
+                l10n.resetReadingPlan,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                   fontWeight: FontWeight.w700,
@@ -1124,7 +1135,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
-                'Are you sure you want to reset "${plan.title}"?',
+                l10n.resetPlanConfirmation(plan.title),
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
@@ -1194,7 +1205,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                 children: [
                   Expanded(
                     child: GlassButton(
-                      text: 'Cancel',
+                      text: l10n.cancel,
                       height: 48,
                       onPressed: () => Navigator.of(context).pop(false),
                     ),
@@ -1202,7 +1213,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: GlassButton(
-                      text: 'Reset',
+                      text: l10n.reset,
                       height: 48,
                       borderColor: Colors.red.withValues(alpha: 0.8),
                       onPressed: () => Navigator.of(context).pop(true),
@@ -1232,7 +1243,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         if (mounted) {
           AppSnackBar.show(
             context,
-            message: 'Reading plan has been reset',
+            message: l10n.readingPlanReset,
             duration: const Duration(seconds: 2),
           );
         }
@@ -1240,7 +1251,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         if (mounted) {
           AppSnackBar.showError(
             context,
-            message: 'Error resetting plan: $e',
+            message: l10n.errorResettingPlan(e.toString()),
           );
         }
       }

@@ -19,6 +19,7 @@ import '../components/glassmorphic_fab_menu.dart';
 import '../components/standard_screen_header.dart';
 import '../theme/app_theme.dart';
 import '../core/providers/app_providers.dart';
+import '../l10n/app_localizations.dart';
 
 class PaywallScreen extends ConsumerStatefulWidget {
   /// Optional: show trial info (true) or expired message (false)
@@ -42,6 +43,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final subscriptionService = ref.watch(subscriptionServiceProvider);
     final isInTrial = ref.watch(isInTrialProvider);
     final trialDaysRemaining = ref.watch(trialDaysRemainingProvider);
@@ -72,7 +74,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   if (widget.showTrialInfo && isInTrial)
                     Center(
                       child: CategoryBadge(
-                        text: '$trialDaysRemaining days left in trial',
+                        text: l10n.paywallTrialDaysLeft(trialDaysRemaining),
                         icon: Icons.schedule,
                         badgeColor: Colors.blue,
                         isSelected: true,
@@ -82,7 +84,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                     // Trial was already used on this device (survives app uninstall)
                     Center(
                       child: Text(
-                        'Welcome back!\n\nYour trial has been used on this device.\nSubscribe to continue using AI chat.',
+                        l10n.paywallTrialBlockedMessage,
                         style: TextStyle(
                           fontSize: 16,
                           color: AppColors.secondaryText,
@@ -94,7 +96,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   else
                     Center(
                       child: Text(
-                        'Your trial has ended.\nUpgrade to continue using AI chat.',
+                        l10n.paywallTrialEndedMessage,
                         style: TextStyle(
                           fontSize: 16,
                           color: AppColors.secondaryText,
@@ -113,7 +115,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                               child: _buildStatCard(
                                 icon: Icons.chat_bubble_outline,
                                 value: '$remainingMessages',
-                                label: 'Messages\nLeft',
+                                label: l10n.paywallMessagesLeft,
                                 color: Colors.purple,
                               ),
                             ),
@@ -122,7 +124,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                               child: _buildStatCard(
                                 icon: Icons.check_circle_outline,
                                 value: '$messagesUsed',
-                                label: isPremium ? 'Used This\nMonth' : 'Used in\nTrial',
+                                label: isPremium ? l10n.paywallUsedThisMonth : l10n.paywallUsedInTrial,
                                 color: Colors.green,
                               ),
                             ),
@@ -131,7 +133,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                               child: _buildStatCard(
                                 icon: isPremium ? Icons.all_inclusive : Icons.schedule,
                                 value: isPremium ? '150' : '$trialDaysRemaining',
-                                label: isPremium ? 'Monthly\nLimit' : 'Trial Days\nLeft',
+                                label: isPremium ? l10n.paywallMonthlyLimit : l10n.paywallTrialDaysLeft2,
                                 color: isPremium ? AppTheme.goldColor : Colors.blue,
                               ),
                             ),
@@ -179,7 +181,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                             Column(
                               children: [
                                 Text(
-                                  'per year',
+                                  l10n.paywallPerYear,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: AppColors.secondaryText,
@@ -187,7 +189,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  '(pricing may vary by region and currency)',
+                                  l10n.paywallPricingDisclaimer,
                                   style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.secondaryText.withValues(alpha: 0.7),
@@ -210,9 +212,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                                   width: 1,
                                 ),
                               ),
-                              child: const Text(
-                                '150 AI messages per month',
-                                style: TextStyle(
+                              child: Text(
+                                l10n.paywall150MessagesPerMonth,
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.primaryText,
@@ -222,7 +224,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                             ),
                             const SizedBox(height: AppSpacing.sm),
                             Text(
-                              'Less than \$3 per month',
+                              l10n.paywallLessThan3PerMonth,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: AppColors.secondaryText,
@@ -237,49 +239,54 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       const SizedBox(height: AppSpacing.xxl),
 
                       // Features Section
-                      const GlassSectionHeader(
-                        title: 'What\'s Included',
+                      GlassSectionHeader(
+                        title: l10n.paywallWhatsIncluded,
                         icon: Icons.check_circle_outline,
                       ),
                       const SizedBox(height: AppSpacing.lg),
 
                       // Feature List
                       _buildFeatureItem(
+                        context: context,
                         icon: Icons.chat_bubble_outline,
-                        title: 'Intelligent Scripture Chat',
-                        subtitle: 'Custom Real World Pastoral Training',
+                        title: l10n.paywallFeatureIntelligentChat,
+                        subtitle: l10n.paywallFeatureIntelligentChatDesc,
                       ),
                       const SizedBox(height: AppSpacing.md),
                       _buildFeatureItem(
+                        context: context,
                         icon: Icons.all_inclusive,
-                        title: '150 Messages Monthly',
-                        subtitle: 'More than enough for daily conversations',
+                        title: l10n.paywallFeature150Messages,
+                        subtitle: l10n.paywallFeature150MessagesDesc,
                       ),
                       const SizedBox(height: AppSpacing.md),
                       _buildFeatureItem(
+                        context: context,
                         icon: Icons.psychology,
-                        title: 'Context-Aware Responses',
-                        subtitle: 'Biblical intelligence tailored to provide insight',
+                        title: l10n.paywallFeatureContextAware,
+                        subtitle: l10n.paywallFeatureContextAwareDesc,
                       ),
                       const SizedBox(height: AppSpacing.md),
                       _buildFeatureItem(
+                        context: context,
                         icon: Icons.shield_outlined,
-                        title: 'Crisis Detection',
-                        subtitle: 'Built-in safeguards and professional referrals',
+                        title: l10n.paywallFeatureCrisisDetection,
+                        subtitle: l10n.paywallFeatureCrisisDetectionDesc,
                       ),
                       const SizedBox(height: AppSpacing.md),
                       _buildFeatureItem(
+                        context: context,
                         icon: Icons.book_outlined,
-                        title: 'Full Bible Access',
-                        subtitle: 'All free features remain available',
+                        title: l10n.paywallFeatureFullBibleAccess,
+                        subtitle: l10n.paywallFeatureFullBibleAccessDesc,
                       ),
                       const SizedBox(height: AppSpacing.xxl),
 
                       // Purchase Button
                       GlassButton(
                         text: _isProcessing
-                            ? 'Processing...'
-                            : 'Start Premium - ${premiumProduct?.price ?? "\$35.99"}/year',
+                            ? l10n.paywallProcessing
+                            : l10n.paywallStartPremiumButton(premiumProduct?.price ?? "\$35.99"),
                         onPressed: _isProcessing ? null : _handlePurchase,
                       ),
                       const SizedBox(height: AppSpacing.lg),
@@ -291,10 +298,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                           padding: const EdgeInsets.symmetric(
                             vertical: AppSpacing.md,
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
-                              'Restore Previous Purchase',
-                              style: TextStyle(
+                              l10n.paywallRestorePurchase,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.goldColor,
@@ -319,7 +326,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                             ),
                             const SizedBox(height: AppSpacing.sm),
                             Text(
-                              'Payment will be charged to your App Store account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in your App Store account settings.',
+                              l10n.paywallSubscriptionTerms,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: AppColors.secondaryText,
@@ -348,9 +355,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
   /// Build header using StandardScreenHeader
   Widget _buildAppBar(bool isInTrial, int trialDaysRemaining, dynamic subscriptionService) {
-    return const StandardScreenHeader(
-      title: 'Premium',
-      subtitle: 'Unlock AI chat features',
+    final l10n = AppLocalizations.of(context);
+    return StandardScreenHeader(
+      title: l10n.paywallTitle,
+      subtitle: l10n.paywallSubtitle,
       showFAB: false, // FAB is positioned separately
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
@@ -405,6 +413,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
   /// Build a feature list item
   Widget _buildFeatureItem({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,
@@ -468,6 +477,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     setState(() => _isProcessing = true);
 
     final subscriptionService = ref.read(subscriptionServiceProvider);
+    final l10n = AppLocalizations.of(context);
 
     // Set up purchase callback
     subscriptionService.onPurchaseUpdate = (success, error) {
@@ -505,18 +515,18 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   width: 1,
                 ),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.check_circle,
                     color: AppTheme.goldColor,
                     size: 20,
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Premium activated! 150 Messages Monthly.',
-                      style: TextStyle(
+                      l10n.paywallPremiumActivatedSuccess,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -568,7 +578,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      error ?? 'Purchase failed. Please try again.',
+                      error ?? l10n.paywallPurchaseFailed,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -595,6 +605,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     setState(() => _isProcessing = true);
 
     final subscriptionService = ref.read(subscriptionServiceProvider);
+    final l10n = AppLocalizations.of(context);
 
     // Set up restore callback
     subscriptionService.onPurchaseUpdate = (success, error) {
@@ -631,18 +642,18 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   width: 1,
                 ),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.check_circle,
                     color: AppTheme.goldColor,
                     size: 20,
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Purchase restored successfully!',
-                      style: TextStyle(
+                      l10n.paywallPurchaseRestoredSuccess,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -689,10 +700,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                     size: 20,
                   ),
                   const SizedBox(width: 12),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'No previous purchase found.',
-                      style: TextStyle(
+                      l10n.paywallNoPreviousPurchaseFound,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

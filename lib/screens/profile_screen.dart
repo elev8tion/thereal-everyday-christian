@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glassmorphic_fab_menu.dart';
-import '../components/category_badge.dart';
 import '../components/glass_button.dart';
-import '../components/base_bottom_sheet.dart';
 import '../components/achievement_badge.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
@@ -18,6 +15,7 @@ import '../core/services/achievement_service.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/blur_dialog_utils.dart';
+import '../l10n/app_localizations.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -57,9 +55,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         userName = name;
       });
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         AppSnackBar.show(
           context,
-          message: 'Profile updated successfully',
+          message: l10n.profileUpdated,
         );
       }
     } else {
@@ -69,9 +68,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         userName = '';
       });
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         AppSnackBar.show(
           context,
-          message: 'Name deleted successfully',
+          message: l10n.nameDeleted,
         );
       }
     }
@@ -85,11 +85,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   // Build achievements list based on real stats
-  List<Achievement> _buildAchievements(int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive, int devotionalStreak, int totalPrayers, int sharedChats) {
+  List<Achievement> _buildAchievements(BuildContext context, int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive, int devotionalStreak, int totalPrayers, int sharedChats) {
+    final l10n = AppLocalizations.of(context);
     return [
       Achievement(
-        title: 'Unbroken',
-        description: 'Maintain a 7-day prayer streak',
+        title: l10n.achievementUnbroken,
+        description: l10n.achievementUnbrokenDesc,
         icon: Icons.local_fire_department,
         color: Colors.orange,
         isUnlocked: prayerStreak >= 7,
@@ -97,8 +98,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 7,
       ),
       Achievement(
-        title: 'Relentless',
-        description: 'Log 50 prayers',
+        title: l10n.achievementRelentless,
+        description: l10n.achievementRelentlessDesc,
         icon: Icons.favorite,
         color: Colors.pink,
         isUnlocked: totalPrayers >= 50,
@@ -106,8 +107,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 50,
       ),
       Achievement(
-        title: 'Curator',
-        description: 'Save 100 Bible verses',
+        title: l10n.achievementCurator,
+        description: l10n.achievementCuratorDesc,
         icon: Icons.book,
         color: Colors.blue,
         isUnlocked: savedVerses >= 100,
@@ -115,8 +116,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 100,
       ),
       Achievement(
-        title: 'Daily Bread',
-        description: 'Complete 30 devotionals${devotionalStreak > 0 ? ' • 🔥 $devotionalStreak day${devotionalStreak > 1 ? 's' : ''} streak' : ''}',
+        title: l10n.achievementDailyBread,
+        description: l10n.achievementDailyBreadDesc + (devotionalStreak > 0 ? ' • 🔥 $devotionalStreak day${devotionalStreak > 1 ? 's' : ''} streak' : ''),
         icon: Icons.auto_stories,
         color: Colors.purple,
         isUnlocked: devotionalsCompleted >= 30,
@@ -124,8 +125,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 30,
       ),
       Achievement(
-        title: 'Deep Diver',
-        description: 'Start 5 reading plans',
+        title: l10n.achievementDeepDiver,
+        description: l10n.achievementDeepDiverDesc,
         icon: Icons.stars,
         color: AppTheme.goldColor,
         isUnlocked: readingPlansActive >= 5,
@@ -133,8 +134,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         total: 5,
       ),
       Achievement(
-        title: 'Disciple',
-        description: 'Share 10 items (verses, chats, prayers, or devotionals)',
+        title: l10n.achievementDisciple,
+        description: l10n.achievementDiscipleDesc,
         icon: Icons.share,
         color: Colors.teal,
         isUnlocked: sharedChats >= 10,
@@ -174,7 +175,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         maxWidth: ResponsiveUtils.maxContentWidth(context),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           left: 16,
                           right: 16,
                           top: 40, // 24 + 16 extra
@@ -324,6 +325,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   /// Shows ALL badges (colored if earned, grayed out if not)
   /// Optimized: Fetches all counts in parallel for better performance
   Future<List<AchievementBadgeData>> _getEarnedBadges(AchievementService service) async {
+    final l10n = AppLocalizations.of(context);
     // Fetch all counts in parallel instead of sequentially
     final results = await Future.wait([
       service.getCompletionCount(AchievementType.unbroken),
@@ -346,96 +348,40 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.local_fire_department,
         color: unbrokenCount > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.3),
         completionCount: unbrokenCount,
-        title: 'Unbroken',
+        title: l10n.achievementUnbroken,
       ),
       AchievementBadgeData(
         icon: Icons.favorite,
         color: relentlessCount > 0 ? Colors.pink : Colors.white.withValues(alpha: 0.3),
         completionCount: relentlessCount,
-        title: 'Relentless',
+        title: l10n.achievementRelentless,
       ),
       AchievementBadgeData(
         icon: Icons.book,
         color: curatorCount > 0 ? Colors.blue : Colors.white.withValues(alpha: 0.3),
         completionCount: curatorCount,
-        title: 'Curator',
+        title: l10n.achievementCurator,
       ),
       AchievementBadgeData(
         icon: Icons.auto_stories,
         color: dailyBreadCount > 0 ? Colors.purple : Colors.white.withValues(alpha: 0.3),
         completionCount: dailyBreadCount,
-        title: 'Daily Bread',
+        title: l10n.achievementDailyBread,
       ),
       AchievementBadgeData(
         icon: Icons.stars,
         color: deepDiverCount > 0 ? AppTheme.goldColor : Colors.white.withValues(alpha: 0.3),
         completionCount: deepDiverCount,
-        title: 'Deep Diver',
+        title: l10n.achievementDeepDiver,
       ),
       AchievementBadgeData(
         icon: Icons.share,
         color: discipleCount > 0 ? Colors.teal : Colors.white.withValues(alpha: 0.3),
         completionCount: discipleCount,
-        title: 'Disciple',
+        title: l10n.achievementDisciple,
       ),
     ];
   }
-
-  Widget _buildProfileCard() {
-    return FrostedGlassCard(
-      borderRadius: 32,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Name and member info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  userName,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 22, minSize: 18, maxSize: 26),
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryText,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
-
-              ],
-            ),
-          ),
-
-          const SizedBox(width: 8),
-
-          // Edit Profile Icon on the RIGHT
-          GestureDetector(
-            onTap: _showEditProfileDialog,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppTheme.goldColor.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: AppTheme.goldColor.withValues(alpha: 0.3),
-                  width: 1,
-                ),
-              ),
-              child: Icon(
-                Icons.edit_outlined,
-                size: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 22),
-                color: AppTheme.goldColor,
-              ),
-            ),
-          ).animate().fadeIn(duration: AppAnimations.slow, delay: 350.ms),
-        ],
-      ),
-    ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.2);
-  }
-
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -451,6 +397,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _launchSupportEmail() async {
+    final l10n = AppLocalizations.of(context);
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: 'connect@everydaychristian.app',
@@ -462,12 +409,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         await launchUrl(emailUri);
       } else {
         if (mounted) {
-          _showSnackBar('Could not open email app');
+          _showSnackBar(l10n.couldNotOpenEmailApp);
         }
       }
     } catch (e) {
       if (mounted) {
-        _showSnackBar('Error opening email: $e');
+        _showSnackBar(l10n.errorOpeningEmailWithError(e.toString()));
       }
     }
   }
@@ -481,8 +428,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     required int totalPrayers,
     required int sharedChats,
   }) {
+    final l10n = AppLocalizations.of(context);
     // Build achievements list with real data
     final achievements = _buildAchievements(
+      context,
       prayerStreak,
       savedVerses,
       devotionalsCompleted,
@@ -496,7 +445,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Achievements',
+          l10n.achievements,
           style: TextStyle(
             fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
             fontWeight: FontWeight.w700,
@@ -645,11 +594,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget _buildMenuSection() {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Account',
+          l10n.account,
           style: TextStyle(
             fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
             fontWeight: FontWeight.w700,
@@ -664,31 +614,31 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           child: Column(
             children: [
               _buildMenuItem(
-                'Settings',
+                l10n.settings,
                 Icons.settings,
                 () => NavigationService.goToSettings(),
               ),
               _buildDivider(),
               _buildMenuItem(
-                'Privacy Policy',
+                l10n.privacyPolicy,
                 Icons.privacy_tip,
                 _showPrivacyPolicy,
               ),
               _buildDivider(),
               _buildMenuItem(
-                'Terms of Service',
+                l10n.termsOfService,
                 Icons.description,
                 _showTermsOfService,
               ),
               _buildDivider(),
               _buildMenuItem(
-                'Help & Support',
+                l10n.helpSupport,
                 Icons.help,
                 _launchSupportEmail,
               ),
               _buildDivider(),
               _buildMenuItem(
-                'Sign Out',
+                l10n.signOut,
                 Icons.logout,
                 _showSignOutDialog,
                 isDestructive: true,
@@ -733,6 +683,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showEditProfileDialog() {
+    final l10n = AppLocalizations.of(context);
     showBlurredDialog(
       context: context,
       builder: (context) {
@@ -747,7 +698,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Edit Profile',
+                  l10n.editProfile,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                     fontWeight: FontWeight.w700,
@@ -757,7 +708,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 const SizedBox(height: AppSpacing.xl),
 
                 Text(
-                  'Name',
+                  l10n.name,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                     fontWeight: FontWeight.w600,
@@ -769,7 +720,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   controller: _nameController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: 'Enter your name',
+                    hintText: l10n.enterYourName,
                     hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
                     filled: true,
                     fillColor: Colors.white.withValues(alpha: 0.1),
@@ -786,7 +737,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   children: [
                     Expanded(
                       child: GlassButton(
-                        text: 'Cancel',
+                        text: l10n.cancel,
                         height: 48,
                         onPressed: () => NavigationService.pop(),
                       ),
@@ -794,7 +745,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: GlassButton(
-                        text: hasExistingName ? 'Delete' : 'Save',
+                        text: hasExistingName ? l10n.delete : l10n.save,
                         height: 48,
                         borderColor: hasExistingName ? Colors.red.withValues(alpha: 0.8) : null,
                         onPressed: () async {
@@ -818,6 +769,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showSignOutDialog() {
+    final l10n = AppLocalizations.of(context);
     showBlurredDialog(
       context: context,
       builder: (context) => Dialog(
@@ -833,7 +785,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(
-                'Sign Out?',
+                l10n.signOutQuestion,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                   fontWeight: FontWeight.w700,
@@ -842,7 +794,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
-                'Are you sure you want to sign out?',
+                l10n.signOutConfirmation,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
@@ -854,7 +806,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 children: [
                   Expanded(
                     child: GlassButton(
-                      text: 'Cancel',
+                      text: l10n.cancel,
                       height: 48,
                       onPressed: () => NavigationService.pop(),
                     ),
@@ -862,7 +814,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: GlassButton(
-                      text: 'Sign Out',
+                      text: l10n.signOut,
                       height: 48,
                       onPressed: () {
                         // In production, handle sign out logic

@@ -11,7 +11,6 @@ import '../components/blur_dropdown.dart';
 import '../components/blur_popup_menu.dart';
 import '../components/category_filter_chip.dart';
 import '../components/glass_fab.dart';
-import '../components/glassmorphic_fab_menu.dart';
 import '../components/standard_screen_header.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../utils/responsive_utils.dart';
@@ -26,6 +25,7 @@ import '../core/providers/app_providers.dart';
 import '../core/widgets/skeleton_loader.dart';
 import '../utils/blur_dialog_utils.dart';
 import '../services/prayer_share_service.dart';
+import '../l10n/app_localizations.dart';
 
 class PrayerJournalScreen extends ConsumerStatefulWidget {
   const PrayerJournalScreen({super.key});
@@ -89,13 +89,17 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   Widget _buildHeader() {
-    return const StandardScreenHeader(
-      title: 'Prayer Journal',
-      subtitle: 'Plan pray reflect',
+    final l10n = AppLocalizations.of(context);
+
+    return StandardScreenHeader(
+      title: l10n.prayerJournal,
+      subtitle: l10n.bringRequestsToGod,
     );
   }
 
   Widget _buildTabBar() {
+    final l10n = AppLocalizations.of(context);
+
     return Container(
       margin: AppSpacing.horizontalXl,
       child: FrostedGlassCard(
@@ -118,9 +122,9 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             fontWeight: FontWeight.w600,
             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
           ),
-          tabs: const [
-            Tab(text: 'Active'),
-            Tab(text: 'Answered'),
+          tabs: [
+            Tab(text: l10n.active),
+            Tab(text: l10n.answered),
           ],
         ),
       ),
@@ -128,6 +132,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   Widget _buildCategoryFilter() {
+    final l10n = AppLocalizations.of(context);
     final categoriesAsync = ref.watch(activeCategoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryFilterProvider);
 
@@ -145,7 +150,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                 child: Row(
                   children: [
                     Text(
-                      'Filter by Category',
+                      l10n.filterByCategory,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                         fontWeight: FontWeight.w600,
@@ -163,7 +168,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                           ref.read(selectedCategoryFilterProvider.notifier).state = null;
                         },
                         child: Text(
-                          'Clear Filter',
+                          l10n.clearFilter,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                             color: AppTheme.primaryColor,
@@ -230,7 +235,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                'All',
+                                l10n.all,
                                 style: TextStyle(
                                   fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                                   fontWeight: selectedCategory == null
@@ -288,6 +293,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   Widget _buildActivePrayers() {
+    final l10n = AppLocalizations.of(context);
     final activePrayersAsync = ref.watch(activePrayersProvider);
 
     return activePrayersAsync.when(
@@ -295,8 +301,8 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         if (prayers.isEmpty) {
           return _buildEmptyState(
             icon: Icons.favorite_outline,
-            title: 'No Active Prayers',
-            subtitle: 'Adding your prayers here to revisit, reflect, and hold yourself accountable',
+            title: l10n.noActivePrayers,
+            subtitle: l10n.startPrayerJourney,
           );
         }
 
@@ -328,13 +334,13 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             Icon(Icons.error_outline, size: ResponsiveUtils.iconSize(context, 48), color: Colors.red.shade300),
             const SizedBox(height: 16),
             Text(
-              'Unable to load prayers',
+              l10n.unableToLoadPrayers,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.primaryText),
             ),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () => ref.refresh(activePrayersProvider),
-              child: const Text('Retry'),
+              child: Text(l10n.retry),
             ),
           ],
         ),
@@ -343,6 +349,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   Widget _buildAnsweredPrayers() {
+    final l10n = AppLocalizations.of(context);
     final answeredPrayersAsync = ref.watch(answeredPrayersProvider);
 
     return answeredPrayersAsync.when(
@@ -350,8 +357,8 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         if (prayers.isEmpty) {
           return _buildEmptyState(
             icon: Icons.check_circle_outline,
-            title: 'Highlight Prayers Answered',
-            subtitle: 'Sometimes the answers we get aren\'t the answers we want. Save here to better reflect',
+            title: l10n.noAnsweredPrayersYet,
+            subtitle: l10n.markPrayersAnswered,
           );
         }
 
@@ -383,13 +390,13 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             Icon(Icons.error_outline, size: ResponsiveUtils.iconSize(context, 48), color: Colors.red.shade300),
             const SizedBox(height: 16),
             Text(
-              'Unable to load answered prayers',
+              l10n.unableToLoadAnsweredPrayers,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.primaryText),
             ),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () => ref.refresh(answeredPrayersProvider),
-              child: const Text('Retry'),
+              child: Text(l10n.retry),
             ),
           ],
         ),
@@ -443,6 +450,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   Widget _buildPrayerCard(PrayerRequest prayer, int index) {
+    final l10n = AppLocalizations.of(context);
     final categoriesAsync = ref.watch(activeCategoriesProvider);
 
     return DarkGlassContainer(
@@ -466,12 +474,12 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                     );
                   },
                   loading: () => CategoryBadge(
-                    text: 'Loading...',
+                    text: l10n.loading,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
                   ),
                   error: (_, __) => CategoryBadge(
-                    text: 'General',
+                    text: l10n.general,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
                   ),
@@ -495,16 +503,16 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                       ),
                       const SizedBox(width: 8),
                       BlurPopupMenu(
-                        items: const [
+                        items: [
                           BlurPopupMenuItem(
                             value: 'share',
                             icon: Icons.share,
-                            label: 'Share',
+                            label: l10n.share,
                           ),
                           BlurPopupMenuItem(
                             value: 'delete',
                             icon: Icons.delete,
-                            label: 'Delete',
+                            label: l10n.delete,
                             iconColor: Colors.red,
                             textColor: Colors.red,
                           ),
@@ -529,21 +537,21 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                   )
                 else
                   BlurPopupMenu(
-                    items: const [
+                    items: [
                       BlurPopupMenuItem(
                         value: 'mark_answered',
                         icon: Icons.check,
-                        label: 'Answered',
+                        label: l10n.answered,
                       ),
                       BlurPopupMenuItem(
                         value: 'share',
                         icon: Icons.share,
-                        label: 'Share',
+                        label: l10n.share,
                       ),
                       BlurPopupMenuItem(
                         value: 'delete',
                         icon: Icons.delete,
-                        label: 'Delete',
+                        label: l10n.delete,
                         iconColor: Colors.red,
                         textColor: Colors.red,
                       ),
@@ -601,7 +609,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'How God Answered:',
+                      l10n.howGodAnswered,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                         fontWeight: FontWeight.w600,
@@ -646,7 +654,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Answered ${_formatDate(prayer.dateAnswered!)}',
+                    l10n.answered_date(_formatDate(prayer.dateAnswered!)),
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                       color: Colors.green.withValues(alpha: 0.8),
@@ -661,6 +669,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   void _showAddPrayerDialog() {
+    final l10n = AppLocalizations.of(context);
     final categoriesAsync = ref.read(activeCategoriesProvider);
     String? selectedCategoryId;
     String title = '';
@@ -699,7 +708,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                         Text(
-                          'Add Prayer Request',
+                          l10n.addPrayerRequest,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                             fontWeight: FontWeight.w700,
@@ -709,7 +718,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                         const SizedBox(height: AppSpacing.xl),
 
                         Text(
-                          'Title',
+                          l10n.title,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                             fontWeight: FontWeight.w600,
@@ -721,7 +730,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                           onChanged: (value) => title = value,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            hintText: 'What are you praying for?',
+                            hintText: l10n.whatArePrayingFor,
                             hintStyle: TextStyle(color: AppColors.tertiaryText),
                             filled: true,
                             fillColor: Colors.white.withValues(alpha: 0.1),
@@ -734,7 +743,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
 
                         const SizedBox(height: AppSpacing.lg),
                         Text(
-                          'Category',
+                          l10n.category,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                             fontWeight: FontWeight.w600,
@@ -748,7 +757,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                             child: BlurDropdown(
                               value: categories.firstWhere((c) => c.id == selectedCategoryId, orElse: () => categories.first).name,
                               items: categories.map((category) => category.name).toList(),
-                              hint: 'Select Category',
+                              hint: l10n.selectCategory,
                               onChanged: (value) {
                                 if (value != null) {
                                   setState(() {
@@ -761,7 +770,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
 
                   const SizedBox(height: AppSpacing.lg),
                   Text(
-                    'Description',
+                    l10n.description,
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                       fontWeight: FontWeight.w600,
@@ -774,7 +783,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                     maxLines: 3,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                      hintText: 'Share more details about your prayer request...',
+                      hintText: l10n.shareMoreDetails,
                       hintStyle: TextStyle(color: AppColors.tertiaryText),
                       filled: true,
                       fillColor: Colors.white.withValues(alpha: 0.1),
@@ -790,7 +799,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                           children: [
                             Expanded(
                               child: GlassButton(
-                                text: 'Cancel',
+                                text: l10n.cancel,
                                 height: 48,
                                 onPressed: () => NavigationService.pop(),
                               ),
@@ -798,7 +807,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                             const SizedBox(width: AppSpacing.md),
                             Expanded(
                               child: GlassButton(
-                                text: 'Add',
+                                text: l10n.addPrayerButton,
                                 height: 48,
                                 onPressed: () {
                                   if (title.isNotEmpty && description.isNotEmpty && selectedCategoryId != null) {
@@ -821,9 +830,9 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
               backgroundColor: Colors.transparent,
               child: Center(child: CircularProgressIndicator()),
             ),
-            error: (_, __) => const Dialog(
+            error: (_, __) => Dialog(
               backgroundColor: Colors.transparent,
-              child: Center(child: Text('Error loading categories')),
+              child: Center(child: Text(l10n.errorLoadingCategories)),
             ),
           );
         },
@@ -832,6 +841,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   Future<void> _addPrayer(String title, String description, String categoryId) async {
+    final l10n = AppLocalizations.of(context);
     final actions = ref.read(prayerActionsProvider);
 
     try {
@@ -840,7 +850,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
       if (mounted) {
         AppSnackBar.show(
           context,
-          message: 'Prayer added successfully',
+          message: l10n.prayerAddedSuccessfully,
           icon: Icons.check_circle,
           duration: const Duration(seconds: 2),
         );
@@ -849,13 +859,15 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
       if (mounted) {
         AppSnackBar.showError(
           context,
-          message: 'Error adding prayer: $e',
+          message: l10n.errorAddingPrayer(e.toString()),
         );
       }
     }
   }
 
   void _markPrayerAnswered(PrayerRequest prayer) {
+    final l10n = AppLocalizations.of(context);
+
     showBlurredDialog(
       context: context,
       builder: (context) {
@@ -869,7 +881,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Answered',
+                  l10n.answered,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                     fontWeight: FontWeight.w700,
@@ -879,7 +891,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                 const SizedBox(height: AppSpacing.xl),
 
                 Text(
-                  'How did God answer this prayer?',
+                  l10n.howDidGodAnswer,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                     fontWeight: FontWeight.w600,
@@ -892,7 +904,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                   maxLines: 3,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: 'Share how God answered your prayer...',
+                    hintText: l10n.shareHowGodAnswered,
                     hintStyle: TextStyle(color: AppColors.tertiaryText),
                     filled: true,
                     fillColor: Colors.white.withValues(alpha: 0.1),
@@ -908,7 +920,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                   children: [
                     Expanded(
                       child: GlassButton(
-                        text: 'Cancel',
+                        text: l10n.cancel,
                         height: 48,
                         onPressed: () => NavigationService.pop(),
                       ),
@@ -916,7 +928,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: GlassButton(
-                        text: 'Answered',
+                        text: l10n.answered,
                         height: 48,
                         onPressed: () async {
                           if (answerDescription.isNotEmpty) {
@@ -929,7 +941,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                               NavigationService.pop();
                               AppSnackBar.show(
                                 context,
-                                message: 'Prayer marked as answered! 🙏',
+                                message: l10n.prayerMarkedAnswered,
                                 icon: Icons.check_circle,
                                 duration: const Duration(seconds: 2),
                               );
@@ -937,7 +949,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                               if (!context.mounted) return;
                               AppSnackBar.showError(
                                 context,
-                                message: 'Error: $e',
+                                message: l10n.errorWithMessage(e.toString()),
                               );
                             }
                           }
@@ -955,6 +967,8 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   Future<void> _sharePrayer(PrayerRequest prayer) async {
+    final l10n = AppLocalizations.of(context);
+
     try {
       final databaseService = ref.read(databaseServiceProvider);
       final achievementService = ref.read(achievementServiceProvider);
@@ -975,7 +989,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
       if (!mounted) return;
       AppSnackBar.show(
         context,
-        message: 'Prayer shared successfully! 🙏',
+        message: l10n.prayerSharedSuccessfully,
         icon: Icons.check_circle,
         duration: const Duration(seconds: 2),
       );
@@ -983,12 +997,14 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
       if (!mounted) return;
       AppSnackBar.showError(
         context,
-        message: 'Unable to share prayer: $e',
+        message: l10n.unableToSharePrayer(e.toString()),
       );
     }
   }
 
   Future<void> _deletePrayer(PrayerRequest prayer) async {
+    final l10n = AppLocalizations.of(context);
+
     // Show confirmation dialog
     final confirmed = await showBlurredDialog<bool>(
       context: context,
@@ -1005,7 +1021,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(
-                'Delete Prayer',
+                l10n.deletePrayer,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                   fontWeight: FontWeight.w700,
@@ -1014,7 +1030,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
-                'Are you sure you want to delete "${prayer.title}"?',
+                l10n.deletePrayerConfirmation(prayer.title),
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
@@ -1026,7 +1042,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                 children: [
                   Expanded(
                     child: GlassButton(
-                      text: 'Cancel',
+                      text: l10n.cancel,
                       height: 48,
                       onPressed: () => Navigator.of(context).pop(false),
                     ),
@@ -1051,7 +1067,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                             height: 48,
                             alignment: Alignment.center,
                             child: Text(
-                              'Delete',
+                              l10n.delete,
                               style: TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.w700,
@@ -1080,7 +1096,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         if (mounted) {
           AppSnackBar.show(
             context,
-            message: 'Prayer deleted',
+            message: l10n.prayerDeleted,
             icon: Icons.delete_outline,
             duration: const Duration(seconds: 2),
           );
@@ -1089,7 +1105,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         if (mounted) {
           AppSnackBar.showError(
             context,
-            message: 'Error deleting prayer: $e',
+            message: l10n.errorDeletingPrayer(e.toString()),
           );
         }
       }
@@ -1108,15 +1124,16 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
   }
 
   String _formatDate(DateTime date) {
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final difference = now.difference(date).inDays;
 
     if (difference == 0) {
-      return 'Today';
+      return l10n.today;
     } else if (difference == 1) {
-      return 'Yesterday';
+      return l10n.yesterday;
     } else if (difference < 7) {
-      return '$difference days ago';
+      return l10n.daysAgo(difference);
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }

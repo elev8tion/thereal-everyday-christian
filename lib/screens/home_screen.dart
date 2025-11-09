@@ -18,6 +18,7 @@ import '../core/services/preferences_service.dart';
 import '../core/services/subscription_service.dart';
 import '../components/trial_welcome_dialog.dart';
 import '../utils/responsive_utils.dart';
+import '../l10n/app_localizations.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -99,6 +100,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -141,8 +144,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Positioned(
               top: MediaQuery.of(context).padding.top + AppSpacing.xl + 80, // Position below FAB
               left: AppSpacing.xl,
-              child: const FabTooltip(
-                message: 'Tap here to navigate ✨',
+              child: FabTooltip(
+                message: l10n.fabTooltipMessage,
               ),
             ),
         ],
@@ -152,6 +155,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
 
   Widget _buildStatsRow() {
+    final l10n = AppLocalizations.of(context);
     final streakAsync = ref.watch(devotionalStreakProvider);
     final totalCompletedAsync = ref.watch(totalDevotionalsCompletedProvider);
     final prayersCountAsync = ref.watch(activePrayersCountProvider);
@@ -170,20 +174,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           streakAsync.when(
             data: (streak) => _buildStatCard(
               value: "$streak",
-              label: "Day Streak",
+              label: l10n.dayStreak,
               icon: Icons.local_fire_department,
               color: Colors.orange,
               delay: 600,
             ),
             loading: () => _buildStatCardLoading(
-              label: "Day Streak",
+              label: l10n.dayStreak,
               icon: Icons.local_fire_department,
               color: Colors.orange,
               delay: 600,
             ),
             error: (_, __) => _buildStatCard(
               value: "0",
-              label: "Day Streak",
+              label: l10n.dayStreak,
               icon: Icons.local_fire_department,
               color: Colors.orange,
               delay: 600,
@@ -193,20 +197,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           prayersCountAsync.when(
             data: (count) => _buildStatCard(
               value: "$count",
-              label: "Prayers",
+              label: l10n.prayers,
               icon: Icons.favorite,
               color: Colors.red,
               delay: 700,
             ),
             loading: () => _buildStatCardLoading(
-              label: "Prayers",
+              label: l10n.prayers,
               icon: Icons.favorite,
               color: Colors.red,
               delay: 700,
             ),
             error: (_, __) => _buildStatCard(
               value: "0",
-              label: "Prayers",
+              label: l10n.prayers,
               icon: Icons.favorite,
               color: Colors.red,
               delay: 700,
@@ -216,20 +220,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           versesCountAsync.when(
             data: (count) => _buildStatCard(
               value: "$count",
-              label: "Saved Verses",
+              label: l10n.savedVerses,
               icon: Icons.menu_book,
               color: AppTheme.goldColor,
               delay: 800,
             ),
             loading: () => _buildStatCardLoading(
-              label: "Saved Verses",
+              label: l10n.savedVerses,
               icon: Icons.menu_book,
               color: AppTheme.goldColor,
               delay: 800,
             ),
             error: (_, __) => _buildStatCard(
               value: "0",
-              label: "Saved Verses",
+              label: l10n.savedVerses,
               icon: Icons.menu_book,
               color: AppTheme.goldColor,
               delay: 800,
@@ -239,20 +243,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           totalCompletedAsync.when(
             data: (total) => _buildStatCard(
               value: "$total",
-              label: "Devotionals",
+              label: l10n.devotionals,
               icon: Icons.auto_stories,
               color: Colors.green,
               delay: 900,
             ),
             loading: () => _buildStatCardLoading(
-              label: "Devotionals",
+              label: l10n.devotionals,
               icon: Icons.auto_stories,
               color: Colors.green,
               delay: 900,
             ),
             error: (_, __) => _buildStatCard(
               value: "0",
-              label: "Devotionals",
+              label: l10n.devotionals,
               icon: Icons.auto_stories,
               color: Colors.green,
               delay: 900,
@@ -437,6 +441,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildMainFeatures() {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: AppSpacing.horizontalXl,
       child: Column(
@@ -460,7 +465,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Text(
-                      "Biblical Chat",
+                      l10n.biblicalChat,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                         fontWeight: FontWeight.w700,
@@ -471,7 +476,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Get biblical wisdom for any situation you're facing",
+                      l10n.biblicalChatDesc,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                         color: AppColors.secondaryText,
@@ -502,7 +507,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Text(
-                      "Daily Devotional",
+                      l10n.dailyDevotional,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                         fontWeight: FontWeight.w700,
@@ -513,7 +518,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Grow closer to God with daily reflections",
+                      l10n.dailyDevotionalDesc,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                         color: AppColors.secondaryText,
@@ -548,7 +553,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Text(
-                      "Prayer Journal",
+                      l10n.prayerJournal,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                         fontWeight: FontWeight.w700,
@@ -559,7 +564,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Track your prayers and see God's faithfulness",
+                      l10n.prayerJournalDesc,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                         color: AppColors.secondaryText,
@@ -590,7 +595,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Text(
-                      "Reading Plans",
+                      l10n.readingPlans,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                         fontWeight: FontWeight.w700,
@@ -601,7 +606,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Structured Bible reading with daily guidance",
+                      l10n.readingPlansDesc,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                         color: AppColors.secondaryText,
@@ -622,13 +627,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildQuickActions() {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: AppSpacing.horizontalXl,
           child: Text(
-            'Quick Actions',
+            l10n.quickActions,
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
               fontWeight: FontWeight.w700,
@@ -649,7 +655,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             cacheExtent: 200,
             children: [
               _buildQuickActionCard(
-                label: "Read Bible",
+                label: l10n.readBible,
                 icon: Icons.menu_book,
                 color: AppTheme.goldColor,
                 onTap: () => NavigationService.goToBibleBrowser(),
@@ -657,7 +663,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const SizedBox(width: AppSpacing.lg),
               _buildQuickActionCard(
-                label: "Verse Library",
+                label: l10n.verseLibrary,
                 icon: Icons.search,
                 color: Colors.blue,
                 onTap: () => Navigator.pushNamed(context, AppRoutes.verseLibrary),
@@ -665,7 +671,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const SizedBox(width: AppSpacing.lg),
               _buildQuickActionCard(
-                label: "Add Prayer",
+                label: l10n.addPrayer,
                 icon: Icons.add,
                 color: Colors.green,
                 onTap: () => NavigationService.goToPrayerJournal(),
@@ -673,7 +679,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const SizedBox(width: AppSpacing.lg),
               _buildQuickActionCard(
-                label: "Settings",
+                label: l10n.settings,
                 icon: Icons.settings,
                 color: Colors.grey[300]!,
                 onTap: () => NavigationService.goToSettings(),
@@ -681,7 +687,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const SizedBox(width: AppSpacing.lg),
               _buildQuickActionCard(
-                label: "Profile",
+                label: l10n.profile,
                 icon: Icons.person,
                 color: Colors.purple,
                 onTap: () => NavigationService.goToProfile(),
@@ -764,6 +770,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildDailyVerse() {
+    final l10n = AppLocalizations.of(context);
     final todaysVerseAsync = ref.watch(todaysVerseProvider);
 
     return todaysVerseAsync.when(
@@ -803,7 +810,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     const SizedBox(width: AppSpacing.lg),
                     Expanded(
                       child: Text(
-                        'Verse of the Day',
+                        l10n.verseOfTheDay,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
                           fontWeight: FontWeight.w700,
@@ -879,10 +886,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildStartChatButton() {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GlassButton(
-        text: 'Start Spiritual Conversation',
+        text: l10n.startSpiritualConversation,
         onPressed: () => NavigationService.goToChat(),
       ).animate().fadeIn(delay: 2000.ms).scale(delay: 2000.ms),
     );

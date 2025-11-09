@@ -5,7 +5,6 @@ import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/audio_control_pill.dart';
-import '../components/glass_icon_avatar.dart';
 import '../components/fab_tooltip.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
@@ -19,6 +18,7 @@ import '../utils/responsive_utils.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../core/services/tts_service.dart';
 import 'chat_screen.dart';
+import '../l10n/app_localizations.dart';
 
 /// Chapter Reading Screen - displays Bible chapters with verse-by-verse reading
 class ChapterReadingScreen extends ConsumerStatefulWidget {
@@ -124,9 +124,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
 
     _ttsService.onPlaybackComplete = () {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         AppSnackBar.show(
           context,
-          message: 'Chapter playback complete',
+          message: l10n.chapterPlaybackComplete,
           icon: Icons.check_circle,
         );
       }
@@ -182,17 +183,19 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       ref.invalidate(planProgressPercentageProvider(planId));
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         setState(() => _isCompleted = true);
         AppSnackBar.show(
           context,
-          message: 'Reading marked as complete!',
+          message: l10n.readingMarkedComplete,
         );
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         AppSnackBar.showError(
           context,
-          message: 'Error updating reading: $e',
+          message: l10n.errorUpdatingReading(e.toString()),
         );
       }
     }
@@ -204,9 +207,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       await _ttsService.playChapter(verses);
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         AppSnackBar.showError(
           context,
-          message: 'Audio playback error',
+          message: l10n.audioPlaybackError,
         );
       }
     }
@@ -353,6 +357,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   }
 
   Widget _buildHeader(int currentChapter, int totalChapters, List<BibleVerse> currentVerses) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 16.0, right: 8.0),
       child: Row(
@@ -403,8 +408,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                     Flexible(
                       child: Text(
                         totalChapters > 1
-                          ? 'Chapter ${_currentChapterIndex + 1} of $totalChapters'
-                          : '1 chapter',
+                          ? l10n.chapterOfTotal(_currentChapterIndex + 1, totalChapters)
+                          : l10n.oneChapter,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 11, maxSize: 13),
                           color: Colors.white.withValues(alpha: 0.7),
@@ -532,6 +537,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   }
 
   Widget _buildChapterPage(int chapterNum, List<BibleVerse> verses, Map<int, List<BibleVerse>> chaptersMap) {
+    final l10n = AppLocalizations.of(context);
+
     // Generate keys for verses (for auto-scroll)
     _verseKeys.clear();
     for (int i = 0; i < verses.length; i++) {
@@ -553,7 +560,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No verses found for ${widget.book} $chapterNum',
+                  l10n.noVersesFoundForBook(widget.book, chapterNum),
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                     color: Colors.white,
@@ -580,8 +587,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                 onTap: _dismissVerseTutorial,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: const FabTooltip(
-                    message: 'Press & hold verse for actions ✨',
+                  child: FabTooltip(
+                    message: l10n.pressHoldVerseForActions,
                     pointingDown: true,
                   ),
                 ),
@@ -834,9 +841,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       if (wasFavorite) {
         await verseService.removeFromFavorites(verse.id!);
         if (!mounted) return;
+        final l10n = AppLocalizations.of(context);
         AppSnackBar.show(
           context,
-          message: 'Removed from Verse Library',
+          message: l10n.removedFromVerseLibrary,
           icon: Icons.heart_broken,
         );
       } else {
@@ -849,9 +857,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
         );
 
         if (!mounted) return;
+        final l10n = AppLocalizations.of(context);
         AppSnackBar.show(
           context,
-          message: 'Added to Verse Library!',
+          message: l10n.addedToVerseLibrary,
           icon: Icons.favorite,
         );
       }
@@ -866,9 +875,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       setState(() {});
     } catch (e) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
       AppSnackBar.showError(
         context,
-        message: 'Error: $e',
+        message: '${l10n.error}: $e',
       );
     }
   }
@@ -958,10 +968,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   }
 
   Widget _buildCompleteButton() {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: GlassButton(
-        text: _isCompleted ? '✓ Reading Completed' : 'Mark as Complete',
+        text: _isCompleted ? l10n.readingCompleted : l10n.markAsCompleted,
         onPressed: _isCompleted ? null : _markAsComplete,
         height: 56,
       ),
@@ -978,6 +989,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   }
 
   Widget _buildError(String error) {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -993,9 +1005,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                   color: Colors.red.shade300,
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Error loading chapter',
-                  style: TextStyle(
+                Text(
+                  l10n.errorLoadingChapter,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -1018,7 +1030,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                     });
                   },
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Retry'),
+                  label: Text(l10n.retry),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
                     foregroundColor: Colors.white,
@@ -1037,6 +1049,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   }
 
   Widget _buildNoData() {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -1052,9 +1065,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                   color: AppTheme.primaryColor,
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'No verses available',
-                  style: TextStyle(
+                Text(
+                  l10n.noVersesAvailable,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -1062,10 +1075,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Could not find verses for ${widget.book} ${widget.startChapter}-${widget.endChapter}',
-                  style: TextStyle(
+                  l10n.couldNotFindVersesForRange(widget.book, widget.startChapter, widget.endChapter),
+                  style: const TextStyle(
                     fontSize: 14,
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
                 ),
