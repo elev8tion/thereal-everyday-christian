@@ -17,6 +17,7 @@ import '../models/verse_context.dart';
 import '../utils/responsive_utils.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../core/services/tts_service.dart';
+import '../core/services/book_name_service.dart';
 import 'chat_screen.dart';
 import '../l10n/app_localizations.dart';
 
@@ -152,8 +153,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     final language = l10n.localeName;
     final version = language == 'es' ? 'KC EDC' : 'WEB';
 
+    // Translate book name to match database language
+    final bookName = BookNameService.getBookName(widget.book, language);
+
     _versesFuture = _chapterService.getChapterRange(
-      widget.book,
+      bookName,
       widget.startChapter,
       widget.endChapter,
       version: version,
