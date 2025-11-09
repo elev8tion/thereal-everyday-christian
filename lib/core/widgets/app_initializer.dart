@@ -46,13 +46,13 @@ class _LoadingScreen extends StatelessWidget {
                     l10n.localeName == 'es'
                         ? 'assets/images/logo_spanish.png'
                         : 'assets/images/logo_transparent.png',
-                    width: 140,
-                    height: 140,
+                    width: 200,
+                    height: 200,
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        width: 140,
-                        height: 140,
+                        width: 200,
+                        height: 200,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: LinearGradient(

@@ -135,15 +135,17 @@ class SplashScreen extends HookConsumerWidget {
                       children: [
                         // Logo (appropriately sized)
                         Image.asset(
-                          'assets/images/logo_transparent.png',
-                          width: 140,
-                          height: 140,
+                          l10n.localeName == 'es'
+                              ? 'assets/images/logo_spanish.png'
+                              : 'assets/images/logo_transparent.png',
+                          width: 200,
+                          height: 200,
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
                             // Fallback icon if logo not found
                             return Container(
-                              width: 140,
-                              height: 140,
+                              width: 200,
+                              height: 200,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 gradient: LinearGradient(
