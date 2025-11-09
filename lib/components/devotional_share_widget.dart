@@ -11,18 +11,20 @@ class DevotionalShareWidget extends StatelessWidget {
   final Devotional devotional;
   final String landingPageUrl;
   final bool showFullReflection;
+  final Locale locale;
+  final AppLocalizations l10n;
 
   const DevotionalShareWidget({
     super.key,
     required this.devotional,
+    required this.locale,
+    required this.l10n,
     this.landingPageUrl = 'https://everydaychristian.app',
     this.showFullReflection = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context);
     return Container(
       width: 400, // Fixed width for consistent shares
       decoration: BoxDecoration(

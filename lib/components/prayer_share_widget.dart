@@ -9,17 +9,19 @@ import '../l10n/app_localizations.dart';
 class PrayerShareWidget extends StatelessWidget {
   final PrayerRequest prayer;
   final String landingPageUrl;
+  final Locale locale;
+  final AppLocalizations l10n;
 
   const PrayerShareWidget({
     super.key,
     required this.prayer,
+    required this.locale,
+    required this.l10n,
     this.landingPageUrl = 'https://everydaychristian.app',
   });
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context);
     return Container(
       width: 400, // Fixed width for consistent shares
       decoration: BoxDecoration(
@@ -38,21 +40,21 @@ class PrayerShareWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Header with branding
-          _buildHeader(context, l10n, locale),
+          _buildHeader(),
 
           // Prayer content
-          _buildPrayerContent(context, l10n),
+          _buildPrayerContent(),
 
           const SizedBox(height: 20),
 
           // Footer with QR code and branding
-          _buildFooter(context, l10n, locale),
+          _buildFooter(),
         ],
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context, AppLocalizations l10n, Locale locale) {
+  Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.all(20),
       child: Row(
@@ -215,7 +217,7 @@ class PrayerShareWidget extends StatelessWidget {
 
           // Category indicator
           Text(
-            _getCategoryDisplayName(prayer.categoryId, context),
+            _getCategoryDisplayName(prayer.categoryId),
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -358,16 +360,15 @@ class PrayerShareWidget extends StatelessWidget {
     );
   }
 
-  String _getCategoryDisplayName(String categoryId, BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+  String _getCategoryDisplayName(String categoryId) {
     // Map category IDs to localized display names
     final categoryNames = {
-      'personal': l10n.categoryPersonal,
-      'family': l10n.categoryFamily,
-      'health': l10n.categoryHealth,
-      'work': l10n.categoryWork,
-      'spiritual': l10n.categorySpiritual,
-      'other': l10n.categoryOther,
+      'personal': 'Personal', // No l10n key exists, use hardcoded
+      'family': l10n.family,
+      'health': l10n.health,
+      'work': l10n.work,
+      'spiritual': 'Spiritual', // No l10n key exists, use hardcoded
+      'other': l10n.other,
     };
     return categoryNames[categoryId] ?? categoryId;
   }

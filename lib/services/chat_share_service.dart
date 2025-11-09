@@ -9,6 +9,7 @@ import '../components/chat_share_widget.dart';
 import '../models/chat_message.dart';
 import '../core/services/database_service.dart';
 import '../core/services/achievement_service.dart';
+import '../l10n/app_localizations.dart';
 
 /// Service for capturing and sharing chat conversations with branding
 class ChatShareService {
@@ -33,12 +34,18 @@ class ChatShareService {
     String? sessionId,
   }) async {
     try {
+      // Extract locale and localizations before captureFromWidget
+      final locale = Localizations.localeOf(context);
+      final l10n = AppLocalizations.of(context);
+
       // Capture the widget as an image
       final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
         MediaQuery(
           data: MediaQuery.of(context),
           child: ChatShareWidget(
             messages: messageWidgets,
+            locale: locale,
+            l10n: l10n,
           ),
         ),
         pixelRatio: 2.0,

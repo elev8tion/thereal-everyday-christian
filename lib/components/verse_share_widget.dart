@@ -10,18 +10,20 @@ class VerseShareWidget extends StatelessWidget {
   final BibleVerse verse;
   final String landingPageUrl;
   final bool showThemes;
+  final Locale locale;
+  final AppLocalizations l10n;
 
   const VerseShareWidget({
     super.key,
     required this.verse,
+    required this.locale,
+    required this.l10n,
     this.landingPageUrl = 'https://everydaychristian.app',
     this.showThemes = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context);
     return Container(
       width: 400, // Fixed width for consistent shares
       decoration: BoxDecoration(

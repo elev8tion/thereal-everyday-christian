@@ -9,6 +9,7 @@ import '../components/prayer_share_widget.dart';
 import '../core/models/prayer_request.dart';
 import '../core/services/database_service.dart';
 import '../core/services/achievement_service.dart';
+import '../l10n/app_localizations.dart';
 
 /// Service for capturing and sharing prayer requests with branding
 class PrayerShareService {
@@ -31,12 +32,18 @@ class PrayerShareService {
     required PrayerRequest prayer,
   }) async {
     try {
+      // Extract locale and localizations before captureFromWidget
+      final locale = Localizations.localeOf(context);
+      final l10n = AppLocalizations.of(context);
+
       // Capture the widget as an image
       final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
         MediaQuery(
           data: MediaQuery.of(context),
           child: PrayerShareWidget(
             prayer: prayer,
+            locale: locale,
+            l10n: l10n,
           ),
         ),
         pixelRatio: 2.0,

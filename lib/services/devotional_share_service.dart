@@ -9,6 +9,7 @@ import '../components/devotional_share_widget.dart';
 import '../core/models/devotional.dart';
 import '../core/services/database_service.dart';
 import '../core/services/achievement_service.dart';
+import '../l10n/app_localizations.dart';
 
 /// Service for capturing and sharing devotionals with branding
 class DevotionalShareService {
@@ -32,6 +33,10 @@ class DevotionalShareService {
     bool showFullReflection = false,
   }) async {
     try {
+      // Extract locale and localizations before captureFromWidget
+      final locale = Localizations.localeOf(context);
+      final l10n = AppLocalizations.of(context);
+
       // Capture the widget as an image
       final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
         MediaQuery(
@@ -39,6 +44,8 @@ class DevotionalShareService {
           child: DevotionalShareWidget(
             devotional: devotional,
             showFullReflection: showFullReflection,
+            locale: locale,
+            l10n: l10n,
           ),
         ),
         pixelRatio: 2.0,

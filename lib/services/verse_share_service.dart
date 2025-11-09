@@ -9,6 +9,7 @@ import '../components/verse_share_widget.dart';
 import '../models/bible_verse.dart';
 import '../core/services/database_service.dart';
 import '../core/services/achievement_service.dart';
+import '../l10n/app_localizations.dart';
 
 /// Service for capturing and sharing Bible verses with branding
 class VerseShareService {
@@ -32,6 +33,9 @@ class VerseShareService {
     bool showThemes = true,
   }) async {
     try {
+      final locale = Localizations.localeOf(context);
+      final l10n = AppLocalizations.of(context)!;
+
       // Capture the widget as an image
       final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
         MediaQuery(
@@ -39,6 +43,8 @@ class VerseShareService {
           child: VerseShareWidget(
             verse: verse,
             showThemes: showThemes,
+            locale: locale,
+            l10n: l10n,
           ),
         ),
         pixelRatio: 2.0,

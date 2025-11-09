@@ -8,17 +8,19 @@ import '../l10n/app_localizations.dart';
 class ChatShareWidget extends StatelessWidget {
   final List<Widget> messages;
   final String landingPageUrl;
+  final Locale locale;
+  final AppLocalizations l10n;
 
   const ChatShareWidget({
     super.key,
     required this.messages,
+    required this.locale,
+    required this.l10n,
     this.landingPageUrl = 'https://everydaychristian.app',
   });
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context);
     return Container(
       width: 400, // Fixed width for consistent shares
       decoration: BoxDecoration(
