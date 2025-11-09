@@ -192,20 +192,43 @@ Content That Triggers Warnings:
 
 5.3 Content Policy Enforcement
 
-We reserve the right to suspend or terminate access to Premium AI chat features for:
+We reserve the right to suspend access to Premium AI chat features for:
 - Repeated violations of prohibited content policies (Section 5.1)
 - Attempts to bypass content filtering or safety mechanisms
+- Prompt injection or jailbreaking attempts
+- Automated/bot usage of AI features
 - Abusive or harassing behavior
 - Attempts to manipulate the AI into generating harmful content
+- Attempting to extract or misuse API keys
+- Account sharing or credential distribution
 - Any use that violates these Terms or applicable law
 
-Enforcement actions may include:
-- Warnings and reminders of content policy
-- Temporary suspension of AI chat access
-- Permanent suspension from Premium features
-- Account termination in severe cases
+PROGRESSIVE ENFORCEMENT SCHEDULE:
 
-We reserve discretion in determining appropriate responses to policy violations based on severity and context.
+| Violation | Suspension Duration | AI Access | Other Features | Subscription Status |
+|-----------|---------------------|-----------|----------------|---------------------|
+| 1st       | Warning only        | Active    | Active         | Continues charging  |
+| 2nd       | 7 days              | Suspended | Active         | Continues charging  |
+| 3rd       | 30 days             | Suspended | Active         | Continues charging  |
+| 4th+      | 90 days (each)      | Suspended | Active         | Continues charging  |
+
+IMPORTANT NOTES:
+- Your subscription will continue to charge during suspensions
+- You will retain access to Bible reading, Prayer Journal, and Verse Library features during AI chat suspensions
+- AI chat features will be automatically restored when suspension ends
+- Repeated violations will result in repeated 90-day suspensions
+- Violation history is stored securely and persists across app reinstalls
+- To cancel your subscription during a suspension:
+  • iOS: Settings → [Your Name] → Subscriptions
+  • Android: Play Store → Account → Subscriptions
+
+SUBSCRIPTION REFUNDS:
+- We do not provide refunds for suspensions due to policy violations
+- Your subscription remains active and will expire on its original renewal date
+- Free features (Bible, Prayer, Verses) remain accessible during suspensions
+- For suspension appeals: connect@everydaychristian.app
+
+We reserve discretion in determining appropriate responses to policy violations based on severity and context. Severe violations may result in longer initial suspensions.
 
 5.4 Crisis Content and Intervention
 

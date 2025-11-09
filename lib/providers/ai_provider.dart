@@ -6,6 +6,7 @@ import '../models/bible_verse.dart';
 import '../models/chat_message.dart';
 import '../core/services/content_filter_service.dart';
 import '../core/services/input_security_service.dart';
+import '../core/services/suspension_service.dart';
 
 /// Provider for AI service instance (Gemini AI)
 final aiServiceProvider = Provider<AIService>((ref) {
@@ -118,6 +119,9 @@ class GeminiAIServiceAdapter implements AIService {
   final UnifiedVerseService _verseService = UnifiedVerseService();
   final ContentFilterService _contentFilter = ContentFilterService();
   final InputSecurityService _inputSecurity = InputSecurityService();
+  final SuspensionService _suspensionService = SuspensionService();
+
+  bool _suspensionServiceInitialized = false;
 
   @override
   Future<void> initialize() async {
@@ -141,9 +145,62 @@ class GeminiAIServiceAdapter implements AIService {
     final securityCheck = _inputSecurity.validateInput(userInput);
 
     if (securityCheck.isRejected) {
-      // Block malicious input - return safe rejection message
+      // ============================================================================
+      // VIOLATION TRACKING: Record high-threat attempts for suspension system
+      // ============================================================================
+
+      // Initialize suspension service if needed
+      if (!_suspensionServiceInitialized) {
+        await _suspensionService.initialize();
+        _suspensionServiceInitialized = true;
+      }
+
+      // Determine if this should trigger a violation record
+      bool shouldRecordViolation = false;
+      ViolationType? violationType;
+
+      // HIGH + CRITICAL threats = Always record (jailbreak attempts)
+      if (securityCheck.threatLevel == SecurityThreatLevel.high ||
+          securityCheck.threatLevel == SecurityThreatLevel.critical) {
+        shouldRecordViolation = true;
+        violationType = ViolationType.promptInjection;
+      }
+      // MEDIUM threat = Only if it's rate limiting (automated abuse)
+      else if (securityCheck.threatLevel == SecurityThreatLevel.medium) {
+        // Check if this is rate limiting (automated behavior)
+        if (securityCheck.rejectionReason?.contains('slow down') == true ||
+            securityCheck.rejectionReason?.contains('messages per minute') == true) {
+          shouldRecordViolation = true;
+          violationType = ViolationType.automatedUsage;
+        }
+        // Other MEDIUM threats (faith offense) = no violation
+      }
+      // LOW threats (profanity) = no violation, just warning
+
+      // Record the violation if applicable
+      String warningMessage = '';
+      if (shouldRecordViolation && violationType != null) {
+        try {
+          final suspensionLevel = await _suspensionService.recordViolation(violationType);
+          final violationCount = await _suspensionService.getViolationCount();
+
+          // Add warning message based on suspension level
+          warningMessage = _getViolationWarning(suspensionLevel, violationCount);
+
+          // Violation recorded - suspension will be enforced on next chat screen load
+        } catch (e) {
+          // Log error but don't fail the request
+          print('⚠️ Failed to record security violation: $e');
+        }
+      }
+
+      // Block malicious input - return safe rejection message with warning
+      final responseMessage = warningMessage.isNotEmpty
+          ? '${securityCheck.rejectionReason!}\n\n$warningMessage'
+          : securityCheck.rejectionReason!;
+
       return AIResponse(
-        content: securityCheck.rejectionReason!,
+        content: responseMessage,
         verses: [],
         metadata: {
           'security_blocked': true,
@@ -233,8 +290,61 @@ class GeminiAIServiceAdapter implements AIService {
     final securityCheck = _inputSecurity.validateInput(userInput);
 
     if (securityCheck.isRejected) {
-      // Block malicious input - yield safe rejection message
-      yield securityCheck.rejectionReason!;
+      // ============================================================================
+      // VIOLATION TRACKING: Record high-threat attempts for suspension system
+      // ============================================================================
+
+      // Initialize suspension service if needed
+      if (!_suspensionServiceInitialized) {
+        await _suspensionService.initialize();
+        _suspensionServiceInitialized = true;
+      }
+
+      // Determine if this should trigger a violation record
+      bool shouldRecordViolation = false;
+      ViolationType? violationType;
+
+      // HIGH + CRITICAL threats = Always record (jailbreak attempts)
+      if (securityCheck.threatLevel == SecurityThreatLevel.high ||
+          securityCheck.threatLevel == SecurityThreatLevel.critical) {
+        shouldRecordViolation = true;
+        violationType = ViolationType.promptInjection;
+      }
+      // MEDIUM threat = Only if it's rate limiting (automated abuse)
+      else if (securityCheck.threatLevel == SecurityThreatLevel.medium) {
+        // Check if this is rate limiting (automated behavior)
+        if (securityCheck.rejectionReason?.contains('slow down') == true ||
+            securityCheck.rejectionReason?.contains('messages per minute') == true) {
+          shouldRecordViolation = true;
+          violationType = ViolationType.automatedUsage;
+        }
+        // Other MEDIUM threats (faith offense) = no violation
+      }
+      // LOW threats (profanity) = no violation, just warning
+
+      // Record the violation if applicable
+      String warningMessage = '';
+      if (shouldRecordViolation && violationType != null) {
+        try {
+          final suspensionLevel = await _suspensionService.recordViolation(violationType);
+          final violationCount = await _suspensionService.getViolationCount();
+
+          // Add warning message based on suspension level
+          warningMessage = _getViolationWarning(suspensionLevel, violationCount);
+
+          // Violation recorded - suspension will be enforced on next chat screen load
+        } catch (e) {
+          // Log error but don't fail the request
+          print('⚠️ Failed to record security violation: $e');
+        }
+      }
+
+      // Block malicious input - yield safe rejection message with warning
+      final responseMessage = warningMessage.isNotEmpty
+          ? '${securityCheck.rejectionReason!}\n\n$warningMessage'
+          : securityCheck.rejectionReason!;
+
+      yield responseMessage;
       return;
     }
 
@@ -401,6 +511,54 @@ class GeminiAIServiceAdapter implements AIService {
 
     return encouragements[theme.toLowerCase()] ??
         'Remember, God is with you. He hears your prayers and cares about every detail of your life.';
+  }
+
+  /// Get violation warning message based on suspension level
+  String _getViolationWarning(SuspensionLevel level, int violationCount) {
+    switch (level) {
+      case SuspensionLevel.warning:
+        return '⚠️ **Warning (Violation 1/4)**\n\n'
+            'This type of message violates our Terms of Service. '
+            'Continued violations will result in temporary suspension of AI chat features.\n\n'
+            '• 2nd violation: 7-day suspension\n'
+            '• 3rd violation: 30-day suspension\n'
+            '• 4th+ violations: 90-day suspensions\n\n'
+            'During suspensions, your subscription continues and you retain access to Bible, Prayer, and Verse features.';
+
+      case SuspensionLevel.short:
+        return '🚨 **AI Chat Suspended for 7 Days (Violation 2/4)**\n\n'
+            'Your AI chat access has been suspended due to repeated Terms of Service violations. '
+            'The next time you open the chat screen, you will see a suspension overlay.\n\n'
+            'Your subscription remains active. You can still use:\n'
+            '• Bible Reading\n'
+            '• Prayer Journal\n'
+            '• Verse Library\n\n'
+            'Further violations will result in longer suspensions (30 days, then 90 days).';
+
+      case SuspensionLevel.medium:
+        return '🚨 **AI Chat Suspended for 30 Days (Violation 3/4)**\n\n'
+            'Your AI chat access has been suspended for 30 days due to repeated violations. '
+            'The next time you open the chat screen, you will see a suspension overlay.\n\n'
+            'Your subscription remains active. You can still use:\n'
+            '• Bible Reading\n'
+            '• Prayer Journal\n'
+            '• Verse Library\n\n'
+            'One more violation will result in a 90-day suspension.';
+
+      case SuspensionLevel.long:
+        return '🚨 **AI Chat Suspended for 90 Days (Violation ${violationCount}/∞)**\n\n'
+            'Your AI chat access has been suspended for 90 days due to repeated violations. '
+            'The next time you open the chat screen, you will see a suspension overlay.\n\n'
+            'Your subscription remains active. You can still use:\n'
+            '• Bible Reading\n'
+            '• Prayer Journal\n'
+            '• Verse Library\n\n'
+            'Each future violation will result in another 90-day suspension.\n\n'
+            'To appeal: connect@everydaychristian.app';
+
+      case SuspensionLevel.none:
+        return '';
+    }
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../services/subscription_service.dart';
+import '../services/suspension_service.dart';
 
 /// Provides access to the singleton SubscriptionService.
 final subscriptionServiceProvider = Provider<SubscriptionService>((ref) {
@@ -97,4 +98,49 @@ final premiumMessagesRemainingProvider = Provider<int>((ref) {
 
 final trialMessagesRemainingProvider = Provider<int>((ref) {
   return ref.watch(subscriptionSnapshotProvider).trialMessagesRemaining;
+});
+
+// ============================================================================
+// Suspension Service Providers
+// ============================================================================
+
+/// Provides access to the SuspensionService singleton.
+final suspensionServiceProvider = Provider<SuspensionService>((ref) {
+  return SuspensionService();
+});
+
+/// Ensures suspension service initialization runs during bootstrap.
+final suspensionInitProvider = FutureProvider<void>((ref) async {
+  final service = ref.read(suspensionServiceProvider);
+  await service.initialize();
+});
+
+/// Check if user is currently suspended
+final isSuspendedProvider = FutureProvider<bool>((ref) async {
+  final service = ref.watch(suspensionServiceProvider);
+  return await service.isSuspended();
+});
+
+/// Get remaining suspension time
+final remainingSuspensionTimeProvider = FutureProvider<Duration?>((ref) async {
+  final service = ref.watch(suspensionServiceProvider);
+  return await service.getRemainingTime();
+});
+
+/// Get suspension message for display
+final suspensionMessageProvider = FutureProvider<String>((ref) async {
+  final service = ref.watch(suspensionServiceProvider);
+  return await service.getSuspensionMessage();
+});
+
+/// Get current suspension level
+final suspensionLevelProvider = FutureProvider<SuspensionLevel>((ref) async {
+  final service = ref.watch(suspensionServiceProvider);
+  return await service.getCurrentSuspensionLevel();
+});
+
+/// Get violation count
+final violationCountProvider = FutureProvider<int>((ref) async {
+  final service = ref.watch(suspensionServiceProvider);
+  return await service.getViolationCount();
 });

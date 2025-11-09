@@ -1334,7 +1334,44 @@ class ChatScreen extends HookConsumerWidget {
     }
 
     // ============================================================================
-    // SUBSCRIPTION LOCKOUT CHECK
+    // SUSPENSION CHECK (Priority 1)
+    // ============================================================================
+
+    // Check if user is suspended FIRST (takes priority over subscription lockout)
+    final isSuspendedAsync = ref.watch(isSuspendedProvider);
+    final isSuspended = isSuspendedAsync.when(
+      data: (suspended) => suspended,
+      loading: () => false,
+      error: (_, __) => false,
+    );
+
+    if (isSuspended) {
+      final remainingTimeAsync = ref.watch(remainingSuspensionTimeProvider);
+      final suspensionMessageAsync = ref.watch(suspensionMessageProvider);
+
+      final remainingTime = remainingTimeAsync.whenOrNull(data: (time) => time);
+      final suspensionMessage = suspensionMessageAsync.whenOrNull(data: (msg) => msg);
+
+      return Scaffold(
+        body: Stack(
+          children: [
+            const GradientBackground(),
+            ChatScreenLockoutOverlay(
+              reason: LockoutReason.suspended,
+              suspensionMessage: suspensionMessage,
+              remainingSuspension: remainingTime,
+              onSubscribePressed: () {
+                // For suspensions, button is hidden, but callback required
+                // User cannot subscribe out of suspension
+              },
+            ),
+          ],
+        ),
+      );
+    }
+
+    // ============================================================================
+    // SUBSCRIPTION LOCKOUT CHECK (Priority 2)
     // ============================================================================
 
     // Check subscription status for chat lockout
@@ -1344,11 +1381,16 @@ class ChatScreen extends HookConsumerWidget {
     // If trial expired or premium expired, show lockout overlay
     if (subscriptionStatus == SubscriptionStatus.trialExpired ||
         subscriptionStatus == SubscriptionStatus.premiumExpired) {
+      final lockoutReason = subscriptionStatus == SubscriptionStatus.trialExpired
+          ? LockoutReason.trialExpired
+          : LockoutReason.premiumExpired;
+
       return Scaffold(
         body: Stack(
           children: [
             const GradientBackground(),
             ChatScreenLockoutOverlay(
+              reason: lockoutReason,
               onSubscribePressed: () {
                 Navigator.push(
                   context,
