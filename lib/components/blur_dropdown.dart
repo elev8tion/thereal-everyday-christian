@@ -63,14 +63,10 @@ class _BlurDropdownState extends State<BlurDropdown> {
                         constraints: const BoxConstraints(maxHeight: 300),
                         decoration: BoxDecoration(
                           borderRadius: AppRadius.largeCardRadius,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white.withValues(alpha: 0.1)
-                              : Colors.white.withValues(alpha: 0.2),
+                          color: Colors.black.withValues(alpha: 0.1),
                           border: Border.all(
-                            color: Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white24
-                                : Colors.white54,
-                            width: 2,
+                            color: AppTheme.goldColor,
+                            width: 1,
                           ),
                         ),
                         child: ListView.builder(
@@ -146,12 +142,10 @@ class _BlurDropdownState extends State<BlurDropdown> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 borderRadius: AppRadius.largeCardRadius,
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.white.withValues(alpha: 0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 border: Border.all(
-                  color: isDark ? Colors.white24 : Colors.white54,
-                  width: 2,
+                  color: AppTheme.goldColor,
+                  width: 1,
                 ),
               ),
               child: Row(
