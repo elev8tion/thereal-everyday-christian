@@ -8,6 +8,7 @@ import '../components/frosted_glass_card.dart';
 import '../components/standard_screen_header.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
+import '../core/services/book_name_service.dart';
 import '../services/bible_chapter_service.dart';
 import '../models/bible_verse.dart';
 import '../theme/app_theme.dart';
@@ -551,6 +552,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   Widget _buildBookListItem(String book) {
     final l10n = AppLocalizations.of(context);
+    final language = l10n.localeName;
+    final displayName = BookNameService.getBookName(book, language);
     final abbreviation = _bookAbbreviations[book] ?? 'Bk';
     final chapterCount = _bookChapterCounts[book] ?? 0;
 
@@ -594,7 +597,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        book,
+                        displayName,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                           fontWeight: FontWeight.w700,
@@ -644,6 +647,9 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   Widget _buildBookCard(String book) {
     final textSize = ref.watch(textSizeProvider);
+    final l10n = AppLocalizations.of(context);
+    final language = l10n.localeName;
+    final displayName = BookNameService.getBookName(book, language);
 
     return GestureDetector(
       onTap: () => _showChapterSelector(book),
@@ -654,7 +660,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
               child: AutoSizeText(
-                book,
+                displayName,
                 style: TextStyle(
                   fontSize: 14 * textSize,
                   fontWeight: FontWeight.w600,

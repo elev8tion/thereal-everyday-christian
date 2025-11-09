@@ -12,16 +12,18 @@ class BibleLoaderService {
 
   /// Load all Bible versions into the database
   Future<void> loadAllBibles() async {
-    // Copy verses from assets/bible.db to app database
-    await _copyFromAssetDatabase();
+    // Copy English Bible
+    await _copyEnglishBible();
+    // Copy Spanish Bible
+    await _copySpanishBible();
   }
 
-  /// Copy Bible verses from the pre-populated asset database
-  Future<void> _copyFromAssetDatabase() async {
+  /// Copy English Bible verses from the pre-populated asset database
+  Future<void> _copyEnglishBible() async {
     try {
       final db = await _database.database;
       final databasesPath = await getDatabasesPath();
-      final assetDbPath = join(databasesPath, 'asset_bible.db');
+      final assetDbPath = join(databasesPath, 'asset_bible_en.db');
 
       // Copy asset database to app directory
       final data = await rootBundle.load('assets/bible.db');
@@ -30,9 +32,9 @@ class BibleLoaderService {
 
 
       // Attach the asset database
-      await db.execute("ATTACH DATABASE '$assetDbPath' AS asset_db");
+      await db.execute("ATTACH DATABASE '$assetDbPath' AS asset_db_en");
 
-      // Copy verses from asset_db.verses to main db.bible_verses
+      // Copy verses from asset_db_en.verses to main db.bible_verses
       // Map columns: translation->version, verse_number->verse, add language='en'
       await db.execute('''
         INSERT OR REPLACE INTO bible_verses (version, book, chapter, verse, text, language)
@@ -43,11 +45,11 @@ class BibleLoaderService {
           verse_number as verse,
           clean_text as text,
           'en' as language
-        FROM asset_db.verses
+        FROM asset_db_en.verses
         WHERE translation = 'WEB'
       ''');
 
-      // Copy daily verse schedule from asset_db to main db
+      // Copy daily verse schedule from asset_db_en to main db
       // Match verses by (book, chapter, verse) to get correct verse_id in target db
       await db.execute('''
         INSERT OR REPLACE INTO daily_verse_schedule (month, day, verse_id)
@@ -55,8 +57,8 @@ class BibleLoaderService {
           s.month,
           s.day,
           bv.id
-        FROM asset_db.daily_verse_schedule s
-        JOIN asset_db.verses av ON s.verse_id = av.id
+        FROM asset_db_en.daily_verse_schedule s
+        JOIN asset_db_en.verses av ON s.verse_id = av.id
         JOIN bible_verses bv ON (
           av.book = bv.book AND
           av.chapter = bv.chapter AND
@@ -67,7 +69,48 @@ class BibleLoaderService {
       ''');
 
       // Detach the asset database
-      await db.execute('DETACH DATABASE asset_db');
+      await db.execute('DETACH DATABASE asset_db_en');
+
+      // Clean up the copied asset database file
+      await File(assetDbPath).delete();
+
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Copy Spanish Bible verses from the pre-populated asset database
+  Future<void> _copySpanishBible() async {
+    try {
+      final db = await _database.database;
+      final databasesPath = await getDatabasesPath();
+      final assetDbPath = join(databasesPath, 'asset_bible_es.db');
+
+      // Copy asset database to app directory
+      final data = await rootBundle.load('assets/kc_edc_spanish_bible.db');
+      final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(assetDbPath).writeAsBytes(bytes, flush: true);
+
+      // Attach the asset database
+      await db.execute("ATTACH DATABASE '$assetDbPath' AS asset_db_es");
+
+      // Copy verses from asset_db_es.verses to main db.bible_verses
+      // Map columns: spanish_text->text, verse_number->verse, add language='es'
+      await db.execute('''
+        INSERT OR REPLACE INTO bible_verses (version, book, chapter, verse, text, language)
+        SELECT
+          translation as version,
+          book,
+          chapter,
+          verse_number as verse,
+          spanish_text as text,
+          'es' as language
+        FROM asset_db_es.verses
+        WHERE spanish_text IS NOT NULL AND LENGTH(spanish_text) > 0
+      ''');
+
+      // Detach the asset database
+      await db.execute('DETACH DATABASE asset_db_es');
 
       // Clean up the copied asset database file
       await File(assetDbPath).delete();

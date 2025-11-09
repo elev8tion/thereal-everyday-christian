@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/app_providers.dart';
 import '../error/app_error.dart';
+import '../services/preferences_service.dart';
 import '../../components/gradient_background.dart';
 import '../../theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
@@ -32,23 +33,31 @@ class _LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       body: Stack(
         children: [
           const GradientBackground(),
           SafeArea(
             child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Logo (clean, minimal)
-                  Image.asset(
-                    l10n.localeName == 'es'
-                        ? 'assets/images/logo_spanish.png'
-                        : 'assets/images/logo_transparent.png',
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.contain,
+              child: FutureBuilder<PreferencesService>(
+                future: PreferencesService.getInstance(),
+                builder: (context, snapshot) {
+                  final languageCode = snapshot.hasData
+                      ? snapshot.data!.getLanguage()
+                      : 'en';
+
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Logo (clean, minimal)
+                      Image.asset(
+                        languageCode == 'es'
+                            ? 'assets/images/logo_spanish.png'
+                            : 'assets/images/logo_transparent.png',
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         width: 200,
@@ -75,10 +84,10 @@ class _LoadingScreen extends StatelessWidget {
 
                   const SizedBox(height: 32),
 
-                  // App name (clean, no card)
-                  const Text(
-                    'EVERYDAY',
-                    style: TextStyle(
+                  // App name (localized)
+                  Text(
+                    l10n.appName,
+                    style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w300,
                       letterSpacing: 8,
@@ -86,9 +95,9 @@ class _LoadingScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'CHRISTIAN',
-                    style: TextStyle(
+                  Text(
+                    l10n.appNameSecond,
+                    style: const TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 4,
@@ -112,15 +121,17 @@ class _LoadingScreen extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  // Simple loading text
-                  Text(
-                    'Loading...',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white.withValues(alpha: 0.7),
-                    ),
-                  ),
-                ],
+                      // Simple loading text
+                      Text(
+                        'Loading...',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),

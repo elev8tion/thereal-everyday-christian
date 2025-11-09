@@ -307,6 +307,9 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   final devotionalLoader = ref.read(devotionalContentLoaderProvider);
   final curatedPlanLoader = ref.read(curatedReadingPlanLoaderProvider);
 
+  // Wait for preferences to load first (required for language/theme initialization)
+  await ref.watch(preferencesServiceProvider.future);
+
   await database.initialize();
   await notifications.initialize();
   await subscription.initialize();

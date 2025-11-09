@@ -135,10 +135,16 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   }
 
   void _loadVerses() {
+    final l10n = AppLocalizations.of(context);
+    final language = l10n.localeName;
+    final version = language == 'es' ? 'KC EDC' : 'WEB';
+
     _versesFuture = _chapterService.getChapterRange(
       widget.book,
       widget.startChapter,
       widget.endChapter,
+      version: version,
+      language: language,
     );
   }
 
