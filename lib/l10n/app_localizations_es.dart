@@ -753,7 +753,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Exportación de datos iniciada - se le notificará cuando esté completa';
 
   @override
-  String get helpDialogTitle => 'Ayuda y Preguntas Frecuentes';
+  String get helpDialogTitle => 'Ayuda y Preguntas';
 
   @override
   String get helpDialogMessage =>
