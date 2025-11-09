@@ -2118,6 +2118,34 @@
   "@crisisTextLineDesc": {
     "description": "Crisis resource description"
   },
+  "crisisImmediateDanger": "If you are in immediate danger, call 911 or go to your nearest emergency room.",
+  "@crisisImmediateDanger": {
+    "description": "Warning about immediate danger"
+  },
+  "crisisAcknowledge": "I understand and have noted these resources",
+  "@crisisAcknowledge": {
+    "description": "Button text to acknowledge crisis resources"
+  },
+  "additionalResources": "Additional Resources:",
+  "@additionalResources": {
+    "description": "Section header for additional crisis resources"
+  },
+  "lifeline988Website": "988 Lifeline Website",
+  "@lifeline988Website": {
+    "description": "988 Lifeline website resource title"
+  },
+  "lifeline988Chat": "Chat online at 988lifeline.org",
+  "@lifeline988Chat": {
+    "description": "988 Lifeline chat website URL"
+  },
+  "rainnOnlineChat": "RAINN Online Chat",
+  "@rainnOnlineChat": {
+    "description": "RAINN online chat resource title"
+  },
+  "rainnWebsite": "rainn.org/get-help",
+  "@rainnWebsite": {
+    "description": "RAINN website URL"
+  },
   "emergencyServices": "Emergency Services",
   "@emergencyServices": {
     "description": "Crisis resource title"

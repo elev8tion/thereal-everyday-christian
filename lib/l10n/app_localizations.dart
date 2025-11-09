@@ -2907,6 +2907,48 @@ abstract class AppLocalizations {
   /// **'Tap to text HOME to 741741'**
   String get crisisTextLineDesc;
 
+  /// Warning about immediate danger
+  ///
+  /// In en, this message translates to:
+  /// **'If you are in immediate danger, call 911 or go to your nearest emergency room.'**
+  String get crisisImmediateDanger;
+
+  /// Button text to acknowledge crisis resources
+  ///
+  /// In en, this message translates to:
+  /// **'I understand and have noted these resources'**
+  String get crisisAcknowledge;
+
+  /// Section header for additional crisis resources
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Resources:'**
+  String get additionalResources;
+
+  /// 988 Lifeline website resource title
+  ///
+  /// In en, this message translates to:
+  /// **'988 Lifeline Website'**
+  String get lifeline988Website;
+
+  /// 988 Lifeline chat website URL
+  ///
+  /// In en, this message translates to:
+  /// **'Chat online at 988lifeline.org'**
+  String get lifeline988Chat;
+
+  /// RAINN online chat resource title
+  ///
+  /// In en, this message translates to:
+  /// **'RAINN Online Chat'**
+  String get rainnOnlineChat;
+
+  /// RAINN website URL
+  ///
+  /// In en, this message translates to:
+  /// **'rainn.org/get-help'**
+  String get rainnWebsite;
+
   /// Crisis resource title
   ///
   /// In en, this message translates to:

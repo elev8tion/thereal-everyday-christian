@@ -1569,6 +1569,28 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crisisTextLineDesc => 'Toque para enviar HOME al 741741';
 
   @override
+  String get crisisImmediateDanger =>
+      'Si estás en peligro inmediato, llama al 911 (EE.UU.) o acude a la sala de emergencias más cercana. Si estás fuera de EE.UU., busca servicios de emergencia locales.';
+
+  @override
+  String get crisisAcknowledge => 'Entiendo y he tomado nota de estos recursos';
+
+  @override
+  String get additionalResources => 'Recursos Adicionales:';
+
+  @override
+  String get lifeline988Website => 'Sitio Web 988 Lifeline';
+
+  @override
+  String get lifeline988Chat => 'Chatea en línea en 988lifeline.org';
+
+  @override
+  String get rainnOnlineChat => 'Chat en Línea de RAINN';
+
+  @override
+  String get rainnWebsite => 'rainn.org/get-help';
+
+  @override
   String get emergencyServices => 'Servicios de Emergencia';
 
   @override

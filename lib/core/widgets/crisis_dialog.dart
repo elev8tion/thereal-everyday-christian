@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../l10n/app_localizations.dart';
 import '../services/crisis_detection_service.dart';
 import '../../theme/app_theme.dart';
 import '../../components/frosted_glass_card.dart';
@@ -23,6 +24,9 @@ class CrisisDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final currentLanguage = l10n.localeName;
+
     return PopScope(
       canPop: false,
       child: Dialog(
@@ -64,7 +68,7 @@ class CrisisDialog extends StatelessWidget {
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Text(
-                        'Crisis Resources',
+                        l10n.crisisResources,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                           fontWeight: FontWeight.w700,
@@ -84,7 +88,7 @@ class CrisisDialog extends StatelessWidget {
                       children: [
                         // Crisis message
                         Text(
-                          crisisResult.getMessage(),
+                          crisisResult.getMessage(language: currentLanguage),
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
                             height: 1.5,
@@ -94,7 +98,7 @@ class CrisisDialog extends StatelessWidget {
                         const SizedBox(height: AppSpacing.xl),
 
                         // Hotline button
-                        _buildHotlineButton(context),
+                        _buildHotlineButton(context, currentLanguage),
 
                         const SizedBox(height: AppSpacing.lg),
 
@@ -124,7 +128,7 @@ class CrisisDialog extends StatelessWidget {
                               const SizedBox(width: AppSpacing.sm),
                               Expanded(
                                 child: Text(
-                                  'If you are in immediate danger, call 911 or go to your nearest emergency room.',
+                                  l10n.crisisImmediateDanger,
                                   style: TextStyle(
                                     fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                                     color: Colors.orange,
@@ -158,7 +162,7 @@ class CrisisDialog extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'I understand and have noted these resources',
+                      l10n.crisisAcknowledge,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
                         fontWeight: FontWeight.w600,
@@ -175,9 +179,18 @@ class CrisisDialog extends StatelessWidget {
   }
 
   /// Build primary hotline call button
-  Widget _buildHotlineButton(BuildContext context) {
-    final hotline = crisisResult.getHotline();
+  Widget _buildHotlineButton(BuildContext context, String language) {
+    final l10n = AppLocalizations.of(context);
+    final hotline = crisisResult.getHotline(language: language);
     final isPhoneNumber = hotline.startsWith('988') || hotline.startsWith('800');
+
+    // Get localized button text
+    String buttonText;
+    if (isPhoneNumber) {
+      buttonText = language == 'es' ? 'Llamar al $hotline Ahora' : 'Call $hotline Now';
+    } else {
+      buttonText = hotline;
+    }
 
     return SizedBox(
       width: double.infinity,
@@ -185,7 +198,7 @@ class CrisisDialog extends StatelessWidget {
         onPressed: () => _callHotline(context, hotline),
         icon: Icon(isPhoneNumber ? Icons.phone : Icons.message, size: 24),
         label: Text(
-          isPhoneNumber ? 'Call $hotline Now' : hotline,
+          buttonText,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -205,11 +218,13 @@ class CrisisDialog extends StatelessWidget {
 
   /// Build additional crisis resources section
   Widget _buildAdditionalResources(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Additional Resources:',
+          l10n.additionalResources,
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
@@ -220,16 +235,16 @@ class CrisisDialog extends StatelessWidget {
         _buildResourceTile(
           context: context,
           icon: Icons.chat_bubble_outline,
-          title: 'Crisis Text Line',
-          subtitle: 'Text HOME to 741741',
+          title: l10n.crisisTextLine,
+          subtitle: l10n.crisisTextLineDesc,
           onTap: () => _launchSMS('741741', 'HOME'),
         ),
         if (crisisResult.type == CrisisType.suicide) ...[
           _buildResourceTile(
             context: context,
             icon: Icons.language,
-            title: '988 Lifeline Website',
-            subtitle: 'Chat online at 988lifeline.org',
+            title: l10n.lifeline988Website,
+            subtitle: l10n.lifeline988Chat,
             onTap: () => _launchURL('https://988lifeline.org'),
           ),
         ],
@@ -237,8 +252,8 @@ class CrisisDialog extends StatelessWidget {
           _buildResourceTile(
             context: context,
             icon: Icons.language,
-            title: 'RAINN Online Chat',
-            subtitle: 'rainn.org/get-help',
+            title: l10n.rainnOnlineChat,
+            subtitle: l10n.rainnWebsite,
             onTap: () => _launchURL('https://www.rainn.org/get-help'),
           ),
         ],

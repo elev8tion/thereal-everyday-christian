@@ -1551,6 +1551,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crisisTextLineDesc => 'Tap to text HOME to 741741';
 
   @override
+  String get crisisImmediateDanger =>
+      'If you are in immediate danger, call 911 or go to your nearest emergency room.';
+
+  @override
+  String get crisisAcknowledge => 'I understand and have noted these resources';
+
+  @override
+  String get additionalResources => 'Additional Resources:';
+
+  @override
+  String get lifeline988Website => '988 Lifeline Website';
+
+  @override
+  String get lifeline988Chat => 'Chat online at 988lifeline.org';
+
+  @override
+  String get rainnOnlineChat => 'RAINN Online Chat';
+
+  @override
+  String get rainnWebsite => 'rainn.org/get-help';
+
+  @override
   String get emergencyServices => 'Emergency Services';
 
   @override
