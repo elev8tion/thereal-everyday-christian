@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:local_auth/local_auth.dart';
 import '../theme/app_theme.dart';
 import '../components/gradient_background.dart';
 import '../core/navigation/navigation_service.dart';
@@ -68,7 +69,41 @@ class SplashScreen extends HookConsumerWidget {
           return;
         }
 
-        // Returning user - go directly to home
+        // Returning user - check if app lock is enabled
+        final isAppLockEnabled = prefsService.isAppLockEnabled();
+
+        if (isAppLockEnabled) {
+          // App lock is enabled - require biometric authentication
+          final localAuth = LocalAuthentication();
+
+          try {
+            final canCheckBiometrics = await localAuth.canCheckBiometrics;
+            final isDeviceSupported = await localAuth.isDeviceSupported();
+
+            if (canCheckBiometrics && isDeviceSupported) {
+              final authenticated = await localAuth.authenticate(
+                localizedReason: 'Unlock Everyday Christian to access your spiritual content',
+                options: const AuthenticationOptions(
+                  useErrorDialogs: true,
+                  stickyAuth: true,
+                  biometricOnly: false, // Allow PIN fallback
+                ),
+              );
+
+              if (!authenticated) {
+                // Authentication failed - exit app or stay on splash
+                if (_hasNavigated || disposed) return;
+                // User can try again by reopening the app
+                return;
+              }
+            }
+          } catch (e) {
+            debugPrint('Biometric authentication error: $e');
+            // On error, allow access (fail open for better UX)
+          }
+        }
+
+        // Go directly to home (biometric check passed or not enabled)
         if (_hasNavigated || disposed) return;
         _hasNavigated = true;
         NavigationService.pushReplacementNamed(AppRoutes.home);

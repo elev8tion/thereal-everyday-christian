@@ -6,6 +6,7 @@ import '../components/gradient_background.dart';
 import '../components/animations/blur_fade.dart';
 import '../components/glass_button.dart';
 import '../components/glass/static_liquid_glass_lens.dart';
+import '../components/biometric_setup_dialog.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
 
@@ -211,12 +212,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           await prefsService.setOnboardingCompleted();
 
                           _triggerFeatureAnimations();
-                          // Navigate after a short delay to let animations play
-                          Future.delayed(const Duration(milliseconds: 1200), () {
+
+                          // Show biometric setup dialog if not completed yet
+                          if (!prefsService.hasBiometricSetupCompleted()) {
+                            // Wait for animations to play
+                            await Future.delayed(const Duration(milliseconds: 600));
                             if (mounted) {
-                              NavigationService.pushNamed(AppRoutes.home);
+                              await BiometricSetupDialog.show(context);
                             }
-                          });
+                          }
+
+                          // Navigate to home
+                          if (mounted) {
+                            NavigationService.pushNamed(AppRoutes.home);
+                          }
                         },
                       ),
 

@@ -53,6 +53,8 @@ class PreferencesService {
   static const String _legalAgreementsKey = 'legal_agreements_accepted_v1.0';
   static const String _fabTutorialShownKey = 'fab_tutorial_shown';
   static const String _verseTutorialShownKey = 'verse_tutorial_shown';
+  static const String _appLockEnabledKey = 'app_lock_enabled';
+  static const String _biometricSetupCompletedKey = 'biometric_setup_completed';
 
   // Default values
   static const String _defaultThemeMode = 'dark';
@@ -599,6 +601,56 @@ class PreferencesService {
     try {
       final result = await _preferences?.setBool(_verseTutorialShownKey, true);
       return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // APP LOCK / BIOMETRIC AUTHENTICATION METHODS
+  // ============================================================================
+
+  /// Enable or disable app lock with biometric authentication
+  ///
+  /// Returns true if save was successful, false otherwise.
+  Future<bool> setAppLockEnabled(bool enabled) async {
+    try {
+      final result = await _preferences?.setBool(_appLockEnabledKey, enabled);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Check if app lock is enabled
+  ///
+  /// Returns true if app lock is enabled, false otherwise.
+  bool isAppLockEnabled() {
+    try {
+      return _preferences?.getBool(_appLockEnabledKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Mark biometric setup as completed (user has gone through onboarding prompt)
+  ///
+  /// Returns true if save was successful, false otherwise.
+  Future<bool> setBiometricSetupCompleted() async {
+    try {
+      final result = await _preferences?.setBool(_biometricSetupCompletedKey, true);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Check if biometric setup has been completed
+  ///
+  /// Returns true if user has seen/completed biometric setup, false otherwise.
+  bool hasBiometricSetupCompleted() {
+    try {
+      return _preferences?.getBool(_biometricSetupCompletedKey) ?? false;
     } catch (e) {
       return false;
     }

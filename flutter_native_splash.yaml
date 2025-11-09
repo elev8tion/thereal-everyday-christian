@@ -1,0 +1,37 @@
+# flutter_native_splash configuration
+# Generates native splash screens for iOS and Android
+
+flutter_native_splash:
+  # Image Configuration
+  # Use your existing logo with transparent background
+  image: assets/images/logo_transparent.png
+
+  # Background Color
+  # Matches your GradientBackground dark theme
+  # Using the dark blue base color from your app
+  color: "#0A0E1A"
+
+  # Optional: Add gradient effect (supported on Android 12+)
+  # For iOS and older Android, will use solid color above
+  color_dark: "#0A0E1A"
+
+  # Android 12+ specific settings
+  android_12:
+    image: assets/images/logo_transparent.png
+    color: "#0A0E1A"
+    icon_background_color: "#0A0E1A"
+
+  # iOS specific settings
+  ios: true
+  android: true
+
+  # Web support (if you add web in future)
+  web: false
+
+  # Fullscreen mode (hides status bar during splash)
+  fullscreen: true
+
+  # Info.plist settings for iOS
+  # This will update the Info.plist file automatically
+  info_plist_files:
+    - 'ios/Runner/Info.plist'
