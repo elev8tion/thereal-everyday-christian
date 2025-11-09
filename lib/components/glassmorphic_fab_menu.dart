@@ -36,7 +36,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
     final l10n = AppLocalizations.of(context);
     return [
       MenuOption(
-        title: l10n.readBible, // "Read Bible" - using quick action key
+        title: l10n.homeScreen, // "Home" / "Inicio"
         icon: Icons.home,
         color: AppTheme.goldColor,
         route: AppRoutes.home,

@@ -208,6 +208,10 @@
   "@quickActions": {
     "description": "Section title"
   },
+  "homeScreen": "Home",
+  "@homeScreen": {
+    "description": "Navigation label for home screen"
+  },
   "readBible": "Read Bible",
   "@readBible": {
     "description": "Quick action label"

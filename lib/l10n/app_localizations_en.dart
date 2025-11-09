@@ -174,6 +174,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quickActions => 'Quick Actions';
 
   @override
+  String get homeScreen => 'Home';
+
+  @override
   String get readBible => 'Read Bible';
 
   @override

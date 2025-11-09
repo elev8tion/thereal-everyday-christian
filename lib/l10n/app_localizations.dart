@@ -410,6 +410,12 @@ abstract class AppLocalizations {
   /// **'Quick Actions'**
   String get quickActions;
 
+  /// Navigation label for home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeScreen;
+
   /// Quick action label
   ///
   /// In en, this message translates to:

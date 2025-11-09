@@ -175,6 +175,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quickActions => 'Acciones Rápidas';
 
   @override
+  String get homeScreen => 'Inicio';
+
+  @override
   String get readBible => 'Leer la Biblia';
 
   @override
