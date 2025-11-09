@@ -205,8 +205,215 @@ class IntentDetectionService {
     'anything else',
   ];
 
+  // ============================================================================
+  // SPANISH GUIDANCE PATTERNS (Buscando ayuda, apoyo, oración)
+  // ============================================================================
+
+  static const List<String> _spanishGuidancePatterns = [
+    // Angustia emocional
+    'estoy luchando',
+    'me siento',
+    'siento',
+    'estoy preocupado',
+    'estoy preocupada',
+    'estoy ansioso',
+    'estoy ansiosa',
+    'estoy deprimido',
+    'estoy deprimida',
+    'tengo miedo',
+    'estoy asustado',
+    'estoy asustada',
+    'estoy perdido',
+    'estoy perdida',
+    'estoy sufriendo',
+    'estoy roto',
+    'estoy rota',
+
+    // Solicitudes de ayuda
+    'ayúdame',
+    'ayudame',
+    'necesito ayuda',
+    'necesito orientación',
+    'necesito guía',
+
+    // Situaciones de vida
+    'estoy pasando por',
+    'estoy enfrentando',
+    'no sé qué hacer',
+    'no se que hacer',
+    'qué debo hacer',
+    'que debo hacer',
+    'cómo manejo',
+    'como manejo',
+    'cómo puedo lidiar',
+    'como puedo lidiar',
+
+    // Solicitudes directas de apoyo
+    'necesito apoyo',
+    'necesito aliento',
+    'necesito esperanza',
+    'necesito sabiduría',
+    'necesito consejo',
+    'aconséjame',
+    'aconsejame',
+    'guíame',
+    'guiame',
+
+    // Crisis de vida (cuidado pastoral inmediato)
+    'suicida',
+    'matarme',
+    'quiero morir',
+    'acabar con mi vida',
+    'terminar con mi vida',
+    'suicidio',
+
+    // Abuso
+    'siendo abusado',
+    'siendo abusada',
+    'abusado',
+    'abusada',
+    'abuso',
+    'abusivo',
+    'abusiva',
+
+    // Autolesión
+    'hacerme daño',
+    'cortándome',
+    'lastimarme',
+
+    // Crisis de fe
+    'perdiendo la fe',
+    'perdí la fe',
+    'perdi la fe',
+    'dudar de dios',
+    'dudando de dios',
+    'cuestionando a dios',
+    'dónde está dios',
+    'donde esta dios',
+    'dios me abandonó',
+    'dios me abandono',
+    'me siento abandonado por dios',
+    'dios no le importa',
+
+    // Trauma de vida mayor
+    'alguien murió',
+    'alguien murio',
+    'murió',
+    'murio',
+    'muerte de',
+    'falleció',
+    'fallecio',
+    'funeral',
+    'divorcio',
+    'divorciando',
+    'divorciándome',
+    'aborto espontáneo',
+    'aborto espontaneo',
+    'perdí el bebé',
+    'perdi el bebe',
+  ];
+
+  // ============================================================================
+  // SPANISH DISCUSSION PATTERNS (Curiosidad intelectual, aprendizaje)
+  // ============================================================================
+
+  static const List<String> _spanishDiscussionPatterns = [
+    // Preguntas sobre teología
+    'qué dice la biblia',
+    'que dice la biblia',
+    'qué dice la escritura',
+    'que dice la escritura',
+    'qué dice dios',
+    'que dice dios',
+    'qué dice jesús',
+    'que dice jesus',
+    'dónde en la biblia',
+    'donde en la biblia',
+    'es bíblico',
+    'es biblico',
+
+    // Solicitudes de explicación
+    'puedes explicar',
+    'ayúdame a entender',
+    'ayudame a entender',
+    'quiero entender',
+    'tengo curiosidad sobre',
+    'me pregunto sobre',
+    'qué significa',
+    'que significa',
+    'cuál es el significado',
+    'cual es el significado',
+    'cuéntame sobre',
+    'cuentame sobre',
+    'enséñame sobre',
+    'enseñame sobre',
+
+    // Iniciadores de discusión
+    'hablemos de',
+    'hablemos sobre',
+    'discutamos',
+    'me gustaría discutir',
+    'qué piensas sobre',
+    'que piensas sobre',
+    'qué opinas de',
+    'que opinas de',
+    'he estado pensando en',
+    'he estado estudiando',
+
+    // Preguntas doctrinales
+    'qué es',
+    'que es',
+    'quién es',
+    'quien es',
+    'por qué es',
+    'por que es',
+    'cómo es',
+    'como es',
+    'cuándo es',
+    'cuando es',
+    'qué pasó',
+    'que paso',
+    'cuál es la diferencia entre',
+    'cual es la diferencia entre',
+    'compara',
+    'contrasta',
+  ];
+
+  // ============================================================================
+  // SPANISH CASUAL PATTERNS (Conversación general)
+  // ============================================================================
+
+  static const List<String> _spanishCasualPatterns = [
+    // Saludos
+    'hola',
+    'buenos días',
+    'buenos dias',
+    'buenas tardes',
+    'buenas noches',
+    'qué tal',
+    'que tal',
+
+    // Declaraciones generales
+    'eso es interesante',
+    'ya veo',
+    'entiendo',
+    'de acuerdo',
+    'gracias',
+    'muchas gracias',
+    'bendiciones',
+    'dios te bendiga',
+
+    // Seguimientos
+    'cuéntame más',
+    'cuentame mas',
+    'continúa',
+    'continua',
+    'qué más',
+    'que mas',
+  ];
+
   /// Detect user's conversation intent
-  IntentResult detectIntent(String userInput) {
+  IntentResult detectIntent(String userInput, {String language = 'en'}) {
     // Handle empty/whitespace input - default to guidance
     if (userInput.trim().isEmpty) {
       return IntentResult(
@@ -218,6 +425,11 @@ class IntentDetectionService {
 
     final normalized = _normalizeText(userInput);
 
+    // Select patterns based on language
+    final guidancePatterns = language == 'es' ? _spanishGuidancePatterns : _guidancePatterns;
+    final discussionPatterns = language == 'es' ? _spanishDiscussionPatterns : _discussionPatterns;
+    final casualPatterns = language == 'es' ? _spanishCasualPatterns : _casualPatterns;
+
     // Count pattern matches for each intent
     int guidanceScore = 0;
     int discussionScore = 0;
@@ -228,7 +440,7 @@ class IntentDetectionService {
     List<String> casualMatches = [];
 
     // Check guidance patterns
-    for (final pattern in _guidancePatterns) {
+    for (final pattern in guidancePatterns) {
       if (normalized.contains(pattern)) {
         // Skip "help me" if it's followed by "understand [specific topic]" (educational context)
         // But keep "help me" for "help me understand" alone (support request)
@@ -248,7 +460,7 @@ class IntentDetectionService {
     }
 
     // Check discussion patterns
-    for (final pattern in _discussionPatterns) {
+    for (final pattern in discussionPatterns) {
       if (normalized.contains(pattern)) {
         discussionScore += 2;
         discussionMatches.add(pattern);
@@ -256,7 +468,7 @@ class IntentDetectionService {
     }
 
     // Check casual patterns (with word boundary check for short patterns)
-    for (final pattern in _casualPatterns) {
+    for (final pattern in casualPatterns) {
       if (_matchesWithWordBoundary(normalized, pattern)) {
         casualScore += 1;
         casualMatches.add(pattern);

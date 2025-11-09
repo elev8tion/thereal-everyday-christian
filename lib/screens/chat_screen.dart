@@ -459,10 +459,14 @@ class ChatScreen extends HookConsumerWidget {
         // Accumulate full response
         final fullResponse = StringBuffer();
 
+        // Get current language
+        final language = l10n.localeName;
+
         // Start streaming
         final stream = aiService.generateResponseStream(
           userInput: aiInput, // Send modified input to AI
           conversationHistory: messages.value.sublist(0, messages.value.length - 1), // Exclude the placeholder
+          language: language,
         );
 
         await for (final chunk in stream) {
@@ -747,6 +751,9 @@ class ChatScreen extends HookConsumerWidget {
           throw Exception('AI Service not ready');
         }
 
+        // Get current language
+        final language = l10n.localeName;
+
         // Add context to request a different response
         final response = await aiService.generateResponse(
           userInput: userInput,
@@ -756,6 +763,7 @@ class ChatScreen extends HookConsumerWidget {
             'previous_response': aiMessage.content,
             'instruction': 'Please provide a different perspective or alternative response to the previous question.',
           },
+          language: language,
         );
         debugPrint('✅ AI service returned new response');
 

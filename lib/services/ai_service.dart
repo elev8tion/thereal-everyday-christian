@@ -14,6 +14,7 @@ abstract class AIService {
     required String userInput,
     List<ChatMessage> conversationHistory = const [],
     Map<String, dynamic>? context,
+    String language = 'en',
   });
 
   /// Generate a response with streaming (for real-time feel)
@@ -21,6 +22,7 @@ abstract class AIService {
     required String userInput,
     List<ChatMessage> conversationHistory = const [],
     Map<String, dynamic>? context,
+    String language = 'en',
   });
 
   /// Get relevant Bible verses for a topic

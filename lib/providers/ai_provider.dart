@@ -136,6 +136,7 @@ class GeminiAIServiceAdapter implements AIService {
     required String userInput,
     List conversationHistory = const [],
     Map<String, dynamic>? context,
+    String language = 'en',
   }) async {
     final stopwatch = Stopwatch()..start();
 
@@ -231,6 +232,7 @@ class GeminiAIServiceAdapter implements AIService {
         verses: verses,
         conversationHistory: historyStrings,
         context: context, // Pass context for regeneration instructions
+        language: language,
       );
     } catch (e) {
       stopwatch.stop();
@@ -283,6 +285,7 @@ class GeminiAIServiceAdapter implements AIService {
     required String userInput,
     List conversationHistory = const [],
     Map<String, dynamic>? context,
+    String language = 'en',
   }) async* {
     // ============================================================================
     // SECURITY: Validate user input BEFORE sending to AI
@@ -366,6 +369,7 @@ class GeminiAIServiceAdapter implements AIService {
         theme: theme,
         verses: verses,
         conversationHistory: historyStrings,
+        language: language,
       );
     } catch (e) {
       // GRACEFUL FALLBACK: Yield encouraging message with verses

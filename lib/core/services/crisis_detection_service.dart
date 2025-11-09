@@ -29,29 +29,43 @@ class CrisisDetectionResult {
   });
 
   /// Get crisis hotline for this crisis type
-  String getHotline() {
+  String getHotline({String language = 'en'}) {
     switch (type) {
       case CrisisType.suicide:
         return '988';
       case CrisisType.selfHarm:
-        return 'Text HOME to 741741';
+        return language == 'es' ? 'Envía HOLA al 741741' : 'Text HOME to 741741';
       case CrisisType.abuse:
         return '800-656-4673';
     }
   }
 
   /// Get crisis message for this type
-  String getMessage() {
-    switch (type) {
-      case CrisisType.suicide:
-        return 'We detected you may be having thoughts of suicide. Your life matters. '
-            'Please call 988 (Suicide & Crisis Lifeline) right now. They\'re available 24/7.';
-      case CrisisType.selfHarm:
-        return 'We detected you may be considering self-harm. You don\'t have to face this alone. '
-            'Please text HOME to 741741 (Crisis Text Line) for immediate support.';
-      case CrisisType.abuse:
-        return 'We detected you may be experiencing abuse. Your safety matters. '
-            'Please call RAINN at 800-656-4673 for confidential support.';
+  String getMessage({String language = 'en'}) {
+    if (language == 'es') {
+      switch (type) {
+        case CrisisType.suicide:
+          return 'Detectamos que puedes estar teniendo pensamientos suicidas. Tu vida importa. '
+              'Por favor llama al 988 (Línea de Vida de Prevención del Suicidio) ahora mismo. Están disponibles 24/7.';
+        case CrisisType.selfHarm:
+          return 'Detectamos que puedes estar considerando autolesionarte. No tienes que enfrentar esto solo/a. '
+              'Por favor envía HOLA al 741741 (Crisis Text Line) para apoyo inmediato.';
+        case CrisisType.abuse:
+          return 'Detectamos que puedes estar experimentando abuso. Tu seguridad importa. '
+              'Por favor llama a RAINN al 800-656-4673 para apoyo confidencial.';
+      }
+    } else {
+      switch (type) {
+        case CrisisType.suicide:
+          return 'We detected you may be having thoughts of suicide. Your life matters. '
+              'Please call 988 (Suicide & Crisis Lifeline) right now. They\'re available 24/7.';
+        case CrisisType.selfHarm:
+          return 'We detected you may be considering self-harm. You don\'t have to face this alone. '
+              'Please text HOME to 741741 (Crisis Text Line) for immediate support.';
+        case CrisisType.abuse:
+          return 'We detected you may be experiencing abuse. Your safety matters. '
+              'Please call RAINN at 800-656-4673 for confidential support.';
+      }
     }
   }
 }
@@ -194,6 +208,187 @@ class CrisisDetectionService {
     'forced me',
   ];
 
+  // ============================================================================
+  // SPANISH CRISIS KEYWORDS
+  // ============================================================================
+
+  // Spanish suicide keywords
+  static const List<String> _spanishSuicideKeywords = [
+    // Direct statements
+    'matarme',
+    'acabar con todo',
+    'terminar con todo',
+    'no quiero vivir',
+    'no quiero estar vivo',
+    'no quiero estar viva',
+    'mejor muerto',
+    'mejor muerta',
+    'suicidio',
+    'suicida',
+    'quiero morir',
+    'terminar con mi vida',
+    'acabar con mi vida',
+    'quitarme la vida',
+    'no hay razón para vivir',
+    'no hay razon para vivir',
+    'no puedo seguir',
+    'todos estarían mejor sin mi',
+    'todos estarian mejor sin mi',
+    'el mundo estaría mejor sin mi',
+    'el mundo estaria mejor sin mi',
+    'adiós para siempre',
+    'adios para siempre',
+    'mensaje final',
+
+    // Indirect patterns
+    'no hay salida',
+    'no veo salida',
+    'nada va a cambiar',
+    'nunca va a mejorar',
+    'atrapado para siempre',
+    'atrapada para siempre',
+    'atrapado',
+    'atrapada',
+    'una carga para todos',
+    'carga para otros',
+    'quiero desaparecer',
+    'no puedo más',
+    'no puedo mas',
+    'no aguanto más',
+    'no aguanto mas',
+    'ahogarme',
+    'no puedo lidiar',
+    'terminar el dolor',
+    'acabar el dolor',
+    'no tiene sentido',
+    'no hay sentido en vivir',
+    'rendirme en la vida',
+    'rendiéndome',
+    'rindiendome',
+    'sin esperanza',
+    'insoportable',
+    'no lo soporto',
+  ];
+
+  // Spanish self-harm keywords
+  static const List<String> _spanishSelfHarmKeywords = [
+    // Direct statements
+    'cortarme',
+    'hacerme daño',
+    'hacerme dano',
+    'lastimarme',
+    'autolesión',
+    'autolesion',
+    'auto lesión',
+    'auto lesion',
+    'cortándome',
+    'cortandome',
+    'quemarme',
+    'quemándome',
+    'quemandome',
+    'quiero hacerme daño',
+    'quiero hacerme dano',
+    'he estado haciéndome daño',
+    'he estado haciendome dano',
+
+    // Indirect patterns
+    'castigarme',
+    'necesito sentir dolor',
+    'merezco dolor',
+    'merezco sufrir',
+    'única forma de lidiar',
+    'unica forma de lidiar',
+    'no puedo dejar de hacerme daño',
+    'no puedo dejar de hacerme dano',
+    'sigo haciéndome daño',
+    'sigo haciendome dano',
+    'me siento vacío',
+    'me siento vacio',
+    'me siento vacía',
+    'me siento vacia',
+    'necesito sentir algo',
+    'liberar el dolor',
+    'dolor físico ayuda',
+    'dolor fisico ayuda',
+    'cortarme ayuda',
+    'cicatrices',
+    'cortes frescos',
+    'recaí',
+    'recai',
+  ];
+
+  // Spanish abuse keywords
+  static const List<String> _spanishAbuseKeywords = [
+    // Direct statements
+    'me pega',
+    'me golpea',
+    'me está pegando',
+    'me esta pegando',
+    'me lastima',
+    'me está lastimando',
+    'me esta lastimando',
+    'abusando de mí',
+    'abusando de mi',
+    'siendo abusado',
+    'siendo abusada',
+    'me están abusando',
+    'me estan abusando',
+    'violación',
+    'violacion',
+    'violado',
+    'violada',
+    'asalto',
+    'agresión',
+    'agresion',
+    'abusar',
+    'abuso',
+    'golpeándome',
+    'golpeandome',
+    'violento',
+    'violenta',
+    'me amenaza',
+    'temo por mi seguridad',
+    'físicamente lastimado',
+    'fisicamente lastimado',
+    'físicamente lastimada',
+    'fisicamente lastimada',
+
+    // Indirect patterns
+    'no me siento seguro en casa',
+    'no me siento segura en casa',
+    'tengo miedo de ir a casa',
+    'miedo de mi pareja',
+    'miedo de mi esposo',
+    'miedo de mi esposa',
+    'controla todo lo que hago',
+    'no me deja salir',
+    'me aísla',
+    'me aisla',
+    'revisa mi teléfono',
+    'revisa mi telefono',
+    'revisa mis mensajes',
+    'me grita',
+    'grita constantemente',
+    'me insulta',
+    'me hace sentir sin valor',
+    'me culpa de todo',
+    'golpea las paredes',
+    'destruye mis cosas',
+    'rompe cosas cuando está enojado',
+    'rompe cosas cuando esta enojado',
+    'rompe cosas cuando está enojada',
+    'rompe cosas cuando esta enojada',
+    'tengo miedo de lo que hará',
+    'tengo miedo de lo que hara',
+    'caminando en cáscaras de huevo',
+    'caminando en cascaras de huevo',
+    'no puedo hablar de eso',
+    'me obligó',
+    'me obligo',
+    'me forzó',
+    'me forzo',
+  ];
+
   /// Detect if user input contains crisis keywords
   /// Returns CrisisDetectionResult if crisis detected, null otherwise
   CrisisDetectionResult? detectCrisis(String userInput) {
@@ -201,8 +396,8 @@ class CrisisDetectionService {
 
     final normalized = _normalizeInput(userInput);
 
-    // Check for suicide keywords (highest priority)
-    final suicideMatches = _findMatches(normalized, _suicideKeywords);
+    // Check for suicide keywords (highest priority) - English + Spanish
+    final suicideMatches = _findMatches(normalized, [..._suicideKeywords, ..._spanishSuicideKeywords]);
     if (suicideMatches.isNotEmpty) {
       return CrisisDetectionResult(
         type: CrisisType.suicide,
@@ -211,8 +406,8 @@ class CrisisDetectionService {
       );
     }
 
-    // Check for self-harm keywords
-    final selfHarmMatches = _findMatches(normalized, _selfHarmKeywords);
+    // Check for self-harm keywords - English + Spanish
+    final selfHarmMatches = _findMatches(normalized, [..._selfHarmKeywords, ..._spanishSelfHarmKeywords]);
     if (selfHarmMatches.isNotEmpty) {
       return CrisisDetectionResult(
         type: CrisisType.selfHarm,
@@ -221,8 +416,8 @@ class CrisisDetectionService {
       );
     }
 
-    // Check for abuse keywords
-    final abuseMatches = _findMatches(normalized, _abuseKeywords);
+    // Check for abuse keywords - English + Spanish
+    final abuseMatches = _findMatches(normalized, [..._abuseKeywords, ..._spanishAbuseKeywords]);
     if (abuseMatches.isNotEmpty) {
       return CrisisDetectionResult(
         type: CrisisType.abuse,
