@@ -6,20 +6,19 @@ flutter_native_splash:
   # Use your existing logo with transparent background
   image: assets/images/logo_transparent.png
 
-  # Background Color
-  # Matches your GradientBackground dark theme
-  # Using the dark blue base color from your app
-  color: "#0A0E1A"
+  # Background Image
+  # Full-screen gradient matching GradientBackground widget
+  # This creates seamless transition from native splash to Flutter app
+  background_image: assets/images/gradient_background.png
 
-  # Optional: Add gradient effect (supported on Android 12+)
-  # For iOS and older Android, will use solid color above
-  color_dark: "#0A0E1A"
+  # Fallback color (if gradient image fails to load)
+  color: "#1A1A2E"
 
   # Android 12+ specific settings
   android_12:
     image: assets/images/logo_transparent.png
-    color: "#0A0E1A"
-    icon_background_color: "#0A0E1A"
+    color: "#1A1A2E"
+    icon_background_color: "#1A1A2E"
 
   # iOS specific settings
   ios: true
