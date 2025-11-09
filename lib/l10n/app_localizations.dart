@@ -3368,6 +3368,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go to Settings > Data & Privacy > Delete All Data. You\'ll be asked to type \"DELETE\" to confirm. This permanently erases all prayers, conversations, reading plans, favorites, settings, and profile picture. Export your prayer journal first if you want to keep a backup. This action cannot be undone.'**
   String get faqA27;
+
+  /// Label for answered prayer status in share images
+  ///
+  /// In en, this message translates to:
+  /// **'Answered Prayer'**
+  String get answeredPrayer;
+
+  /// Label for prayer request status in share images
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Request'**
+  String get prayerRequest;
+
+  /// Call to action in prayer share images
+  ///
+  /// In en, this message translates to:
+  /// **'Join Me in Prayer'**
+  String get joinMeInPrayer;
+
+  /// Call to action to download app in share images
+  ///
+  /// In en, this message translates to:
+  /// **'Download Everyday Christian'**
+  String get downloadApp;
+
+  /// Call to action in share images
+  ///
+  /// In en, this message translates to:
+  /// **'Get Everyday Christian'**
+  String get getApp;
+
+  /// QR code instruction in share images
+  ///
+  /// In en, this message translates to:
+  /// **'Scan to download'**
+  String get scanToDownload;
+
+  /// Subtitle for verse share images
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Scripture & Guidance'**
+  String get dailyScriptureAndGuidance;
+
+  /// Subtitle for chat share images
+  ///
+  /// In en, this message translates to:
+  /// **'AI-Powered Biblical Guidance'**
+  String get aiPoweredBiblicalGuidance;
 }
 
 class _AppLocalizationsDelegate

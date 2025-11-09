@@ -2434,5 +2434,37 @@
   "faqA27": "Go to Settings > Data & Privacy > Delete All Data. You'll be asked to type \"DELETE\" to confirm. This permanently erases all prayers, conversations, reading plans, favorites, settings, and profile picture. Export your prayer journal first if you want to keep a backup. This action cannot be undone.",
   "@faqA27": {
     "description": "FAQ answer 27"
+  },
+  "answeredPrayer": "Answered Prayer",
+  "@answeredPrayer": {
+    "description": "Label for answered prayer status in share images"
+  },
+  "prayerRequest": "Prayer Request",
+  "@prayerRequest": {
+    "description": "Label for prayer request status in share images"
+  },
+  "joinMeInPrayer": "Join Me in Prayer",
+  "@joinMeInPrayer": {
+    "description": "Call to action in prayer share images"
+  },
+  "downloadApp": "Download Everyday Christian",
+  "@downloadApp": {
+    "description": "Call to action to download app in share images"
+  },
+  "getApp": "Get Everyday Christian",
+  "@getApp": {
+    "description": "Call to action in share images"
+  },
+  "scanToDownload": "Scan to download",
+  "@scanToDownload": {
+    "description": "QR code instruction in share images"
+  },
+  "dailyScriptureAndGuidance": "Daily Scripture & Guidance",
+  "@dailyScriptureAndGuidance": {
+    "description": "Subtitle for verse share images"
+  },
+  "aiPoweredBiblicalGuidance": "AI-Powered Biblical Guidance",
+  "@aiPoweredBiblicalGuidance": {
+    "description": "Subtitle for chat share images"
   }
 }

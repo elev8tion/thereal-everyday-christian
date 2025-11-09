@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../theme/app_theme.dart';
 import '../core/models/prayer_request.dart';
+import '../l10n/app_localizations.dart';
 
 /// Widget that wraps prayer requests for branded sharing
 /// Includes app branding, logo, and QR code linking to landing page
@@ -17,6 +18,8 @@ class PrayerShareWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context);
     return Container(
       width: 400, // Fixed width for consistent shares
       decoration: BoxDecoration(
@@ -35,21 +38,21 @@ class PrayerShareWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Header with branding
-          _buildHeader(),
+          _buildHeader(context, l10n, locale),
 
           // Prayer content
-          _buildPrayerContent(),
+          _buildPrayerContent(context, l10n),
 
           const SizedBox(height: 20),
 
           // Footer with QR code and branding
-          _buildFooter(),
+          _buildFooter(context, l10n, locale),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context, AppLocalizations l10n, Locale locale) {
     return Container(
       padding: const EdgeInsets.all(20),
       child: Row(
@@ -76,7 +79,9 @@ class PrayerShareWidget extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
-                'assets/images/logo_cropped.png',
+                locale.languageCode == 'es'
+                    ? 'assets/images/logo_spanish.png'
+                    : 'assets/images/logo_cropped.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -87,9 +92,9 @@ class PrayerShareWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Everyday Christian',
-                  style: TextStyle(
+                Text(
+                  l10n.appName,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -97,7 +102,7 @@ class PrayerShareWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Prayer Journal',
+                  l10n.prayerJournal,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.white.withValues(alpha: 0.7),
@@ -149,7 +154,7 @@ class PrayerShareWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  prayer.isAnswered ? 'Answered Prayer' : 'Prayer Request',
+                  prayer.isAnswered ? l10n.answeredPrayer : l10n.prayerRequest,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -210,7 +215,7 @@ class PrayerShareWidget extends StatelessWidget {
 
           // Category indicator
           Text(
-            _getCategoryDisplayName(prayer.categoryId),
+            _getCategoryDisplayName(prayer.categoryId, context),
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -241,7 +246,7 @@ class PrayerShareWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'How God Answered:',
+                    l10n.howGodAnswered,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -290,9 +295,9 @@ class PrayerShareWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Join Me in Prayer',
-                  style: TextStyle(
+                Text(
+                  l10n.joinMeInPrayer,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.goldColor,
@@ -300,7 +305,7 @@ class PrayerShareWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Download Everyday Christian →',
+                  '${l10n.downloadApp} →',
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.white.withValues(alpha: 0.7),
@@ -341,7 +346,11 @@ class PrayerShareWidget extends StatelessWidget {
           dataModuleShape: QrDataModuleShape.square,
           color: AppTheme.primaryColor,
         ),
-        embeddedImage: const AssetImage('assets/images/logo_cropped.png'),
+        embeddedImage: AssetImage(
+          locale.languageCode == 'es'
+              ? 'assets/images/logo_spanish.png'
+              : 'assets/images/logo_cropped.png',
+        ),
         embeddedImageStyle: const QrEmbeddedImageStyle(
           size: Size(24, 24),
         ),
@@ -349,15 +358,16 @@ class PrayerShareWidget extends StatelessWidget {
     );
   }
 
-  String _getCategoryDisplayName(String categoryId) {
-    // Map category IDs to display names
+  String _getCategoryDisplayName(String categoryId, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    // Map category IDs to localized display names
     final categoryNames = {
-      'personal': 'Personal',
-      'family': 'Family',
-      'health': 'Health',
-      'work': 'Work',
-      'spiritual': 'Spiritual',
-      'other': 'Other',
+      'personal': l10n.categoryPersonal,
+      'family': l10n.categoryFamily,
+      'health': l10n.categoryHealth,
+      'work': l10n.categoryWork,
+      'spiritual': l10n.categorySpiritual,
+      'other': l10n.categoryOther,
     };
     return categoryNames[categoryId] ?? categoryId;
   }

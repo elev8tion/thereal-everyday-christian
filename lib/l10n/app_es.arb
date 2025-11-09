@@ -828,5 +828,13 @@
   "faqQ26": "¿Cómo borro los datos en caché?",
   "faqA26": "Ve a Configuración > Datos y Privacidad > Borrar Caché. Esto elimina archivos temporales y caché de imágenes para liberar espacio de almacenamiento. Tus oraciones, conversaciones y datos personales NO se eliminan - solo se eliminan archivos de caché temporales.",
   "faqQ27": "¿Cómo elimino todos mis datos?",
-  "faqA27": "Ve a Configuración > Datos y Privacidad > Eliminar Todos los Datos. Se te pedirá que escribas \"DELETE\" para confirmar. Esto borra permanentemente todas las oraciones, conversaciones, planes de lectura, favoritos, configuraciones y foto de perfil. Exporta tu diario de oración primero si deseas conservar una copia de seguridad. Esta acción no se puede deshacer."
+  "faqA27": "Ve a Configuración > Datos y Privacidad > Eliminar Todos los Datos. Se te pedirá que escribas \"DELETE\" para confirmar. Esto borra permanentemente todas las oraciones, conversaciones, planes de lectura, favoritos, configuraciones y foto de perfil. Exporta tu diario de oración primero si deseas conservar una copia de seguridad. Esta acción no se puede deshacer.",
+  "answeredPrayer": "Oración Respondida",
+  "prayerRequest": "Petición de Oración",
+  "joinMeInPrayer": "Únete a Mí en Oración",
+  "downloadApp": "Descarga Cristiano Cotidiano",
+  "getApp": "Obtén Cristiano Cotidiano",
+  "scanToDownload": "Escanea para descargar",
+  "dailyScriptureAndGuidance": "Escritura y Guía Diaria",
+  "aiPoweredBiblicalGuidance": "Guía Bíblica con IA"
 }

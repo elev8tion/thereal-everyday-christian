@@ -1814,4 +1814,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get faqA27 =>
       'Go to Settings > Data & Privacy > Delete All Data. You\'ll be asked to type \"DELETE\" to confirm. This permanently erases all prayers, conversations, reading plans, favorites, settings, and profile picture. Export your prayer journal first if you want to keep a backup. This action cannot be undone.';
+
+  @override
+  String get answeredPrayer => 'Answered Prayer';
+
+  @override
+  String get prayerRequest => 'Prayer Request';
+
+  @override
+  String get joinMeInPrayer => 'Join Me in Prayer';
+
+  @override
+  String get downloadApp => 'Download Everyday Christian';
+
+  @override
+  String get getApp => 'Get Everyday Christian';
+
+  @override
+  String get scanToDownload => 'Scan to download';
+
+  @override
+  String get dailyScriptureAndGuidance => 'Daily Scripture & Guidance';
+
+  @override
+  String get aiPoweredBiblicalGuidance => 'AI-Powered Biblical Guidance';
 }

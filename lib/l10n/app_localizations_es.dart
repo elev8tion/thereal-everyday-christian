@@ -1834,4 +1834,28 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get faqA27 =>
       'Ve a Configuración > Datos y Privacidad > Eliminar Todos los Datos. Se te pedirá que escribas \"DELETE\" para confirmar. Esto borra permanentemente todas las oraciones, conversaciones, planes de lectura, favoritos, configuraciones y foto de perfil. Exporta tu diario de oración primero si deseas conservar una copia de seguridad. Esta acción no se puede deshacer.';
+
+  @override
+  String get answeredPrayer => 'Oración Respondida';
+
+  @override
+  String get prayerRequest => 'Petición de Oración';
+
+  @override
+  String get joinMeInPrayer => 'Únete a Mí en Oración';
+
+  @override
+  String get downloadApp => 'Descarga Cristiano Cotidiano';
+
+  @override
+  String get getApp => 'Obtén Cristiano Cotidiano';
+
+  @override
+  String get scanToDownload => 'Escanea para descargar';
+
+  @override
+  String get dailyScriptureAndGuidance => 'Escritura y Guía Diaria';
+
+  @override
+  String get aiPoweredBiblicalGuidance => 'Guía Bíblica con IA';
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../theme/app_theme.dart';
 import '../models/bible_verse.dart';
+import '../l10n/app_localizations.dart';
 
 /// Widget that wraps Bible verses for branded sharing
 /// Includes app branding, logo, and QR code linking to landing page
@@ -19,6 +20,8 @@ class VerseShareWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context);
     return Container(
       width: 400, // Fixed width for consistent shares
       decoration: BoxDecoration(
@@ -78,7 +81,9 @@ class VerseShareWidget extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
-                'assets/images/logo_cropped.png',
+                locale.languageCode == 'es'
+                    ? 'assets/images/logo_spanish.png'
+                    : 'assets/images/logo_cropped.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -89,9 +94,9 @@ class VerseShareWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Everyday Christian',
-                  style: TextStyle(
+                Text(
+                  l10n.appName,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -99,7 +104,7 @@ class VerseShareWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Daily Scripture & Guidance',
+                  l10n.dailyScriptureAndGuidance,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.white.withValues(alpha: 0.7),
@@ -250,9 +255,9 @@ class VerseShareWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Get Everyday Christian',
-                  style: TextStyle(
+                Text(
+                  l10n.getApp,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.goldColor,
@@ -260,7 +265,7 @@ class VerseShareWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Scan to download →',
+                  '${l10n.scanToDownload} →',
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.white.withValues(alpha: 0.7),
@@ -301,7 +306,11 @@ class VerseShareWidget extends StatelessWidget {
           dataModuleShape: QrDataModuleShape.square,
           color: AppTheme.primaryColor,
         ),
-        embeddedImage: const AssetImage('assets/images/logo_cropped.png'),
+        embeddedImage: AssetImage(
+          locale.languageCode == 'es'
+              ? 'assets/images/logo_spanish.png'
+              : 'assets/images/logo_cropped.png',
+        ),
         embeddedImageStyle: const QrEmbeddedImageStyle(
           size: Size(24, 24),
         ),
