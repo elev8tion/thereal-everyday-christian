@@ -1160,9 +1160,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                           : Text(
                               '$dayOfMonth',
                               style: TextStyle(
-                                color: isCurrent
-                                    ? AppTheme.primaryColor
-                                    : Colors.white.withValues(alpha: 0.7),
+                                color: Colors.white,
                                 fontWeight: FontWeight.w600,
                                 fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                               ),
