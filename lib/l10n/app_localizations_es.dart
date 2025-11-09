@@ -9,10 +9,10 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get appName => 'CRISTIANO';
+  String get appName => 'Cristiano De';
 
   @override
-  String get appNameSecond => 'COTIDIANO';
+  String get appNameSecond => 'Cada Dia';
 
   @override
   String get tagline =>
@@ -1311,7 +1311,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get welcomeToEverydayChristian => 'Bienvenido a Everyday Christian';
+  String get welcomeToEverydayChristian => 'Bienvenido a Cristiano De Cada Dia';
 
   @override
   String get dailyScriptureGuidance => 'Escritura y Orientación Diaria';

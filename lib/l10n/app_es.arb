@@ -1,8 +1,8 @@
 {
   "@@locale": "es",
 
-  "appName": "CRISTIANO",
-  "appNameSecond": "COTIDIANO",
+  "appName": "Cristiano De",
+  "appNameSecond": "Cada Dia",
   "tagline": "Sabiduría guiada por la fe para los momentos de la vida",
   "loadingJourney": "Preparando su jornada espiritual...",
   "version": "Versión 1.0.0",
@@ -346,7 +346,7 @@
   "benefitPersonalizedGuidance": "Orientación bíblica personalizada",
   "freeFeaturesList": "El diario de oración, la lectura de la Biblia y los versículos permanecen gratuitos e ilimitados",
 
-  "welcomeToEverydayChristian": "Bienvenido a Everyday Christian",
+  "welcomeToEverydayChristian": "Bienvenido a Cristiano De Cada Dia",
   "appFeatureSubtitle": "Estudio Bíblico, Oración y Devocionales",
   "beforeWeBeginReview": "Antes de comenzar, por favor revise:",
   "acceptTermsOfService": "Acepto los Términos de Servicio",
