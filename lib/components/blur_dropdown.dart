@@ -121,9 +121,6 @@ class _BlurDropdownState extends State<BlurDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
     return CompositedTransformTarget(
       link: _layerLink,
       child: GestureDetector(
