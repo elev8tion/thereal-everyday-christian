@@ -166,7 +166,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             l10n.bibleSettings,
             Icons.menu_book,
             [
-              _buildInfoTile(l10n.bibleVersion, l10n.webBibleVersion),
+              _buildInfoTile(
+                l10n.bibleVersion,
+                l10n.localeName == 'es' ? 'KC EDC' : 'WEB',
+              ),
               _buildLanguageTile(),
             ],
           ),
@@ -1023,20 +1026,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   if (languageCode != currentLocale.languageCode) {
                     await ref.read(languageProvider.notifier).setLanguage(languageCode);
                     if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            languageCode == 'en'
-                              ? 'Language changed to English'
-                              : 'Idioma cambiado a Español',
-                          ),
-                          backgroundColor: AppTheme.primaryColor,
-                          behavior: SnackBarBehavior.floating,
-                          duration: const Duration(seconds: 2),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppRadius.md),
-                          ),
-                        ),
+                      _showSnackBar(
+                        languageCode == 'en'
+                            ? 'Language changed to English'
+                            : 'Idioma cambiado a Español',
                       );
                     }
                   }

@@ -30,6 +30,7 @@ class _UnifiedInteractiveOnboardingScreenState
   final PageController _pageController = PageController();
   final GlobalKey _backgroundKey = GlobalKey();
   final TextEditingController _nameController = TextEditingController();
+  final ScrollController _chatScrollController = ScrollController();
 
   // Page 1: Legal agreements
   bool _termsChecked = false;
@@ -51,6 +52,7 @@ class _UnifiedInteractiveOnboardingScreenState
   void dispose() {
     _pageController.dispose();
     _nameController.dispose();
+    _chatScrollController.dispose();
     super.dispose();
   }
 
@@ -103,6 +105,23 @@ class _UnifiedInteractiveOnboardingScreenState
     final l10n = AppLocalizations.of(context);
     setState(() {
       _aiResponse = l10n.demoChatAIResponse;
+    });
+
+    // Wait for the frame to build with the new AI response, then scroll
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Add a short delay to ensure animation is smooth
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (_chatScrollController.hasClients && mounted) {
+          // Scroll to position that leaves "Siguiente" button prominently visible
+          // From screenshot: button should be visible with some spacing above it
+          final targetPosition = _chatScrollController.position.maxScrollExtent - 180;
+          _chatScrollController.animateTo(
+            targetPosition > 0 ? targetPosition : 0,
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeOutCubic,
+          );
+        }
+      });
     });
   }
 
@@ -616,7 +635,8 @@ class _UnifiedInteractiveOnboardingScreenState
         // Chat messages (matching chat_screen.dart design)
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            controller: _chatScrollController,
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 140),
             child: Column(
               children: [
                 if (_chatDemoSent) ...[
@@ -842,6 +862,8 @@ class _UnifiedInteractiveOnboardingScreenState
                         controller: TextEditingController(
                           text: _chatDemoSent ? '' : l10n.demoChatUserMessage,
                         ),
+                        maxLines: 3,
+                        minLines: 1,
                         style: TextStyle(
                           color: AppColors.primaryText,
                           fontSize: ResponsiveUtils.fontSize(context, 15,

@@ -18,9 +18,6 @@ class SplashScreen extends HookConsumerWidget {
   // Static flag to prevent double navigation
   static bool _hasNavigated = false;
 
-  // Static flag to track if app is in foreground
-  static bool _isAppActive = true;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -28,7 +25,6 @@ class SplashScreen extends HookConsumerWidget {
     // Reset navigation flag on first build
     useEffect(() {
       _hasNavigated = false;
-      _isAppActive = true;
       return null;
     }, []);
 
@@ -53,13 +49,6 @@ class SplashScreen extends HookConsumerWidget {
       ),
     );
 
-    // Add lifecycle observer to track app state
-    useEffect(() {
-      final observer = _SplashLifecycleObserver();
-      WidgetsBinding.instance.addObserver(observer);
-      return () => WidgetsBinding.instance.removeObserver(observer);
-    }, []);
-
     // Navigate to next screen after delay and check legal agreements
     useEffect(() {
       // Guard against double navigation
@@ -69,7 +58,9 @@ class SplashScreen extends HookConsumerWidget {
 
       Future.delayed(const Duration(seconds: 3), () async {
         // Double-check before navigation
-        if (_hasNavigated || disposed || !_isAppActive) return;
+        if (_hasNavigated || disposed) {
+          return;
+        }
 
         // CRITICAL: Check if we're still on splash screen before navigating
         // This prevents navigation if user has moved to another screen (hot reload, widget rebuild, etc.)
@@ -123,7 +114,7 @@ class SplashScreen extends HookConsumerWidget {
         }
 
         // Go directly to home (biometric check passed or not enabled)
-        if (_hasNavigated || disposed || !_isAppActive) return;
+        if (_hasNavigated || disposed) return;
         _hasNavigated = true;
         NavigationService.pushReplacementNamed(AppRoutes.home);
       });
@@ -269,27 +260,5 @@ class SplashScreen extends HookConsumerWidget {
         ),
       ),
     );
-  }
-}
-
-/// Lifecycle observer to track app state changes
-class _SplashLifecycleObserver extends WidgetsBindingObserver {
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
-    switch (state) {
-      case AppLifecycleState.resumed:
-        // App came to foreground
-        SplashScreen._isAppActive = true;
-        break;
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.paused:
-      case AppLifecycleState.detached:
-      case AppLifecycleState.hidden:
-        // App went to background or is closing
-        SplashScreen._isAppActive = false;
-        break;
-    }
   }
 }
