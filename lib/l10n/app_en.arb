@@ -395,6 +395,9 @@
     "description": "Prayer category"
   },
   "general": "General",
+  "faith": "Faith",
+  "gratitude": "Gratitude",
+  "other": "Other",
   "work": "Work",
   "ministry": "Ministry",
   "thanksgiving": "Thanksgiving",

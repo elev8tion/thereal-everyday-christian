@@ -1143,6 +1143,12 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         return l10n.protection;
       case 'general':
         return l10n.general;
+      case 'faith':
+        return l10n.faith;
+      case 'gratitude':
+        return l10n.gratitude;
+      case 'other':
+        return l10n.other;
       default:
         return englishName; // Fallback to original name
     }

@@ -686,6 +686,18 @@ abstract class AppLocalizations {
   /// **'General'**
   String get general;
 
+  /// Category
+  ///
+  /// In en, this message translates to:
+  /// **'Faith'**
+  String get faith;
+
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
   /// No description provided for @work.
   ///
   /// In en, this message translates to:
@@ -1021,12 +1033,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All'**
   String get all;
-
-  /// Category
-  ///
-  /// In en, this message translates to:
-  /// **'Faith'**
-  String get faith;
 
   /// Category
   ///

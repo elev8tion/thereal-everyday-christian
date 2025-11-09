@@ -318,6 +318,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get general => 'General';
 
   @override
+  String get faith => 'Faith';
+
+  @override
+  String get other => 'Other';
+
+  @override
   String get work => 'Work';
 
   @override
@@ -510,9 +516,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get all => 'All';
-
-  @override
-  String get faith => 'Faith';
 
   @override
   String get hope => 'Hope';
