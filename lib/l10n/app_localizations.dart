@@ -3494,6 +3494,1326 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI-Powered Biblical Guidance'**
   String get aiPoweredBiblicalGuidance;
+
+  /// Monthly message limit dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Limit Reached'**
+  String get monthlyLimitReached;
+
+  /// Trial message limit dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Trial Limit Reached'**
+  String get trialLimitReached;
+
+  /// Monthly limit reached message
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve used all 150 messages this month.\nUpgrade your plan or wait for the monthly reset.'**
+  String get monthlyLimitMessage;
+
+  /// Trial limit reached message
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve used all 15 trial messages.\nSubscribe now for 150 messages per month!'**
+  String get trialLimitMessage;
+
+  /// Upgrade plan button
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade Plan'**
+  String get upgradePlan;
+
+  /// Subscribe now button
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe Now'**
+  String get subscribeNow;
+
+  /// Maybe later button
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe Later'**
+  String get maybeLater;
+
+  /// Free trial welcome dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome! Start Your Free Trial'**
+  String get welcomeFreeTrial;
+
+  /// Trial welcome subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Experience AI-powered biblical guidance'**
+  String get experienceAiGuidance;
+
+  /// Pricing after trial
+  ///
+  /// In en, this message translates to:
+  /// **'After trial: ~\$35.99/year for 150 messages/month'**
+  String get afterTrialPricing;
+
+  /// Regional pricing disclaimer
+  ///
+  /// In en, this message translates to:
+  /// **'(pricing may vary by region and currency)'**
+  String get pricingVariesDisclaimer;
+
+  /// Start free trial button
+  ///
+  /// In en, this message translates to:
+  /// **'Start Free Trial'**
+  String get startFreeTrial;
+
+  /// Account suspension title
+  ///
+  /// In en, this message translates to:
+  /// **'Account Suspended'**
+  String get accountSuspended;
+
+  /// Subscription required lockout title
+  ///
+  /// In en, this message translates to:
+  /// **'AI Chat Requires\nSubscription'**
+  String get aiChatRequiresSubscription;
+
+  /// Account suspension message
+  ///
+  /// In en, this message translates to:
+  /// **'Your AI chat access has been temporarily suspended due to Terms of Service violations. This suspension will be automatically lifted after the specified period.'**
+  String get suspensionMessage;
+
+  /// Trial expired lockout message
+  ///
+  /// In en, this message translates to:
+  /// **'Your free trial has ended. Subscribe to view your chat history and continue conversations with AI biblical guidance.'**
+  String get trialExpiredMessage;
+
+  /// Premium expired lockout message
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to view your chat history and continue conversations with personalized biblical guidance and support.'**
+  String get premiumExpiredMessage;
+
+  /// Suspension time remaining
+  ///
+  /// In en, this message translates to:
+  /// **'Time Remaining: {duration}'**
+  String timeRemaining(String duration);
+
+  /// Suspension contact information
+  ///
+  /// In en, this message translates to:
+  /// **'If you believe this suspension was issued in error, please contact:'**
+  String get suspensionContactInfo;
+
+  /// Premium benefit: message limit
+  ///
+  /// In en, this message translates to:
+  /// **'150 AI messages per month'**
+  String get benefit150Messages;
+
+  /// Premium benefit: chat history
+  ///
+  /// In en, this message translates to:
+  /// **'Access to all your chat history'**
+  String get benefitChatHistory;
+
+  /// Premium benefit: personalization
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized biblical guidance'**
+  String get benefitPersonalizedGuidance;
+
+  /// List of free features
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer journal, Bible reading, and verses remain free and unlimited'**
+  String get freeFeaturesList;
+
+  /// App features subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Bible Study, Prayer, & Devotionals'**
+  String get appFeatureSubtitle;
+
+  /// Crisis text line title with country label
+  ///
+  /// In en, this message translates to:
+  /// **'Crisis Text Line'**
+  String get crisisTextLineTitle;
+
+  /// Biometric unlock prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Everyday Christian to access your spiritual content'**
+  String get unlockBiometricPrompt;
+
+  /// Biometric setup title
+  ///
+  /// In en, this message translates to:
+  /// **'Protect Your App'**
+  String get protectYourApp;
+
+  /// Biometric setup description
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your prayers, devotionals, and spiritual conversations private with {biometricType}.'**
+  String biometricSetupDescription(String biometricType);
+
+  /// App lock enable reason
+  ///
+  /// In en, this message translates to:
+  /// **'Enable app lock to protect your spiritual content'**
+  String get enableAppLockReason;
+
+  /// App lock enabled success message
+  ///
+  /// In en, this message translates to:
+  /// **'App lock enabled. Your content is now protected.'**
+  String get appLockEnabledSuccess;
+
+  /// Enable biometric button
+  ///
+  /// In en, this message translates to:
+  /// **'Enable {biometricType}'**
+  String enableBiometric(String biometricType);
+
+  /// Biometric settings note
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this anytime from Settings'**
+  String get biometricSettingsNote;
+
+  /// Legal acceptance validation error
+  ///
+  /// In en, this message translates to:
+  /// **'Please read and accept both documents'**
+  String get acceptBothDocumentsError;
+
+  /// Terms acceptance save error
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save acceptance. Please try again.'**
+  String get termsAcceptanceSaveFailed;
+
+  /// Legal agreement dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Agreement'**
+  String get legalAgreement;
+
+  /// Legal review instruction
+  ///
+  /// In en, this message translates to:
+  /// **'Please review and accept to continue'**
+  String get reviewToAccept;
+
+  /// Legal checkbox prefix
+  ///
+  /// In en, this message translates to:
+  /// **'I have read and agree'**
+  String get iHaveReadAndAgree;
+
+  /// Legal acceptance requirement
+  ///
+  /// In en, this message translates to:
+  /// **'You must accept both documents to use this app'**
+  String get mustAcceptBothDocuments;
+
+  /// Generic processing message
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processing;
+
+  /// Subscription required for regeneration
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription required to regenerate responses'**
+  String get chatSubscriptionRequiredRegenerate;
+
+  /// Chat discussing verse title
+  ///
+  /// In en, this message translates to:
+  /// **'Discussing {reference}'**
+  String chatDiscussingVerse(String reference);
+
+  /// New chat conversation title
+  ///
+  /// In en, this message translates to:
+  /// **'New Conversation'**
+  String get chatNewConversation;
+
+  /// User message not found error
+  ///
+  /// In en, this message translates to:
+  /// **'Could not find previous message'**
+  String get chatCouldNotFindUserMessage;
+
+  /// AI regeneration instruction
+  ///
+  /// In en, this message translates to:
+  /// **'Please offer a different perspective or alternative response to the previous question.'**
+  String get chatRegenerateInstruction;
+
+  /// Response regenerated success message
+  ///
+  /// In en, this message translates to:
+  /// **'✨ Response regenerated successfully'**
+  String get chatResponseRegeneratedSuccess;
+
+  /// Response regeneration error
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to regenerate response: {error}'**
+  String chatFailedToRegenerateResponse(String error);
+
+  /// No conversation error for export
+  ///
+  /// In en, this message translates to:
+  /// **'No conversation to export'**
+  String get chatNoConversationToExport;
+
+  /// No messages error for export
+  ///
+  /// In en, this message translates to:
+  /// **'No messages to export'**
+  String get chatNoMessagesToExport;
+
+  /// Export conversation menu option
+  ///
+  /// In en, this message translates to:
+  /// **'Export Conversation'**
+  String get chatExportConversation;
+
+  /// Share chat menu option
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get chatShare;
+
+  /// Chat export email subject
+  ///
+  /// In en, this message translates to:
+  /// **'AI Biblical Conversation Export'**
+  String get chatExportSubject;
+
+  /// Conversation export success
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation exported successfully'**
+  String get chatConversationExportedSuccess;
+
+  /// Chat export error
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to export: {error}'**
+  String chatFailedToExport(String error);
+
+  /// No conversation error for sharing
+  ///
+  /// In en, this message translates to:
+  /// **'No conversation to share'**
+  String get chatNoConversationToShare;
+
+  /// No messages error for sharing
+  ///
+  /// In en, this message translates to:
+  /// **'No messages to share'**
+  String get chatNoMessagesToShare;
+
+  /// Chat share subject
+  ///
+  /// In en, this message translates to:
+  /// **'AI Biblical Conversation'**
+  String get chatShareSubject;
+
+  /// Conversation share success
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation shared successfully'**
+  String get chatConversationSharedSuccess;
+
+  /// Chat share error
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share: {error}'**
+  String chatFailedToShare(String error);
+
+  /// Conversation image share success
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation image shared successfully'**
+  String get chatConversationImageSharedSuccess;
+
+  /// Generic share failure message
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share. Please try again.'**
+  String get chatFailedToShareTryAgain;
+
+  /// Question not found error
+  ///
+  /// In en, this message translates to:
+  /// **'Could not find the question for this response'**
+  String get chatCouldNotFindQuestion;
+
+  /// Message exchange share success
+  ///
+  /// In en, this message translates to:
+  /// **'Message exchange shared successfully!'**
+  String get chatMessageExchangeSharedSuccess;
+
+  /// Chat options bottom sheet title
+  ///
+  /// In en, this message translates to:
+  /// **'Chat Options'**
+  String get chatOptions;
+
+  /// Export conversation description
+  ///
+  /// In en, this message translates to:
+  /// **'View and copy conversation text'**
+  String get chatExportConversationDesc;
+
+  /// Share as text option
+  ///
+  /// In en, this message translates to:
+  /// **'Share Text'**
+  String get chatShareText;
+
+  /// Share text description
+  ///
+  /// In en, this message translates to:
+  /// **'Share as plain text'**
+  String get chatShareTextDesc;
+
+  /// Share as image option
+  ///
+  /// In en, this message translates to:
+  /// **'Share as Image'**
+  String get chatShareAsImage;
+
+  /// Share as image description
+  ///
+  /// In en, this message translates to:
+  /// **'Share conversation as custom image'**
+  String get chatShareAsImageDesc;
+
+  /// AI service initialization message
+  ///
+  /// In en, this message translates to:
+  /// **'Initializing AI service...'**
+  String get chatAiServiceInitializing;
+
+  /// AI service fallback message
+  ///
+  /// In en, this message translates to:
+  /// **'Using fallback responses: {reason}'**
+  String chatAiServiceFallback(String reason);
+
+  /// AI service error message
+  ///
+  /// In en, this message translates to:
+  /// **'AI service error: {message}'**
+  String chatAiServiceError(String message);
+
+  /// Message options bottom sheet title
+  ///
+  /// In en, this message translates to:
+  /// **'Message Options'**
+  String get chatMessageOptions;
+
+  /// Copy message option
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Message'**
+  String get chatCopyMessage;
+
+  /// Copy message description
+  ///
+  /// In en, this message translates to:
+  /// **'Copy message text to clipboard'**
+  String get chatCopyMessageDesc;
+
+  /// Message copied success
+  ///
+  /// In en, this message translates to:
+  /// **'Message copied to clipboard'**
+  String get chatMessageCopiedToClipboard;
+
+  /// Regenerate response option
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate Response'**
+  String get chatRegenerateResponse;
+
+  /// Regenerate response description
+  ///
+  /// In en, this message translates to:
+  /// **'Generate a new response to this message'**
+  String get chatRegenerateResponseDesc;
+
+  /// Share exchange option
+  ///
+  /// In en, this message translates to:
+  /// **'Share Exchange'**
+  String get chatShareExchange;
+
+  /// Share exchange description
+  ///
+  /// In en, this message translates to:
+  /// **'Share this message exchange as image'**
+  String get chatShareExchangeDesc;
+
+  /// Chat input placeholder text
+  ///
+  /// In en, this message translates to:
+  /// **'Scripture Chat...'**
+  String get chatInputPlaceholder;
+
+  /// AI fallback response for prayer topics
+  ///
+  /// In en, this message translates to:
+  /// **'I sense you may be seeking guidance on prayer. The Bible teaches us in 1 Thessalonians 5:17 to \'pray without ceasing.\' Prayer is our direct line to God, and He invites us to bring all our concerns to Him. Would you like to share what\'s on your heart?'**
+  String get chatFallbackPrayer;
+
+  /// AI fallback response for love topics
+  ///
+  /// In en, this message translates to:
+  /// **'Love is one of the most beautiful themes in Scripture. 1 Corinthians 13:4-7 describes love as patient, kind, and enduring. God\'s love for us is perfect and unconditional, demonstrated through Christ. How can I help you explore this topic further?'**
+  String get chatFallbackLove;
+
+  /// AI fallback response for forgiveness topics
+  ///
+  /// In en, this message translates to:
+  /// **'Forgiveness is central to the Christian faith. Ephesians 4:32 encourages us to \'be kind to one another, tenderhearted, forgiving one another, as God in Christ forgave you.\' Is there a specific situation where you\'re seeking guidance on forgiveness?'**
+  String get chatFallbackForgiveness;
+
+  /// AI fallback response for purpose topics
+  ///
+  /// In en, this message translates to:
+  /// **'Questions about purpose are deeply meaningful. Jeremiah 29:11 reminds us that God has plans for us - plans for welfare and hope. Your life has divine purpose. What aspect of purpose would you like to explore together?'**
+  String get chatFallbackPurpose;
+
+  /// AI default fallback response
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m here to provide biblical guidance and support. Feel free to ask me about Scripture, prayer, faith questions, or any spiritual concerns you have. How can I help you today?'**
+  String get chatFallbackDefault;
+
+  /// Conversation history title
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation History'**
+  String get chatConversationHistory;
+
+  /// Empty conversation history message
+  ///
+  /// In en, this message translates to:
+  /// **'No conversation history yet'**
+  String get chatNoConversationHistoryYet;
+
+  /// Delete conversation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Conversation?'**
+  String get chatDeleteConversationTitle;
+
+  /// Delete conversation dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete this conversation and all its messages.'**
+  String get chatDeleteConversationMessage;
+
+  /// Conversation deleted success
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation deleted'**
+  String get chatConversationDeleted;
+
+  /// Default conversation title
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation'**
+  String get chatConversationDefault;
+
+  /// Start new conversation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Start New Conversation?'**
+  String get chatStartNewConversationTitle;
+
+  /// Start new conversation dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'Your current conversation will be saved to history.\n\nStart a new conversation?'**
+  String get chatStartNewConversationMessage;
+
+  /// New chat button
+  ///
+  /// In en, this message translates to:
+  /// **'New Chat'**
+  String get chatNewChatButton;
+
+  /// No internet error message
+  ///
+  /// In en, this message translates to:
+  /// **'No Internet Connection'**
+  String get chatNoInternetConnection;
+
+  /// Call hotline button
+  ///
+  /// In en, this message translates to:
+  /// **'Call {hotline} Now'**
+  String callHotlineNow(String hotline);
+
+  /// Crisis text line instructions
+  ///
+  /// In en, this message translates to:
+  /// **'Text HOME to 741741'**
+  String get crisisTextInstructions;
+
+  /// Unable to call error
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to make call. Please dial {hotline} manually.'**
+  String unableToCallError(String hotline);
+
+  /// Suicide crisis detection message with international resources
+  ///
+  /// In en, this message translates to:
+  /// **'We detected you may be having suicidal thoughts. Your life matters. Please call 988 (Suicide & Crisis Lifeline) right now. They\'re available 24/7.\n\nOutside the US:\n• Mexico: 55-5259-8121 (Línea de la Vida)\n• Spain: 024 (Teléfono de la Esperanza)\n• Or search for local crisis services in your country'**
+  String get crisisSuicideMessage;
+
+  /// Self-harm crisis detection message with international resources
+  ///
+  /// In en, this message translates to:
+  /// **'We detected you may be considering self-harm. You don\'t have to face this alone. Please text HOME to 741741 (Crisis Text Line) for immediate support.\n\nOutside the US:\n• Mexico: 55-5259-8121 (Línea de la Vida)\n• Spain: 024 (Teléfono de la Esperanza)\n• Or search for local crisis services in your country'**
+  String get crisisSelfHarmMessage;
+
+  /// Abuse crisis detection message with international resources
+  ///
+  /// In en, this message translates to:
+  /// **'We detected you may be experiencing abuse. Your safety matters. Please call RAINN at 800-656-4673 for confidential support.\n\nOutside the US:\n• Mexico: 55-5259-8121 (Línea de la Vida)\n• Spain: 016 (Violencia de Género)\n• Or search for local help services in your country'**
+  String get crisisAbuseMessage;
+
+  /// Demo devotional full title
+  ///
+  /// In en, this message translates to:
+  /// **'Cultivating a Thankful Heart'**
+  String get demoDevotionalTitle;
+
+  /// Empty shared verses instruction
+  ///
+  /// In en, this message translates to:
+  /// **'Share verses to keep a quick-access history here.'**
+  String get shareVersesToKeepHistory;
+
+  /// Verse share partial success
+  ///
+  /// In en, this message translates to:
+  /// **'Verse shared but couldn\'t remove from saved'**
+  String get verseSharedButCouldntRemove;
+
+  /// Verse shared and moved success
+  ///
+  /// In en, this message translates to:
+  /// **'Verse shared and moved to Shared tab!'**
+  String get verseSharedAndMovedToShared;
+
+  /// Verse image shared and moved success
+  ///
+  /// In en, this message translates to:
+  /// **'Verse shared as image and moved to Shared tab!'**
+  String get verseSharedAsImageAndMoved;
+
+  /// About saved verses description
+  ///
+  /// In en, this message translates to:
+  /// **'Browse and manage your saved verses'**
+  String get browseAndManageSavedVerses;
+
+  /// View shared history description
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to your recently shared verses'**
+  String get jumpToRecentlyShared;
+
+  /// Clear saved verses description
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all verses from your saved collection'**
+  String get removeAllFromSaved;
+
+  /// Clear shared history description
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all verses from shared history'**
+  String get removeAllFromShared;
+
+  /// Verse progress indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Verse {current} of {total}'**
+  String verseProgress(int current, int total);
+
+  /// Empty active prayers subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Add your prayers here to come back to them, reflect, and maintain your commitment'**
+  String get noActivePrayersSubtitle;
+
+  /// Highlight answered prayers option
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight Answered Prayers'**
+  String get highlightPrayersAnswered;
+
+  /// Answered prayers tab subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Sometimes the answers we receive aren\'t what we wanted. Store them here to reflect better'**
+  String get answeredPrayersSubtitle;
+
+  /// Generic add button
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No progress empty state title
+  ///
+  /// In en, this message translates to:
+  /// **'No Progress to Track'**
+  String get noProgressToTrack;
+
+  /// No progress empty state subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Start a reading plan to see your progress and statistics'**
+  String get noProgressSubtitle;
+
+  /// Progress section title
+  ///
+  /// In en, this message translates to:
+  /// **'Your Progress and Statistics'**
+  String get yourProgressAndStatistics;
+
+  /// Statistics loading error
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading statistics: {error}'**
+  String errorLoadingStats(String error);
+
+  /// Reading activity section title
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Activity'**
+  String get readingActivity;
+
+  /// Reading activity subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Days with completed readings in the last 90 days'**
+  String get readingActivitySubtitle;
+
+  /// Activity data loading error
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading activity data: {error}'**
+  String errorLoadingActivityData(String error);
+
+  /// Only one plan active message
+  ///
+  /// In en, this message translates to:
+  /// **'Only one reading plan can be active at a time. Reset your current plan to start a different one.'**
+  String get onlyOnePlanActive;
+
+  /// Estimated time per day
+  ///
+  /// In en, this message translates to:
+  /// **'{time}/day'**
+  String estimatedTimePerDay(String time);
+
+  /// Streak days with pluralization
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{# days}}'**
+  String streakDays(int count);
+
+  /// Readings progress fraction
+  ///
+  /// In en, this message translates to:
+  /// **'{current} / {total}'**
+  String readingsProgress(int current, int total);
+
+  /// Reset current plan tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your current plan before starting a new one'**
+  String get resetCurrentPlanTooltip;
+
+  /// Reading open error
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open reading: {error}'**
+  String couldNotOpenReading(String error);
+
+  /// Completed readings count with pluralization
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 completed reading} other{# completed readings}}'**
+  String completedReadingsCount(int count);
+
+  /// Streak with fire emoji
+  ///
+  /// In en, this message translates to:
+  /// **'Your {streak} day streak 🔥'**
+  String yourStreakDays(int streak);
+
+  /// All progress history label
+  ///
+  /// In en, this message translates to:
+  /// **'All progress history'**
+  String get allProgressHistory;
+
+  /// Irreversible action warning
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get actionCannotBeUndone;
+
+  /// Messages remaining this month
+  ///
+  /// In en, this message translates to:
+  /// **'{count} messages left this month'**
+  String messagesLeftThisMonth(int count);
+
+  /// Messages remaining today
+  ///
+  /// In en, this message translates to:
+  /// **'{count} messages left today'**
+  String messagesLeftToday(int count);
+
+  /// Start free trial link
+  ///
+  /// In en, this message translates to:
+  /// **'Start your free trial'**
+  String get startYourFreeTrial;
+
+  /// Notification time setting
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Time'**
+  String get notificationTime;
+
+  /// Biometric not available error
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric authentication is not available on this device'**
+  String get biometricNotAvailable;
+
+  /// Verify identity for app lock
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your identity to enable app lock'**
+  String get verifyIdentityAppLock;
+
+  /// App lock enabled success
+  ///
+  /// In en, this message translates to:
+  /// **'App lock enabled. Your app is now protected.'**
+  String get appLockEnabled;
+
+  /// App lock disabled success
+  ///
+  /// In en, this message translates to:
+  /// **'App lock disabled'**
+  String get appLockDisabled;
+
+  /// Cache clear failure
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Failed to clear cache: {error}'**
+  String failedToClearCache(String error);
+
+  /// Data export document title
+  ///
+  /// In en, this message translates to:
+  /// **'EVERYDAY CHRISTIAN - DATA EXPORT'**
+  String get dataExportTitle;
+
+  /// Export date label
+  ///
+  /// In en, this message translates to:
+  /// **'Export Date: {date}'**
+  String exportDate(String date);
+
+  /// Prayer journal export section header
+  ///
+  /// In en, this message translates to:
+  /// **'📿 PRAYER JOURNAL'**
+  String get prayerJournalExportSection;
+
+  /// AI chat export section header
+  ///
+  /// In en, this message translates to:
+  /// **'💬 AI CHAT CONVERSATIONS'**
+  String get aiChatExportSection;
+
+  /// Total sessions count
+  ///
+  /// In en, this message translates to:
+  /// **'Total Sessions: {count}'**
+  String totalSessions(int count);
+
+  /// Archived session title
+  ///
+  /// In en, this message translates to:
+  /// **'Session: {title} (Archived)'**
+  String archivedSessionTitle(String title);
+
+  /// No data to export error
+  ///
+  /// In en, this message translates to:
+  /// **'No data to export'**
+  String get noDataToExport;
+
+  /// Data export email subject
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday Christian - Data Export'**
+  String get dataExportSubject;
+
+  /// Data export success summary
+  ///
+  /// In en, this message translates to:
+  /// **'📤 Exported {prayerCount} prayer journal(s) and {chatCount} conversation(s)'**
+  String dataExported(int prayerCount, int chatCount);
+
+  /// Delete item: prayer journal
+  ///
+  /// In en, this message translates to:
+  /// **'✝️ All prayer journal entries'**
+  String get deleteItemPrayerJournal;
+
+  /// Delete item: chat conversations
+  ///
+  /// In en, this message translates to:
+  /// **'💬 All AI chat conversations'**
+  String get deleteItemChatConversations;
+
+  /// Delete item: reading plan
+  ///
+  /// In en, this message translates to:
+  /// **'📖 Reading plan progress'**
+  String get deleteItemReadingPlan;
+
+  /// Delete item: favorite verses
+  ///
+  /// In en, this message translates to:
+  /// **'🌟 Favorite verses'**
+  String get deleteItemFavoriteVerses;
+
+  /// Delete item: devotional history
+  ///
+  /// In en, this message translates to:
+  /// **'📝 Devotional completion history'**
+  String get deleteItemDevotionalHistory;
+
+  /// Delete item: settings
+  ///
+  /// In en, this message translates to:
+  /// **'⚙️ All app settings and preferences'**
+  String get deleteItemSettings;
+
+  /// Delete item: profile picture
+  ///
+  /// In en, this message translates to:
+  /// **'👤 Profile picture'**
+  String get deleteItemProfilePicture;
+
+  /// Delete item: statistics
+  ///
+  /// In en, this message translates to:
+  /// **'📊 All statistics and progress'**
+  String get deleteItemStatistics;
+
+  /// Delete all data warning header
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ This will delete all local data including:'**
+  String get deleteLocalDataWarning;
+
+  /// Delete data bullet list
+  ///
+  /// In en, this message translates to:
+  /// **'• Prayer journal entries\n• Chat history\n• Saved verses\n• Settings and preferences'**
+  String get deleteDataBulletList;
+
+  /// Subscription restoration notice
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription will remain active and will be automatically restored on next app launch.'**
+  String get subscriptionWillRestore;
+
+  /// Type DELETE confirmation prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Type DELETE to confirm:'**
+  String get typeDeleteToConfirm;
+
+  /// Type DELETE placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Type DELETE'**
+  String get typeDeletePlaceholder;
+
+  /// Type DELETE validation error
+  ///
+  /// In en, this message translates to:
+  /// **'❌ You must type DELETE to confirm'**
+  String get mustTypeDeleteToConfirm;
+
+  /// Deleting all data progress message
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting all data...'**
+  String get deletingAllData;
+
+  /// All data deleted success
+  ///
+  /// In en, this message translates to:
+  /// **'✅ All data deleted. App will restart.'**
+  String get allDataDeleted;
+
+  /// FAQ subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Find answers to common questions'**
+  String get findAnswersToCommonQuestions;
+
+  /// Support request email subject
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday Christian Support Request'**
+  String get supportRequestSubject;
+
+  /// Support request email body
+  ///
+  /// In en, this message translates to:
+  /// **'Please describe your issue or question:\n\n'**
+  String get supportRequestBody;
+
+  /// Email client open error with fallback
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open email client. Please email connect@everydaychristian.app'**
+  String get couldNotOpenEmailClient;
+
+  /// Email open generic error with fallback
+  ///
+  /// In en, this message translates to:
+  /// **'Error opening email: Please email connect@everydaychristian.app'**
+  String get errorOpeningEmail;
+
+  /// Daily Bread achievement with streak
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 30 devotionals • 🔥 {count} day{plural} streak'**
+  String achievementDailyBreadDescWithStreak(int count, String plural);
+
+  /// Profile loading error
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading profile: {error}'**
+  String errorLoadingProfile(String error);
+
+  /// Oops error title
+  ///
+  /// In en, this message translates to:
+  /// **'Oops!'**
+  String get oops;
+
+  /// Try again button
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// OK button
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// Technical details header
+  ///
+  /// In en, this message translates to:
+  /// **'Technical details:'**
+  String get technicalDetails;
+
+  /// App initialization message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get initializingApp;
+
+  /// Initialization error title
+  ///
+  /// In en, this message translates to:
+  /// **'Initialization Error'**
+  String get initializationError;
+
+  /// Unexpected error message
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred'**
+  String get unexpectedError;
+
+  /// Messages left with pluralization
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{no messages} =1{1 message left} other{# messages left}}'**
+  String messagesLeftCount(int count);
+
+  /// Full app name
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday Christian'**
+  String get appNameFull;
+
+  /// App tagline for marketing
+  ///
+  /// In en, this message translates to:
+  /// **'AI Biblical Guidance'**
+  String get appTaglineBiblical;
+
+  /// Download CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Get Everyday Christian'**
+  String get getEverydayChristian;
+
+  /// Download CTA with arrow
+  ///
+  /// In en, this message translates to:
+  /// **'Download Everyday Christian →'**
+  String get downloadEverydayChristian;
+
+  /// Daily devotional notification title
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Devotional: {title}'**
+  String dailyDevotionalTitle(String title);
+
+  /// Daily devotional notification fallback title
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Devotional'**
+  String get dailyDevotionalFallback;
+
+  /// Devotional notification body
+  ///
+  /// In en, this message translates to:
+  /// **'Start your day with God\'s word'**
+  String get startDayWithGodsWord;
+
+  /// Daily devotional notification channel name
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Devotional'**
+  String get dailyDevotionalChannelName;
+
+  /// Daily devotional notification channel description
+  ///
+  /// In en, this message translates to:
+  /// **'Daily devotional reminders'**
+  String get dailyDevotionalChannelDesc;
+
+  /// Daily verse notification channel name
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Verse'**
+  String get dailyVerseChannelName;
+
+  /// Daily verse notification channel description
+  ///
+  /// In en, this message translates to:
+  /// **'Daily verse notifications'**
+  String get dailyVerseChannelDesc;
+
+  /// Prayer reminder notification title
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Reminder'**
+  String get prayerReminder;
+
+  /// Prayer time notification title
+  ///
+  /// In en, this message translates to:
+  /// **'Time to Pray'**
+  String get timeToPray;
+
+  /// Prayer reminder notification body with pluralization
+  ///
+  /// In en, this message translates to:
+  /// **'You have {count, plural, =1{one prayer request} other{# prayer requests}} to lift up today'**
+  String prayerReminderBody(int count);
+
+  /// Prayer reminder alternative body
+  ///
+  /// In en, this message translates to:
+  /// **'Take a moment to spend time with God'**
+  String get timeWithGod;
+
+  /// Prayer reminders notification channel name
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Reminders'**
+  String get prayerRemindersChannelName;
+
+  /// Prayer reminders notification channel description
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer reminder notifications'**
+  String get prayerRemindersChannelDesc;
+
+  /// Bible reading notification title
+  ///
+  /// In en, this message translates to:
+  /// **'Bible Reading: {title}'**
+  String bibleReadingTitle(String title);
+
+  /// Bible reading notification fallback title
+  ///
+  /// In en, this message translates to:
+  /// **'Bible Reading'**
+  String get bibleReadingFallback;
+
+  /// Reading plan notification body
+  ///
+  /// In en, this message translates to:
+  /// **'Continue your reading plan today'**
+  String get continueReadingPlan;
+
+  /// Start reading plan notification body
+  ///
+  /// In en, this message translates to:
+  /// **'Start a reading plan to grow in God\'s word'**
+  String get startReadingPlanNotification;
+
+  /// Reading plan notification channel name
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Plan'**
+  String get readingPlanChannelName;
+
+  /// Reading plan notification channel description
+  ///
+  /// In en, this message translates to:
+  /// **'Bible reading plan reminders'**
+  String get readingPlanChannelDesc;
+
+  /// Language change confirmation for English
+  ///
+  /// In en, this message translates to:
+  /// **'Language changed to English'**
+  String get languageChangedToEnglish;
+
+  /// Language change confirmation for Spanish
+  ///
+  /// In en, this message translates to:
+  /// **'Language changed to Spanish'**
+  String get languageChangedToSpanish;
+
+  /// Delete confirmation warning header
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete:'**
+  String get thisWillPermanentlyDelete;
+
+  /// Data deletion error message
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Failed to delete data: {error}'**
+  String failedToDeleteData(String error);
+
+  /// Email subject for verse sharing
+  ///
+  /// In en, this message translates to:
+  /// **'Bible Verse - {reference}'**
+  String verseShareSubject(String reference);
+
+  /// Tooltip for chat options button
+  ///
+  /// In en, this message translates to:
+  /// **'Chat Options'**
+  String get chatOptionsTooltip;
+
+  /// Tooltip for conversation history button
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation History'**
+  String get conversationHistoryTooltip;
+
+  /// Tooltip for new conversation button
+  ///
+  /// In en, this message translates to:
+  /// **'New Conversation'**
+  String get newConversationTooltip;
+
+  /// Generic error message template
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String genericError(String error);
+
+  /// Bible books loading error
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading books: {error}'**
+  String errorLoadingBooks(String error);
+
+  /// Data export success with counts
+  ///
+  /// In en, this message translates to:
+  /// **'📤 Exported {prayerCount} prayer journal(s) and {chatCount} conversation(s)'**
+  String exportedDataSuccessfully(int prayerCount, int chatCount);
+
+  /// Cache clearing success message
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Cache cleared successfully'**
+  String get cacheClearedSuccessfully;
+
+  /// Biometric unlock prompt for app launch
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Everyday Christian to access your spiritual content'**
+  String get unlockAppPrompt;
+
+  /// Biometric setup prompt reason
+  ///
+  /// In en, this message translates to:
+  /// **'Enable app lock to protect your spiritual content'**
+  String get enableAppLockPrompt;
+
+  /// Legal documents acceptance validation error
+  ///
+  /// In en, this message translates to:
+  /// **'Please read and accept both documents'**
+  String get pleaseAcceptDocuments;
+
+  /// Chat input placeholder text
+  ///
+  /// In en, this message translates to:
+  /// **'Scripture Chat...'**
+  String get scriptureChatHint;
 }
 
 class _AppLocalizationsDelegate

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
 import 'glassmorphic_fab_menu.dart';
+import '../l10n/app_localizations.dart';
 
 /// Persistent header delegate for chat action buttons that sticks to the top
 class ChatActionButtonsDelegate extends SliverPersistentHeaderDelegate {
@@ -50,6 +51,7 @@ class ChatActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Row(
@@ -121,7 +123,7 @@ class ChatActionButtons extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.more_vert, color: Colors.white, size: ResponsiveUtils.iconSize(context, 20)),
               onPressed: onMorePressed,
-              tooltip: 'Chat Options',
+              tooltip: l10n.chatOptionsTooltip,
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
@@ -142,7 +144,7 @@ class ChatActionButtons extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.history, color: Colors.white, size: ResponsiveUtils.iconSize(context, 20)),
               onPressed: onHistoryPressed,
-              tooltip: 'Conversation History',
+              tooltip: l10n.conversationHistoryTooltip,
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
@@ -163,7 +165,7 @@ class ChatActionButtons extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.add, color: AppColors.primaryText, size: ResponsiveUtils.iconSize(context, 20)),
               onPressed: onNewPressed,
-              tooltip: 'New Conversation',
+              tooltip: l10n.newConversationTooltip,
             ),
           ),
         ],

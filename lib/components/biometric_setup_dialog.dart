@@ -3,6 +3,7 @@ import 'package:local_auth/local_auth.dart';
 import '../core/services/preferences_service.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
+import '../l10n/app_localizations.dart';
 
 /// Dialog to prompt user to enable biometric app lock during onboarding
 class BiometricSetupDialog {
@@ -130,7 +131,7 @@ class BiometricSetupDialog {
                       try {
                         // Attempt to authenticate to verify it works
                         final authenticated = await localAuth.authenticate(
-                          localizedReason: 'Enable app lock to protect your spiritual content',
+                          localizedReason: AppLocalizations.of(context).enableAppLockPrompt,
                           options: const AuthenticationOptions(
                             useErrorDialogs: true,
                             stickyAuth: true,

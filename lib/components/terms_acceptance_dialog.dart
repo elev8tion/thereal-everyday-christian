@@ -7,6 +7,7 @@ import '../components/glass_button.dart';
 import '../core/services/preferences_service.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/blur_dialog_utils.dart';
+import '../l10n/app_localizations.dart';
 
 /// Terms Acceptance Dialog
 ///
@@ -31,8 +32,9 @@ class _TermsAcceptanceDialogState extends ConsumerState<TermsAcceptanceDialog> {
   bool _isAccepting = false;
 
   Future<void> _acceptTerms() async {
+    final l10n = AppLocalizations.of(context);
     if (!_termsChecked || !_privacyChecked) {
-      _showSnackBar('Please read and accept both documents');
+      _showSnackBar(l10n.pleaseAcceptAllRequired);
       return;
     }
 

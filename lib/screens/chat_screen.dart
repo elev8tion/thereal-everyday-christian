@@ -1011,11 +1011,12 @@ class ChatScreen extends HookConsumerWidget {
                         text: 'Share',
                         isPrimary: true,
                         onTap: () async {
+                          final l10n = AppLocalizations.of(context);
                           Navigator.pop(context);
                           await SharePlus.instance.share(
                             ShareParams(
                               text: exportText,
-                              subject: 'Biblical AI Conversation Export',
+                              subject: l10n.chatExportSubject,
                             ),
                           );
                           if (context.mounted) {
@@ -1059,6 +1060,7 @@ class ChatScreen extends HookConsumerWidget {
       }
 
       try {
+        final l10n = AppLocalizations.of(context);
         debugPrint('📤 Sharing conversation: ${sessionId.value}');
         final exportText = await conversationService.exportConversation(sessionId.value!);
 
@@ -1076,7 +1078,7 @@ class ChatScreen extends HookConsumerWidget {
         await SharePlus.instance.share(
           ShareParams(
             text: exportText,
-            subject: 'Biblical AI Conversation',
+            subject: l10n.chatShareSubject,
           ),
         );
 
@@ -1925,6 +1927,7 @@ class ChatScreen extends HookConsumerWidget {
   }
 
   Widget _buildMessageInput(BuildContext context, TextEditingController messageController, bool canSend, void Function(String) sendMessage) {
+    final l10n = AppLocalizations.of(context);
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
     return Consumer(
@@ -1975,7 +1978,7 @@ class ChatScreen extends HookConsumerWidget {
                           fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
                         ),
                         decoration: InputDecoration(
-                          hintText: 'Scripture Chat...',
+                          hintText: l10n.scriptureChatHint,
                           hintStyle: TextStyle(
                             color: AppColors.tertiaryText,
                             fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),

@@ -536,7 +536,7 @@ class _LegalAgreementsScreenState extends State<LegalAgreementsScreen> {
         });
       }
     } catch (e) {
-      _showSnackBar('Error: $e');
+      _showSnackBar(l10n.genericError(e.toString()));
       setState(() {
         _isAccepting = false;
         _isNavigating = false;
@@ -635,7 +635,7 @@ class _LegalAgreementsScreenState extends State<LegalAgreementsScreen> {
         _showSnackBar(l10n.unableToCall988);
       }
     } catch (e) {
-      _showSnackBar('Error: ${e.toString()}');
+      _showSnackBar(l10n.genericError(e.toString()));
     }
   }
 
@@ -651,7 +651,7 @@ class _LegalAgreementsScreenState extends State<LegalAgreementsScreen> {
         _showSnackBar(l10n.unableToTextCrisisLine);
       }
     } catch (e) {
-      _showSnackBar('Error: ${e.toString()}');
+      _showSnackBar(l10n.genericError(e.toString()));
     }
   }
 
@@ -667,7 +667,7 @@ class _LegalAgreementsScreenState extends State<LegalAgreementsScreen> {
         _showSnackBar(l10n.unableToCall911);
       }
     } catch (e) {
-      _showSnackBar('Error: ${e.toString()}');
+      _showSnackBar(l10n.genericError(e.toString()));
     }
   }
 }

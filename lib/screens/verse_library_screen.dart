@@ -603,7 +603,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   final result = await SharePlus.instance.share(
                     ShareParams(
                       text: shareText,
-                      subject: 'Bible Verse - ${verse.reference}',
+                      subject: l10n.verseShareSubject(verse.reference),
                     ),
                   );
 

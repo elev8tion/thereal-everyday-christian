@@ -92,7 +92,8 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/legal/
-    - assets/devotionals/
+    - assets/devotionals/en/
+    - assets/devotionals/es/
     - assets/reading_plans/
     - assets/bible.db
     - assets/kc_edc_spanish_bible.db

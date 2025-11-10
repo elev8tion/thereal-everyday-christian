@@ -92,7 +92,7 @@ class SplashScreen extends HookConsumerWidget {
 
             if (canCheckBiometrics && isDeviceSupported) {
               final authenticated = await localAuth.authenticate(
-                localizedReason: 'Unlock Everyday Christian to access your spiritual content',
+                localizedReason: l10n.unlockAppPrompt,
                 options: const AuthenticationOptions(
                   useErrorDialogs: true,
                   stickyAuth: true,

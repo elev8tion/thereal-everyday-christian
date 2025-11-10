@@ -11,7 +11,9 @@ class DevotionalContentLoader {
   DevotionalContentLoader(this._database);
 
   /// Load all devotionals from 14 monthly JSON batch files
-  Future<void> loadDevotionals() async {
+  ///
+  /// [language] - Language code ('en' or 'es'). Defaults to 'en'.
+  Future<void> loadDevotionals({String language = 'en'}) async {
     try {
       final db = await _database.database;
 
@@ -22,7 +24,7 @@ class DevotionalContentLoader {
         return;
       }
 
-      _logger.info('Loading 424 devotionals from JSON batches...');
+      _logger.info('Loading 424 devotionals from JSON batches ($language)...');
 
       // Load all 14 monthly batch files
       final batches = [
@@ -45,7 +47,7 @@ class DevotionalContentLoader {
       int totalLoaded = 0;
 
       for (final batchFile in batches) {
-        final devotionals = await _loadBatchFile(batchFile);
+        final devotionals = await _loadBatchFile(batchFile, language);
 
         for (final devotional in devotionals) {
           await db.insert('devotionals', _devotionalToMap(devotional));
@@ -63,13 +65,14 @@ class DevotionalContentLoader {
   }
 
   /// Load a single JSON batch file from assets
-  Future<List<Map<String, dynamic>>> _loadBatchFile(String filename) async {
+  Future<List<Map<String, dynamic>>> _loadBatchFile(String filename, String language) async {
     try {
-      final jsonString = await rootBundle.loadString('assets/devotionals/$filename');
+      final path = 'assets/devotionals/$language/$filename';
+      final jsonString = await rootBundle.loadString(path);
       final List<dynamic> jsonList = json.decode(jsonString);
       return jsonList.cast<Map<String, dynamic>>();
     } catch (e) {
-      _logger.error('Failed to load batch file $filename: $e');
+      _logger.error('Failed to load batch file $filename ($language): $e');
       rethrow;
     }
   }

@@ -1879,4 +1879,822 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiPoweredBiblicalGuidance => 'AI-Powered Biblical Guidance';
+
+  @override
+  String get monthlyLimitReached => 'Monthly Limit Reached';
+
+  @override
+  String get trialLimitReached => 'Trial Limit Reached';
+
+  @override
+  String get monthlyLimitMessage =>
+      'You\'ve used all 150 messages this month.\nUpgrade your plan or wait for the monthly reset.';
+
+  @override
+  String get trialLimitMessage =>
+      'You\'ve used all 15 trial messages.\nSubscribe now for 150 messages per month!';
+
+  @override
+  String get upgradePlan => 'Upgrade Plan';
+
+  @override
+  String get subscribeNow => 'Subscribe Now';
+
+  @override
+  String get maybeLater => 'Maybe Later';
+
+  @override
+  String get welcomeFreeTrial => 'Welcome! Start Your Free Trial';
+
+  @override
+  String get experienceAiGuidance => 'Experience AI-powered biblical guidance';
+
+  @override
+  String get afterTrialPricing =>
+      'After trial: ~\$35.99/year for 150 messages/month';
+
+  @override
+  String get pricingVariesDisclaimer =>
+      '(pricing may vary by region and currency)';
+
+  @override
+  String get startFreeTrial => 'Start Free Trial';
+
+  @override
+  String get accountSuspended => 'Account Suspended';
+
+  @override
+  String get aiChatRequiresSubscription => 'AI Chat Requires\nSubscription';
+
+  @override
+  String get suspensionMessage =>
+      'Your AI chat access has been temporarily suspended due to Terms of Service violations. This suspension will be automatically lifted after the specified period.';
+
+  @override
+  String get trialExpiredMessage =>
+      'Your free trial has ended. Subscribe to view your chat history and continue conversations with AI biblical guidance.';
+
+  @override
+  String get premiumExpiredMessage =>
+      'Subscribe to view your chat history and continue conversations with personalized biblical guidance and support.';
+
+  @override
+  String timeRemaining(String duration) {
+    return 'Time Remaining: $duration';
+  }
+
+  @override
+  String get suspensionContactInfo =>
+      'If you believe this suspension was issued in error, please contact:';
+
+  @override
+  String get benefit150Messages => '150 AI messages per month';
+
+  @override
+  String get benefitChatHistory => 'Access to all your chat history';
+
+  @override
+  String get benefitPersonalizedGuidance => 'Personalized biblical guidance';
+
+  @override
+  String get freeFeaturesList =>
+      'Prayer journal, Bible reading, and verses remain free and unlimited';
+
+  @override
+  String get appFeatureSubtitle => 'Bible Study, Prayer, & Devotionals';
+
+  @override
+  String get crisisTextLineTitle => 'Crisis Text Line';
+
+  @override
+  String get unlockBiometricPrompt =>
+      'Unlock Everyday Christian to access your spiritual content';
+
+  @override
+  String get protectYourApp => 'Protect Your App';
+
+  @override
+  String biometricSetupDescription(String biometricType) {
+    return 'Keep your prayers, devotionals, and spiritual conversations private with $biometricType.';
+  }
+
+  @override
+  String get enableAppLockReason =>
+      'Enable app lock to protect your spiritual content';
+
+  @override
+  String get appLockEnabledSuccess =>
+      'App lock enabled. Your content is now protected.';
+
+  @override
+  String enableBiometric(String biometricType) {
+    return 'Enable $biometricType';
+  }
+
+  @override
+  String get biometricSettingsNote =>
+      'You can change this anytime from Settings';
+
+  @override
+  String get acceptBothDocumentsError =>
+      'Please read and accept both documents';
+
+  @override
+  String get termsAcceptanceSaveFailed =>
+      'Failed to save acceptance. Please try again.';
+
+  @override
+  String get legalAgreement => 'Legal Agreement';
+
+  @override
+  String get reviewToAccept => 'Please review and accept to continue';
+
+  @override
+  String get iHaveReadAndAgree => 'I have read and agree';
+
+  @override
+  String get mustAcceptBothDocuments =>
+      'You must accept both documents to use this app';
+
+  @override
+  String get processing => 'Processing...';
+
+  @override
+  String get chatSubscriptionRequiredRegenerate =>
+      'Subscription required to regenerate responses';
+
+  @override
+  String chatDiscussingVerse(String reference) {
+    return 'Discussing $reference';
+  }
+
+  @override
+  String get chatNewConversation => 'New Conversation';
+
+  @override
+  String get chatCouldNotFindUserMessage => 'Could not find previous message';
+
+  @override
+  String get chatRegenerateInstruction =>
+      'Please offer a different perspective or alternative response to the previous question.';
+
+  @override
+  String get chatResponseRegeneratedSuccess =>
+      '✨ Response regenerated successfully';
+
+  @override
+  String chatFailedToRegenerateResponse(String error) {
+    return 'Failed to regenerate response: $error';
+  }
+
+  @override
+  String get chatNoConversationToExport => 'No conversation to export';
+
+  @override
+  String get chatNoMessagesToExport => 'No messages to export';
+
+  @override
+  String get chatExportConversation => 'Export Conversation';
+
+  @override
+  String get chatShare => 'Share';
+
+  @override
+  String get chatExportSubject => 'AI Biblical Conversation Export';
+
+  @override
+  String get chatConversationExportedSuccess =>
+      'Conversation exported successfully';
+
+  @override
+  String chatFailedToExport(String error) {
+    return 'Failed to export: $error';
+  }
+
+  @override
+  String get chatNoConversationToShare => 'No conversation to share';
+
+  @override
+  String get chatNoMessagesToShare => 'No messages to share';
+
+  @override
+  String get chatShareSubject => 'AI Biblical Conversation';
+
+  @override
+  String get chatConversationSharedSuccess =>
+      'Conversation shared successfully';
+
+  @override
+  String chatFailedToShare(String error) {
+    return 'Failed to share: $error';
+  }
+
+  @override
+  String get chatConversationImageSharedSuccess =>
+      'Conversation image shared successfully';
+
+  @override
+  String get chatFailedToShareTryAgain => 'Failed to share. Please try again.';
+
+  @override
+  String get chatCouldNotFindQuestion =>
+      'Could not find the question for this response';
+
+  @override
+  String get chatMessageExchangeSharedSuccess =>
+      'Message exchange shared successfully!';
+
+  @override
+  String get chatOptions => 'Chat Options';
+
+  @override
+  String get chatExportConversationDesc => 'View and copy conversation text';
+
+  @override
+  String get chatShareText => 'Share Text';
+
+  @override
+  String get chatShareTextDesc => 'Share as plain text';
+
+  @override
+  String get chatShareAsImage => 'Share as Image';
+
+  @override
+  String get chatShareAsImageDesc => 'Share conversation as custom image';
+
+  @override
+  String get chatAiServiceInitializing => 'Initializing AI service...';
+
+  @override
+  String chatAiServiceFallback(String reason) {
+    return 'Using fallback responses: $reason';
+  }
+
+  @override
+  String chatAiServiceError(String message) {
+    return 'AI service error: $message';
+  }
+
+  @override
+  String get chatMessageOptions => 'Message Options';
+
+  @override
+  String get chatCopyMessage => 'Copy Message';
+
+  @override
+  String get chatCopyMessageDesc => 'Copy message text to clipboard';
+
+  @override
+  String get chatMessageCopiedToClipboard => 'Message copied to clipboard';
+
+  @override
+  String get chatRegenerateResponse => 'Regenerate Response';
+
+  @override
+  String get chatRegenerateResponseDesc =>
+      'Generate a new response to this message';
+
+  @override
+  String get chatShareExchange => 'Share Exchange';
+
+  @override
+  String get chatShareExchangeDesc => 'Share this message exchange as image';
+
+  @override
+  String get chatInputPlaceholder => 'Scripture Chat...';
+
+  @override
+  String get chatFallbackPrayer =>
+      'I sense you may be seeking guidance on prayer. The Bible teaches us in 1 Thessalonians 5:17 to \'pray without ceasing.\' Prayer is our direct line to God, and He invites us to bring all our concerns to Him. Would you like to share what\'s on your heart?';
+
+  @override
+  String get chatFallbackLove =>
+      'Love is one of the most beautiful themes in Scripture. 1 Corinthians 13:4-7 describes love as patient, kind, and enduring. God\'s love for us is perfect and unconditional, demonstrated through Christ. How can I help you explore this topic further?';
+
+  @override
+  String get chatFallbackForgiveness =>
+      'Forgiveness is central to the Christian faith. Ephesians 4:32 encourages us to \'be kind to one another, tenderhearted, forgiving one another, as God in Christ forgave you.\' Is there a specific situation where you\'re seeking guidance on forgiveness?';
+
+  @override
+  String get chatFallbackPurpose =>
+      'Questions about purpose are deeply meaningful. Jeremiah 29:11 reminds us that God has plans for us - plans for welfare and hope. Your life has divine purpose. What aspect of purpose would you like to explore together?';
+
+  @override
+  String get chatFallbackDefault =>
+      'I\'m here to provide biblical guidance and support. Feel free to ask me about Scripture, prayer, faith questions, or any spiritual concerns you have. How can I help you today?';
+
+  @override
+  String get chatConversationHistory => 'Conversation History';
+
+  @override
+  String get chatNoConversationHistoryYet => 'No conversation history yet';
+
+  @override
+  String get chatDeleteConversationTitle => 'Delete Conversation?';
+
+  @override
+  String get chatDeleteConversationMessage =>
+      'This will permanently delete this conversation and all its messages.';
+
+  @override
+  String get chatConversationDeleted => 'Conversation deleted';
+
+  @override
+  String get chatConversationDefault => 'Conversation';
+
+  @override
+  String get chatStartNewConversationTitle => 'Start New Conversation?';
+
+  @override
+  String get chatStartNewConversationMessage =>
+      'Your current conversation will be saved to history.\n\nStart a new conversation?';
+
+  @override
+  String get chatNewChatButton => 'New Chat';
+
+  @override
+  String get chatNoInternetConnection => 'No Internet Connection';
+
+  @override
+  String callHotlineNow(String hotline) {
+    return 'Call $hotline Now';
+  }
+
+  @override
+  String get crisisTextInstructions => 'Text HOME to 741741';
+
+  @override
+  String unableToCallError(String hotline) {
+    return 'Unable to make call. Please dial $hotline manually.';
+  }
+
+  @override
+  String get crisisSuicideMessage =>
+      'We detected you may be having suicidal thoughts. Your life matters. Please call 988 (Suicide & Crisis Lifeline) right now. They\'re available 24/7.\n\nOutside the US:\n• Mexico: 55-5259-8121 (Línea de la Vida)\n• Spain: 024 (Teléfono de la Esperanza)\n• Or search for local crisis services in your country';
+
+  @override
+  String get crisisSelfHarmMessage =>
+      'We detected you may be considering self-harm. You don\'t have to face this alone. Please text HOME to 741741 (Crisis Text Line) for immediate support.\n\nOutside the US:\n• Mexico: 55-5259-8121 (Línea de la Vida)\n• Spain: 024 (Teléfono de la Esperanza)\n• Or search for local crisis services in your country';
+
+  @override
+  String get crisisAbuseMessage =>
+      'We detected you may be experiencing abuse. Your safety matters. Please call RAINN at 800-656-4673 for confidential support.\n\nOutside the US:\n• Mexico: 55-5259-8121 (Línea de la Vida)\n• Spain: 016 (Violencia de Género)\n• Or search for local help services in your country';
+
+  @override
+  String get demoDevotionalTitle => 'Cultivating a Thankful Heart';
+
+  @override
+  String get shareVersesToKeepHistory =>
+      'Share verses to keep a quick-access history here.';
+
+  @override
+  String get verseSharedButCouldntRemove =>
+      'Verse shared but couldn\'t remove from saved';
+
+  @override
+  String get verseSharedAndMovedToShared =>
+      'Verse shared and moved to Shared tab!';
+
+  @override
+  String get verseSharedAsImageAndMoved =>
+      'Verse shared as image and moved to Shared tab!';
+
+  @override
+  String get browseAndManageSavedVerses =>
+      'Browse and manage your saved verses';
+
+  @override
+  String get jumpToRecentlyShared => 'Jump to your recently shared verses';
+
+  @override
+  String get removeAllFromSaved =>
+      'Remove all verses from your saved collection';
+
+  @override
+  String get removeAllFromShared => 'Remove all verses from shared history';
+
+  @override
+  String verseProgress(int current, int total) {
+    return 'Verse $current of $total';
+  }
+
+  @override
+  String get noActivePrayersSubtitle =>
+      'Add your prayers here to come back to them, reflect, and maintain your commitment';
+
+  @override
+  String get highlightPrayersAnswered => 'Highlight Answered Prayers';
+
+  @override
+  String get answeredPrayersSubtitle =>
+      'Sometimes the answers we receive aren\'t what we wanted. Store them here to reflect better';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get noProgressToTrack => 'No Progress to Track';
+
+  @override
+  String get noProgressSubtitle =>
+      'Start a reading plan to see your progress and statistics';
+
+  @override
+  String get yourProgressAndStatistics => 'Your Progress and Statistics';
+
+  @override
+  String errorLoadingStats(String error) {
+    return 'Error loading statistics: $error';
+  }
+
+  @override
+  String get readingActivity => 'Reading Activity';
+
+  @override
+  String get readingActivitySubtitle =>
+      'Days with completed readings in the last 90 days';
+
+  @override
+  String errorLoadingActivityData(String error) {
+    return 'Error loading activity data: $error';
+  }
+
+  @override
+  String get onlyOnePlanActive =>
+      'Only one reading plan can be active at a time. Reset your current plan to start a different one.';
+
+  @override
+  String estimatedTimePerDay(String time) {
+    return '$time/day';
+  }
+
+  @override
+  String streakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String readingsProgress(int current, int total) {
+    return '$current / $total';
+  }
+
+  @override
+  String get resetCurrentPlanTooltip =>
+      'Reset your current plan before starting a new one';
+
+  @override
+  String couldNotOpenReading(String error) {
+    return 'Could not open reading: $error';
+  }
+
+  @override
+  String completedReadingsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# completed readings',
+      one: '1 completed reading',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String yourStreakDays(int streak) {
+    return 'Your $streak day streak 🔥';
+  }
+
+  @override
+  String get allProgressHistory => 'All progress history';
+
+  @override
+  String get actionCannotBeUndone => 'This action cannot be undone.';
+
+  @override
+  String messagesLeftThisMonth(int count) {
+    return '$count messages left this month';
+  }
+
+  @override
+  String messagesLeftToday(int count) {
+    return '$count messages left today';
+  }
+
+  @override
+  String get startYourFreeTrial => 'Start your free trial';
+
+  @override
+  String get notificationTime => 'Notification Time';
+
+  @override
+  String get biometricNotAvailable =>
+      'Biometric authentication is not available on this device';
+
+  @override
+  String get verifyIdentityAppLock => 'Verify your identity to enable app lock';
+
+  @override
+  String get appLockEnabled => 'App lock enabled. Your app is now protected.';
+
+  @override
+  String get appLockDisabled => 'App lock disabled';
+
+  @override
+  String failedToClearCache(String error) {
+    return '❌ Failed to clear cache: $error';
+  }
+
+  @override
+  String get dataExportTitle => 'EVERYDAY CHRISTIAN - DATA EXPORT';
+
+  @override
+  String exportDate(String date) {
+    return 'Export Date: $date';
+  }
+
+  @override
+  String get prayerJournalExportSection => '📿 PRAYER JOURNAL';
+
+  @override
+  String get aiChatExportSection => '💬 AI CHAT CONVERSATIONS';
+
+  @override
+  String totalSessions(int count) {
+    return 'Total Sessions: $count';
+  }
+
+  @override
+  String archivedSessionTitle(String title) {
+    return 'Session: $title (Archived)';
+  }
+
+  @override
+  String get noDataToExport => 'No data to export';
+
+  @override
+  String get dataExportSubject => 'Everyday Christian - Data Export';
+
+  @override
+  String dataExported(int prayerCount, int chatCount) {
+    return '📤 Exported $prayerCount prayer journal(s) and $chatCount conversation(s)';
+  }
+
+  @override
+  String get deleteItemPrayerJournal => '✝️ All prayer journal entries';
+
+  @override
+  String get deleteItemChatConversations => '💬 All AI chat conversations';
+
+  @override
+  String get deleteItemReadingPlan => '📖 Reading plan progress';
+
+  @override
+  String get deleteItemFavoriteVerses => '🌟 Favorite verses';
+
+  @override
+  String get deleteItemDevotionalHistory => '📝 Devotional completion history';
+
+  @override
+  String get deleteItemSettings => '⚙️ All app settings and preferences';
+
+  @override
+  String get deleteItemProfilePicture => '👤 Profile picture';
+
+  @override
+  String get deleteItemStatistics => '📊 All statistics and progress';
+
+  @override
+  String get deleteLocalDataWarning =>
+      '⚠️ This will delete all local data including:';
+
+  @override
+  String get deleteDataBulletList =>
+      '• Prayer journal entries\n• Chat history\n• Saved verses\n• Settings and preferences';
+
+  @override
+  String get subscriptionWillRestore =>
+      'Your subscription will remain active and will be automatically restored on next app launch.';
+
+  @override
+  String get typeDeleteToConfirm => 'Type DELETE to confirm:';
+
+  @override
+  String get typeDeletePlaceholder => 'Type DELETE';
+
+  @override
+  String get mustTypeDeleteToConfirm => '❌ You must type DELETE to confirm';
+
+  @override
+  String get deletingAllData => 'Deleting all data...';
+
+  @override
+  String get allDataDeleted => '✅ All data deleted. App will restart.';
+
+  @override
+  String get findAnswersToCommonQuestions => 'Find answers to common questions';
+
+  @override
+  String get supportRequestSubject => 'Everyday Christian Support Request';
+
+  @override
+  String get supportRequestBody =>
+      'Please describe your issue or question:\n\n';
+
+  @override
+  String get couldNotOpenEmailClient =>
+      'Could not open email client. Please email connect@everydaychristian.app';
+
+  @override
+  String get errorOpeningEmail =>
+      'Error opening email: Please email connect@everydaychristian.app';
+
+  @override
+  String achievementDailyBreadDescWithStreak(int count, String plural) {
+    return 'Complete 30 devotionals • 🔥 $count day$plural streak';
+  }
+
+  @override
+  String errorLoadingProfile(String error) {
+    return 'Error loading profile: $error';
+  }
+
+  @override
+  String get oops => 'Oops!';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get technicalDetails => 'Technical details:';
+
+  @override
+  String get initializingApp => 'Loading...';
+
+  @override
+  String get initializationError => 'Initialization Error';
+
+  @override
+  String get unexpectedError => 'An unexpected error occurred';
+
+  @override
+  String messagesLeftCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# messages left',
+      one: '1 message left',
+      zero: 'no messages',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get appNameFull => 'Everyday Christian';
+
+  @override
+  String get appTaglineBiblical => 'AI Biblical Guidance';
+
+  @override
+  String get getEverydayChristian => 'Get Everyday Christian';
+
+  @override
+  String get downloadEverydayChristian => 'Download Everyday Christian →';
+
+  @override
+  String dailyDevotionalTitle(String title) {
+    return 'Daily Devotional: $title';
+  }
+
+  @override
+  String get dailyDevotionalFallback => 'Daily Devotional';
+
+  @override
+  String get startDayWithGodsWord => 'Start your day with God\'s word';
+
+  @override
+  String get dailyDevotionalChannelName => 'Daily Devotional';
+
+  @override
+  String get dailyDevotionalChannelDesc => 'Daily devotional reminders';
+
+  @override
+  String get dailyVerseChannelName => 'Daily Verse';
+
+  @override
+  String get dailyVerseChannelDesc => 'Daily verse notifications';
+
+  @override
+  String get prayerReminder => 'Prayer Reminder';
+
+  @override
+  String get timeToPray => 'Time to Pray';
+
+  @override
+  String prayerReminderBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# prayer requests',
+      one: 'one prayer request',
+    );
+    return 'You have $_temp0 to lift up today';
+  }
+
+  @override
+  String get timeWithGod => 'Take a moment to spend time with God';
+
+  @override
+  String get prayerRemindersChannelName => 'Prayer Reminders';
+
+  @override
+  String get prayerRemindersChannelDesc => 'Prayer reminder notifications';
+
+  @override
+  String bibleReadingTitle(String title) {
+    return 'Bible Reading: $title';
+  }
+
+  @override
+  String get bibleReadingFallback => 'Bible Reading';
+
+  @override
+  String get continueReadingPlan => 'Continue your reading plan today';
+
+  @override
+  String get startReadingPlanNotification =>
+      'Start a reading plan to grow in God\'s word';
+
+  @override
+  String get readingPlanChannelName => 'Reading Plan';
+
+  @override
+  String get readingPlanChannelDesc => 'Bible reading plan reminders';
+
+  @override
+  String get languageChangedToEnglish => 'Language changed to English';
+
+  @override
+  String get languageChangedToSpanish => 'Language changed to Spanish';
+
+  @override
+  String get thisWillPermanentlyDelete => 'This will permanently delete:';
+
+  @override
+  String failedToDeleteData(String error) {
+    return '❌ Failed to delete data: $error';
+  }
+
+  @override
+  String verseShareSubject(String reference) {
+    return 'Bible Verse - $reference';
+  }
+
+  @override
+  String get chatOptionsTooltip => 'Chat Options';
+
+  @override
+  String get conversationHistoryTooltip => 'Conversation History';
+
+  @override
+  String get newConversationTooltip => 'New Conversation';
+
+  @override
+  String genericError(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String errorLoadingBooks(String error) {
+    return 'Error loading books: $error';
+  }
+
+  @override
+  String exportedDataSuccessfully(int prayerCount, int chatCount) {
+    return '📤 Exported $prayerCount prayer journal(s) and $chatCount conversation(s)';
+  }
+
+  @override
+  String get cacheClearedSuccessfully => '✅ Cache cleared successfully';
+
+  @override
+  String get unlockAppPrompt =>
+      'Unlock Everyday Christian to access your spiritual content';
+
+  @override
+  String get enableAppLockPrompt =>
+      'Enable app lock to protect your spiritual content';
+
+  @override
+  String get pleaseAcceptDocuments => 'Please read and accept both documents';
+
+  @override
+  String get scriptureChatHint => 'Scripture Chat...';
 }

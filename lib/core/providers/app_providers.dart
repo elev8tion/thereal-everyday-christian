@@ -308,7 +308,7 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   final curatedPlanLoader = ref.read(curatedReadingPlanLoaderProvider);
 
   // Wait for preferences to load first (required for language/theme initialization)
-  await ref.watch(preferencesServiceProvider.future);
+  final prefs = await ref.watch(preferencesServiceProvider.future);
 
   await database.initialize();
   await notifications.initialize();
@@ -333,8 +333,9 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   } else {
   }
 
-  // Load devotional content on first launch
-  await devotionalLoader.loadDevotionals();
+  // Load devotional content on first launch (language-specific)
+  final language = prefs.getLanguage(); // Returns 'en' or 'es'
+  await devotionalLoader.loadDevotionals(language: language);
 
   // Load curated reading plans on first launch (idempotent)
   await curatedPlanLoader.ensureCuratedPlansLoaded();
