@@ -103,6 +103,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             Icons.notifications,
             [
               _buildNotificationTile(
+                context: context,
                 icon: Icons.wb_sunny_outlined,
                 title: l10n.dailyDevotional,
                 subtitle: l10n.dailyDevotionalNotificationDesc,
@@ -112,6 +113,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 onTimeChange: (time) => ref.read(devotionalTimeProvider.notifier).setTime(time),
               ),
               _buildNotificationTile(
+                context: context,
                 icon: Icons.favorite_border,
                 title: l10n.prayerReminders,
                 subtitle: l10n.prayerRemindersNotificationDesc,
@@ -121,6 +123,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 onTimeChange: (time) => ref.read(prayerTimeProvider.notifier).setTime(time),
               ),
               _buildNotificationTile(
+                context: context,
                 icon: Icons.auto_awesome,
                 title: l10n.verseOfTheDaySetting,
                 subtitle: l10n.verseOfTheDayNotificationDesc,
@@ -130,6 +133,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 onTimeChange: (time) => ref.read(verseTimeProvider.notifier).setTime(time),
               ),
               _buildNotificationTile(
+                context: context,
                 icon: Icons.menu_book_outlined,
                 title: l10n.readingPlan,
                 subtitle: l10n.readingPlanNotificationDesc,
@@ -381,6 +385,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Widget _buildNotificationTile({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,
@@ -389,6 +394,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     required Function(bool) onToggle,
     required Function(String) onTimeChange,
   }) {
+    final l10n = AppLocalizations.of(context);
     // Updated color scheme: amber for icons and toggles, white for time text
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -497,7 +503,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       const SizedBox(width: AppSpacing.sm),
                       Expanded(
                         child: Text(
-                          'Notification time',
+                          l10n.notificationTime,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                             color: Colors.white.withValues(alpha: 0.7),
@@ -610,6 +616,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Future<void> _toggleAppLock(bool enabled) async {
+    final l10n = AppLocalizations.of(context);
     final localAuth = LocalAuthentication();
 
     try {
@@ -636,14 +643,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   width: 1,
                 ),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.error_outline, color: Colors.red, size: 20),
-                  SizedBox(width: 12),
+                  const Icon(Icons.error_outline, color: Colors.red, size: 20),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Biometric authentication not available on this device',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                      l10n.biometricNotAvailable,
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
                 ],
@@ -657,7 +664,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       if (enabled) {
         // Verify user can authenticate before enabling
         final authenticated = await localAuth.authenticate(
-          localizedReason: 'Verify your identity to enable app lock',
+          localizedReason: l10n.verifyIdentityAppLock,
           options: const AuthenticationOptions(
             useErrorDialogs: true,
             stickyAuth: true,
@@ -690,14 +697,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     width: 1,
                   ),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.check_circle, color: Colors.green, size: 20),
-                    SizedBox(width: 12),
+                    const Icon(Icons.check_circle, color: Colors.green, size: 20),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'App lock enabled. Your app is now protected.',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                        l10n.appLockEnabled,
+                        style: const TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ),
                   ],
@@ -732,14 +739,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   width: 1,
                 ),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.lock_open, color: Colors.orange, size: 20),
-                  SizedBox(width: 12),
+                  const Icon(Icons.lock_open, color: Colors.orange, size: 20),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'App lock disabled',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                      l10n.appLockDisabled,
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
                 ],
@@ -1028,8 +1035,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     if (mounted) {
                       _showSnackBar(
                         languageCode == 'en'
-                            ? 'Language changed to English'
-                            : 'Idioma cambiado a Español',
+                            ? l10n.languageChangedToEnglish
+                            : l10n.languageChangedToSpanish,
                       );
                     }
                   }
@@ -1132,6 +1139,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Future<void> _clearCache() async {
+    final l10n = AppLocalizations.of(context);
     try {
       // Clear Flutter image cache
       imageCache.clear();
@@ -1155,13 +1163,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         debugPrint('Could not clear cache directory: $e');
       }
 
-      _showSnackBar('✅ Cache cleared successfully');
+      _showSnackBar(l10n.cacheClearedSuccessfully);
     } catch (e) {
-      _showSnackBar('❌ Failed to clear cache: $e');
+      _showSnackBar(l10n.failedToClearCache(e.toString()));
     }
   }
 
   Future<void> _exportUserData() async {
+    final l10n = AppLocalizations.of(context);
     try {
       final buffer = StringBuffer();
       buffer.writeln('=' * 60);
@@ -1211,7 +1220,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       final exportText = buffer.toString();
 
       if (exportText.isEmpty || exportText.length < 200) {
-        _showSnackBar('No data to export');
+        _showSnackBar(l10n.noDataToExport);
         return;
       }
 
@@ -1224,9 +1233,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
       final prayerCount = prayerExport.isNotEmpty ? 1 : 0;
       final chatCount = sessions.length;
-      _showSnackBar('📤 Exported $prayerCount prayer journal${prayerCount != 1 ? 's' : ''} and $chatCount conversation${chatCount != 1 ? 's' : ''}');
+      _showSnackBar(l10n.exportedDataSuccessfully(prayerCount, chatCount));
     } catch (e) {
-      _showSnackBar('Failed to export: $e');
+      _showSnackBar(l10n.chatFailedToExport(e.toString()));
     }
   }
 
@@ -1297,7 +1306,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'This will permanently delete:',
+                          l10n.thisWillPermanentlyDelete,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                             fontWeight: FontWeight.w600,
@@ -1325,7 +1334,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '⚠️ This will delete all local data including:',
+                                l10n.deleteLocalDataWarning,
                                 style: TextStyle(
                                   fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                                   fontWeight: FontWeight.bold,
@@ -1334,7 +1343,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                               ),
                               const SizedBox(height: AppSpacing.sm),
                               Text(
-                                '• Prayer journal entries\n• Chat history\n• Saved verses\n• Settings and preferences',
+                                l10n.deleteDataBulletList,
                                 style: TextStyle(
                                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                                   color: Colors.white.withValues(alpha: 0.9),
@@ -1360,7 +1369,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                                     const SizedBox(width: AppSpacing.sm),
                                     Expanded(
                                       child: Text(
-                                        'Your subscription will remain active and will be automatically restored on next app launch.',
+                                        l10n.subscriptionWillRestore,
                                         style: TextStyle(
                                           fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
                                           color: Colors.white.withValues(alpha: 0.9),
@@ -1376,7 +1385,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         ),
                         const SizedBox(height: AppSpacing.lg),
                         Text(
-                          'Type DELETE to confirm:',
+                          l10n.typeDeleteToConfirm,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                             fontWeight: FontWeight.w600,
@@ -1391,7 +1400,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                           ),
                           decoration: InputDecoration(
-                            hintText: 'Type DELETE',
+                            hintText: l10n.typeDeletePlaceholder,
                             hintStyle: TextStyle(
                               color: Colors.white.withValues(alpha: 0.3),
                               fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
@@ -1438,7 +1447,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             NavigationService.pop();
                             await _deleteAllData();
                           } else {
-                            _showSnackBar('❌ You must type DELETE to confirm');
+                            _showSnackBar(l10n.mustTypeDeleteToConfirm);
                           }
                         },
                       ),
@@ -1475,6 +1484,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Future<void> _deleteAllData() async {
+    final l10n = AppLocalizations.of(context);
     try {
       // Show loading indicator
       showBlurredDialog(
@@ -1494,7 +1504,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ),
                   const SizedBox(width: AppSpacing.lg),
                   Text(
-                    'Deleting all data...',
+                    l10n.deletingAllData,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
@@ -1539,7 +1549,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       }
 
       // Show success message
-      _showSnackBar('✅ All data deleted. App will restart.');
+      _showSnackBar(l10n.allDataDeleted);
 
       // Wait a moment then exit the app (user needs to restart)
       await Future.delayed(const Duration(seconds: 2));
@@ -1552,7 +1562,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       if (mounted) {
         NavigationService.pop();
       }
-      _showSnackBar('❌ Failed to delete data: $e');
+      _showSnackBar(l10n.failedToDeleteData(e.toString()));
     }
   }
 
@@ -1775,23 +1785,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       },
     );
 
+    final l10n = AppLocalizations.of(context);
     try {
       if (await canLaunchUrl(emailUri)) {
         await launchUrl(emailUri);
       } else {
         if (mounted) {
-          _showSnackBar('Could not open email client. Please email connect@everydaychristian.app');
+          _showSnackBar(l10n.couldNotOpenEmailClient);
         }
       }
     } catch (e) {
       if (mounted) {
-        _showSnackBar('Error opening email: Please email connect@everydaychristian.app');
+        _showSnackBar(l10n.errorOpeningEmail);
       }
     }
   }
 
   void _rateApp() {
-    _showSnackBar('Opening App Store...');
+    final l10n = AppLocalizations.of(context);
+    _showSnackBar(l10n.openingAppStore);
   }
 
   Future<void> _showPrivacyPolicy() async {
@@ -1888,16 +1900,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   /// Get subscription status text
   String _getSubscriptionStatus(WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final isPremium = ref.watch(isPremiumProvider);
     final isInTrial = ref.watch(isInTrialProvider);
     final remainingMessages = ref.watch(remainingMessagesProvider);
 
     if (isPremium) {
-      return '$remainingMessages messages left this month';
+      return l10n.messagesLeftThisMonth(remainingMessages);
     } else if (isInTrial) {
-      return '$remainingMessages messages left today';
+      return l10n.messagesLeftToday(remainingMessages);
     } else {
-      return 'Start your free trial';
+      return l10n.startYourFreeTrial;
     }
   }
 

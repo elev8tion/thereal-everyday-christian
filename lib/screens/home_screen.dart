@@ -52,7 +52,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // 3. Haven't shown dialog before
     if (!subscriptionService.hasStartedTrial &&
         !subscriptionService.isPremium) {
-
       final prefsService = await PreferencesService.getInstance();
       final sharedPrefs = prefsService.prefs;
       final shownBefore = sharedPrefs?.getBool('trial_welcome_shown') ?? false;
@@ -117,7 +116,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 56 + AppSpacing.lg + 32), // Space for FAB + spacing + 32px padding
+                  const SizedBox(
+                      height: 56 +
+                          AppSpacing.lg +
+                          32), // Space for FAB + spacing + 32px padding
                   _buildStatsRow(),
                   const SizedBox(height: AppSpacing.xxl),
                   _buildMainFeatures(),
@@ -137,12 +139,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             left: AppSpacing.xl,
             child: GlassmorphicFABMenu(
               onMenuOpened: _dismissFabTooltip,
-            ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+            )
+                .animate()
+                .fadeIn(duration: AppAnimations.slow)
+                .slideY(begin: -0.3),
           ),
           // FAB Tooltip for first-time users
           if (_showFabTooltip)
             Positioned(
-              top: MediaQuery.of(context).padding.top + AppSpacing.xl + 80, // Position below FAB
+              top: MediaQuery.of(context).padding.top +
+                  AppSpacing.xl +
+                  80, // Position below FAB
               left: AppSpacing.xl,
               child: FabTooltip(
                 message: l10n.fabTooltipMessage,
@@ -153,7 +160,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-
   Widget _buildStatsRow() {
     final l10n = AppLocalizations.of(context);
     final streakAsync = ref.watch(devotionalStreakProvider);
@@ -163,106 +169,107 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return LayoutBuilder(
       builder: (context, constraints) => SizedBox(
-        height: ResponsiveUtils.scaleSize(context, 100, minScale: 0.9, maxScale: 1.2),
+        height: ResponsiveUtils.scaleSize(context, 100,
+            minScale: 0.9, maxScale: 1.2),
         child: ListView(
-        scrollDirection: Axis.horizontal,
-        padding: AppSpacing.horizontalXl,
-        // Optimize horizontal scrolling performance
-        physics: const BouncingScrollPhysics(),
-        cacheExtent: 300,
-        children: [
-          streakAsync.when(
-            data: (streak) => _buildStatCard(
-              value: "$streak",
-              label: l10n.dayStreak,
-              icon: Icons.local_fire_department,
-              color: Colors.orange,
-              delay: 600,
+          scrollDirection: Axis.horizontal,
+          padding: AppSpacing.horizontalXl,
+          // Optimize horizontal scrolling performance
+          physics: const BouncingScrollPhysics(),
+          cacheExtent: 300,
+          children: [
+            streakAsync.when(
+              data: (streak) => _buildStatCard(
+                value: "$streak",
+                label: l10n.dayStreak,
+                icon: Icons.local_fire_department,
+                color: Colors.orange,
+                delay: 600,
+              ),
+              loading: () => _buildStatCardLoading(
+                label: l10n.dayStreak,
+                icon: Icons.local_fire_department,
+                color: Colors.orange,
+                delay: 600,
+              ),
+              error: (_, __) => _buildStatCard(
+                value: "0",
+                label: l10n.dayStreak,
+                icon: Icons.local_fire_department,
+                color: Colors.orange,
+                delay: 600,
+              ),
             ),
-            loading: () => _buildStatCardLoading(
-              label: l10n.dayStreak,
-              icon: Icons.local_fire_department,
-              color: Colors.orange,
-              delay: 600,
+            const SizedBox(width: AppSpacing.lg),
+            prayersCountAsync.when(
+              data: (count) => _buildStatCard(
+                value: "$count",
+                label: l10n.prayers,
+                icon: Icons.favorite,
+                color: Colors.red,
+                delay: 700,
+              ),
+              loading: () => _buildStatCardLoading(
+                label: l10n.prayers,
+                icon: Icons.favorite,
+                color: Colors.red,
+                delay: 700,
+              ),
+              error: (_, __) => _buildStatCard(
+                value: "0",
+                label: l10n.prayers,
+                icon: Icons.favorite,
+                color: Colors.red,
+                delay: 700,
+              ),
             ),
-            error: (_, __) => _buildStatCard(
-              value: "0",
-              label: l10n.dayStreak,
-              icon: Icons.local_fire_department,
-              color: Colors.orange,
-              delay: 600,
+            const SizedBox(width: AppSpacing.lg),
+            versesCountAsync.when(
+              data: (count) => _buildStatCard(
+                value: "$count",
+                label: l10n.savedVerses,
+                icon: Icons.menu_book,
+                color: AppTheme.goldColor,
+                delay: 800,
+              ),
+              loading: () => _buildStatCardLoading(
+                label: l10n.savedVerses,
+                icon: Icons.menu_book,
+                color: AppTheme.goldColor,
+                delay: 800,
+              ),
+              error: (_, __) => _buildStatCard(
+                value: "0",
+                label: l10n.savedVerses,
+                icon: Icons.menu_book,
+                color: AppTheme.goldColor,
+                delay: 800,
+              ),
             ),
-          ),
-          const SizedBox(width: AppSpacing.lg),
-          prayersCountAsync.when(
-            data: (count) => _buildStatCard(
-              value: "$count",
-              label: l10n.prayers,
-              icon: Icons.favorite,
-              color: Colors.red,
-              delay: 700,
+            const SizedBox(width: AppSpacing.lg),
+            totalCompletedAsync.when(
+              data: (total) => _buildStatCard(
+                value: "$total",
+                label: l10n.devotionals,
+                icon: Icons.auto_stories,
+                color: Colors.green,
+                delay: 900,
+              ),
+              loading: () => _buildStatCardLoading(
+                label: l10n.devotionals,
+                icon: Icons.auto_stories,
+                color: Colors.green,
+                delay: 900,
+              ),
+              error: (_, __) => _buildStatCard(
+                value: "0",
+                label: l10n.devotionals,
+                icon: Icons.auto_stories,
+                color: Colors.green,
+                delay: 900,
+              ),
             ),
-            loading: () => _buildStatCardLoading(
-              label: l10n.prayers,
-              icon: Icons.favorite,
-              color: Colors.red,
-              delay: 700,
-            ),
-            error: (_, __) => _buildStatCard(
-              value: "0",
-              label: l10n.prayers,
-              icon: Icons.favorite,
-              color: Colors.red,
-              delay: 700,
-            ),
-          ),
-          const SizedBox(width: AppSpacing.lg),
-          versesCountAsync.when(
-            data: (count) => _buildStatCard(
-              value: "$count",
-              label: l10n.savedVerses,
-              icon: Icons.menu_book,
-              color: AppTheme.goldColor,
-              delay: 800,
-            ),
-            loading: () => _buildStatCardLoading(
-              label: l10n.savedVerses,
-              icon: Icons.menu_book,
-              color: AppTheme.goldColor,
-              delay: 800,
-            ),
-            error: (_, __) => _buildStatCard(
-              value: "0",
-              label: l10n.savedVerses,
-              icon: Icons.menu_book,
-              color: AppTheme.goldColor,
-              delay: 800,
-            ),
-          ),
-          const SizedBox(width: AppSpacing.lg),
-          totalCompletedAsync.when(
-            data: (total) => _buildStatCard(
-              value: "$total",
-              label: l10n.devotionals,
-              icon: Icons.auto_stories,
-              color: Colors.green,
-              delay: 900,
-            ),
-            loading: () => _buildStatCardLoading(
-              label: l10n.devotionals,
-              icon: Icons.auto_stories,
-              color: Colors.green,
-              delay: 900,
-            ),
-            error: (_, __) => _buildStatCard(
-              value: "0",
-              label: l10n.devotionals,
-              icon: Icons.auto_stories,
-              color: Colors.green,
-              delay: 900,
-            ),
-          ),
-        ],
+          ],
         ),
       ),
     );
@@ -277,82 +284,88 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }) {
     return LayoutBuilder(
       builder: (context, constraints) => Container(
-        width: ResponsiveUtils.scaleSize(context, 120, minScale: 0.9, maxScale: 1.2),
+        width: ResponsiveUtils.scaleSize(context, 120,
+            minScale: 0.9, maxScale: 1.2),
         padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: AppGradients.glassMedium,
-        borderRadius: AppRadius.cardRadius,
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
-          width: 1,
+        decoration: BoxDecoration(
+          gradient: AppGradients.glassMedium,
+          borderRadius: AppRadius.cardRadius,
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.2),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.2),
-              borderRadius: AppRadius.mediumRadius,
-            ),
-            child: Icon(
-              icon,
-              size: ResponsiveUtils.iconSize(context, 20),
-              color: AppColors.secondaryText,
-            ),
-          ),
-          const SizedBox(height: 4),
-          // Value text with auto-sizing to prevent overflow
-          Flexible(
-            child: AutoSizeText(
-              value,
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 16, maxSize: 22),
-                fontWeight: FontWeight.w800,
-                color: AppColors.primaryText,
-                shadows: AppTheme.textShadowStrong,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.2),
+                borderRadius: AppRadius.mediumRadius,
               ),
-              maxLines: 1,
-              minFontSize: 14,
-              maxFontSize: 22,
-              overflow: TextOverflow.ellipsis,
+              child: Icon(
+                icon,
+                size: ResponsiveUtils.iconSize(context, 20),
+                color: AppColors.secondaryText,
+              ),
             ),
-          ),
-          const SizedBox(height: 2),
-          // Label text with auto-sizing
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+            const SizedBox(height: 4),
+            // Value text with auto-sizing to prevent overflow
+            Flexible(
               child: AutoSizeText(
-                label,
+                value,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 9, minSize: 8, maxSize: 11),
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withValues(alpha: 0.9),
-                  shadows: AppTheme.textShadowSubtle,
+                  fontSize: ResponsiveUtils.fontSize(context, 20,
+                      minSize: 16, maxSize: 22),
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primaryText,
+                  shadows: AppTheme.textShadowStrong,
                 ),
-                textAlign: TextAlign.center,
                 maxLines: 1,
-                minFontSize: 7,
-                maxFontSize: 11,
+                minFontSize: 14,
+                maxFontSize: 22,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 2),
+            // Label text with auto-sizing
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: AutoSizeText(
+                  label,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 9,
+                        minSize: 8, maxSize: 11),
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withValues(alpha: 0.9),
+                    shadows: AppTheme.textShadowSubtle,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  minFontSize: 7,
+                  maxFontSize: 11,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-      ),
-    ).animate().fadeIn(delay: Duration(milliseconds: delay)).scale(delay: Duration(milliseconds: delay));
+    )
+        .animate()
+        .fadeIn(delay: Duration(milliseconds: delay))
+        .scale(delay: Duration(milliseconds: delay));
   }
 
   Widget _buildStatCardLoading({
@@ -363,81 +376,87 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }) {
     return LayoutBuilder(
       builder: (context, constraints) => Container(
-        width: ResponsiveUtils.scaleSize(context, 120, minScale: 0.9, maxScale: 1.2),
+        width: ResponsiveUtils.scaleSize(context, 120,
+            minScale: 0.9, maxScale: 1.2),
         padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: AppGradients.glassMedium,
-        borderRadius: AppRadius.cardRadius,
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
-          width: 1,
+        decoration: BoxDecoration(
+          gradient: AppGradients.glassMedium,
+          borderRadius: AppRadius.cardRadius,
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.2),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.2),
-              borderRadius: AppRadius.mediumRadius,
-            ),
-            child: Icon(
-              icon,
-              size: ResponsiveUtils.iconSize(context, 20),
-              color: AppColors.secondaryText,
-            ),
-          ),
-          const SizedBox(height: 4),
-          // Placeholder text instead of infinite spinner (fixes test timeouts)
-          Flexible(
-            child: AutoSizeText(
-              "...",
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 16, maxSize: 22),
-                fontWeight: FontWeight.w800,
-                color: AppColors.primaryText.withValues(alpha: 0.5),
-                shadows: AppTheme.textShadowStrong,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.2),
+                borderRadius: AppRadius.mediumRadius,
               ),
-              maxLines: 1,
-              minFontSize: 14,
-              maxFontSize: 22,
-              textAlign: TextAlign.center,
+              child: Icon(
+                icon,
+                size: ResponsiveUtils.iconSize(context, 20),
+                color: AppColors.secondaryText,
+              ),
             ),
-          ),
-          const SizedBox(height: 2),
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+            const SizedBox(height: 4),
+            // Placeholder text instead of infinite spinner (fixes test timeouts)
+            Flexible(
               child: AutoSizeText(
-                label,
+                "...",
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 9, minSize: 8, maxSize: 11),
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withValues(alpha: 0.9),
-                  shadows: AppTheme.textShadowSubtle,
+                  fontSize: ResponsiveUtils.fontSize(context, 20,
+                      minSize: 16, maxSize: 22),
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primaryText.withValues(alpha: 0.5),
+                  shadows: AppTheme.textShadowStrong,
                 ),
-                textAlign: TextAlign.center,
                 maxLines: 1,
-                minFontSize: 7,
-                maxFontSize: 11,
-                overflow: TextOverflow.ellipsis,
+                minFontSize: 14,
+                maxFontSize: 22,
+                textAlign: TextAlign.center,
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 2),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: AutoSizeText(
+                  label,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 9,
+                        minSize: 8, maxSize: 11),
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withValues(alpha: 0.9),
+                    shadows: AppTheme.textShadowSubtle,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  minFontSize: 7,
+                  maxFontSize: 11,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-      ),
-    ).animate().fadeIn(delay: Duration(milliseconds: delay)).scale(delay: Duration(milliseconds: delay));
+    )
+        .animate()
+        .fadeIn(delay: Duration(milliseconds: delay))
+        .scale(delay: Duration(milliseconds: delay));
   }
 
   Widget _buildMainFeatures() {
@@ -446,206 +465,206 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       padding: AppSpacing.horizontalXl,
       child: Column(
         children: [
-        Row(
-          children: [
-            Expanded(
-              child: SizedBox(
-                height: ResponsiveUtils.scaleSize(context, 160, minScale: 0.9, maxScale: 1.2),
-                child: FrostedGlassCard(
-                  padding: const EdgeInsets.all(12),
-                  onTap: () => NavigationService.goToChat(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ClearGlassCard(
-                        padding: const EdgeInsets.all(8),
-                        child: Icon(
-                          Icons.chat_bubble_outline,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: AppColors.primaryText,
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: ResponsiveUtils.scaleSize(context, 140,
+                      minScale: 0.9, maxScale: 1.2),
+                  child: FrostedGlassCard(
+                    padding: const EdgeInsets.all(12),
+                    onTap: () => NavigationService.goToChat(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClearGlassCard(
+                          padding: const EdgeInsets.all(8),
+                          child: Icon(
+                            Icons.chat_bubble_outline,
+                            size: ResponsiveUtils.iconSize(context, 20),
+                            color: AppColors.primaryText,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        l10n.biblicalChat,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primaryText,
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          l10n.biblicalChat,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 16,
+                                minSize: 14, maxSize: 18),
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primaryText,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Flexible(
-                        child: Text(
+                        const SizedBox(height: 4),
+                        Text(
                           l10n.biblicalChatDesc,
                           style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            fontSize: ResponsiveUtils.fontSize(context, 12,
+                                minSize: 10, maxSize: 14),
                             color: AppColors.secondaryText,
                             height: 1.3,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: SizedBox(
-                height: ResponsiveUtils.scaleSize(context, 160, minScale: 0.9, maxScale: 1.2),
-                child: FrostedGlassCard(
-                  padding: const EdgeInsets.all(12),
-                  onTap: () => NavigationService.goToDevotional(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ClearGlassCard(
-                        padding: const EdgeInsets.all(8),
-                        child: Icon(
-                          Icons.auto_stories,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: AppColors.primaryText,
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: SizedBox(
+                  height: ResponsiveUtils.scaleSize(context, 140,
+                      minScale: 0.9, maxScale: 1.2),
+                  child: FrostedGlassCard(
+                    padding: const EdgeInsets.all(12),
+                    onTap: () => NavigationService.goToDevotional(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClearGlassCard(
+                          padding: const EdgeInsets.all(8),
+                          child: Icon(
+                            Icons.auto_stories,
+                            size: ResponsiveUtils.iconSize(context, 20),
+                            color: AppColors.primaryText,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        l10n.dailyDevotional,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primaryText,
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          l10n.dailyDevotional,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 16,
+                                minSize: 14, maxSize: 18),
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primaryText,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Flexible(
-                        child: Text(
+                        const SizedBox(height: 4),
+                        Text(
                           l10n.dailyDevotionalDesc,
                           style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            fontSize: ResponsiveUtils.fontSize(context, 12,
+                                minSize: 10, maxSize: 14),
                             color: AppColors.secondaryText,
                             height: 1.3,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ).animate().fadeIn(delay: 1000.ms).scale(delay: 1000.ms),
-        const SizedBox(height: AppSpacing.md),
-        Row(
-          children: [
-            Expanded(
-              child: SizedBox(
-                height: ResponsiveUtils.scaleSize(context, 160, minScale: 0.9, maxScale: 1.2),
-                child: FrostedGlassCard(
-                  padding: const EdgeInsets.all(12),
-                  onTap: () => NavigationService.goToPrayerJournal(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ClearGlassCard(
-                        padding: const EdgeInsets.all(8),
-                        child: Icon(
-                          Icons.favorite_outline,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: AppColors.primaryText,
+            ],
+          ).animate().fadeIn(delay: 1000.ms).scale(delay: 1000.ms),
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: ResponsiveUtils.scaleSize(context, 140,
+                      minScale: 0.9, maxScale: 1.2),
+                  child: FrostedGlassCard(
+                    padding: const EdgeInsets.all(12),
+                    onTap: () => NavigationService.goToPrayerJournal(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClearGlassCard(
+                          padding: const EdgeInsets.all(8),
+                          child: Icon(
+                            Icons.favorite_outline,
+                            size: ResponsiveUtils.iconSize(context, 20),
+                            color: AppColors.primaryText,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        l10n.prayerJournal,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primaryText,
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          l10n.prayerJournal,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 16,
+                                minSize: 14, maxSize: 18),
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primaryText,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Flexible(
-                        child: Text(
+                        const SizedBox(height: 4),
+                        Text(
                           l10n.prayerJournalDesc,
                           style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            fontSize: ResponsiveUtils.fontSize(context, 12,
+                                minSize: 10, maxSize: 14),
                             color: AppColors.secondaryText,
                             height: 1.3,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: SizedBox(
-                height: ResponsiveUtils.scaleSize(context, 160, minScale: 0.9, maxScale: 1.2),
-                child: FrostedGlassCard(
-                  padding: const EdgeInsets.all(12),
-                  onTap: () => NavigationService.goToReadingPlan(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ClearGlassCard(
-                        padding: const EdgeInsets.all(8),
-                        child: Icon(
-                          Icons.library_books_outlined,
-                          size: ResponsiveUtils.iconSize(context, 20),
-                          color: AppColors.primaryText,
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: SizedBox(
+                  height: ResponsiveUtils.scaleSize(context, 140,
+                      minScale: 0.9, maxScale: 1.2),
+                  child: FrostedGlassCard(
+                    padding: const EdgeInsets.all(12),
+                    onTap: () => NavigationService.goToReadingPlan(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClearGlassCard(
+                          padding: const EdgeInsets.all(8),
+                          child: Icon(
+                            Icons.library_books_outlined,
+                            size: ResponsiveUtils.iconSize(context, 20),
+                            color: AppColors.primaryText,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        l10n.readingPlans,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primaryText,
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          l10n.readingPlans,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 16,
+                                minSize: 14, maxSize: 18),
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primaryText,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Flexible(
-                        child: Text(
+                        const SizedBox(height: 4),
+                        Text(
                           l10n.readingPlansDesc,
                           style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            fontSize: ResponsiveUtils.fontSize(context, 12,
+                                minSize: 10, maxSize: 14),
                             color: AppColors.secondaryText,
                             height: 1.3,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ).animate().fadeIn(delay: 1100.ms).scale(delay: 1100.ms),
-      ],
+            ],
+          ).animate().fadeIn(delay: 1100.ms).scale(delay: 1100.ms),
+        ],
       ),
     );
   }
@@ -660,7 +679,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Text(
             l10n.quickActions,
             style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+              fontSize: ResponsiveUtils.fontSize(context, 20,
+                  minSize: 18, maxSize: 24),
               fontWeight: FontWeight.w700,
               color: AppColors.primaryText,
               shadows: AppTheme.textShadowStrong,
@@ -670,54 +690,56 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         const SizedBox(height: AppSpacing.lg),
         LayoutBuilder(
           builder: (context, constraints) => SizedBox(
-            height: ResponsiveUtils.scaleSize(context, 100, minScale: 0.9, maxScale: 1.2),
+            height: ResponsiveUtils.scaleSize(context, 100,
+                minScale: 0.9, maxScale: 1.2),
             child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: AppSpacing.horizontalXl,
-            // Optimize horizontal scrolling performance
-            physics: const BouncingScrollPhysics(),
-            cacheExtent: 200,
-            children: [
-              _buildQuickActionCard(
-                label: l10n.readBible,
-                icon: Icons.menu_book,
-                color: AppTheme.goldColor,
-                onTap: () => NavigationService.goToBibleBrowser(),
-                delay: 1400,
-              ),
-              const SizedBox(width: AppSpacing.lg),
-              _buildQuickActionCard(
-                label: l10n.verseLibrary,
-                icon: Icons.search,
-                color: Colors.blue,
-                onTap: () => Navigator.pushNamed(context, AppRoutes.verseLibrary),
-                delay: 1500,
-              ),
-              const SizedBox(width: AppSpacing.lg),
-              _buildQuickActionCard(
-                label: l10n.addPrayer,
-                icon: Icons.add,
-                color: Colors.green,
-                onTap: () => NavigationService.goToPrayerJournal(),
-                delay: 1600,
-              ),
-              const SizedBox(width: AppSpacing.lg),
-              _buildQuickActionCard(
-                label: l10n.settings,
-                icon: Icons.settings,
-                color: Colors.grey[300]!,
-                onTap: () => NavigationService.goToSettings(),
-                delay: 1700,
-              ),
-              const SizedBox(width: AppSpacing.lg),
-              _buildQuickActionCard(
-                label: l10n.profile,
-                icon: Icons.person,
-                color: Colors.purple,
-                onTap: () => NavigationService.goToProfile(),
-                delay: 1800,
-              ),
-            ],
+              scrollDirection: Axis.horizontal,
+              padding: AppSpacing.horizontalXl,
+              // Optimize horizontal scrolling performance
+              physics: const BouncingScrollPhysics(),
+              cacheExtent: 200,
+              children: [
+                _buildQuickActionCard(
+                  label: l10n.readBible,
+                  icon: Icons.menu_book,
+                  color: AppTheme.goldColor,
+                  onTap: () => NavigationService.goToBibleBrowser(),
+                  delay: 1400,
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                _buildQuickActionCard(
+                  label: l10n.verseLibrary,
+                  icon: Icons.search,
+                  color: Colors.blue,
+                  onTap: () =>
+                      Navigator.pushNamed(context, AppRoutes.verseLibrary),
+                  delay: 1500,
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                _buildQuickActionCard(
+                  label: l10n.addPrayer,
+                  icon: Icons.add,
+                  color: Colors.green,
+                  onTap: () => NavigationService.goToPrayerJournal(),
+                  delay: 1600,
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                _buildQuickActionCard(
+                  label: l10n.settings,
+                  icon: Icons.settings,
+                  color: Colors.grey[300]!,
+                  onTap: () => NavigationService.goToSettings(),
+                  delay: 1700,
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                _buildQuickActionCard(
+                  label: l10n.profile,
+                  icon: Icons.person,
+                  color: Colors.purple,
+                  onTap: () => NavigationService.goToProfile(),
+                  delay: 1800,
+                ),
+              ],
             ),
           ),
         ),
@@ -736,61 +758,66 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       builder: (context, constraints) => GestureDetector(
         onTap: onTap,
         child: Container(
-          width: ResponsiveUtils.scaleSize(context, 100, minScale: 0.9, maxScale: 1.2),
+          width: ResponsiveUtils.scaleSize(context, 100,
+              minScale: 0.9, maxScale: 1.2),
           padding: AppSpacing.cardPadding,
-        decoration: BoxDecoration(
-          gradient: AppGradients.glassMedium,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2),
-            width: 1,
+          decoration: BoxDecoration(
+            gradient: AppGradients.glassMedium,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.2),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.2),
-                borderRadius: AppRadius.mediumRadius,
-              ),
-              child: Icon(
-                icon,
-                size: ResponsiveUtils.iconSize(context, 24),
-                color: AppColors.secondaryText,
-              ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Flexible(
-              child: AutoSizeText(
-                label,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withValues(alpha: 0.9),
-                  shadows: AppTheme.textShadowSubtle,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.2),
+                  borderRadius: AppRadius.mediumRadius,
                 ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                minFontSize: 7,
-                maxFontSize: 13,
-                overflow: TextOverflow.ellipsis,
+                child: Icon(
+                  icon,
+                  size: ResponsiveUtils.iconSize(context, 24),
+                  color: AppColors.secondaryText,
+                ),
               ),
-            ),
-          ],
-        ),
+              const SizedBox(height: AppSpacing.sm),
+              Flexible(
+                child: AutoSizeText(
+                  label,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 11,
+                        minSize: 9, maxSize: 13),
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withValues(alpha: 0.9),
+                    shadows: AppTheme.textShadowSubtle,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  minFontSize: 7,
+                  maxFontSize: 13,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ).animate().fadeIn(delay: Duration(milliseconds: delay)).scale(delay: Duration(milliseconds: delay));
+    )
+        .animate()
+        .fadeIn(delay: Duration(milliseconds: delay))
+        .scale(delay: Duration(milliseconds: delay));
   }
 
   Widget _buildDailyVerse() {
@@ -836,7 +863,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: Text(
                         l10n.verseOfTheDay,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+                          fontSize: ResponsiveUtils.fontSize(context, 18,
+                              minSize: 16, maxSize: 20),
                           fontWeight: FontWeight.w700,
                           color: AppColors.primaryText,
                           shadows: AppTheme.textShadowStrong,
@@ -855,7 +883,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       AutoSizeText(
                         reference,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                          fontSize: ResponsiveUtils.fontSize(context, 14,
+                              minSize: 12, maxSize: 16),
                           color: AppTheme.goldColor,
                           fontWeight: FontWeight.w700,
                           shadows: AppTheme.textShadowSubtle,
@@ -870,7 +899,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       AutoSizeText(
                         text,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontSize: ResponsiveUtils.fontSize(context, 16,
+                              minSize: 14, maxSize: 18),
                           color: AppColors.primaryText,
                           fontStyle: FontStyle.italic,
                           height: 1.6,
