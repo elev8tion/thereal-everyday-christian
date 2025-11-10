@@ -149,21 +149,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get biblicalChatDesc => 'Sabiduría bíblica para tu vida';
 
   @override
-  String get dailyDevotional => 'Devocional Diario';
+  String get dailyDevotional => 'Devocional';
 
   @override
   String get dailyDevotionalDesc =>
       'Acérquese más a Dios con reflexiones diarias';
 
   @override
-  String get prayerJournal => 'Diario de Oración';
+  String get prayerJournal => 'Oraciones';
 
   @override
   String get prayerJournalDesc =>
       'Registre sus oraciones y vea la fidelidad de Dios';
 
   @override
-  String get readingPlans => 'Planes de Lectura';
+  String get readingPlans => 'Lectura';
 
   @override
   String get readingPlan => 'Plan de Lectura';
@@ -1899,4 +1899,844 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get aiPoweredBiblicalGuidance => 'Guía Bíblica con IA';
+
+  @override
+  String get monthlyLimitReached => 'Límite Mensual Alcanzado';
+
+  @override
+  String get trialLimitReached => 'Límite de Prueba Alcanzado';
+
+  @override
+  String get monthlyLimitMessage =>
+      'Ha utilizado los 150 mensajes de este mes.\nActualice su plan o espere el reinicio mensual.';
+
+  @override
+  String get trialLimitMessage =>
+      'Ha utilizado los 15 mensajes de prueba.\n¡Suscríbase ahora para 150 mensajes por mes!';
+
+  @override
+  String get upgradePlan => 'Actualizar Plan';
+
+  @override
+  String get subscribeNow => 'Suscribirse Ahora';
+
+  @override
+  String get maybeLater => 'Quizás Más Tarde';
+
+  @override
+  String get welcomeFreeTrial => '¡Bienvenido! Comience Su Prueba Gratuita';
+
+  @override
+  String get experienceAiGuidance =>
+      'Experimente la orientación bíblica impulsada por IA';
+
+  @override
+  String get afterTrialPricing =>
+      'Después de la prueba: ~\$35.99/año por 150 mensajes/mes';
+
+  @override
+  String get pricingVariesDisclaimer =>
+      '(el precio puede variar según la región y la moneda)';
+
+  @override
+  String get startFreeTrial => 'Iniciar Prueba Gratuita';
+
+  @override
+  String get accountSuspended => 'Cuenta Suspendida';
+
+  @override
+  String get aiChatRequiresSubscription =>
+      'El Chat con IA Requiere\nSuscripción';
+
+  @override
+  String get suspensionMessage =>
+      'Su acceso al chat con IA ha sido suspendido temporalmente debido a violaciones de los Términos de Servicio. Esta suspensión se levantará automáticamente después del período especificado.';
+
+  @override
+  String get trialExpiredMessage =>
+      'Su prueba gratuita ha finalizado. Suscríbase para ver su historial de chat y continuar conversaciones con orientación bíblica por IA.';
+
+  @override
+  String get premiumExpiredMessage =>
+      'Suscríbase para ver su historial de chat y continuar conversaciones con orientación bíblica personalizada y apoyo.';
+
+  @override
+  String timeRemaining(String duration) {
+    return 'Tiempo Restante: $duration';
+  }
+
+  @override
+  String get suspensionContactInfo =>
+      'Si cree que esta suspensión fue emitida por error, por favor contacte a:';
+
+  @override
+  String get benefit150Messages => '150 mensajes de IA por mes';
+
+  @override
+  String get benefitChatHistory => 'Acceso a todo su historial de chat';
+
+  @override
+  String get benefitPersonalizedGuidance => 'Orientación bíblica personalizada';
+
+  @override
+  String get freeFeaturesList =>
+      'El diario de oración, la lectura de la Biblia y los versículos permanecen gratuitos e ilimitados';
+
+  @override
+  String get appFeatureSubtitle => 'Estudio Bíblico, Oración y Devocionales';
+
+  @override
+  String get crisisTextLineTitle => 'Crisis Text Line (EE.UU.)';
+
+  @override
+  String get unlockBiometricPrompt =>
+      'Desbloquee Everyday Christian para acceder a su contenido espiritual';
+
+  @override
+  String get protectYourApp => 'Proteja Su Aplicación';
+
+  @override
+  String biometricSetupDescription(String biometricType) {
+    return 'Mantenga sus oraciones, devocionales y conversaciones espirituales privadas con $biometricType.';
+  }
+
+  @override
+  String get enableAppLockReason =>
+      'Active el bloqueo de la aplicación para proteger su contenido espiritual';
+
+  @override
+  String get appLockEnabledSuccess =>
+      'Bloqueo de aplicación activado. Su contenido ahora está protegido.';
+
+  @override
+  String enableBiometric(String biometricType) {
+    return 'Activar $biometricType';
+  }
+
+  @override
+  String get biometricSettingsNote =>
+      'Puede cambiar esto en cualquier momento desde Configuración';
+
+  @override
+  String get acceptBothDocumentsError =>
+      'Por favor, lea y acepte ambos documentos';
+
+  @override
+  String get termsAcceptanceSaveFailed =>
+      'Error al guardar la aceptación. Por favor, inténtelo de nuevo.';
+
+  @override
+  String get legalAgreement => 'Acuerdo Legal';
+
+  @override
+  String get reviewToAccept => 'Por favor, revise y acepte para continuar';
+
+  @override
+  String get iHaveReadAndAgree => 'He leído y acepto';
+
+  @override
+  String get mustAcceptBothDocuments =>
+      'Debe aceptar ambos documentos para usar esta aplicación';
+
+  @override
+  String get processing => 'Procesando...';
+
+  @override
+  String get chatSubscriptionRequiredRegenerate =>
+      'Se requiere suscripción para regenerar respuestas';
+
+  @override
+  String chatDiscussingVerse(String reference) {
+    return 'Conversando sobre $reference';
+  }
+
+  @override
+  String get chatNewConversation => 'Nueva Conversación';
+
+  @override
+  String get chatCouldNotFindUserMessage =>
+      'No se pudo encontrar el mensaje anterior';
+
+  @override
+  String get chatRegenerateInstruction =>
+      'Por favor, ofrece una perspectiva diferente o respuesta alternativa a la pregunta anterior.';
+
+  @override
+  String get chatResponseRegeneratedSuccess =>
+      '✨ Respuesta regenerada exitosamente';
+
+  @override
+  String chatFailedToRegenerateResponse(String error) {
+    return 'No se pudo regenerar la respuesta: $error';
+  }
+
+  @override
+  String get chatNoConversationToExport => 'No hay conversación para exportar';
+
+  @override
+  String get chatNoMessagesToExport => 'No hay mensajes para exportar';
+
+  @override
+  String get chatExportConversation => 'Exportar Conversación';
+
+  @override
+  String get chatShare => 'Compartir';
+
+  @override
+  String get chatExportSubject => 'Exportación de Conversación Bíblica con IA';
+
+  @override
+  String get chatConversationExportedSuccess =>
+      'Conversación exportada exitosamente';
+
+  @override
+  String chatFailedToExport(String error) {
+    return 'Error al exportar: $error';
+  }
+
+  @override
+  String get chatNoConversationToShare => 'No hay conversación para compartir';
+
+  @override
+  String get chatNoMessagesToShare => 'No hay mensajes para compartir';
+
+  @override
+  String get chatShareSubject => 'Conversación Bíblica con IA';
+
+  @override
+  String get chatConversationSharedSuccess =>
+      'Conversación compartida exitosamente';
+
+  @override
+  String chatFailedToShare(String error) {
+    return 'Error al compartir: $error';
+  }
+
+  @override
+  String get chatConversationImageSharedSuccess =>
+      'Imagen de conversación compartida exitosamente';
+
+  @override
+  String get chatFailedToShareTryAgain =>
+      'Error al compartir. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get chatCouldNotFindQuestion =>
+      'No se pudo encontrar la pregunta para esta respuesta';
+
+  @override
+  String get chatMessageExchangeSharedSuccess =>
+      '¡Intercambio de mensajes compartido exitosamente!';
+
+  @override
+  String get chatOptions => 'Opciones de Chat';
+
+  @override
+  String get chatExportConversationDesc =>
+      'Ver y copiar texto de la conversación';
+
+  @override
+  String get chatShareText => 'Compartir Texto';
+
+  @override
+  String get chatShareTextDesc => 'Compartir como texto plano';
+
+  @override
+  String get chatShareAsImage => 'Compartir como Imagen';
+
+  @override
+  String get chatShareAsImageDesc =>
+      'Compartir conversación como imagen personalizada';
+
+  @override
+  String get chatAiServiceInitializing => 'Iniciando servicio de IA...';
+
+  @override
+  String chatAiServiceFallback(String reason) {
+    return 'Usando respuestas alternativas: $reason';
+  }
+
+  @override
+  String chatAiServiceError(String message) {
+    return 'Error del servicio de IA: $message';
+  }
+
+  @override
+  String get chatMessageOptions => 'Opciones de Mensaje';
+
+  @override
+  String get chatCopyMessage => 'Copiar Mensaje';
+
+  @override
+  String get chatCopyMessageDesc => 'Copiar texto del mensaje al portapapeles';
+
+  @override
+  String get chatMessageCopiedToClipboard => 'Mensaje copiado al portapapeles';
+
+  @override
+  String get chatRegenerateResponse => 'Regenerar Respuesta';
+
+  @override
+  String get chatRegenerateResponseDesc =>
+      'Generar una nueva respuesta a este mensaje';
+
+  @override
+  String get chatShareExchange => 'Compartir Intercambio';
+
+  @override
+  String get chatShareExchangeDesc =>
+      'Compartir este intercambio de mensajes como imagen';
+
+  @override
+  String get chatInputPlaceholder => 'Chat sobre las Escrituras...';
+
+  @override
+  String get chatFallbackPrayer =>
+      'Siento que tal vez estés buscando orientación sobre la oración. La Biblia nos enseña en 1 Tesalonicenses 5:17 a \'orar sin cesar\'. La oración es nuestra línea directa con Dios, y Él nos invita a traerle todas nuestras inquietudes. ¿Te gustaría compartir lo que hay en tu corazón?';
+
+  @override
+  String get chatFallbackLove =>
+      'El amor es uno de los temas más hermosos en las Escrituras. 1 Corintios 13:4-7 describe el amor como paciente, bondadoso y perdurable. El amor de Dios por nosotros es perfecto e incondicional, demostrado a través de Cristo. ¿Cómo puedo ayudarte a explorar este tema más a fondo?';
+
+  @override
+  String get chatFallbackForgiveness =>
+      'El perdón es central en la fe cristiana. Efesios 4:32 nos anima a \'ser bondadosos unos con otros, misericordiosos, perdonándonos unos a otros, como Dios también os perdonó a vosotros en Cristo\'. ¿Hay alguna situación específica en la que estés buscando orientación sobre el perdón?';
+
+  @override
+  String get chatFallbackPurpose =>
+      'Las preguntas sobre el propósito son profundamente significativas. Jeremías 29:11 nos recuerda que Dios tiene planes para nosotros - planes de bienestar y esperanza. Tu vida tiene un propósito divino. ¿Qué aspecto del propósito te gustaría explorar juntos?';
+
+  @override
+  String get chatFallbackDefault =>
+      'Estoy aquí para brindarte orientación bíblica y apoyo. Siéntete libre de preguntarme sobre las Escrituras, la oración, preguntas de fe o cualquier inquietud espiritual que tengas. ¿Cómo puedo ayudarte hoy?';
+
+  @override
+  String get chatConversationHistory => 'Historial de Conversaciones';
+
+  @override
+  String get chatNoConversationHistoryYet =>
+      'Aún no hay historial de conversaciones';
+
+  @override
+  String get chatDeleteConversationTitle => '¿Eliminar Conversación?';
+
+  @override
+  String get chatDeleteConversationMessage =>
+      'Esto eliminará permanentemente esta conversación y todos sus mensajes.';
+
+  @override
+  String get chatConversationDeleted => 'Conversación eliminada';
+
+  @override
+  String get chatConversationDefault => 'Conversación';
+
+  @override
+  String get chatStartNewConversationTitle => '¿Iniciar Nueva Conversación?';
+
+  @override
+  String get chatStartNewConversationMessage =>
+      'Tu conversación actual se guardará en el historial.\n\n¿Iniciar una conversación nueva?';
+
+  @override
+  String get chatNewChatButton => 'Nuevo Chat';
+
+  @override
+  String get chatNoInternetConnection => 'Sin Conexión a Internet';
+
+  @override
+  String callHotlineNow(String hotline) {
+    return 'Llamar a $hotline Ahora';
+  }
+
+  @override
+  String get crisisTextInstructions => 'Envía HOME al 741741 (EE.UU.)';
+
+  @override
+  String unableToCallError(String hotline) {
+    return 'No se pudo realizar la llamada. Por favor, marca $hotline manualmente.';
+  }
+
+  @override
+  String get crisisSuicideMessage =>
+      'Detectamos que podrías estar teniendo pensamientos suicidas. Tu vida importa. Por favor, llama al 988 (Suicide & Crisis Lifeline - EE.UU.) ahora mismo. Están disponibles 24/7. \n\nFuera de EE.UU.:\n• México: 55-5259-8121 (Línea de la Vida)\n• España: 024 (Teléfono de la Esperanza)\n• O busca servicios de crisis locales en tu país';
+
+  @override
+  String get crisisSelfHarmMessage =>
+      'Detectamos que podrías estar considerando autolesionarte. No tienes que enfrentar esto solo. Por favor, envía HOME al 741741 (Crisis Text Line - EE.UU.) para apoyo inmediato.\n\nFuera de EE.UU.:\n• México: 55-5259-8121 (Línea de la Vida)\n• España: 024 (Teléfono de la Esperanza)\n• O busca servicios de crisis locales en tu país';
+
+  @override
+  String get crisisAbuseMessage =>
+      'Detectamos que podrías estar experimentando abuso. Tu seguridad importa. Por favor, llama a RAINN al 800-656-4673 (EE.UU.) para apoyo confidencial.\n\nFuera de EE.UU.:\n• México: 55-5259-8121 (Línea de la Vida)\n• España: 016 (Violencia de Género)\n• O busca servicios de ayuda locales en tu país';
+
+  @override
+  String get demoDevotionalTitle => 'Cultivando un Corazón Agradecido';
+
+  @override
+  String get shareVersesToKeepHistory =>
+      'Comparte versículos para mantener un historial de acceso rápido aquí.';
+
+  @override
+  String get verseSharedButCouldntRemove =>
+      'Versículo compartido pero no se pudo eliminar de los guardados';
+
+  @override
+  String get verseSharedAndMovedToShared =>
+      '¡Versículo compartido y movido a la pestaña Compartidos!';
+
+  @override
+  String get verseSharedAsImageAndMoved =>
+      '¡Versículo compartido como imagen y movido a la pestaña Compartidos!';
+
+  @override
+  String get browseAndManageSavedVerses =>
+      'Explora y administra tus versículos guardados';
+
+  @override
+  String get jumpToRecentlyShared =>
+      'Ir a tus versículos compartidos recientemente';
+
+  @override
+  String get removeAllFromSaved =>
+      'Eliminar todos los versículos de tu colección guardada';
+
+  @override
+  String get removeAllFromShared =>
+      'Eliminar todos los versículos del historial de compartidos';
+
+  @override
+  String verseProgress(int current, int total) {
+    return 'Versículo $current de $total';
+  }
+
+  @override
+  String get noActivePrayersSubtitle =>
+      'Agrega aquí tus oraciones para volver a ellas, reflexionar y mantener tu compromiso';
+
+  @override
+  String get highlightPrayersAnswered => 'Resaltar Oraciones Respondidas';
+
+  @override
+  String get answeredPrayersSubtitle =>
+      'A veces las respuestas que recibimos no son las que queríamos. Guárdalas aquí para reflexionar mejor';
+
+  @override
+  String get add => 'Agregar';
+
+  @override
+  String get noProgressToTrack => 'No Hay Progreso para Seguir';
+
+  @override
+  String get noProgressSubtitle =>
+      'Inicia un plan de lectura para ver tu progreso y estadísticas';
+
+  @override
+  String get yourProgressAndStatistics => 'Tu Progreso y Estadísticas';
+
+  @override
+  String errorLoadingStats(String error) {
+    return 'Error al cargar estadísticas: $error';
+  }
+
+  @override
+  String get readingActivity => 'Actividad de Lectura';
+
+  @override
+  String get readingActivitySubtitle =>
+      'Días con lecturas completadas en los últimos 90 días';
+
+  @override
+  String errorLoadingActivityData(String error) {
+    return 'Error al cargar datos de actividad: $error';
+  }
+
+  @override
+  String get onlyOnePlanActive =>
+      'Solo puede haber un plan de lectura activo a la vez. Restablece tu plan actual para iniciar otro diferente.';
+
+  @override
+  String estimatedTimePerDay(String time) {
+    return '$time/día';
+  }
+
+  @override
+  String streakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# días',
+      one: '1 día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String readingsProgress(int current, int total) {
+    return '$current / $total';
+  }
+
+  @override
+  String get resetCurrentPlanTooltip =>
+      'Restablece tu plan actual antes de iniciar uno nuevo';
+
+  @override
+  String couldNotOpenReading(String error) {
+    return 'No se pudo abrir la lectura: $error';
+  }
+
+  @override
+  String completedReadingsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# lecturas completadas',
+      one: '1 lectura completada',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String yourStreakDays(int streak) {
+    return 'Tu racha de $streak días 🔥';
+  }
+
+  @override
+  String get allProgressHistory => 'Todo el historial de progreso';
+
+  @override
+  String get actionCannotBeUndone => 'Esta acción no se puede deshacer.';
+
+  @override
+  String messagesLeftThisMonth(int count) {
+    return '$count mensajes restantes este mes';
+  }
+
+  @override
+  String messagesLeftToday(int count) {
+    return '$count mensajes restantes hoy';
+  }
+
+  @override
+  String get startYourFreeTrial => 'Inicia tu prueba gratuita';
+
+  @override
+  String get notificationTime => 'Hora de notificación';
+
+  @override
+  String get biometricNotAvailable =>
+      'La autenticación biométrica no está disponible en este dispositivo';
+
+  @override
+  String get verifyIdentityAppLock =>
+      'Verifica tu identidad para habilitar el bloqueo de aplicación';
+
+  @override
+  String get appLockEnabled =>
+      'Bloqueo de aplicación habilitado. Tu aplicación ahora está protegida.';
+
+  @override
+  String get appLockDisabled => 'Bloqueo de aplicación deshabilitado';
+
+  @override
+  String failedToClearCache(String error) {
+    return '❌ Error al limpiar caché: $error';
+  }
+
+  @override
+  String get dataExportTitle => 'EVERYDAY CHRISTIAN - EXPORTACIÓN DE DATOS';
+
+  @override
+  String exportDate(String date) {
+    return 'Fecha de Exportación: $date';
+  }
+
+  @override
+  String get prayerJournalExportSection => '📿 DIARIO DE ORACIÓN';
+
+  @override
+  String get aiChatExportSection => '💬 CONVERSACIONES DE CHAT IA';
+
+  @override
+  String totalSessions(int count) {
+    return 'Sesiones Totales: $count';
+  }
+
+  @override
+  String archivedSessionTitle(String title) {
+    return 'Sesión: $title (Archivada)';
+  }
+
+  @override
+  String get noDataToExport => 'No hay datos para exportar';
+
+  @override
+  String get dataExportSubject => 'Everyday Christian - Exportación de Datos';
+
+  @override
+  String dataExported(int prayerCount, int chatCount) {
+    return '📤 Exportados $prayerCount diario(s) de oración y $chatCount conversación(es)';
+  }
+
+  @override
+  String get deleteItemPrayerJournal =>
+      '✝️ Todas las entradas del diario de oración';
+
+  @override
+  String get deleteItemChatConversations =>
+      '💬 Todas las conversaciones del chat IA';
+
+  @override
+  String get deleteItemReadingPlan => '📖 Progreso del plan de lectura';
+
+  @override
+  String get deleteItemFavoriteVerses => '🌟 Versículos favoritos';
+
+  @override
+  String get deleteItemDevotionalHistory =>
+      '📝 Historial de devocionales completados';
+
+  @override
+  String get deleteItemSettings =>
+      '⚙️ Todas las configuraciones y preferencias de la aplicación';
+
+  @override
+  String get deleteItemProfilePicture => '👤 Foto de perfil';
+
+  @override
+  String get deleteItemStatistics => '📊 Todas las estadísticas y progreso';
+
+  @override
+  String get deleteLocalDataWarning =>
+      '⚠️ Esto eliminará todos los datos locales incluyendo:';
+
+  @override
+  String get deleteDataBulletList =>
+      '• Entradas del diario de oración\n• Historial de chat\n• Versículos guardados\n• Configuraciones y preferencias';
+
+  @override
+  String get subscriptionWillRestore =>
+      'Tu suscripción permanecerá activa y se restaurará automáticamente en el próximo inicio de la aplicación.';
+
+  @override
+  String get typeDeleteToConfirm => 'Escribe DELETE para confirmar:';
+
+  @override
+  String get typeDeletePlaceholder => 'Escribe DELETE';
+
+  @override
+  String get mustTypeDeleteToConfirm =>
+      '❌ Debes escribir DELETE para confirmar';
+
+  @override
+  String get deletingAllData => 'Eliminando todos los datos...';
+
+  @override
+  String get allDataDeleted =>
+      '✅ Todos los datos eliminados. La aplicación se reiniciará.';
+
+  @override
+  String get findAnswersToCommonQuestions =>
+      'Encuentra respuestas a preguntas comunes';
+
+  @override
+  String get supportRequestSubject => 'Solicitud de Soporte Everyday Christian';
+
+  @override
+  String get supportRequestBody =>
+      'Por favor describe tu problema o pregunta:\n\n';
+
+  @override
+  String get couldNotOpenEmailClient =>
+      'No se pudo abrir el cliente de correo. Por favor envía un correo a connect@everydaychristian.app';
+
+  @override
+  String get errorOpeningEmail =>
+      'Error al abrir correo: Por favor envía un correo a connect@everydaychristian.app';
+
+  @override
+  String achievementDailyBreadDescWithStreak(int count, String plural) {
+    return 'Completa 30 devocionales • 🔥 Racha de $count día$plural';
+  }
+
+  @override
+  String errorLoadingProfile(String error) {
+    return 'Error al cargar perfil: $error';
+  }
+
+  @override
+  String get oops => '¡Vaya!';
+
+  @override
+  String get tryAgain => 'Reintentar';
+
+  @override
+  String get ok => 'Aceptar';
+
+  @override
+  String get technicalDetails => 'Detalles técnicos:';
+
+  @override
+  String get initializingApp => 'Cargando...';
+
+  @override
+  String get initializationError => 'Error de inicialización';
+
+  @override
+  String get unexpectedError => 'Ha ocurrido un error inesperado';
+
+  @override
+  String messagesLeftCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# mensajes restantes',
+      one: '1 mensaje restante',
+      zero: 'sin mensajes',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get appNameFull => 'Everyday Christian';
+
+  @override
+  String get appTaglineBiblical => 'Guía bíblica con IA';
+
+  @override
+  String get getEverydayChristian => 'Descarga Everyday Christian';
+
+  @override
+  String get downloadEverydayChristian => 'Descarga Everyday Christian →';
+
+  @override
+  String dailyDevotionalTitle(String title) {
+    return 'Devocional Diario: $title';
+  }
+
+  @override
+  String get dailyDevotionalFallback => 'Devocional Diario';
+
+  @override
+  String get startDayWithGodsWord => 'Comienza tu día con la palabra de Dios';
+
+  @override
+  String get dailyDevotionalChannelName => 'Devocional Diario';
+
+  @override
+  String get dailyDevotionalChannelDesc =>
+      'Recordatorios del devocional diario';
+
+  @override
+  String get dailyVerseChannelName => 'Versículo Diario';
+
+  @override
+  String get dailyVerseChannelDesc => 'Notificaciones del versículo diario';
+
+  @override
+  String get prayerReminder => 'Recordatorio de Oración';
+
+  @override
+  String get timeToPray => 'Tiempo de Orar';
+
+  @override
+  String prayerReminderBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# peticiones de oración',
+      one: 'una petición de oración',
+    );
+    return 'Tienes $_temp0 para elevar hoy';
+  }
+
+  @override
+  String get timeWithGod => 'Toma un momento para pasar tiempo con Dios';
+
+  @override
+  String get prayerRemindersChannelName => 'Recordatorios de Oración';
+
+  @override
+  String get prayerRemindersChannelDesc =>
+      'Notificaciones de recordatorios de oración';
+
+  @override
+  String bibleReadingTitle(String title) {
+    return 'Lectura Bíblica: $title';
+  }
+
+  @override
+  String get bibleReadingFallback => 'Lectura Bíblica';
+
+  @override
+  String get continueReadingPlan => 'Continúa tu plan de lectura hoy';
+
+  @override
+  String get startReadingPlanNotification =>
+      'Inicia un plan de lectura para crecer en la palabra de Dios';
+
+  @override
+  String get readingPlanChannelName => 'Plan de Lectura';
+
+  @override
+  String get readingPlanChannelDesc =>
+      'Recordatorios del plan de lectura bíblica';
+
+  @override
+  String get languageChangedToEnglish => 'Idioma cambiado a Inglés';
+
+  @override
+  String get languageChangedToSpanish => 'Idioma cambiado a Español';
+
+  @override
+  String get thisWillPermanentlyDelete => 'Esto eliminará permanentemente:';
+
+  @override
+  String failedToDeleteData(String error) {
+    return '❌ Error al eliminar datos: $error';
+  }
+
+  @override
+  String verseShareSubject(String reference) {
+    return 'Versículo Bíblico - $reference';
+  }
+
+  @override
+  String get chatOptionsTooltip => 'Opciones de Chat';
+
+  @override
+  String get conversationHistoryTooltip => 'Historial de Conversaciones';
+
+  @override
+  String get newConversationTooltip => 'Nueva Conversación';
+
+  @override
+  String genericError(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String errorLoadingBooks(String error) {
+    return 'Error al cargar libros: $error';
+  }
+
+  @override
+  String exportedDataSuccessfully(int prayerCount, int chatCount) {
+    return '📤 Exportados $prayerCount diario(s) de oración y $chatCount conversación(es)';
+  }
+
+  @override
+  String get cacheClearedSuccessfully => '✅ Caché borrado exitosamente';
+
+  @override
+  String get unlockAppPrompt =>
+      'Desbloquea Everyday Christian para acceder a tu contenido espiritual';
+
+  @override
+  String get enableAppLockPrompt =>
+      'Activa el bloqueo de aplicación para proteger tu contenido espiritual';
+
+  @override
+  String get pleaseAcceptDocuments => 'Por favor lee y acepta ambos documentos';
+
+  @override
+  String get scriptureChatHint => 'Chat sobre las Escrituras...';
 }
