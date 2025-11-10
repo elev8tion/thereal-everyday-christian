@@ -1339,6 +1339,15 @@ class AppLocalizationsEs extends AppLocalizations {
       'Si está en crisis, por favor contacte:\n\n🇺🇸 Estados Unidos:\n988 Línea de Prevención del Suicidio y Crisis\nLlame o envíe mensaje de texto al 988\n\nCrisis Text Line\nEnvíe HOME al 741741\n\nRAINN Línea Nacional de Asalto Sexual\nLlame al 800-656-4673\n\n🇲🇽 México:\nLínea de la Vida: 55-5259-8121\nCrisis por WhatsApp: 55-8585-1111\n\n🇪🇸 España:\nTeléfono de la Esperanza: 024\nTeléfono contra el Suicidio: 717-003-717\n\n🌎 Internacional:\nSi está fuera de estos países, busque servicios de crisis locales en su región.\n\nEsta aplicación proporciona herramientas estructuradas para prácticas de fe, pero no sustituye la ayuda profesional.';
 
   @override
+  String get crisisResourcesAvailable => 'Recursos de Crisis Disponibles';
+
+  @override
+  String get crisisResourcesTapToView => 'Toca para ver recursos →';
+
+  @override
+  String get crisisResourcesView => 'Ver';
+
+  @override
   String get acceptAndContinue => 'Aceptar y Continuar';
 
   @override

@@ -1327,6 +1327,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'If you\'re in crisis, please contact:\n\n988 Suicide & Crisis Lifeline\nCall or text 988\n\nCrisis Text Line\nText HOME to 741741\n\nRAINN National Sexual Assault Hotline\nCall 800-656-4673\n\nThis app provides structured tools for faith practices but is not a substitute for professional help.';
 
   @override
+  String get crisisResourcesAvailable => 'Crisis Resources Available';
+
+  @override
+  String get crisisResourcesTapToView => 'Tap to view resources →';
+
+  @override
+  String get crisisResourcesView => 'View';
+
+  @override
   String get acceptAndContinue => 'Accept & Continue';
 
   @override

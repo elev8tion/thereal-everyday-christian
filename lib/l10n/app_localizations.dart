@@ -2499,6 +2499,24 @@ abstract class AppLocalizations {
   /// **'If you\'re in crisis, please contact:\n\n988 Suicide & Crisis Lifeline\nCall or text 988\n\nCrisis Text Line\nText HOME to 741741\n\nRAINN National Sexual Assault Hotline\nCall 800-656-4673\n\nThis app provides structured tools for faith practices but is not a substitute for professional help.'**
   String get crisisResourcesText;
 
+  /// Crisis notification snackbar title
+  ///
+  /// In en, this message translates to:
+  /// **'Crisis Resources Available'**
+  String get crisisResourcesAvailable;
+
+  /// Crisis notification snackbar tap prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to view resources →'**
+  String get crisisResourcesTapToView;
+
+  /// Crisis notification snackbar action button
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get crisisResourcesView;
+
   /// Legal agreements accept button
   ///
   /// In en, this message translates to:

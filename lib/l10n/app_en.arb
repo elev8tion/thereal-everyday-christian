@@ -1839,6 +1839,18 @@
   "@crisisResourcesText": {
     "description": "Crisis resources contact information"
   },
+  "crisisResourcesAvailable": "Crisis Resources Available",
+  "@crisisResourcesAvailable": {
+    "description": "Crisis notification snackbar title"
+  },
+  "crisisResourcesTapToView": "Tap to view resources →",
+  "@crisisResourcesTapToView": {
+    "description": "Crisis notification snackbar tap prompt"
+  },
+  "crisisResourcesView": "View",
+  "@crisisResourcesView": {
+    "description": "Crisis notification snackbar action button"
+  },
   "acceptAndContinue": "Accept & Continue",
   "@acceptAndContinue": {
     "description": "Legal agreements accept button"
