@@ -328,6 +328,8 @@ class ChatScreen extends HookConsumerWidget {
 
         // Capture the context that has Navigator access
         final navigatorContext = context;
+        final l10n = AppLocalizations.of(context);
+        final currentLanguage = l10n.localeName;
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -362,26 +364,26 @@ class ChatScreen extends HookConsumerWidget {
                     children: [
                       Icon(Icons.info_outline, color: Colors.orange.shade300, size: 20),
                       const SizedBox(width: 8),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          'Crisis Resources Available',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                          l10n.crisisResourcesAvailable,
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(crisisResult.getMessage(), style: const TextStyle(fontSize: 14, color: Colors.white)),
+                  Text(crisisResult.getMessage(language: currentLanguage), style: const TextStyle(fontSize: 14, color: Colors.white)),
                   const SizedBox(height: 8),
                   Text(
-                    'Tap to view resources →',
+                    l10n.crisisResourcesTapToView,
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.orange.shade300),
                   ),
                 ],
               ),
             ),
             action: SnackBarAction(
-              label: 'View',
+              label: l10n.crisisResourcesView,
               textColor: Colors.orange.shade300,
               onPressed: () {
                 // Use navigatorContext to ensure we have Navigator access

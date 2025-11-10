@@ -529,7 +529,7 @@ class _UnifiedInteractiveOnboardingScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '"Give thanks to the LORD, for he is good, for his loving kindness endures forever."',
+                        l10n.demoVerseText,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 16,
                               minSize: 14, maxSize: 18),
@@ -541,7 +541,7 @@ class _UnifiedInteractiveOnboardingScreenState
                       ),
                       const SizedBox(height: AppSpacing.sm),
                       Text(
-                        'Psalm 107:1',
+                        l10n.demoVerseReference,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 13,
                               minSize: 11, maxSize: 15),

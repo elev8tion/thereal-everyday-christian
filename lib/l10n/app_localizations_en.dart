@@ -1346,6 +1346,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get demoDevotionalTitle2 => 'Thankful Heart';
 
   @override
+  String get demoVerseText =>
+      '\"Give thanks to the LORD, for he is good, for his loving kindness endures forever.\"';
+
+  @override
+  String get demoVerseReference => 'Psalm 107:1';
+
+  @override
   String get demoReflectionText =>
       'Gratitude doesn\'t always come naturally—especially when life feels overwhelming. Yet Psalm 107 opens with a powerful invitation: give thanks...';
 

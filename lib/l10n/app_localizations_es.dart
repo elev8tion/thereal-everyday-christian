@@ -1357,6 +1357,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get demoDevotionalTitle2 => 'Corazón Agradecido';
 
   @override
+  String get demoVerseText =>
+      '\"Dad gracias a SEÑOR, porque es bueno, porque su bondad es eterna.\"';
+
+  @override
+  String get demoVerseReference => 'Salmo 107:1';
+
+  @override
   String get demoReflectionText =>
       'La gratitud no siempre surge naturalmente, especialmente cuando la vida se siente abrumadora. Sin embargo, el Salmo 107 comienza con una poderosa invitación: den gracias...';
 

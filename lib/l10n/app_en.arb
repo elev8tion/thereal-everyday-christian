@@ -1863,6 +1863,14 @@
   "@demoDevotionalTitle2": {
     "description": "Demo devotional title line 2"
   },
+  "demoVerseText": "\"Give thanks to the LORD, for he is good, for his loving kindness endures forever.\"",
+  "@demoVerseText": {
+    "description": "Demo devotional opening scripture verse text"
+  },
+  "demoVerseReference": "Psalm 107:1",
+  "@demoVerseReference": {
+    "description": "Demo devotional opening scripture reference"
+  },
   "demoReflectionText": "Gratitude doesn't always come naturally—especially when life feels overwhelming. Yet Psalm 107 opens with a powerful invitation: give thanks...",
   "@demoReflectionText": {
     "description": "Demo devotional reflection preview"

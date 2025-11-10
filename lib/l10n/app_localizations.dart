@@ -2535,6 +2535,18 @@ abstract class AppLocalizations {
   /// **'Thankful Heart'**
   String get demoDevotionalTitle2;
 
+  /// Demo devotional opening scripture verse text
+  ///
+  /// In en, this message translates to:
+  /// **'\"Give thanks to the LORD, for he is good, for his loving kindness endures forever.\"'**
+  String get demoVerseText;
+
+  /// Demo devotional opening scripture reference
+  ///
+  /// In en, this message translates to:
+  /// **'Psalm 107:1'**
+  String get demoVerseReference;
+
   /// Demo devotional reflection preview
   ///
   /// In en, this message translates to:
