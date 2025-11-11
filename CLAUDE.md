@@ -104,6 +104,15 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 - Location: `assets/devotionals/`
 - Documentation: `assets/devotionals/BATCH_COMPLETION_SUMMARY.md`
 
+**Bible Translations:**
+- **English:** WEB (World English Bible) - Public domain
+  - Database: `assets/bible.db`
+  - 31,103 verses
+- **Spanish:** RVR1909 (Reina-Valera 1909) - Public domain
+  - Database: `assets/spanish_bible_rvr1909.db`
+  - 31,103 verses
+  - Classic translation, widely recognized
+
 **Reading Plans:**
 - **10+ plans total:**
   - 3 book-based plans in `lib/core/database/database_helper.dart` (lines 1005-1081)
