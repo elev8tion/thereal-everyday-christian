@@ -2764,4 +2764,82 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get scriptureChatHint => 'Chat de Escrituras';
+
+  @override
+  String get currentStreak => 'Racha Actual';
+
+  @override
+  String get bestStreak => 'Mejor Racha';
+
+  @override
+  String get activeDays => 'Días Activos';
+
+  @override
+  String get completedReadings => 'Completado';
+
+  @override
+  String ofTotal(int total) {
+    return 'de $total';
+  }
+
+  @override
+  String get estimatedCompletion => 'Finalización Estimada';
+
+  @override
+  String inDays(int count, String days) {
+    return 'en $count $days';
+  }
+
+  @override
+  String get todayExclamation => '¡hoy!';
+
+  @override
+  String daysOverdue(int count, String days) {
+    return '$count $days de retraso';
+  }
+
+  @override
+  String get day => 'día';
+
+  @override
+  String get heatmapLess => 'Menos';
+
+  @override
+  String get heatmapMore => 'Más';
+
+  @override
+  String get monthJanuary => 'Enero';
+
+  @override
+  String get monthFebruary => 'Febrero';
+
+  @override
+  String get monthMarch => 'Marzo';
+
+  @override
+  String get monthApril => 'Abril';
+
+  @override
+  String get monthMay => 'Mayo';
+
+  @override
+  String get monthJune => 'Junio';
+
+  @override
+  String get monthJuly => 'Julio';
+
+  @override
+  String get monthAugust => 'Agosto';
+
+  @override
+  String get monthSeptember => 'Septiembre';
+
+  @override
+  String get monthOctober => 'Octubre';
+
+  @override
+  String get monthNovember => 'Noviembre';
+
+  @override
+  String get monthDecember => 'Diciembre';
 }

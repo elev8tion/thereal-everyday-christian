@@ -2724,4 +2724,82 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scriptureChatHint => 'Scripture Chat...';
+
+  @override
+  String get currentStreak => 'Current Streak';
+
+  @override
+  String get bestStreak => 'Best Streak';
+
+  @override
+  String get activeDays => 'Active Days';
+
+  @override
+  String get completedReadings => 'Completed';
+
+  @override
+  String ofTotal(int total) {
+    return 'of $total';
+  }
+
+  @override
+  String get estimatedCompletion => 'Estimated Completion';
+
+  @override
+  String inDays(int count, String days) {
+    return 'in $count $days';
+  }
+
+  @override
+  String get todayExclamation => 'today!';
+
+  @override
+  String daysOverdue(int count, String days) {
+    return '$count $days overdue';
+  }
+
+  @override
+  String get day => 'day';
+
+  @override
+  String get heatmapLess => 'Less';
+
+  @override
+  String get heatmapMore => 'More';
+
+  @override
+  String get monthJanuary => 'January';
+
+  @override
+  String get monthFebruary => 'February';
+
+  @override
+  String get monthMarch => 'March';
+
+  @override
+  String get monthApril => 'April';
+
+  @override
+  String get monthMay => 'May';
+
+  @override
+  String get monthJune => 'June';
+
+  @override
+  String get monthJuly => 'July';
+
+  @override
+  String get monthAugust => 'August';
+
+  @override
+  String get monthSeptember => 'September';
+
+  @override
+  String get monthOctober => 'October';
+
+  @override
+  String get monthNovember => 'November';
+
+  @override
+  String get monthDecember => 'December';
 }

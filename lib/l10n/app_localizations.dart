@@ -4868,6 +4868,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scripture Chat...'**
   String get scriptureChatHint;
+
+  /// Current streak label in reading progress
+  ///
+  /// In en, this message translates to:
+  /// **'Current Streak'**
+  String get currentStreak;
+
+  /// Best/longest streak label in reading progress
+  ///
+  /// In en, this message translates to:
+  /// **'Best Streak'**
+  String get bestStreak;
+
+  /// Active days label in reading progress
+  ///
+  /// In en, this message translates to:
+  /// **'Active Days'**
+  String get activeDays;
+
+  /// Completed readings label
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedReadings;
+
+  /// Format for 'X of Y'
+  ///
+  /// In en, this message translates to:
+  /// **'of {total}'**
+  String ofTotal(int total);
+
+  /// Estimated completion date label
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated Completion'**
+  String get estimatedCompletion;
+
+  /// Format for 'in X days'
+  ///
+  /// In en, this message translates to:
+  /// **'in {count} {days}'**
+  String inDays(int count, String days);
+
+  /// Today with exclamation
+  ///
+  /// In en, this message translates to:
+  /// **'today!'**
+  String get todayExclamation;
+
+  /// Format for 'X days overdue'
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {days} overdue'**
+  String daysOverdue(int count, String days);
+
+  /// Singular 'day'
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get day;
+
+  /// Heatmap legend label for less activity
+  ///
+  /// In en, this message translates to:
+  /// **'Less'**
+  String get heatmapLess;
+
+  /// Heatmap legend label for more activity
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get heatmapMore;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'January'**
+  String get monthJanuary;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'February'**
+  String get monthFebruary;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'March'**
+  String get monthMarch;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'April'**
+  String get monthApril;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'May'**
+  String get monthMay;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'June'**
+  String get monthJune;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'July'**
+  String get monthJuly;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'August'**
+  String get monthAugust;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'September'**
+  String get monthSeptember;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'October'**
+  String get monthOctober;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'November'**
+  String get monthNovember;
+
+  /// Month name
+  ///
+  /// In en, this message translates to:
+  /// **'December'**
+  String get monthDecember;
 }
 
 class _AppLocalizationsDelegate

@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../components/frosted_glass_card.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
+import '../l10n/app_localizations.dart';
 
 /// Widget displaying reading plan progress statistics
 class ReadingProgressStatsWidget extends StatelessWidget {
@@ -17,6 +18,7 @@ class ReadingProgressStatsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final currentStreak = stats['current_streak'] as int;
     final longestStreak = stats['longest_streak'] as int;
     final totalDaysActive = stats['total_days_active'] as int;
@@ -33,9 +35,9 @@ class ReadingProgressStatsWidget extends StatelessWidget {
                 context,
                 icon: Icons.local_fire_department,
                 iconColor: Colors.orange,
-                title: 'Current Streak',
+                title: l10n.currentStreak,
                 value: '$currentStreak',
-                subtitle: 'day${currentStreak != 1 ? 's' : ''}',
+                subtitle: l10n.streakDays(currentStreak),
               ).animate().fadeIn(duration: AppAnimations.slow, delay: 100.ms),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -44,9 +46,9 @@ class ReadingProgressStatsWidget extends StatelessWidget {
                 context,
                 icon: Icons.emoji_events,
                 iconColor: Colors.amber,
-                title: 'Best Streak',
+                title: l10n.bestStreak,
                 value: '$longestStreak',
-                subtitle: 'day${longestStreak != 1 ? 's' : ''}',
+                subtitle: l10n.streakDays(longestStreak),
               ).animate().fadeIn(duration: AppAnimations.slow, delay: 200.ms),
             ),
           ],
@@ -59,9 +61,9 @@ class ReadingProgressStatsWidget extends StatelessWidget {
                 context,
                 icon: Icons.event_available,
                 iconColor: Colors.green,
-                title: 'Active Days',
+                title: l10n.activeDays,
                 value: '$totalDaysActive',
-                subtitle: 'day${totalDaysActive != 1 ? 's' : ''}',
+                subtitle: l10n.streakDays(totalDaysActive),
               ).animate().fadeIn(duration: AppAnimations.slow, delay: 300.ms),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -70,9 +72,9 @@ class ReadingProgressStatsWidget extends StatelessWidget {
                 context,
                 icon: Icons.check_circle,
                 iconColor: Colors.blue,
-                title: 'Completed',
+                title: l10n.completedReadings,
                 value: '$completedReadings',
-                subtitle: 'of $totalReadings',
+                subtitle: l10n.ofTotal(totalReadings),
               ).animate().fadeIn(duration: AppAnimations.slow, delay: 400.ms),
             ),
           ],
@@ -155,6 +157,7 @@ class ReadingProgressStatsWidget extends StatelessWidget {
   }
 
   Widget _buildEstimatedCompletionCard(BuildContext context, DateTime estimatedDate) {
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final daysUntil = estimatedDate.difference(now).inDays;
 
@@ -180,7 +183,7 @@ class ReadingProgressStatsWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Estimated Completion',
+                  l10n.estimatedCompletion,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                     color: AppColors.secondaryText,
@@ -189,7 +192,7 @@ class ReadingProgressStatsWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  _formatDate(estimatedDate),
+                  _formatDate(estimatedDate, context),
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                     fontWeight: FontWeight.w700,
@@ -198,10 +201,10 @@ class ReadingProgressStatsWidget extends StatelessWidget {
                 ),
                 Text(
                   daysUntil > 0
-                      ? 'in $daysUntil day${daysUntil != 1 ? 's' : ''}'
+                      ? l10n.inDays(daysUntil, l10n.streakDays(daysUntil))
                       : daysUntil == 0
-                          ? 'today!'
-                          : '${-daysUntil} day${daysUntil != -1 ? 's' : ''} overdue',
+                          ? l10n.todayExclamation
+                          : l10n.daysOverdue(-daysUntil, l10n.streakDays(-daysUntil)),
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                     color: daysUntil < 0 ? Colors.orange : AppColors.tertiaryText,
@@ -215,20 +218,12 @@ class ReadingProgressStatsWidget extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
+  String _formatDate(DateTime date, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final months = [
+      l10n.monthJanuary, l10n.monthFebruary, l10n.monthMarch, l10n.monthApril,
+      l10n.monthMay, l10n.monthJune, l10n.monthJuly, l10n.monthAugust,
+      l10n.monthSeptember, l10n.monthOctober, l10n.monthNovember, l10n.monthDecember
     ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }

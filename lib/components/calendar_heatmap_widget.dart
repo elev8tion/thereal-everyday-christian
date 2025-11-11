@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
+import '../l10n/app_localizations.dart';
 
 /// Calendar heatmap widget showing reading activity over time
 /// Similar to GitHub's contribution graph
@@ -138,10 +139,11 @@ class CalendarHeatmapWidget extends StatelessWidget {
   }
 
   Widget _buildLegend(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Row(
       children: [
         Text(
-          'Less',
+          l10n.heatmapLess,
           style: TextStyle(
             fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 8, maxSize: 12),
             color: Colors.white.withValues(alpha: 0.6),
@@ -154,7 +156,7 @@ class CalendarHeatmapWidget extends StatelessWidget {
         _buildLegendCell(3, context),
         const SizedBox(width: 8),
         Text(
-          'More',
+          l10n.heatmapMore,
           style: TextStyle(
             fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 8, maxSize: 12),
             color: Colors.white.withValues(alpha: 0.6),

@@ -862,5 +862,103 @@
   "unlockAppPrompt": "Desbloquea Everyday Christian para acceder a tu contenido espiritual",
   "enableAppLockPrompt": "Activa el bloqueo de aplicación para proteger tu contenido espiritual",
   "pleaseAcceptDocuments": "Por favor lee y acepta ambos documentos",
-  "scriptureChatHint": "Chat de Escrituras"
+  "scriptureChatHint": "Chat de Escrituras",
+  "currentStreak": "Racha Actual",
+  "@currentStreak": {
+    "description": "Current streak label in reading progress"
+  },
+  "bestStreak": "Mejor Racha",
+  "@bestStreak": {
+    "description": "Best/longest streak label in reading progress"
+  },
+  "activeDays": "Días Activos",
+  "@activeDays": {
+    "description": "Active days label in reading progress"
+  },
+  "completedReadings": "Completado",
+  "@completedReadings": {
+    "description": "Completed readings label"
+  },
+  "ofTotal": "de {total}",
+  "@ofTotal": {
+    "description": "Format for 'X of Y'",
+    "placeholders": {
+      "total": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "estimatedCompletion": "Finalización Estimada",
+  "@estimatedCompletion": {
+    "description": "Estimated completion date label"
+  },
+  "inDays": "en {count} {days}",
+  "@inDays": {
+    "description": "Format for 'in X days'",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      },
+      "days": {
+        "type": "String",
+        "example": "días"
+      }
+    }
+  },
+  "todayExclamation": "¡hoy!",
+  "@todayExclamation": {
+    "description": "Today with exclamation"
+  },
+  "daysOverdue": "{count} {days} de retraso",
+  "@daysOverdue": {
+    "description": "Format for 'X days overdue'",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "days": {
+        "type": "String",
+        "example": "días"
+      }
+    }
+  },
+  "day": "día",
+  "@day": {
+    "description": "Singular 'day'"
+  },
+  "heatmapLess": "Menos",
+  "@heatmapLess": {
+    "description": "Heatmap legend label for less activity"
+  },
+  "heatmapMore": "Más",
+  "@heatmapMore": {
+    "description": "Heatmap legend label for more activity"
+  },
+  "monthJanuary": "Enero",
+  "@monthJanuary": {"description": "Month name"},
+  "monthFebruary": "Febrero",
+  "@monthFebruary": {"description": "Month name"},
+  "monthMarch": "Marzo",
+  "@monthMarch": {"description": "Month name"},
+  "monthApril": "Abril",
+  "@monthApril": {"description": "Month name"},
+  "monthMay": "Mayo",
+  "@monthMay": {"description": "Month name"},
+  "monthJune": "Junio",
+  "@monthJune": {"description": "Month name"},
+  "monthJuly": "Julio",
+  "@monthJuly": {"description": "Month name"},
+  "monthAugust": "Agosto",
+  "@monthAugust": {"description": "Month name"},
+  "monthSeptember": "Septiembre",
+  "@monthSeptember": {"description": "Month name"},
+  "monthOctober": "Octubre",
+  "@monthOctober": {"description": "Month name"},
+  "monthNovember": "Noviembre",
+  "@monthNovember": {"description": "Month name"},
+  "monthDecember": "Diciembre",
+  "@monthDecember": {"description": "Month name"}
 }
