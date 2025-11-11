@@ -239,9 +239,17 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
         }
       }
 
-      // Step 2: Filter books (existing logic)
+      // Step 2: Filter books - check both English and translated names
+      final l10n = AppLocalizations.of(context);
+      final language = l10n.localeName;
+
       _filteredBooks = _allBooks
-          .where((book) => book.toLowerCase().contains(query.toLowerCase()))
+          .where((book) {
+            final englishName = book.toLowerCase();
+            final translatedName = BookNameService.getBookName(book, language).toLowerCase();
+            final searchLower = query.toLowerCase();
+            return englishName.contains(searchLower) || translatedName.contains(searchLower);
+          })
           .toList();
 
       // Step 3: If no books match, fall back to FTS5 verse search
@@ -308,29 +316,23 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                       .animate()
                       .fadeIn(duration: AppAnimations.normal, delay: 100.ms)
                       .slideY(begin: -0.2, end: 0),
-                  // TabBar always visible
-                  _buildTabBar()
-                      .animate()
-                      .fadeIn(duration: AppAnimations.normal, delay: 200.ms),
+                  // TabBar - hide during search
+                  if (!_showSearchOverlay)
+                    _buildTabBar()
+                        .animate()
+                        .fadeIn(duration: AppAnimations.normal, delay: 200.ms),
                   Expanded(
                     child: _isLoading
                         ? const Center(child: CircularProgressIndicator())
-                        : Stack(
-                            children: [
-                              // Background: TabBarView always rendered
-                              TabBarView(
+                        : _showSearchOverlay
+                            ? _buildSearchOverlay()
+                            : TabBarView(
                                 controller: _tabController,
                                 children: [
                                   _buildTestamentView(_getOldTestamentBooks()),
                                   _buildTestamentView(_getNewTestamentBooks()),
                                 ],
                               ),
-
-                              // Foreground: Search overlay (when active)
-                              if (_showSearchOverlay)
-                                _buildSearchOverlay(),
-                            ],
-                          ),
                 ),
               ],
             ),
@@ -370,16 +372,10 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   /// Build filtered books list (shown when books match search)
   Widget _buildFilteredBooks() {
-    return GridView.builder(
-      padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.8,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ),
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       itemCount: _filteredBooks.length,
-      itemBuilder: (context, index) => _buildBookCard(_filteredBooks[index]),
+      itemBuilder: (context, index) => _buildBookListItem(_filteredBooks[index]),
     );
   }
 
