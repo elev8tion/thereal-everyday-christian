@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 17;
+  static const int _databaseVersion = 19;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -195,12 +195,13 @@ class DatabaseHelper {
           month INTEGER NOT NULL,
           day INTEGER NOT NULL,
           verse_id INTEGER NOT NULL,
+          language TEXT DEFAULT 'en',
           FOREIGN KEY (verse_id) REFERENCES bible_verses (id),
-          UNIQUE(month, day)
+          UNIQUE(month, day, language)
         )
       ''');
 
-      await db.execute('CREATE INDEX idx_daily_verse_schedule_date ON daily_verse_schedule(month, day)');
+      await db.execute('CREATE INDEX idx_daily_verse_schedule_date_lang ON daily_verse_schedule(month, day, language)');
 
       // Verse bookmarks
       await db.execute('''
@@ -1016,6 +1017,154 @@ class DatabaseHelper {
         _logger.info('✅ Migration v16→v17 complete: app_metadata table created');
       } catch (e) {
         _logger.error('Migration v16→v17 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 18) {
+      try {
+        // v17→v18: Add language column to daily_verse_schedule for bilingual support
+        _logger.info('Migrating v17→v18: Adding language support to daily_verse_schedule');
+
+        // Add language column (defaults to 'en' for existing rows)
+        await db.execute('''
+          ALTER TABLE daily_verse_schedule
+          ADD COLUMN language TEXT DEFAULT 'en'
+        ''');
+
+        // Drop old unique constraint and create new one with language
+        await db.execute('DROP INDEX IF EXISTS idx_daily_verse_schedule_date');
+        await db.execute('''
+          CREATE UNIQUE INDEX idx_daily_verse_schedule_date_lang
+          ON daily_verse_schedule(month, day, language)
+        ''');
+
+        // For existing installations: Generate Spanish schedule if Spanish verses exist
+        final spanishCount = Sqflite.firstIntValue(await db.rawQuery(
+          'SELECT COUNT(*) FROM bible_verses WHERE language = ?', ['es']
+        )) ?? 0;
+
+        if (spanishCount > 0) {
+          _logger.info('Spanish verses found ($spanishCount), generating Spanish schedule...');
+          await db.execute('''
+            INSERT OR REPLACE INTO daily_verse_schedule (month, day, verse_id, language)
+            SELECT
+              s.month,
+              s.day,
+              bv_es.id,
+              'es' as language
+            FROM daily_verse_schedule s
+            JOIN bible_verses bv_en ON s.verse_id = bv_en.id AND s.language = 'en'
+            JOIN bible_verses bv_es ON (
+              CASE bv_en.book
+                WHEN 'Genesis' THEN 'Génesis' WHEN 'Exodus' THEN 'Éxodo' WHEN 'Leviticus' THEN 'Levítico'
+                WHEN 'Numbers' THEN 'Números' WHEN 'Deuteronomy' THEN 'Deuteronomio' WHEN 'Joshua' THEN 'Josué'
+                WHEN 'Judges' THEN 'Jueces' WHEN 'Ruth' THEN 'Rut' WHEN '1 Samuel' THEN '1 Samuel'
+                WHEN '2 Samuel' THEN '2 Samuel' WHEN '1 Kings' THEN '1 Reyes' WHEN '2 Kings' THEN '2 Reyes'
+                WHEN '1 Chronicles' THEN '1 Crónicas' WHEN '2 Chronicles' THEN '2 Crónicas' WHEN 'Ezra' THEN 'Esdras'
+                WHEN 'Nehemiah' THEN 'Nehemías' WHEN 'Esther' THEN 'Ester' WHEN 'Job' THEN 'Job'
+                WHEN 'Psalms' THEN 'Salmos' WHEN 'Proverbs' THEN 'Proverbios' WHEN 'Ecclesiastes' THEN 'Eclesiastés'
+                WHEN 'Song of Solomon' THEN 'Cantares' WHEN 'Isaiah' THEN 'Isaías' WHEN 'Jeremiah' THEN 'Jeremías'
+                WHEN 'Lamentations' THEN 'Lamentaciones' WHEN 'Ezekiel' THEN 'Ezequiel' WHEN 'Daniel' THEN 'Daniel'
+                WHEN 'Hosea' THEN 'Oseas' WHEN 'Joel' THEN 'Joel' WHEN 'Amos' THEN 'Amós'
+                WHEN 'Obadiah' THEN 'Abdías' WHEN 'Jonah' THEN 'Jonás' WHEN 'Micah' THEN 'Miqueas'
+                WHEN 'Nahum' THEN 'Nahúm' WHEN 'Habakkuk' THEN 'Habacuc' WHEN 'Zephaniah' THEN 'Sofonías'
+                WHEN 'Haggai' THEN 'Hageo' WHEN 'Zechariah' THEN 'Zacarías' WHEN 'Malachi' THEN 'Malaquías'
+                WHEN 'Matthew' THEN 'Mateo' WHEN 'Mark' THEN 'Marcos' WHEN 'Luke' THEN 'Lucas'
+                WHEN 'John' THEN 'Juan' WHEN 'Acts' THEN 'Hechos' WHEN 'Romans' THEN 'Romanos'
+                WHEN '1 Corinthians' THEN '1 Corintios' WHEN '2 Corinthians' THEN '2 Corintios' WHEN 'Galatians' THEN 'Gálatas'
+                WHEN 'Ephesians' THEN 'Efesios' WHEN 'Philippians' THEN 'Filipenses' WHEN 'Colossians' THEN 'Colosenses'
+                WHEN '1 Thessalonians' THEN '1 Tesalonicenses' WHEN '2 Thessalonians' THEN '2 Tesalonicenses'
+                WHEN '1 Timothy' THEN '1 Timoteo' WHEN '2 Timothy' THEN '2 Timoteo' WHEN 'Titus' THEN 'Tito'
+                WHEN 'Philemon' THEN 'Filemón' WHEN 'Hebrews' THEN 'Hebreos' WHEN 'James' THEN 'Santiago'
+                WHEN '1 Peter' THEN '1 Pedro' WHEN '2 Peter' THEN '2 Pedro' WHEN '1 John' THEN '1 Juan'
+                WHEN '2 John' THEN '2 Juan' WHEN '3 John' THEN '3 Juan' WHEN 'Jude' THEN 'Judas'
+                WHEN 'Revelation' THEN 'Apocalipsis' ELSE bv_en.book
+              END = bv_es.book AND
+              bv_en.chapter = bv_es.chapter AND
+              bv_en.verse = bv_es.verse AND
+              bv_es.language = 'es'
+            )
+          ''');
+          final spanishScheduleCount = Sqflite.firstIntValue(await db.rawQuery(
+            'SELECT COUNT(*) FROM daily_verse_schedule WHERE language = ?', ['es']
+          )) ?? 0;
+          _logger.info('✅ Created $spanishScheduleCount Spanish schedule entries');
+        }
+
+        _logger.info('✅ Migration v17→v18 complete: daily_verse_schedule now supports multiple languages');
+      } catch (e) {
+        _logger.error('Migration v17→v18 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 19) {
+      try {
+        // v18→v19: Generate Spanish schedule entries for existing installations
+        _logger.info('Migrating v18→v19: Generating Spanish verse schedule');
+
+        final spanishCount = Sqflite.firstIntValue(await db.rawQuery(
+          'SELECT COUNT(*) FROM bible_verses WHERE language = ?', ['es']
+        )) ?? 0;
+
+        final spanishScheduleExists = Sqflite.firstIntValue(await db.rawQuery(
+          'SELECT COUNT(*) FROM daily_verse_schedule WHERE language = ?', ['es']
+        )) ?? 0;
+
+        if (spanishCount > 0 && spanishScheduleExists == 0) {
+          _logger.info('Spanish verses found ($spanishCount), generating Spanish schedule...');
+          await db.execute('''
+            INSERT OR REPLACE INTO daily_verse_schedule (month, day, verse_id, language)
+            SELECT
+              s.month,
+              s.day,
+              bv_es.id,
+              'es' as language
+            FROM daily_verse_schedule s
+            JOIN bible_verses bv_en ON s.verse_id = bv_en.id AND s.language = 'en'
+            JOIN bible_verses bv_es ON (
+              CASE bv_en.book
+                WHEN 'Genesis' THEN 'Génesis' WHEN 'Exodus' THEN 'Éxodo' WHEN 'Leviticus' THEN 'Levítico'
+                WHEN 'Numbers' THEN 'Números' WHEN 'Deuteronomy' THEN 'Deuteronomio' WHEN 'Joshua' THEN 'Josué'
+                WHEN 'Judges' THEN 'Jueces' WHEN 'Ruth' THEN 'Rut' WHEN '1 Samuel' THEN '1 Samuel'
+                WHEN '2 Samuel' THEN '2 Samuel' WHEN '1 Kings' THEN '1 Reyes' WHEN '2 Kings' THEN '2 Reyes'
+                WHEN '1 Chronicles' THEN '1 Crónicas' WHEN '2 Chronicles' THEN '2 Crónicas' WHEN 'Ezra' THEN 'Esdras'
+                WHEN 'Nehemiah' THEN 'Nehemías' WHEN 'Esther' THEN 'Ester' WHEN 'Job' THEN 'Job'
+                WHEN 'Psalms' THEN 'Salmos' WHEN 'Proverbs' THEN 'Proverbios' WHEN 'Ecclesiastes' THEN 'Eclesiastés'
+                WHEN 'Song of Solomon' THEN 'Cantares' WHEN 'Isaiah' THEN 'Isaías' WHEN 'Jeremiah' THEN 'Jeremías'
+                WHEN 'Lamentations' THEN 'Lamentaciones' WHEN 'Ezekiel' THEN 'Ezequiel' WHEN 'Daniel' THEN 'Daniel'
+                WHEN 'Hosea' THEN 'Oseas' WHEN 'Joel' THEN 'Joel' WHEN 'Amos' THEN 'Amós'
+                WHEN 'Obadiah' THEN 'Abdías' WHEN 'Jonah' THEN 'Jonás' WHEN 'Micah' THEN 'Miqueas'
+                WHEN 'Nahum' THEN 'Nahúm' WHEN 'Habakkuk' THEN 'Habacuc' WHEN 'Zephaniah' THEN 'Sofonías'
+                WHEN 'Haggai' THEN 'Hageo' WHEN 'Zechariah' THEN 'Zacarías' WHEN 'Malachi' THEN 'Malaquías'
+                WHEN 'Matthew' THEN 'Mateo' WHEN 'Mark' THEN 'Marcos' WHEN 'Luke' THEN 'Lucas'
+                WHEN 'John' THEN 'Juan' WHEN 'Acts' THEN 'Hechos' WHEN 'Romans' THEN 'Romanos'
+                WHEN '1 Corinthians' THEN '1 Corintios' WHEN '2 Corinthians' THEN '2 Corintios' WHEN 'Galatians' THEN 'Gálatas'
+                WHEN 'Ephesians' THEN 'Efesios' WHEN 'Philippians' THEN 'Filipenses' WHEN 'Colossians' THEN 'Colosenses'
+                WHEN '1 Thessalonians' THEN '1 Tesalonicenses' WHEN '2 Thessalonians' THEN '2 Tesalonicenses'
+                WHEN '1 Timothy' THEN '1 Timoteo' WHEN '2 Timothy' THEN '2 Timoteo' WHEN 'Titus' THEN 'Tito'
+                WHEN 'Philemon' THEN 'Filemón' WHEN 'Hebrews' THEN 'Hebreos' WHEN 'James' THEN 'Santiago'
+                WHEN '1 Peter' THEN '1 Pedro' WHEN '2 Peter' THEN '2 Pedro' WHEN '1 John' THEN '1 Juan'
+                WHEN '2 John' THEN '2 Juan' WHEN '3 John' THEN '3 Juan' WHEN 'Jude' THEN 'Judas'
+                WHEN 'Revelation' THEN 'Apocalipsis' ELSE bv_en.book
+              END = bv_es.book AND
+              bv_en.chapter = bv_es.chapter AND
+              bv_en.verse = bv_es.verse AND
+              bv_es.language = 'es'
+            )
+          ''');
+          final spanishScheduleCount = Sqflite.firstIntValue(await db.rawQuery(
+            'SELECT COUNT(*) FROM daily_verse_schedule WHERE language = ?', ['es']
+          )) ?? 0;
+          _logger.info('✅ Created $spanishScheduleCount Spanish schedule entries');
+        } else {
+          _logger.info('Spanish schedule already exists or no Spanish verses, skipping');
+        }
+
+        _logger.info('✅ Migration v18→v19 complete: Spanish verse schedule generated');
+      } catch (e) {
+        _logger.error('Migration v18→v19 failed: $e');
         rethrow;
       }
     }

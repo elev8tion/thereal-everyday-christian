@@ -62,16 +62,20 @@ final todaysVerseProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
   final month = now.month;
   final day = now.day;
 
-  // Query daily_verse_schedule JOIN bible_verses
+  // Get current language as string
+  final locale = ref.read(languageProvider);
+  final language = locale.languageCode; // Extract 'es' or 'en' from Locale
+
+  // Query daily_verse_schedule JOIN bible_verses with language filter
   final results = await db.database.then((database) => database.rawQuery('''
     SELECT
       v.book || ' ' || v.chapter || ':' || v.verse as reference,
       v.text
     FROM daily_verse_schedule s
     JOIN bible_verses v ON s.verse_id = v.id
-    WHERE s.month = ? AND s.day = ?
+    WHERE s.month = ? AND s.day = ? AND v.language = ?
     LIMIT 1
-  ''', [month, day]));
+  ''', [month, day, language]));
 
   if (results.isEmpty) return null;
 
@@ -330,7 +334,6 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   final isWEBLoaded = await bibleLoader.isBibleLoaded('WEB');
   if (!isWEBLoaded) {
     await bibleLoader.loadAllBibles();
-  } else {
   }
 
   // Load devotional content on first launch (language-specific)
