@@ -96,6 +96,7 @@ flutter:
     - assets/devotionals/es/
     - assets/reading_plans/en/
     - assets/reading_plans/es/
+    - assets/data/
     - assets/bible.db
     - assets/spanish_bible_rvr1909.db
     - .env
