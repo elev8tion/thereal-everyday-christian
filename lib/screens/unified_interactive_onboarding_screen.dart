@@ -16,7 +16,7 @@ import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
 import '../l10n/app_localizations.dart';
 
-/// Unified interactive onboarding screen combining legal agreements and feature tour
+/// Unified interactive onboarding screen combini1ng legal agreements and feature tour
 class UnifiedInteractiveOnboardingScreen extends StatefulWidget {
   const UnifiedInteractiveOnboardingScreen({super.key});
 
@@ -114,7 +114,8 @@ class _UnifiedInteractiveOnboardingScreenState
         if (_chatScrollController.hasClients && mounted) {
           // Scroll to position that leaves "Siguiente" button prominently visible
           // From screenshot: button should be visible with some spacing above it
-          final targetPosition = _chatScrollController.position.maxScrollExtent - 180;
+          final targetPosition =
+              _chatScrollController.position.maxScrollExtent - 180;
           _chatScrollController.animateTo(
             targetPosition > 0 ? targetPosition : 0,
             duration: const Duration(milliseconds: 600),
@@ -212,7 +213,7 @@ class _UnifiedInteractiveOnboardingScreenState
             dispersionStrength: 0.3,
             blurIntensity: 0.05,
             child: Image.asset(
-              Localizations.localeOf(context).languageCode == 'es'
+              l10n.localeName == 'es'
                   ? 'assets/images/logo_spanish.png'
                   : 'assets/images/logo_transparent.png',
               width: 150,
@@ -387,9 +388,7 @@ class _UnifiedInteractiveOnboardingScreenState
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: value
-                    ? AppTheme.goldColor
-                    : AppColors.primaryBorder,
+                color: value ? AppTheme.goldColor : AppColors.primaryBorder,
                 width: 2,
               ),
               color: value ? AppTheme.goldColor : Colors.transparent,
@@ -506,71 +505,73 @@ class _UnifiedInteractiveOnboardingScreenState
           const SizedBox(height: AppSpacing.xl),
 
           // Opening Scripture section
-                Row(
-                  children: [
-                    Icon(Icons.menu_book,
-                        size: ResponsiveUtils.iconSize(context, 20),
-                        color: AppTheme.goldColor),
-                    const SizedBox(width: AppSpacing.sm),
-                    Text(
-                      l10n.openingScripture,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 14,
-                            minSize: 12, maxSize: 16),
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryText,
-                      ),
-                    ),
-                  ],
+          Row(
+            children: [
+              Icon(Icons.menu_book,
+                  size: ResponsiveUtils.iconSize(context, 20),
+                  color: AppTheme.goldColor),
+              const SizedBox(width: AppSpacing.sm),
+              Text(
+                l10n.openingScripture,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 14,
+                      minSize: 12, maxSize: 16),
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryText,
                 ),
-                const SizedBox(height: AppSpacing.md),
-                DarkGlassContainer(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.demoVerseText,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16,
-                              minSize: 14, maxSize: 18),
-                          color: AppColors.primaryText,
-                          height: 1.5,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        l10n.demoVerseReference,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 13,
-                              minSize: 11, maxSize: 15),
-                          color: AppTheme.goldColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-
-                // Reflection preview
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          DarkGlassContainer(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  l10n.demoReflectionText,
+                  '"Give thanks to the LORD, for he is good, for his loving kindness endures forever."',
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: ResponsiveUtils.fontSize(context, 16,
+                        minSize: 14, maxSize: 18),
                     color: AppColors.primaryText,
                     height: 1.5,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w500,
                   ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
                 ),
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  'Psalm 107:1',
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 13,
+                        minSize: 11, maxSize: 15),
+                    color: AppTheme.goldColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+
+          // Reflection preview
+          Text(
+            l10n.demoReflectionText,
+            style: TextStyle(
+              fontSize: 15,
+              color: AppColors.primaryText,
+              height: 1.5,
+            ),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
 
           const SizedBox(height: AppSpacing.xl),
 
           // Mark complete button
           GlassButton(
-            text: _devotionalCompleted ? l10n.completedExclamation : l10n.markAsCompleted,
+            text: _devotionalCompleted
+                ? l10n.completedExclamation
+                : l10n.markAsCompleted,
             onPressed: () {
               if (!_devotionalCompleted) {
                 setState(() => _devotionalCompleted = true);
@@ -636,7 +637,8 @@ class _UnifiedInteractiveOnboardingScreenState
         Expanded(
           child: SingleChildScrollView(
             controller: _chatScrollController,
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 140),
+            padding: const EdgeInsets.only(
+                left: 20, right: 20, top: 10, bottom: 140),
             child: Column(
               children: [
                 if (_chatDemoSent) ...[
@@ -719,7 +721,6 @@ class _UnifiedInteractiveOnboardingScreenState
                     ),
                   ),
                 ],
-
                 if (_chatDemoSent) ...[
                   // AI message bubble (matching chat_screen.dart lines 2062-2117)
                   BlurFade(
@@ -784,7 +785,8 @@ class _UnifiedInteractiveOnboardingScreenState
                               child: Text(
                                 _aiResponse,
                                 style: TextStyle(
-                                  fontSize: ResponsiveUtils.fontSize(context, 15,
+                                  fontSize: ResponsiveUtils.fontSize(
+                                      context, 15,
                                       minSize: 13, maxSize: 17),
                                   color: AppColors.primaryText,
                                   height: 1.4,
@@ -798,7 +800,6 @@ class _UnifiedInteractiveOnboardingScreenState
                     ),
                   ),
                 ],
-
                 if (_chatDemoSent) ...[
                   const SizedBox(height: AppSpacing.xl),
 
@@ -813,7 +814,6 @@ class _UnifiedInteractiveOnboardingScreenState
                     ),
                   ),
                 ],
-
                 const SizedBox(height: AppSpacing.xl),
               ],
             ),
@@ -891,116 +891,136 @@ class _UnifiedInteractiveOnboardingScreenState
               ),
               const SizedBox(width: AppSpacing.md),
               Padding(
-                padding: const EdgeInsets.all(8.0), // Extra space for glow overflow
+                padding:
+                    const EdgeInsets.all(8.0), // Extra space for glow overflow
                 child: GestureDetector(
-                  onTap: _chatDemoSent ? null : () {
-                    setState(() {
-                      _chatDemoSent = true;
-                      _animateAIChatResponse();
-                    });
-                    HapticFeedback.mediumImpact();
-                  },
+                  onTap: _chatDemoSent
+                      ? null
+                      : () {
+                          setState(() {
+                            _chatDemoSent = true;
+                            _animateAIChatResponse();
+                          });
+                          HapticFeedback.mediumImpact();
+                        },
                   child: Stack(
                     clipBehavior: Clip.none,
                     alignment: Alignment.center,
                     children: [
-                    // Ripple ring effect (outer)
-                    if (!_chatDemoSent)
+                      // Ripple ring effect (outer)
+                      if (!_chatDemoSent)
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppTheme.goldColor.withValues(alpha: 0.6),
+                              width: 2,
+                            ),
+                          ),
+                        )
+                            .animate(
+                              onPlay: (controller) => controller.repeat(),
+                            )
+                            .fadeOut(
+                              duration: const Duration(milliseconds: 1500),
+                              curve: Curves.easeOut,
+                            )
+                            .scale(
+                              duration: const Duration(milliseconds: 1500),
+                              begin: const Offset(1.0, 1.0),
+                              end: const Offset(1.6, 1.6),
+                              curve: Curves.easeOut,
+                            ),
+
+                      // Ripple ring effect (middle)
+                      if (!_chatDemoSent)
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppTheme.goldColor.withValues(alpha: 0.5),
+                              width: 2,
+                            ),
+                          ),
+                        )
+                            .animate(
+                              onPlay: (controller) => controller.repeat(),
+                            )
+                            .fadeOut(
+                              delay: const Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 1500),
+                              curve: Curves.easeOut,
+                            )
+                            .scale(
+                              delay: const Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 1500),
+                              begin: const Offset(1.0, 1.0),
+                              end: const Offset(1.6, 1.6),
+                              curve: Curves.easeOut,
+                            ),
+
+                      // Main button with breathing glow
                       Container(
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              AppTheme.goldColor
+                                  .withValues(alpha: _chatDemoSent ? 0.2 : 0.4),
+                              AppTheme.goldColor.withValues(
+                                  alpha: _chatDemoSent ? 0.05 : 0.2),
+                            ],
+                          ),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppTheme.goldColor.withValues(alpha: 0.6),
-                            width: 2,
+                            color: AppTheme.goldColor
+                                .withValues(alpha: _chatDemoSent ? 0.2 : 0.5),
+                            width: 1.5,
                           ),
+                          boxShadow: _chatDemoSent
+                              ? null
+                              : [
+                                  BoxShadow(
+                                    color: AppTheme.goldColor
+                                        .withValues(alpha: 0.5),
+                                    blurRadius: 16,
+                                    spreadRadius: 3,
+                                  ),
+                                ],
                         ),
-                      ).animate(
-                        onPlay: (controller) => controller.repeat(),
-                      ).fadeOut(
-                        duration: const Duration(milliseconds: 1500),
-                        curve: Curves.easeOut,
-                      ).scale(
-                        duration: const Duration(milliseconds: 1500),
-                        begin: const Offset(1.0, 1.0),
-                        end: const Offset(1.6, 1.6),
-                        curve: Curves.easeOut,
-                      ),
-
-                    // Ripple ring effect (middle)
-                    if (!_chatDemoSent)
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppTheme.goldColor.withValues(alpha: 0.5),
-                            width: 2,
+                        child: Icon(
+                          Icons.send,
+                          color: AppTheme.goldColor
+                              .withValues(alpha: _chatDemoSent ? 0.5 : 1.0),
+                          size: 20,
+                        ),
+                      )
+                          .animate(
+                            onPlay: (controller) => _chatDemoSent
+                                ? null
+                                : controller.repeat(reverse: true),
+                          )
+                          .boxShadow(
+                            duration: const Duration(milliseconds: 1200),
+                            begin: BoxShadow(
+                              color: AppTheme.goldColor.withValues(alpha: 0.5),
+                              blurRadius: 16,
+                              spreadRadius: 3,
+                            ),
+                            end: BoxShadow(
+                              color: AppTheme.goldColor.withValues(alpha: 0.8),
+                              blurRadius: 24,
+                              spreadRadius: 5,
+                            ),
+                            curve: Curves.easeInOut,
                           ),
-                        ),
-                      ).animate(
-                        onPlay: (controller) => controller.repeat(),
-                      ).fadeOut(
-                        delay: const Duration(milliseconds: 500),
-                        duration: const Duration(milliseconds: 1500),
-                        curve: Curves.easeOut,
-                      ).scale(
-                        delay: const Duration(milliseconds: 500),
-                        duration: const Duration(milliseconds: 1500),
-                        begin: const Offset(1.0, 1.0),
-                        end: const Offset(1.6, 1.6),
-                        curve: Curves.easeOut,
-                      ),
-
-                    // Main button with breathing glow
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.2 : 0.4),
-                            AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.05 : 0.2),
-                          ],
-                        ),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.2 : 0.5),
-                          width: 1.5,
-                        ),
-                        boxShadow: _chatDemoSent ? null : [
-                          BoxShadow(
-                            color: AppTheme.goldColor.withValues(alpha: 0.5),
-                            blurRadius: 16,
-                            spreadRadius: 3,
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        Icons.send,
-                        color: AppTheme.goldColor.withValues(alpha: _chatDemoSent ? 0.5 : 1.0),
-                        size: 20,
-                      ),
-                    ).animate(
-                      onPlay: (controller) => _chatDemoSent ? null : controller.repeat(reverse: true),
-                    ).boxShadow(
-                      duration: const Duration(milliseconds: 1200),
-                      begin: BoxShadow(
-                        color: AppTheme.goldColor.withValues(alpha: 0.5),
-                        blurRadius: 16,
-                        spreadRadius: 3,
-                      ),
-                      end: BoxShadow(
-                        color: AppTheme.goldColor.withValues(alpha: 0.8),
-                        blurRadius: 24,
-                        spreadRadius: 5,
-                      ),
-                      curve: Curves.easeInOut,
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -1027,7 +1047,7 @@ class _UnifiedInteractiveOnboardingScreenState
             dispersionStrength: 0.3,
             blurIntensity: 0.05,
             child: Image.asset(
-              Localizations.localeOf(context).languageCode == 'es'
+              l10n.localeName == 'es'
                   ? 'assets/images/logo_spanish.png'
                   : 'assets/images/logo_transparent.png',
               width: 150,
@@ -1090,8 +1110,8 @@ class _UnifiedInteractiveOnboardingScreenState
               controller: _nameController,
               style: TextStyle(
                 color: AppColors.primaryText,
-                fontSize:
-                    ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                fontSize: ResponsiveUtils.fontSize(context, 15,
+                    minSize: 13, maxSize: 17),
               ),
               decoration: InputDecoration(
                 hintText: l10n.firstNameOptional,
@@ -1111,7 +1131,9 @@ class _UnifiedInteractiveOnboardingScreenState
               textCapitalization: TextCapitalization.words,
               maxLength: 20,
               buildCounter: (context,
-                      {required currentLength, required isFocused, maxLength}) =>
+                      {required currentLength,
+                      required isFocused,
+                      maxLength}) =>
                   null,
             ),
           ),
@@ -1142,4 +1164,3 @@ class _UnifiedInteractiveOnboardingScreenState
     );
   }
 }
-
