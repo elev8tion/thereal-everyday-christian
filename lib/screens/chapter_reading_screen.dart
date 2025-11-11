@@ -18,6 +18,7 @@ import '../utils/responsive_utils.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../core/services/tts_service.dart';
 import '../core/services/book_name_service.dart';
+import '../core/services/bible_config.dart';
 import 'chat_screen.dart';
 import '../l10n/app_localizations.dart';
 
@@ -151,7 +152,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   void _loadVerses() {
     final l10n = AppLocalizations.of(context);
     final language = l10n.localeName;
-    final version = language == 'es' ? 'RVR1909' : 'WEB';
+    final version = BibleConfig.getVersion(language);
 
     // Translate book name to match database language
     final bookName = BookNameService.getBookName(widget.book, language);

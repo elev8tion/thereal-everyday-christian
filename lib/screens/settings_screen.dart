@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import '../core/services/database_service.dart';
 import '../core/services/preferences_service.dart';
+import '../core/services/bible_config.dart';
 import '../services/conversation_service.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_gradients.dart';
@@ -172,7 +173,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             [
               _buildInfoTile(
                 l10n.bibleVersion,
-                l10n.localeName == 'es' ? 'RVR1909' : 'WEB',
+                BibleConfig.getVersion(l10n.localeName),
               ),
               _buildLanguageTile(),
             ],

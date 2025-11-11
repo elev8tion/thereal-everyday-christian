@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/unified_verse_service.dart';
 import '../core/services/database_service.dart';
+import '../core/services/bible_config.dart';
 import '../theme/app_theme.dart';
 import '../core/widgets/app_snackbar.dart';
 
@@ -33,9 +34,8 @@ class _VersePreferencesWidgetState extends State<VersePreferencesWidget> {
     'patience',
   ];
 
-  final List<String> _availableVersions = [
-    'WEB',
-  ];
+  // Get available versions from centralized configuration
+  final List<String> _availableVersions = BibleConfig.availableVersions;
 
   @override
   void initState() {
