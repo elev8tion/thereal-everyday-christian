@@ -397,7 +397,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      plan.category.displayName,
+                      plan.category.getLocalizedName(context),
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                         color: Colors.white.withValues(alpha: 0.9),
@@ -659,7 +659,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        plan.category.displayName,
+                        plan.category.getLocalizedName(context),
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                           color: Colors.white.withValues(alpha: 0.9),

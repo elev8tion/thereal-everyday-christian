@@ -1796,6 +1796,60 @@ abstract class AppLocalizations {
   /// **'New Testament'**
   String get newTestament;
 
+  /// Reading plan category: Complete Bible
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Bible'**
+  String get categoryCompleteBible;
+
+  /// Reading plan category: New Testament
+  ///
+  /// In en, this message translates to:
+  /// **'New Testament'**
+  String get categoryNewTestament;
+
+  /// Reading plan category: Old Testament
+  ///
+  /// In en, this message translates to:
+  /// **'Old Testament'**
+  String get categoryOldTestament;
+
+  /// Reading plan category: Gospels
+  ///
+  /// In en, this message translates to:
+  /// **'Gospels'**
+  String get categoryGospels;
+
+  /// Reading plan category: Epistles
+  ///
+  /// In en, this message translates to:
+  /// **'Epistles'**
+  String get categoryEpistles;
+
+  /// Reading plan category: Psalms
+  ///
+  /// In en, this message translates to:
+  /// **'Psalms'**
+  String get categoryPsalms;
+
+  /// Reading plan category: Proverbs
+  ///
+  /// In en, this message translates to:
+  /// **'Proverbs'**
+  String get categoryProverbs;
+
+  /// Reading plan category: Wisdom Literature
+  ///
+  /// In en, this message translates to:
+  /// **'Wisdom Literature'**
+  String get categoryWisdom;
+
+  /// Reading plan category: Prophecy
+  ///
+  /// In en, this message translates to:
+  /// **'Prophecy'**
+  String get categoryProphecy;
+
   /// Empty state when no books match search
   ///
   /// In en, this message translates to:

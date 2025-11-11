@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../l10n/app_localizations.dart';
 
 part 'reading_plan.freezed.dart';
 part 'reading_plan.g.dart';
@@ -81,6 +83,31 @@ extension PlanCategoryExtension on PlanCategory {
         return 'Wisdom Literature';
       case PlanCategory.prophecy:
         return 'Prophecy';
+    }
+  }
+
+  /// Get localized display name for the category
+  String getLocalizedName(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    switch (this) {
+      case PlanCategory.completeBible:
+        return l10n.categoryCompleteBible;
+      case PlanCategory.newTestament:
+        return l10n.categoryNewTestament;
+      case PlanCategory.oldTestament:
+        return l10n.categoryOldTestament;
+      case PlanCategory.gospels:
+        return l10n.categoryGospels;
+      case PlanCategory.epistles:
+        return l10n.categoryEpistles;
+      case PlanCategory.psalms:
+        return l10n.categoryPsalms;
+      case PlanCategory.proverbs:
+        return l10n.categoryProverbs;
+      case PlanCategory.wisdom:
+        return l10n.categoryWisdom;
+      case PlanCategory.prophecy:
+        return l10n.categoryProphecy;
     }
   }
 }

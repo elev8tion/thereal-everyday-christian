@@ -923,6 +923,33 @@ class AppLocalizationsEs extends AppLocalizations {
   String get newTestament => 'Nuevo Testamento';
 
   @override
+  String get categoryCompleteBible => 'Biblia Completa';
+
+  @override
+  String get categoryNewTestament => 'Nuevo Testamento';
+
+  @override
+  String get categoryOldTestament => 'Antiguo Testamento';
+
+  @override
+  String get categoryGospels => 'Evangelios';
+
+  @override
+  String get categoryEpistles => 'Epístolas';
+
+  @override
+  String get categoryPsalms => 'Salmos';
+
+  @override
+  String get categoryProverbs => 'Proverbios';
+
+  @override
+  String get categoryWisdom => 'Literatura Sapiencial';
+
+  @override
+  String get categoryProphecy => 'Profecía';
+
+  @override
   String get noBooksFound => 'No se encontraron libros';
 
   @override

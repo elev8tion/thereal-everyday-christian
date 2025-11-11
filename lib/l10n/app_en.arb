@@ -1223,6 +1223,42 @@
   "@newTestament": {
     "description": "New Testament tab label"
   },
+  "categoryCompleteBible": "Complete Bible",
+  "@categoryCompleteBible": {
+    "description": "Reading plan category: Complete Bible"
+  },
+  "categoryNewTestament": "New Testament",
+  "@categoryNewTestament": {
+    "description": "Reading plan category: New Testament"
+  },
+  "categoryOldTestament": "Old Testament",
+  "@categoryOldTestament": {
+    "description": "Reading plan category: Old Testament"
+  },
+  "categoryGospels": "Gospels",
+  "@categoryGospels": {
+    "description": "Reading plan category: Gospels"
+  },
+  "categoryEpistles": "Epistles",
+  "@categoryEpistles": {
+    "description": "Reading plan category: Epistles"
+  },
+  "categoryPsalms": "Psalms",
+  "@categoryPsalms": {
+    "description": "Reading plan category: Psalms"
+  },
+  "categoryProverbs": "Proverbs",
+  "@categoryProverbs": {
+    "description": "Reading plan category: Proverbs"
+  },
+  "categoryWisdom": "Wisdom Literature",
+  "@categoryWisdom": {
+    "description": "Reading plan category: Wisdom Literature"
+  },
+  "categoryProphecy": "Prophecy",
+  "@categoryProphecy": {
+    "description": "Reading plan category: Prophecy"
+  },
   "noBooksFound": "No books found",
   "@noBooksFound": {
     "description": "Empty state when no books match search"
