@@ -224,9 +224,9 @@ class ReadingPlanProgressService {
   }
 
   /// Generate readings for a plan based on its category (NEW - uses real Bible data)
-  Future<void> generateReadingsForPlan(String planId, PlanCategory category, int totalDays) async {
+  Future<void> generateReadingsForPlan(String planId, PlanCategory category, int totalDays, {String language = 'en'}) async {
     try {
-      await _generator.generateReadingsForPlan(planId, category, totalDays);
+      await _generator.generateReadingsForPlan(planId, category, totalDays, language: language);
     } catch (e) {
       throw Exception('Failed to generate readings for plan: $e');
     }

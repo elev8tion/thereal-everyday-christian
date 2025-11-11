@@ -1,13 +1,20 @@
 import 'package:uuid/uuid.dart';
 import '../models/reading_plan.dart';
 import 'database_service.dart';
+import 'book_name_service.dart';
 
 /// Service for generating daily readings for reading plans based on actual Bible data
 class ReadingPlanGenerator {
   final DatabaseService _database;
   final _uuid = const Uuid();
+  String _language = 'en'; // Default language
 
   ReadingPlanGenerator(this._database);
+
+  /// Set the language for generated content
+  void setLanguage(String language) {
+    _language = language;
+  }
 
   /// Bible book metadata with chapter counts
   static const Map<String, Map<String, dynamic>> bibleBooks = {
@@ -82,8 +89,11 @@ class ReadingPlanGenerator {
   };
 
   /// Generate readings for a specific plan based on its category
-  Future<void> generateReadingsForPlan(String planId, PlanCategory category, int totalDays) async {
+  Future<void> generateReadingsForPlan(String planId, PlanCategory category, int totalDays, {String language = 'en'}) async {
     try {
+      // Set the language for this generation
+      setLanguage(language);
+
       final db = await _database.database;
 
       // Get books based on plan category
@@ -189,10 +199,13 @@ class ReadingPlanGenerator {
           ? '$currentChapter'
           : '$currentChapter-$endChapter';
 
+      // Get localized book name for title
+      final localizedBook = BookNameService.getBookName(book, _language);
+
       readings.add({
         'id': _uuid.v4(),
         'plan_id': planId,
-        'title': '$book $chapterRange',
+        'title': '$localizedBook $chapterRange',
         'description': await _getReadingDescription(book, currentChapter, endChapter),
         'book': book,
         'chapters': chapterRange,
@@ -218,14 +231,28 @@ class ReadingPlanGenerator {
 
   /// Get description for a reading based on its content
   Future<String> _getReadingDescription(String book, int startChapter, int endChapter) async {
+    // Get localized book name
+    final localizedBook = BookNameService.getBookName(book, _language);
+
     // Generate descriptions based on book and chapter ranges
-    // This is a simplified version - you could expand this with more specific descriptions
-    if (startChapter == 1) {
-      return 'Beginning of $book';
-    } else if (startChapter == endChapter) {
-      return '$book chapter $startChapter';
+    if (_language == 'es') {
+      // Spanish descriptions
+      if (startChapter == 1) {
+        return 'Comienzo de $localizedBook';
+      } else if (startChapter == endChapter) {
+        return '$localizedBook capítulo $startChapter';
+      } else {
+        return '$localizedBook capítulos $startChapter-$endChapter';
+      }
     } else {
-      return '$book chapters $startChapter-$endChapter';
+      // English descriptions (default)
+      if (startChapter == 1) {
+        return 'Beginning of $localizedBook';
+      } else if (startChapter == endChapter) {
+        return '$localizedBook chapter $startChapter';
+      } else {
+        return '$localizedBook chapters $startChapter-$endChapter';
+      }
     }
   }
 

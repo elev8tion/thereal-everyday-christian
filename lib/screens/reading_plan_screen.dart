@@ -1065,10 +1065,13 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         final allReadings = await planService.getReadingsForPlan(plan.id);
         if (allReadings.isEmpty) {
           // No readings exist - generate them based on plan category
+          // Get user's language for localized titles and descriptions
+          final language = l10n.localeName;
           await progressService.generateReadingsForPlan(
             plan.id,
             plan.category,
             plan.totalReadings,
+            language: language,
           );
         }
 
