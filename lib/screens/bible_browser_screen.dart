@@ -682,6 +682,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   Future<void> _showChapterSelector(String book) async {
     final l10n = AppLocalizations.of(context);
+    final language = l10n.localeName;
+    final localizedBookName = BookNameService.getBookName(book, language);
     final chapterCount = await _bibleService.getChapterCount(book);
 
     if (!mounted) return;
@@ -720,7 +722,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  l10n.selectChapterBook(book),
+                  l10n.selectChapterBook(localizedBookName),
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
                     fontWeight: FontWeight.w700,

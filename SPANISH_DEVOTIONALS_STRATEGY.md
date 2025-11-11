@@ -40,11 +40,11 @@
   ```
 
 ### Spanish Bible (Complete ✅)
-- **Database:** `assets/kc_edc_spanish_bible.db`
-- **Version:** KC EDC (KC Everyday Christian) - Your proprietary translation
+- **Database:** `assets/spanish_bible_rvr1909.db` (formerly `kc_edc_spanish_bible.db`)
+- **Version:** RVR1909 (Reina-Valera 1909) - Public domain translation
 - **Total Verses:** 31,103
 - **Structure:** `spanish_text` column contains Spanish verses
-- **Example:** Juan 3:16 = "Porque tanto amó Dios al mundo, que dio a su Hijo unigénito..."
+- **Example:** Juan 3:16 = "Porque de tal manera amó Dios al mundo..."
 
 ### What's Missing (❌)
 - ❌ Spanish devotional content (0 of 424 devotionals translated)
@@ -136,7 +136,7 @@ mcp__l10n__translate_file \
 
 **Cons:**
 - ⚠️ Requires manual review for doctrinal accuracy
-- ⚠️ May need KC EDC verse references updated
+- ⚠️ May need RVR1909 verse references updated
 - ⚠️ API costs (27 files × ~70KB each)
 
 ---
@@ -193,14 +193,14 @@ mcp__l10n__translate_file \
 **Goal:** Define translation workflow and tools
 
 1. **Create translation guide:**
-   - Document KC EDC Spanish Bible verse format
+   - Document RVR1909 Spanish Bible verse format
    - Define tone and theological terminology
    - List key terms to translate consistently
    - Example translations for quality reference
 
 2. **Bible verse cross-reference:**
-   - Map English verse references to KC EDC Spanish verses
-   - Create helper script to fetch Spanish verses from `kc_edc_spanish_bible.db`
+   - Map English verse references to RVR1909 Spanish verses
+   - Create helper script to fetch Spanish verses from `spanish_bible_rvr1909.db`
    - Example:
      ```sql
      SELECT spanish_text
@@ -211,7 +211,7 @@ mcp__l10n__translate_file \
 3. **Translation quality checklist:**
    - [ ] Theological accuracy
    - [ ] Cultural appropriateness for Spanish-speaking Christians
-   - [ ] Bible verses match KC EDC translation exactly
+   - [ ] Bible verses match RVR1909 translation exactly
    - [ ] Tone: reverent, encouraging, accessible
    - [ ] Grammar and spelling reviewed
 
@@ -235,8 +235,8 @@ mcp__l10n__translate_file \
    ```
 
 2. **Verse replacement:**
-   - Replace English Bible verses with KC EDC Spanish verses
-   - Script to automate: `replace_verses_with_kc_edc.dart`
+   - Replace English Bible verses with RVR1909 Spanish verses
+   - Script to automate: `replace_verses_with_rvr1909.dart`
 
 3. **Manual review:**
    - Read through translated devotional
@@ -277,7 +277,7 @@ mcp__l10n__translate_file \
 
 3. **Content validation:**
    - Spot-check 10-20 devotionals for quality
-   - Verify Bible verses match KC EDC exactly
+   - Verify Bible verses match RVR1909 exactly
    - Check for encoding issues (accents, ñ, etc.)
 
 **Estimated Time:** 3-4 hours
@@ -309,7 +309,7 @@ assets/
 │       ├── batch_02_december_2025.json  (31 devotionals)
 │       └── ... (27 files, 424 total)
 ├── bible.db                             # English Bible (WEB)
-└── kc_edc_spanish_bible.db             # Spanish Bible (KC EDC)
+└── spanish_bible_rvr1909.db            # Spanish Bible (RVR1909)
 ```
 
 ---
@@ -359,7 +359,7 @@ No changes needed! Uses localization for UI text, but devotional content comes f
 - **Personal:** Use "tú" (informal you) for intimacy with God
 
 ### Key Term Translations
-| English | Spanish (KC EDC) |
+| English | Spanish (RVR1909) |
 |---------|------------------|
 | God | Dios |
 | Lord | Señor |
@@ -374,7 +374,7 @@ No changes needed! Uses localization for UI text, but devotional content comes f
 | Love | Amor |
 
 ### Bible Verse References
-- **Book names:** Use Spanish book names from KC EDC
+- **Book names:** Use Spanish book names from RVR1909
   - Psalm → Salmos
   - John → Juan
   - Matthew → Mateo
@@ -387,7 +387,7 @@ No changes needed! Uses localization for UI text, but devotional content comes f
 
 Before marking a batch as "complete":
 - [ ] All 8 sections translated (title, openingScripture, keyVerseSpotlight, reflection, lifeApplication, prayer, actionStep, goingDeeper)
-- [ ] Bible verses replaced with KC EDC Spanish text
+- [ ] Bible verses replaced with RVR1909 Spanish text
 - [ ] Book names use Spanish names
 - [ ] Date format unchanged (YYYY-MM-DD)
 - [ ] ID unchanged (dev_001, dev_002, etc.)
@@ -404,7 +404,7 @@ Before marking a batch as "complete":
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | Translation quality issues | High | Manual review + native speaker validation |
-| KC EDC verse mismatches | Medium | Automated script to replace verses from database |
+| RVR1909 verse mismatches | Medium | Automated script to replace verses from database |
 | File encoding issues | Low | UTF-8 encoding enforced, test special characters |
 | Performance degradation | Low | Only load language-specific files, not both |
 | Breaking existing English | Medium | Move files to `en/` folder, test thoroughly before Spanish |
@@ -414,7 +414,7 @@ Before marking a batch as "complete":
 ## Success Metrics
 
 - ✅ All 424 devotionals translated to Spanish
-- ✅ All Bible verses match KC EDC translation exactly
+- ✅ All Bible verses match RVR1909 translation exactly
 - ✅ Zero theological errors in translation
 - ✅ Spanish devotional screen loads in <2 seconds
 - ✅ No user-reported translation issues in first 30 days

@@ -197,7 +197,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settings => 'Configuración';
 
   @override
-  String get settingsSubtitle => 'Personaliza tu experiencia en la aplicación';
+  String get settingsSubtitle => 'Personaliza tu experiencia';
 
   @override
   String get profile => 'Perfil';
@@ -417,7 +417,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorLoadingDevotionals => 'Error al Cargar Devocionales';
 
   @override
-  String get growInGodsWord => 'Crezca en la palabra de Dios diariamente';
+  String get growInGodsWord => 'Palabra de Dios cada día';
 
   @override
   String get todayTab => 'Hoy';
@@ -1134,7 +1134,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get paywallTitle => 'Premium';
 
   @override
-  String get paywallSubtitle => 'Desbloquee las funciones de chat con IA';
+  String get paywallSubtitle => 'Desbloquee el chat de IA';
 
   @override
   String paywallTrialDaysLeft(int days) {
@@ -1421,7 +1421,7 @@ class AppLocalizationsEs extends AppLocalizations {
       '¡Excelente pregunta! La Biblia ofrece una hermosa sabiduría sobre cómo superar la preocupación. En Filipenses 4:6-7, se nos recuerda llevar nuestras ansiedades a Dios a través de la oración con acción de gracias, y Su paz guardará nuestros corazones...';
 
   @override
-  String get scriptureChatPlaceholder => 'Chat Bíblico...';
+  String get scriptureChatPlaceholder => 'Chat de Escrituras';
 
   @override
   String get youreAllSet => '¡Ya Está Todo Listo!';
@@ -2213,7 +2213,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Compartir este intercambio de mensajes como imagen';
 
   @override
-  String get chatInputPlaceholder => 'Chat sobre las Escrituras...';
+  String get chatInputPlaceholder => 'Chat de Escrituras';
 
   @override
   String get chatFallbackPrayer =>
@@ -2763,5 +2763,5 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pleaseAcceptDocuments => 'Por favor lee y acepta ambos documentos';
 
   @override
-  String get scriptureChatHint => 'Chat sobre las Escrituras...';
+  String get scriptureChatHint => 'Chat de Escrituras';
 }

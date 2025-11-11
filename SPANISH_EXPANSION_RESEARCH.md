@@ -175,7 +175,7 @@ The Spanish language market presents a **compelling opportunity** for Everyday C
   - ✅ Modern language, easier to understand
   - 💰 Cost: Requires negotiation with publisher
 
-**RECOMMENDATION:** Start with RVR1909 (public domain) for MVP launch, evaluate RVR60 licensing post-launch based on user feedback.
+**DECISION MADE (Nov 2025):** ✅ Using RVR1909 (public domain) for Spanish Bible translation. Database file: `assets/spanish_bible_rvr1909.db`
 
 ### 2. Google Gemini Multilingual Capabilities
 
