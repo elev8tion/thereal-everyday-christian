@@ -649,7 +649,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             ),
             ListTile(
               leading: _buildSheetIcon(Icons.image),
-              title: Text('Share as Image', style: const TextStyle(color: Colors.white)), // TODO: Add l10n key: shareAsImage
+              title: Text(l10n.chatShareAsImage, style: const TextStyle(color: Colors.white)),
               onTap: () async {
                 NavigationService.pop();
                 try {
