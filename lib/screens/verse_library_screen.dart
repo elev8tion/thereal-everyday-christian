@@ -493,11 +493,6 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 BlurPopupMenu(
                   items: [
                     BlurPopupMenuItem(
-                      value: 'share',
-                      icon: Icons.share,
-                      label: l10n.share,
-                    ),
-                    BlurPopupMenuItem(
                       value: 'delete',
                       icon: Icons.delete,
                       label: l10n.delete,
@@ -506,9 +501,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                     ),
                   ],
                   onSelected: (value) {
-                    if (value == 'share') {
-                      _showShareOptions(verse);
-                    } else if (value == 'delete') {
+                    if (value == 'delete') {
                       _deleteSharedVerse(entry.id);
                     }
                   },
