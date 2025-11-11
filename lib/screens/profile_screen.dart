@@ -147,6 +147,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     // OPTIMIZED: Watch unified stats provider (1 call instead of 7)
     final stats = ref.watch(profileStatsProvider);
 
@@ -155,7 +156,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         body: Center(child: CircularProgressIndicator()),
       ),
       error: (error, stack) => Scaffold(
-        body: Center(child: Text('Error loading profile: $error')),
+        body: Center(child: Text(l10n.errorLoadingProfile(error.toString()))),
       ),
       data: (profileStats) => Scaffold(
       body: GestureDetector(
