@@ -185,7 +185,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get addPrayer => 'Agregar Oración';
 
   @override
-  String get savedVerses => 'Versículos Guardados';
+  String get savedVerses => 'Versículos';
 
   @override
   String get fabTooltipMessage => 'Toca aquí para navegar ✨';
@@ -628,7 +628,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get manageSubscription => 'Administrar Suscripción';
 
   @override
-  String get webBibleVersion => 'WEB';
+  String get webBibleVersion => 'RVR1909';
 
   @override
   String get appearance => 'Apariencia';
@@ -1730,7 +1730,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get faqA3 =>
-      'La aplicación usa la World English Bible (WEB), una traducción moderna de dominio público que es fiel a los textos originales y fácil de leer.';
+      'La aplicación usa la Reina-Valera 1909 (RVR1909), una traducción clásica de dominio público que es fiel a los textos originales y ampliamente reconocida.';
 
   @override
   String get faqQ4 => '¿Puedo leer la Biblia sin conexión?';
@@ -1751,7 +1751,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get faqA6 =>
-      'La World English Bible (WEB) es actualmente la única versión disponible. Esto garantiza un acceso sin conexión consistente y un rendimiento óptimo.';
+      'La Reina-Valera 1909 (RVR1909) es actualmente la única versión disponible en español. Esto garantiza un acceso sin conexión consistente y un rendimiento óptimo.';
 
   @override
   String get faqQ7 => '¿Cómo agrego una oración?';
