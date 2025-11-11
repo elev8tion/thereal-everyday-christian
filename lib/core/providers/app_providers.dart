@@ -337,8 +337,8 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   final language = prefs.getLanguage(); // Returns 'en' or 'es'
   await devotionalLoader.loadDevotionals(language: language);
 
-  // Load curated reading plans on first launch (idempotent)
-  await curatedPlanLoader.ensureCuratedPlansLoaded();
+  // Load all reading plans on first launch (language-specific, idempotent)
+  await curatedPlanLoader.ensureAllPlansLoaded(language);
 });
 
 // Devotional Progress Providers
