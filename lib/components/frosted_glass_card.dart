@@ -1,11 +1,11 @@
-1111111111111import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'dart:ui';
 import '../theme/app_theme.dart';
 
 enum GlassIntensity {
-  light,   // Subtle glass, more transparent
-  medium,  // Balanced glass effect
-  strong,  // Deep glass, more frosted
+  light, // Subtle glass, more transparent
+  medium, // Balanced glass effect
+  strong, // Deep glass, more frosted
 }
 
 class FrostedGlassCard extends StatelessWidget {

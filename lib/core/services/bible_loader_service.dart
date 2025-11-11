@@ -12,10 +12,16 @@ class BibleLoaderService {
 
   /// Load all Bible versions into the database
   Future<void> loadAllBibles() async {
+    print('📖 [BibleLoader] Starting to load all Bibles...');
     // Copy English Bible
+    print('📖 [BibleLoader] Loading English Bible (WEB)...');
     await _copyEnglishBible();
+    print('📖 [BibleLoader] ✅ English Bible loaded');
     // Copy Spanish Bible
+    print('📖 [BibleLoader] Loading Spanish Bible (RVR1909)...');
     await _copySpanishBible();
+    print('📖 [BibleLoader] ✅ Spanish Bible loaded');
+    print('📖 [BibleLoader] ✅ ALL BIBLES LOADED SUCCESSFULLY');
   }
 
   /// Copy English Bible verses from the pre-populated asset database
@@ -96,7 +102,7 @@ class BibleLoaderService {
       await db.execute("ATTACH DATABASE '$assetDbPath' AS asset_db_es");
 
       // Copy verses from asset_db_es.verses to main db.bible_verses
-      // Map columns: spanish_text->text, verse_number->verse, add language='es'
+      // Map columns: text (contains Spanish RVR1909), verse_number->verse, add language='es'
       await db.execute('''
         INSERT OR REPLACE INTO bible_verses (version, book, chapter, verse, text, language)
         SELECT
@@ -104,10 +110,10 @@ class BibleLoaderService {
           book,
           chapter,
           verse_number as verse,
-          spanish_text as text,
+          text,
           'es' as language
         FROM asset_db_es.verses
-        WHERE spanish_text IS NOT NULL AND LENGTH(spanish_text) > 0
+        WHERE translation = 'RVR1909'
       ''');
 
       // Copy daily verse schedule for Spanish

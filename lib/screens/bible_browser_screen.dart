@@ -9,6 +9,7 @@ import '../components/standard_screen_header.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
 import '../core/services/book_name_service.dart';
+import '../core/services/bible_config.dart';
 import '../services/bible_chapter_service.dart';
 import '../models/bible_verse.dart';
 import '../theme/app_theme.dart';
@@ -156,7 +157,14 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _loadBooks();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_allBooks.isEmpty) {
+      _loadBooks();
+    }
   }
 
   @override
@@ -169,7 +177,11 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   Future<void> _loadBooks() async {
     try {
-      final books = await _bibleService.getAllBooks();
+      final (language, version) = _getLanguageAndVersion();
+      final books = await _bibleService.getAllBooks(
+        language: language,
+        version: version,
+      );
       if (mounted) {
         setState(() {
           _allBooks = books;
@@ -213,12 +225,15 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
           _isSearchingVerses = true;
           _filteredBooks = [];
 
+          final (language, version) = _getLanguageAndVersion();
           _bibleService
               .getVersesByReference(
             parsed.book,
             parsed.chapter,
             parsed.startVerse,
             endVerse: parsed.endVerse,
+            language: language,
+            version: version,
           )
               .then((verses) {
             if (mounted) {
@@ -257,7 +272,13 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
         _isSearchingVerses = true;
         _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
           try {
-            final verses = await _bibleService.searchVerses(query, limit: 50);
+            final (language, version) = _getLanguageAndVersion();
+            final verses = await _bibleService.searchVerses(
+              query,
+              language: language,
+              version: version,
+              limit: 50,
+            );
             if (mounted) {
               setState(() {
                 _verseSearchResults = verses;
@@ -289,6 +310,13 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
     return _filteredBooks
         .where((book) => _bookTestaments[book] == 'New Testament')
         .toList();
+  }
+
+  /// Get current language and Bible version
+  (String, String) _getLanguageAndVersion() {
+    final language = Localizations.localeOf(context).languageCode;
+    final version = BibleConfig.getVersion(language);
+    return (language, version);
   }
 
   /// Check if we should show search overlay
@@ -678,9 +706,13 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   Future<void> _showChapterSelector(String book) async {
     final l10n = AppLocalizations.of(context);
-    final language = Localizations.localeOf(context).languageCode;
+    final (language, version) = _getLanguageAndVersion();
     final localizedBookName = BookNameService.getBookName(book, language);
-    final chapterCount = await _bibleService.getChapterCount(book);
+    final chapterCount = await _bibleService.getChapterCount(
+      book,
+      language: language,
+      version: version,
+    );
 
     if (!mounted) return;
 

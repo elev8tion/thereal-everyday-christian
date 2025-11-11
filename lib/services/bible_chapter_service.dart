@@ -104,7 +104,76 @@ class BibleChapterService {
       SELECT DISTINCT book
       FROM bible_verses
       WHERE version = ? AND language = ?
-      ORDER BY id ASC
+      ORDER BY
+        CASE book
+          WHEN 'Genesis' THEN 1 WHEN 'Génesis' THEN 1
+          WHEN 'Exodus' THEN 2 WHEN 'Éxodo' THEN 2
+          WHEN 'Leviticus' THEN 3 WHEN 'Levítico' THEN 3
+          WHEN 'Numbers' THEN 4 WHEN 'Números' THEN 4
+          WHEN 'Deuteronomy' THEN 5 WHEN 'Deuteronomio' THEN 5
+          WHEN 'Joshua' THEN 6 WHEN 'Josué' THEN 6
+          WHEN 'Judges' THEN 7 WHEN 'Jueces' THEN 7
+          WHEN 'Ruth' THEN 8 WHEN 'Rut' THEN 8
+          WHEN '1 Samuel' THEN 9
+          WHEN '2 Samuel' THEN 10
+          WHEN '1 Kings' THEN 11 WHEN '1 Reyes' THEN 11
+          WHEN '2 Kings' THEN 12 WHEN '2 Reyes' THEN 12
+          WHEN '1 Chronicles' THEN 13 WHEN '1 Crónicas' THEN 13
+          WHEN '2 Chronicles' THEN 14 WHEN '2 Crónicas' THEN 14
+          WHEN 'Ezra' THEN 15 WHEN 'Esdras' THEN 15
+          WHEN 'Nehemiah' THEN 16 WHEN 'Nehemías' THEN 16
+          WHEN 'Esther' THEN 17 WHEN 'Ester' THEN 17
+          WHEN 'Job' THEN 18
+          WHEN 'Psalms' THEN 19 WHEN 'Salmos' THEN 19
+          WHEN 'Proverbs' THEN 20 WHEN 'Proverbios' THEN 20
+          WHEN 'Ecclesiastes' THEN 21 WHEN 'Eclesiastés' THEN 21
+          WHEN 'Song of Solomon' THEN 22 WHEN 'Cantares' THEN 22
+          WHEN 'Isaiah' THEN 23 WHEN 'Isaías' THEN 23
+          WHEN 'Jeremiah' THEN 24 WHEN 'Jeremías' THEN 24
+          WHEN 'Lamentations' THEN 25 WHEN 'Lamentaciones' THEN 25
+          WHEN 'Ezekiel' THEN 26 WHEN 'Ezequiel' THEN 26
+          WHEN 'Daniel' THEN 27
+          WHEN 'Hosea' THEN 28 WHEN 'Oseas' THEN 28
+          WHEN 'Joel' THEN 29
+          WHEN 'Amos' THEN 30 WHEN 'Amós' THEN 30
+          WHEN 'Obadiah' THEN 31 WHEN 'Abdías' THEN 31
+          WHEN 'Jonah' THEN 32 WHEN 'Jonás' THEN 32
+          WHEN 'Micah' THEN 33 WHEN 'Miqueas' THEN 33
+          WHEN 'Nahum' THEN 34 WHEN 'Nahúm' THEN 34
+          WHEN 'Habakkuk' THEN 35 WHEN 'Habacuc' THEN 35
+          WHEN 'Zephaniah' THEN 36 WHEN 'Sofonías' THEN 36
+          WHEN 'Haggai' THEN 37 WHEN 'Hageo' THEN 37
+          WHEN 'Zechariah' THEN 38 WHEN 'Zacarías' THEN 38
+          WHEN 'Malachi' THEN 39 WHEN 'Malaquías' THEN 39
+          WHEN 'Matthew' THEN 40 WHEN 'Mateo' THEN 40
+          WHEN 'Mark' THEN 41 WHEN 'Marcos' THEN 41
+          WHEN 'Luke' THEN 42 WHEN 'Lucas' THEN 42
+          WHEN 'John' THEN 43 WHEN 'Juan' THEN 43
+          WHEN 'Acts' THEN 44 WHEN 'Hechos' THEN 44
+          WHEN 'Romans' THEN 45 WHEN 'Romanos' THEN 45
+          WHEN '1 Corinthians' THEN 46 WHEN '1 Corintios' THEN 46
+          WHEN '2 Corinthians' THEN 47 WHEN '2 Corintios' THEN 47
+          WHEN 'Galatians' THEN 48 WHEN 'Gálatas' THEN 48
+          WHEN 'Ephesians' THEN 49 WHEN 'Efesios' THEN 49
+          WHEN 'Philippians' THEN 50 WHEN 'Filipenses' THEN 50
+          WHEN 'Colossians' THEN 51 WHEN 'Colosenses' THEN 51
+          WHEN '1 Thessalonians' THEN 52 WHEN '1 Tesalonicenses' THEN 52
+          WHEN '2 Thessalonians' THEN 53 WHEN '2 Tesalonicenses' THEN 53
+          WHEN '1 Timothy' THEN 54 WHEN '1 Timoteo' THEN 54
+          WHEN '2 Timothy' THEN 55 WHEN '2 Timoteo' THEN 55
+          WHEN 'Titus' THEN 56 WHEN 'Tito' THEN 56
+          WHEN 'Philemon' THEN 57 WHEN 'Filemón' THEN 57
+          WHEN 'Hebrews' THEN 58 WHEN 'Hebreos' THEN 58
+          WHEN 'James' THEN 59 WHEN 'Santiago' THEN 59
+          WHEN '1 Peter' THEN 60 WHEN '1 Pedro' THEN 60
+          WHEN '2 Peter' THEN 61 WHEN '2 Pedro' THEN 61
+          WHEN '1 John' THEN 62 WHEN '1 Juan' THEN 62
+          WHEN '2 John' THEN 63 WHEN '2 Juan' THEN 63
+          WHEN '3 John' THEN 64 WHEN '3 Juan' THEN 64
+          WHEN 'Jude' THEN 65 WHEN 'Judas' THEN 65
+          WHEN 'Revelation' THEN 66 WHEN 'Apocalipsis' THEN 66
+          ELSE 999
+        END
     ''', [version, language]);
 
     return results.map((row) => row['book'] as String).toList();
