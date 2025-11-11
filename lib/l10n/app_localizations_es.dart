@@ -152,15 +152,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dailyDevotional => 'Devocional';
 
   @override
-  String get dailyDevotionalDesc =>
-      'Acérquese más a Dios con reflexiones diarias';
+  String get dailyDevotionalDesc => 'Reflexiones diarias con Dios';
 
   @override
   String get prayerJournal => 'Oraciones';
 
   @override
-  String get prayerJournalDesc =>
-      'Registre sus oraciones y vea la fidelidad de Dios';
+  String get prayerJournalDesc => 'Registre y vea respuestas';
 
   @override
   String get readingPlans => 'Lectura';
@@ -169,7 +167,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get readingPlan => 'Plan de Lectura';
 
   @override
-  String get readingPlansDesc => 'Lectura bíblica estructurada con guía diaria';
+  String get readingPlansDesc => 'Planes de lectura guiados';
 
   @override
   String get quickActions => 'Acciones Rápidas';
