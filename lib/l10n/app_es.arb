@@ -254,7 +254,7 @@
   "memberSince": "Miembro desde {date}",
 
   "paywallTitle": "Premium",
-  "paywallSubtitle": "Desbloquee las funciones de chat con IA",
+  "paywallSubtitle": "Desbloquee el chat de IA",
   "paywallTrialDaysLeft": "{days} días restantes en la prueba",
   "paywallTrialBlockedMessage": "¡Bienvenido de nuevo!\n\nSu prueba ya fue utilizada en este dispositivo.\nSuscriba para continuar usando el chat con IA.",
   "paywallTrialEndedMessage": "Su prueba ha finalizado.\nActualice para continuar usando el chat con IA.",
