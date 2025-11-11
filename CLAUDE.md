@@ -21,7 +21,7 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 
 # Everyday Christian - AI Assistant Guide
 
-**Last Updated:** 2025-11-03
+**Last Updated:** 2025-11-11
 **App Status:** ✅ 9/10 Ready for App Store Submission
 **Database Version:** 10 (shared_chats table added)
 
@@ -112,6 +112,19 @@ Keep this managed block so 'openspec update' can refresh the instructions.
   - Database: `assets/spanish_bible_rvr1909.db`
   - 31,103 verses
   - Classic translation, widely recognized
+
+**Bible Version Configuration:**
+- **Centralized:** `lib/core/services/bible_config.dart` (single source of truth)
+- **Language Mapping:** `BibleConfig.getVersion(languageCode)`
+  - `'en'` → `'WEB'` (World English Bible)
+  - `'es'` → `'RVR1909'` (Reina-Valera 1909)
+- **Available Versions:** `BibleConfig.availableVersions` → `['WEB', 'RVR1909']`
+- **Used In:**
+  - Settings screen: Bible version display
+  - Chapter reading screen: Verse loading
+  - Verse preferences widget: Version selection dropdown
+  - Daily verse schedule: Language-aware verse generation
+- **Benefits:** No scattered ternaries, single update point for new translations
 
 **Reading Plans:**
 - **10+ plans total:**
