@@ -1392,7 +1392,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get demoVerseText =>
-      '\"Dad gracias a SEÑOR, porque es bueno, porque su bondad es eterna.\"';
+      '\"ALABAD á Jehová, porque es bueno; porque para siempre es su misericordia.\"';
 
   @override
   String get demoVerseReference => 'Salmo 107:1';
