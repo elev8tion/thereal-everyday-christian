@@ -7,12 +7,14 @@ class VerseContext {
   final int chapter;
   final int verseNumber;
   final String verseText;
+  final String translation;
 
   const VerseContext({
     required this.book,
     required this.chapter,
     required this.verseNumber,
     required this.verseText,
+    this.translation = 'WEB',
   });
 
   /// Create from BibleVerse model
@@ -22,14 +24,15 @@ class VerseContext {
       chapter: verse.chapter,
       verseNumber: verse.verseNumber,
       verseText: verse.text,
+      translation: verse.translation,
     );
   }
 
   /// Returns formatted reference (e.g., "John 3:16")
   String get reference => '$book $chapter:$verseNumber';
 
-  /// Returns full reference with WEB translation (e.g., "John 3:16 (WEB)")
-  String get fullReference => '$reference (WEB)';
+  /// Returns full reference with translation (e.g., "John 3:16 (WEB)" or "Juan 3:16 (RVR1909)")
+  String get fullReference => '$reference ($translation)';
 
   /// Convert to map for ChatMessage metadata storage
   Map<String, dynamic> toMap() {
@@ -38,6 +41,7 @@ class VerseContext {
       'chapter': chapter,
       'verseNumber': verseNumber,
       'verseText': verseText,
+      'translation': translation,
     };
   }
 
@@ -48,6 +52,7 @@ class VerseContext {
       chapter: map['chapter'] as int,
       verseNumber: map['verseNumber'] as int,
       verseText: map['verseText'] as String,
+      translation: map['translation'] as String? ?? 'WEB',
     );
   }
 

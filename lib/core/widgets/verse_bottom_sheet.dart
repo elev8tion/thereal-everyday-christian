@@ -527,7 +527,7 @@ class VerseBottomSheet extends ConsumerWidget {
 
   /// Share verse
   Future<void> _shareVerse(BuildContext context, WidgetRef ref, BibleVerse verse) async {
-    final shareText = '"${verse.text}"\n\n${verse.reference} (WEB)\n\nShared from Everyday Christian';
+    final shareText = '"${verse.text}"\n\n${verse.reference} (${verse.translation})\n\nShared from Everyday Christian';
 
     try {
       final result = await SharePlus.instance.share(
@@ -585,7 +585,7 @@ class VerseBottomSheet extends ConsumerWidget {
 
   /// Copy verse to clipboard
   Future<void> _copyVerse(BuildContext context, BibleVerse verse) async {
-    final copyText = '"${verse.text}" - ${verse.reference} (WEB)';
+    final copyText = '"${verse.text}" - ${verse.reference} (${verse.translation})';
     await Clipboard.setData(ClipboardData(text: copyText));
 
     // Show snackbar confirmation

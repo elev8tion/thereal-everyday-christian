@@ -28,7 +28,8 @@ class UnifiedVerseService {
 
       // Use FTS5 for full-text search with ranking + randomization (with timeout)
       final results = await database.rawQuery('''
-        SELECT v.*,
+        SELECT v.id, v.book, v.chapter, v.verse as verse_number, v.text,
+               v.version as translation, v.language, v.themes, v.category, v.reference,
                snippet(bible_verses_fts, 0, '<mark>', '</mark>', '...', 32) as snippet,
                rank
         FROM bible_verses_fts
@@ -59,7 +60,9 @@ class UnifiedVerseService {
     final database = await _db.database;
 
     final results = await database.rawQuery('''
-      SELECT * FROM bible_verses
+      SELECT id, book, chapter, verse as verse_number, text,
+             version as translation, language, themes, category, reference
+      FROM bible_verses
       WHERE text LIKE ? OR book LIKE ? OR language LIKE ?
       ORDER BY
         CASE
@@ -89,7 +92,9 @@ class UnifiedVerseService {
 
     // Search in themes JSON array or category field
     final results = await database.rawQuery('''
-      SELECT * FROM bible_verses
+      SELECT id, book, chapter, verse as verse_number, text,
+             version as translation, language, themes, category, reference
+      FROM bible_verses
       WHERE themes LIKE ? OR category LIKE ? OR text LIKE ?
       ORDER BY RANDOM()
       LIMIT ?
@@ -115,7 +120,7 @@ class UnifiedVerseService {
   Future<List<BibleVerse>> getAllVerses({int? limit, int? offset}) async {
     final database = await _db.database;
 
-    String query = 'SELECT * FROM bible_verses ORDER BY book, chapter, verse';
+    String query = 'SELECT id, book, chapter, verse as verse_number, text, version as translation, language, themes, category, reference FROM bible_verses ORDER BY book, chapter, verse';
     if (limit != null) {
       query += ' LIMIT $limit';
       if (offset != null) {
@@ -242,7 +247,9 @@ class UnifiedVerseService {
     final database = await _db.database;
 
     final results = await database.rawQuery('''
-      SELECT v.*, fv.date_added, fv.note, fv.tags
+      SELECT v.id, v.book, v.chapter, v.verse as verse_number, v.text,
+             v.version as translation, v.language, v.themes, v.category, v.reference,
+             fv.date_added, fv.note, fv.tags
       FROM bible_verses v
       JOIN favorite_verses fv ON v.id = fv.verse_id
       ORDER BY fv.date_added DESC
@@ -471,7 +478,9 @@ class UnifiedVerseService {
     final database = await _db.database;
 
     final results = await database.rawQuery('''
-      SELECT * FROM bible_verses
+      SELECT id, book, chapter, verse as verse_number, text,
+             version as translation, language, themes, category, reference
+      FROM bible_verses
       WHERE text LIKE ?
       ORDER BY RANDOM()
       LIMIT ?
@@ -489,7 +498,7 @@ class UnifiedVerseService {
   Future<BibleVerse?> getDailyVerse({String? preferredTheme}) async {
     final database = await _db.database;
 
-    String query = 'SELECT * FROM bible_verses';
+    String query = 'SELECT id, book, chapter, verse as verse_number, text, version as translation, language, themes, category, reference FROM bible_verses';
     List<dynamic> args = [];
 
     if (preferredTheme != null && preferredTheme.isNotEmpty) {
