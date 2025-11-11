@@ -151,7 +151,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   void _loadVerses() {
     final l10n = AppLocalizations.of(context);
     final language = l10n.localeName;
-    final version = language == 'es' ? 'KC EDC' : 'WEB';
+    final version = language == 'es' ? 'RVR1909' : 'WEB';
 
     // Translate book name to match database language
     final bookName = BookNameService.getBookName(widget.book, language);

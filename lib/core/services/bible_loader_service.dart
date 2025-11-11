@@ -87,7 +87,7 @@ class BibleLoaderService {
       final assetDbPath = join(databasesPath, 'asset_bible_es.db');
 
       // Copy asset database to app directory
-      final data = await rootBundle.load('assets/kc_edc_spanish_bible.db');
+      final data = await rootBundle.load('assets/spanish_bible_rvr1909.db');
       final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(assetDbPath).writeAsBytes(bytes, flush: true);
 

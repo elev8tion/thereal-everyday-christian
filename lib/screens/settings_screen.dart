@@ -172,7 +172,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             [
               _buildInfoTile(
                 l10n.bibleVersion,
-                l10n.localeName == 'es' ? 'KC EDC' : 'WEB',
+                l10n.localeName == 'es' ? 'RVR1909' : 'WEB',
               ),
               _buildLanguageTile(),
             ],
