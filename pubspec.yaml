@@ -94,7 +94,8 @@ flutter:
     - assets/legal/
     - assets/devotionals/en/
     - assets/devotionals/es/
-    - assets/reading_plans/
+    - assets/reading_plans/en/
+    - assets/reading_plans/es/
     - assets/bible.db
     - assets/kc_edc_spanish_bible.db
     - .env

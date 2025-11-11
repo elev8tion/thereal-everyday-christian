@@ -338,7 +338,14 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   await devotionalLoader.loadDevotionals(language: language);
 
   // Load all reading plans on first launch (language-specific, idempotent)
-  await curatedPlanLoader.ensureAllPlansLoaded(language);
+  try {
+    await curatedPlanLoader.ensureAllPlansLoaded(language);
+    print('✅ Successfully loaded reading plans for $language');
+  } catch (e, stackTrace) {
+    print('❌ ERROR loading reading plans: $e');
+    print('Stack trace: $stackTrace');
+    // Don't block app initialization - user can still use other features
+  }
 });
 
 // Devotional Progress Providers

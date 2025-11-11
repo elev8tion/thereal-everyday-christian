@@ -207,8 +207,9 @@ class CuratedReadingPlanLoader {
     // If language changed, clear existing plans and reload
     if (currentLang != null && currentLang != language) {
       print('Language changed from $currentLang to $language, reloading reading plans...');
+      // Delete daily_readings FIRST to avoid foreign key constraint violations
+      await db.delete('daily_readings');
       await db.delete('reading_plans');
-      await db.delete('daily_readings'); // Also clear daily readings
       await db.delete('app_metadata', where: 'key = ?', whereArgs: ['reading_plan_language']);
     }
 
