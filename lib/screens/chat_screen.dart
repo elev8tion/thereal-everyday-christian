@@ -462,7 +462,7 @@ class ChatScreen extends HookConsumerWidget {
         final fullResponse = StringBuffer();
 
         // Get current language
-        final language = l10n.localeName;
+        final language = Localizations.localeOf(context).languageCode;
 
         // Start streaming
         final stream = aiService.generateResponseStream(
@@ -754,7 +754,7 @@ class ChatScreen extends HookConsumerWidget {
         }
 
         // Get current language
-        final language = l10n.localeName;
+        final language = Localizations.localeOf(context).languageCode;
 
         // Add context to request a different response
         final response = await aiService.generateResponse(

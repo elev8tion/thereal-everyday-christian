@@ -212,7 +212,7 @@ class _UnifiedInteractiveOnboardingScreenState
             dispersionStrength: 0.3,
             blurIntensity: 0.05,
             child: Image.asset(
-              l10n.localeName == 'es'
+              Localizations.localeOf(context).languageCode == 'es'
                   ? 'assets/images/logo_spanish.png'
                   : 'assets/images/logo_transparent.png',
               width: 150,
@@ -1027,7 +1027,7 @@ class _UnifiedInteractiveOnboardingScreenState
             dispersionStrength: 0.3,
             blurIntensity: 0.05,
             child: Image.asset(
-              l10n.localeName == 'es'
+              Localizations.localeOf(context).languageCode == 'es'
                   ? 'assets/images/logo_spanish.png'
                   : 'assets/images/logo_transparent.png',
               width: 150,

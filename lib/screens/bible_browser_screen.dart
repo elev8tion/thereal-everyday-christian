@@ -241,7 +241,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
       // Step 2: Filter books - check both English and translated names
       final l10n = AppLocalizations.of(context);
-      final language = l10n.localeName;
+      final language = Localizations.localeOf(context).languageCode;
 
       _filteredBooks = _allBooks
           .where((book) {
@@ -550,7 +550,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   Widget _buildBookListItem(String book) {
     final l10n = AppLocalizations.of(context);
-    final language = l10n.localeName;
+    final language = Localizations.localeOf(context).languageCode;
     final displayName = BookNameService.getBookName(book, language);
     final abbreviation = _bookAbbreviations[book] ?? 'Bk';
     final chapterCount = _bookChapterCounts[book] ?? 0;
@@ -646,7 +646,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   Widget _buildBookCard(String book) {
     final textSize = ref.watch(textSizeProvider);
     final l10n = AppLocalizations.of(context);
-    final language = l10n.localeName;
+    final language = Localizations.localeOf(context).languageCode;
     final displayName = BookNameService.getBookName(book, language);
 
     return GestureDetector(
@@ -678,7 +678,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   Future<void> _showChapterSelector(String book) async {
     final l10n = AppLocalizations.of(context);
-    final language = l10n.localeName;
+    final language = Localizations.localeOf(context).languageCode;
     final localizedBookName = BookNameService.getBookName(book, language);
     final chapterCount = await _bibleService.getChapterCount(book);
 

@@ -173,7 +173,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             [
               _buildInfoTile(
                 l10n.bibleVersion,
-                BibleConfig.getVersion(l10n.localeName),
+                BibleConfig.getVersion(Localizations.localeOf(context).languageCode),
               ),
               _buildLanguageTile(),
             ],

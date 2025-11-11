@@ -143,7 +143,7 @@ class SplashScreen extends HookConsumerWidget {
                       children: [
                         // Logo (appropriately sized)
                         Image.asset(
-                          l10n.localeName == 'es'
+                          Localizations.localeOf(context).languageCode == 'es'
                               ? 'assets/images/logo_spanish.png'
                               : 'assets/images/logo_transparent.png',
                           width: 200,

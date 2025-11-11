@@ -357,7 +357,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Image.asset(
-                      l10n.localeName == 'es'
+                      Localizations.localeOf(context).languageCode == 'es'
                           ? 'assets/images/logo_spanish.png'
                           : 'assets/images/logo_cropped.png',
                       width: 64,
