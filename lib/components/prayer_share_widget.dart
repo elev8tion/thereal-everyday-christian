@@ -363,12 +363,17 @@ class PrayerShareWidget extends StatelessWidget {
   String _getCategoryDisplayName(String categoryId) {
     // Map category IDs to localized display names
     final categoryNames = {
-      'personal': 'Personal', // No l10n key exists, use hardcoded
-      'family': l10n.family,
-      'health': l10n.health,
-      'work': l10n.work,
-      'spiritual': 'Spiritual', // No l10n key exists, use hardcoded
-      'other': l10n.other,
+      'cat_family': l10n.family,
+      'cat_health': l10n.health,
+      'cat_work': l10n.work,
+      'cat_ministry': l10n.ministry,
+      'cat_thanksgiving': l10n.thanksgiving,
+      'cat_intercession': l10n.intercession,
+      'cat_finances': l10n.finances,
+      'cat_relationships': l10n.relationships,
+      'cat_guidance': l10n.guidance,
+      'cat_protection': l10n.protection,
+      'cat_general': l10n.general,
     };
     return categoryNames[categoryId] ?? categoryId;
   }
