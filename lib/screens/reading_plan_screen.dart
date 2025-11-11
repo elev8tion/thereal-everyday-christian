@@ -158,7 +158,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
               ).animate().fadeIn(duration: AppAnimations.slow),
               const SizedBox(height: 8),
               Text(
-                'Your Progress & Statistics',
+                l10n.yourProgressAndStatistics,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
@@ -1066,7 +1066,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         if (allReadings.isEmpty) {
           // No readings exist - generate them based on plan category
           // Get user's language for localized titles and descriptions
-          final language = l10n.localeName;
+          final language = Localizations.localeOf(context).languageCode;
           await progressService.generateReadingsForPlan(
             plan.id,
             plan.category,
