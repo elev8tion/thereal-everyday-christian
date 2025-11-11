@@ -348,3 +348,4 @@ Privacy:
 ---
 
 **Questions? Check `openspec/launch/README.md` for App Store submission guidance.**
+- memorize
