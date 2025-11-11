@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 16;
+  static const int _databaseVersion = 17;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -486,6 +486,17 @@ class DatabaseHelper {
 
       await db.execute('CREATE INDEX idx_achievement_completions_type ON achievement_completions(achievement_type)');
       await db.execute('CREATE INDEX idx_achievement_completions_timestamp ON achievement_completions(completed_at DESC)');
+
+      // ==================== APP METADATA ====================
+
+      // App metadata table (stores app-level configuration like devotional language)
+      await db.execute('''
+        CREATE TABLE app_metadata (
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL,
+          updated_at INTEGER
+        )
+      ''');
 
       // ==================== ADDITIONAL PERFORMANCE INDEXES ====================
       // These indexes improve query performance for common operations
@@ -985,6 +996,26 @@ class DatabaseHelper {
         _logger.info('✅ Migration v15→v16 complete: is_completed column added to reading_plans');
       } catch (e) {
         _logger.error('Migration v15→v16 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 17) {
+      try {
+        // v16→v17: Add app_metadata table for storing devotional language preference
+        _logger.info('Migrating v16→v17: Creating app_metadata table');
+
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS app_metadata (
+            key TEXT PRIMARY KEY,
+            value TEXT NOT NULL,
+            updated_at INTEGER
+          )
+        ''');
+
+        _logger.info('✅ Migration v16→v17 complete: app_metadata table created');
+      } catch (e) {
+        _logger.error('Migration v16→v17 failed: $e');
         rethrow;
       }
     }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:sqflite/sqflite.dart';
 import 'database_service.dart';
 import '../logging/app_logger.dart';
 
@@ -17,10 +18,25 @@ class DevotionalContentLoader {
     try {
       final db = await _database.database;
 
-      // Check if devotionals already exist
+      // Check current language in database
+      final meta = await db.query(
+        'app_metadata',
+        where: 'key = ?',
+        whereArgs: ['devotional_language'],
+      );
+      final currentLang = meta.isNotEmpty ? meta.first['value'] as String : null;
+
+      // If language changed, clear existing devotionals
+      if (currentLang != null && currentLang != language) {
+        _logger.info('Language changed from $currentLang to $language, reloading devotionals...');
+        await db.delete('devotionals');
+        await db.delete('app_metadata', where: 'key = ?', whereArgs: ['devotional_language']);
+      }
+
+      // Check if devotionals already exist for current language
       final existing = await db.query('devotionals', limit: 1);
-      if (existing.isNotEmpty) {
-        _logger.info('Devotionals already loaded, skipping content load');
+      if (existing.isNotEmpty && currentLang == language) {
+        _logger.info('Devotionals already loaded for $language, skipping content load');
         return;
       }
 
@@ -57,7 +73,18 @@ class DevotionalContentLoader {
         _logger.info('Loaded batch: $batchFile (${devotionals.length} devotionals)');
       }
 
-      _logger.info('✅ Successfully loaded $totalLoaded devotionals');
+      // Store the language in app_metadata for future reference
+      await db.insert(
+        'app_metadata',
+        {
+          'key': 'devotional_language',
+          'value': language,
+          'updated_at': DateTime.now().millisecondsSinceEpoch,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      _logger.info('✅ Successfully loaded $totalLoaded devotionals in $language');
     } catch (e, stackTrace) {
       _logger.error('Failed to load devotionals: $e', stackTrace: stackTrace);
       rethrow;
