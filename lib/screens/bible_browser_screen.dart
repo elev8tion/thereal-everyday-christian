@@ -481,6 +481,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
         padding: const EdgeInsets.all(4),
         child: TabBar(
           controller: _tabController,
+          isScrollable: true,
+          tabAlignment: TabAlignment.center,
           indicator: BoxDecoration(
             color: AppTheme.primaryColor.withValues(alpha: 0.3),
             borderRadius: AppRadius.mediumRadius,
