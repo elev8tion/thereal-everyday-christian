@@ -1,10 +1,14 @@
 import '../models/bible_verse.dart';
 import '../models/chat_message.dart';
-import 'verse_service.dart';
+import 'unified_verse_service.dart';
+import '../core/services/database_service.dart';
 
 /// Service for providing contextual Bible verse recommendations
 class VerseContextService {
-  final VerseService _verseService = VerseService();
+  final UnifiedVerseService _verseService;
+
+  VerseContextService(DatabaseService databaseService)
+      : _verseService = UnifiedVerseService(databaseService);
 
   /// Get verses relevant to a conversation context
   Future<List<BibleVerse>> getContextualVerses({

@@ -8,7 +8,6 @@ import '../database/database_helper.dart';
 import '../services/notification_service.dart';
 import '../services/prayer_service.dart';
 import '../services/prayer_streak_service.dart';
-import '../services/verse_service.dart';
 import '../services/devotional_service.dart';
 import '../services/devotional_progress_service.dart';
 import '../services/reading_plan_service.dart';
@@ -102,23 +101,7 @@ final achievementServiceProvider = Provider<AchievementService>((ref) {
   return AchievementService(database);
 });
 
-// TODO: REFACTOR - Multiple verse services exist with overlapping functionality
-// - core/services/verse_service.dart (legacy, used by verse_preferences_widget, daily_verse_screen)
-// - services/verse_service.dart (legacy, used by verse_context_service)
-// - services/unified_verse_service.dart (modern, feature-complete, preferred)
-// RECOMMENDATION: Migrate all functionality to UnifiedVerseService and deprecate legacy services
-final verseServiceProvider = Provider<VerseService>((ref) {
-  final database = ref.watch(databaseServiceProvider);
-  return VerseService(database);
-});
-
-// Bible Service Provider (alias for VerseService for compatibility)
-/// Used by bible_reader screens for chapter reading functionality
-final bibleServiceProvider = Provider<VerseService>((ref) {
-  return ref.read(verseServiceProvider);
-});
-
-// Unified Verse Service (modern, feature-complete - USE THIS for new features)
+// Unified Verse Service (modern, feature-complete - USE THIS for all features)
 final unifiedVerseServiceProvider = Provider<UnifiedVerseService>((ref) {
   final achievementService = ref.watch(achievementServiceProvider);
   return UnifiedVerseService(achievementService: achievementService);

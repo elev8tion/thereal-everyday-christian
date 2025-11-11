@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core/services/verse_service.dart';
+import '../services/unified_verse_service.dart';
 import '../core/services/database_service.dart';
 import '../theme/app_theme.dart';
 import '../core/widgets/app_snackbar.dart';
@@ -12,7 +12,7 @@ class VersePreferencesWidget extends StatefulWidget {
 }
 
 class _VersePreferencesWidgetState extends State<VersePreferencesWidget> {
-  late VerseService _verseService;
+  late UnifiedVerseService _verseService;
   List<String> _selectedThemes = [];
   int _avoidRecentDays = 30;
   String _preferredVersion = 'WEB';
@@ -46,7 +46,7 @@ class _VersePreferencesWidgetState extends State<VersePreferencesWidget> {
   Future<void> _initializeServices() async {
     final databaseService = DatabaseService();
     await databaseService.initialize();
-    _verseService = VerseService(databaseService);
+    _verseService = UnifiedVerseService(databaseService);
     await _loadPreferences();
   }
 
