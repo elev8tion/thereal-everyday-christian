@@ -1410,7 +1410,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get next => 'Siguiente';
 
   @override
-  String get askMeAnything => 'Pregúntame Cualquier Cosa';
+  String get askMeAnything => 'Pregunta Libremente';
 
   @override
   String get intelligentScriptureChat => 'Chat Bíblico 24/7';
