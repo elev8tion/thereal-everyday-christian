@@ -111,8 +111,8 @@ class ChatScreen extends HookConsumerWidget {
           debugPrint('🆕 Creating fresh session');
           final newSessionId = await conversationService.createSession(
             title: verseContext != null
-              ? 'Discussing ${verseContext!.reference}'
-              : 'New Conversation',
+              ? l10n.discussingVerse(verseContext!.reference)
+              : l10n.newConversation,
           );
           sessionId.value = newSessionId;
           debugPrint('✅ Created new session: $newSessionId');
@@ -557,7 +557,7 @@ class ChatScreen extends HookConsumerWidget {
         // Fallback to contextual response if AI service fails
         debugPrint('❌ AI Service error: $e');
         debugPrint('❌ Stack trace: ${StackTrace.current}');
-        final response = _getContextualResponse(text.trim().toLowerCase());
+        final response = _getContextualResponse(text.trim().toLowerCase(), l10n);
         final aiMessage = ChatMessage.ai(
           content: response,
           sessionId: sessionId.value,
@@ -645,10 +645,10 @@ class ChatScreen extends HookConsumerWidget {
                         size: ResponsiveUtils.iconSize(context, 20),
                       ),
                       const SizedBox(width: 12),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          'Subscription required to regenerate responses',
-                          style: TextStyle(
+                          l10n.subscriptionRequiredRegenerate,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -709,10 +709,10 @@ class ChatScreen extends HookConsumerWidget {
                       size: ResponsiveUtils.iconSize(context, 20),
                     ),
                     const SizedBox(width: 12),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        'Could not find previous user message',
-                        style: TextStyle(
+                        l10n.errorPreviousMessage,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -763,7 +763,7 @@ class ChatScreen extends HookConsumerWidget {
           context: {
             'regenerate': true,
             'previous_response': aiMessage.content,
-            'instruction': 'Please provide a different perspective or alternative response to the previous question.',
+            'instruction': l10n.aiRegenerateInstruction,
           },
           language: language,
         );
@@ -906,7 +906,7 @@ class ChatScreen extends HookConsumerWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Failed to regenerate response: $e',
+                        l10n.failedToRegenerate(e.toString()),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -929,7 +929,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.show(
             context,
-            message: 'No conversation to export',
+            message: l10n.noConversationToExport,
             icon: Icons.info_outline,
           );
         }
@@ -944,7 +944,7 @@ class ChatScreen extends HookConsumerWidget {
           if (context.mounted) {
             AppSnackBar.show(
               context,
-              message: 'No messages to export',
+              message: l10n.noMessagesToExport,
               icon: Icons.info_outline,
             );
           }
@@ -964,7 +964,7 @@ class ChatScreen extends HookConsumerWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: AutoSizeText(
-                          'Export Conversation',
+                          l10n.exportConversation,
                           style: TextStyle(
                             color: AppColors.primaryText,
                             fontWeight: FontWeight.w700,
@@ -1004,11 +1004,11 @@ class ChatScreen extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       GlassDialogButton(
-                        text: 'Close',
+                        text: l10n.close,
                         onTap: () => Navigator.pop(context),
                       ),
                       GlassDialogButton(
-                        text: 'Share',
+                        text: l10n.share,
                         isPrimary: true,
                         onTap: () async {
                           final l10n = AppLocalizations.of(context);
@@ -1022,7 +1022,7 @@ class ChatScreen extends HookConsumerWidget {
                           if (context.mounted) {
                             AppSnackBar.show(
                               context,
-                              message: 'Conversation exported successfully',
+                              message: l10n.conversationExported,
                               icon: Icons.check_circle_outline,
                             );
                           }
@@ -1040,7 +1040,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.showError(
             context,
-            message: 'Failed to export: $e',
+            message: l10n.failedToExport(e.toString()),
           );
         }
       }
@@ -1052,7 +1052,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.show(
             context,
-            message: 'No conversation to share',
+            message: l10n.noConversationToShare,
             icon: Icons.info_outline,
           );
         }
@@ -1068,7 +1068,7 @@ class ChatScreen extends HookConsumerWidget {
           if (context.mounted) {
             AppSnackBar.show(
               context,
-              message: 'No messages to share',
+              message: l10n.noMessagesToShare,
               icon: Icons.info_outline,
             );
           }
@@ -1085,7 +1085,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.show(
             context,
-            message: 'Conversation shared successfully',
+            message: l10n.conversationShared,
             icon: Icons.check_circle_outline,
           );
         }
@@ -1094,7 +1094,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.showError(
             context,
-            message: 'Failed to share: $e',
+            message: l10n.failedToShare(e.toString()),
           );
         }
       }
@@ -1106,7 +1106,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.show(
             context,
-            message: 'No messages to share',
+            message: l10n.noMessagesToShare,
             icon: Icons.info_outline,
           );
         }
@@ -1128,7 +1128,7 @@ class ChatScreen extends HookConsumerWidget {
           if (context.mounted) {
             AppSnackBar.show(
               context,
-              message: 'No messages to share',
+              message: l10n.noMessagesToShare,
               icon: Icons.info_outline,
             );
           }
@@ -1149,7 +1149,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.show(
             context,
-            message: 'Conversation image shared successfully',
+            message: l10n.conversationImageShared,
             icon: Icons.check_circle_outline,
           );
         }
@@ -1158,7 +1158,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.showError(
             context,
-            message: 'Failed to share. Please try again.',
+            message: l10n.failedToShareTryAgain,
           );
         }
       }
@@ -1190,7 +1190,7 @@ class ChatScreen extends HookConsumerWidget {
           if (context.mounted) {
             AppSnackBar.showError(
               context,
-              message: 'Could not find the question for this response',
+              message: l10n.questionNotFound,
             );
           }
           return;
@@ -1214,7 +1214,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.show(
             context,
-            message: 'Message exchange shared successfully!',
+            message: l10n.messageExchangeShared,
             icon: Icons.share,
             iconColor: AppTheme.goldColor,
           );
@@ -1224,7 +1224,7 @@ class ChatScreen extends HookConsumerWidget {
         if (context.mounted) {
           AppSnackBar.showError(
             context,
-            message: 'Failed to share. Please try again.',
+            message: l10n.failedToShareTryAgain,
           );
         }
       }
@@ -1234,7 +1234,7 @@ class ChatScreen extends HookConsumerWidget {
     void showChatOptions() {
       showCustomBottomSheet(
         context: context,
-        title: 'Chat Options',
+        title: l10n.chatOptions,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -1252,15 +1252,15 @@ class ChatScreen extends HookConsumerWidget {
                 ),
                 child: const Icon(Icons.download, color: AppTheme.primaryColor),
               ),
-              title: const Text(
-                'Export Conversation',
-                style: TextStyle(
+              title: Text(
+                l10n.exportConversation,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
               ),
               subtitle: Text(
-                'View and copy conversation text',
+                l10n.exportConversationDesc,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -1286,15 +1286,15 @@ class ChatScreen extends HookConsumerWidget {
                 ),
                 child: const Icon(Icons.text_snippet, color: AppTheme.accentColor),
               ),
-              title: const Text(
-                'Share Text',
-                style: TextStyle(
+              title: Text(
+                l10n.shareText,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
               ),
               subtitle: Text(
-                'Share as plain text',
+                l10n.shareTextDesc,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -1320,15 +1320,15 @@ class ChatScreen extends HookConsumerWidget {
                 ),
                 child: const Icon(Icons.image, color: AppTheme.goldColor),
               ),
-              title: const Text(
-                'Share as Image',
-                style: TextStyle(
+              title: Text(
+                l10n.shareAsImage,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
               ),
               subtitle: Text(
-                'Share conversation as branded image',
+                l10n.shareAsImageDesc,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -1428,9 +1428,9 @@ class ChatScreen extends HookConsumerWidget {
               child: Column(
                 children: [
                   // AI Service initialization status banner
-                  _buildAIStatusBanner(aiServiceState),
+                  _buildAIStatusBanner(aiServiceState, l10n),
                   // Connectivity status banner
-                  _buildConnectivityBanner(connectivityStatus),
+                  _buildConnectivityBanner(connectivityStatus, l10n),
                   // CustomScrollView with pinned header and action buttons
                   Expanded(
                     child: CustomScrollView(
@@ -1443,8 +1443,8 @@ class ChatScreen extends HookConsumerWidget {
                             height: 120.0, // Increased to accommodate full FAB menu (80px) + padding (20px top + 20px bottom)
                             child: ChatActionButtons(
                               onMorePressed: showChatOptions,
-                              onHistoryPressed: () => _showConversationHistory(context, messages, sessionId, conversationService),
-                              onNewPressed: () => _startNewConversation(context, messages, sessionId, conversationService),
+                              onHistoryPressed: () => _showConversationHistory(context, messages, sessionId, conversationService, l10n),
+                              onNewPressed: () => _startNewConversation(context, messages, sessionId, conversationService, l10n),
                               onReturnToReadingPressed: verseContext != null ? () => _returnToReading(context) : null,
                             ),
                           ),
@@ -1465,6 +1465,7 @@ class ChatScreen extends HookConsumerWidget {
                           regenerateResponse,
                           shareMessageExchange,
                           regeneratedMessageId.value,
+                          l10n,
                         ),
                         // Add spacing at bottom to prevent last message from being hidden by floating input
                         const SliverToBoxAdapter(
@@ -1494,7 +1495,7 @@ class ChatScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildAIStatusBanner(AIServiceState state) {
+  Widget _buildAIStatusBanner(AIServiceState state, AppLocalizations l10n) {
     return state.when(
       initializing: () => Container(
         width: double.infinity,
@@ -1521,7 +1522,7 @@ class ChatScreen extends HookConsumerWidget {
             const SizedBox(width: 12),
             Flexible(
               child: AutoSizeText(
-                'Initializing AI service...',
+                l10n.initializingAI,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.9),
                   fontSize: 13,
@@ -1554,7 +1555,7 @@ class ChatScreen extends HookConsumerWidget {
             const SizedBox(width: 12),
             Expanded(
               child: AutoSizeText(
-                'Using fallback responses: $reason',
+                l10n.usingFallback(reason),
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.9),
                   fontSize: 13,
@@ -1586,7 +1587,7 @@ class ChatScreen extends HookConsumerWidget {
             const SizedBox(width: 12),
             Expanded(
               child: AutoSizeText(
-                'AI service error: $message',
+                l10n.aiServiceError(message),
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.9),
                   fontSize: 13,
@@ -1615,6 +1616,7 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> Function(int) onRegenerateResponse,
     Future<void> Function(int) onShareExchange,
     String? regeneratedMessageId,
+    AppLocalizations l10n,
   ) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -1626,7 +1628,7 @@ class ChatScreen extends HookConsumerWidget {
               return _buildTypingIndicator();
             }
 
-            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId);
+            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId, l10n);
           },
           childCount: messages.length + (isTyping ? 1 : 0),
         ),
@@ -1641,6 +1643,7 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> Function(int) onRegenerateResponse,
     Future<void> Function(int) onShareExchange,
     String? regeneratedMessageId,
+    AppLocalizations l10n,
   ) {
     final bool isRegeneratedMessage = regeneratedMessageId != null && message.id == regeneratedMessageId;
 
@@ -1650,7 +1653,7 @@ class ChatScreen extends HookConsumerWidget {
               // Show options for regenerate
               showCustomBottomSheet(
                 context: context,
-                title: 'Message Options',
+                title: l10n.messageOptions,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -1668,15 +1671,15 @@ class ChatScreen extends HookConsumerWidget {
                         ),
                         child: const Icon(Icons.copy, color: AppTheme.primaryColor),
                       ),
-                      title: const Text(
-                        'Copy Message',
-                        style: TextStyle(
+                      title: Text(
+                        l10n.copyMessage,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           color: AppColors.primaryText,
                         ),
                       ),
                       subtitle: Text(
-                        'Copy message text to clipboard',
+                        l10n.copyMessageDesc,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                           color: AppColors.secondaryText,
@@ -1688,7 +1691,7 @@ class ChatScreen extends HookConsumerWidget {
                         if (context.mounted) {
                           AppSnackBar.show(
                             context,
-                            message: 'Message copied to clipboard',
+                            message: l10n.messageCopied,
                             icon: Icons.content_copy,
                             iconColor: AppTheme.primaryColor,
                           );
@@ -1710,15 +1713,15 @@ class ChatScreen extends HookConsumerWidget {
                         ),
                         child: const Icon(Icons.refresh, color: AppTheme.primaryColor),
                       ),
-                      title: const Text(
-                        'Regenerate Response',
-                        style: TextStyle(
+                      title: Text(
+                        l10n.regenerateResponse,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           color: AppColors.primaryText,
                         ),
                       ),
                       subtitle: Text(
-                        'Generate a new response to this message',
+                        l10n.regenerateResponseDesc,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                           color: AppColors.secondaryText,
@@ -1744,15 +1747,15 @@ class ChatScreen extends HookConsumerWidget {
                         ),
                         child: const Icon(Icons.share, color: AppTheme.goldColor),
                       ),
-                      title: const Text(
-                        'Share Exchange',
-                        style: TextStyle(
+                      title: Text(
+                        l10n.shareExchange,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           color: AppColors.primaryText,
                         ),
                       ),
                       subtitle: Text(
-                        'Share this message exchange as image',
+                        l10n.shareExchangeDesc,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                           color: AppColors.secondaryText,
@@ -2015,19 +2018,19 @@ class ChatScreen extends HookConsumerWidget {
     );
   }
 
-  String _getContextualResponse(String message) {
+  String _getContextualResponse(String message, AppLocalizations l10n) {
     if (message.contains('prayer') || message.contains('pray')) {
-      return 'Prayer is our direct line to God. As it says in Philippians 4:6-7: "Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus."\n\nWhat specific area would you like prayer for?';
+      return l10n.fallbackPrayerResponse;
     } else if (message.contains('fear') || message.contains('afraid') || message.contains('worry')) {
-      return 'I understand you\'re feeling fearful. Remember what God says in Isaiah 41:10: "Fear not, for I am with you; be not dismayed, for I am your God; I will strengthen you, I will help you, I will uphold you with my righteous right hand."\n\nGod is always with you, even in your darkest moments. What is causing you to feel this way?';
+      return l10n.fallbackFearResponse;
     } else if (message.contains('love') || message.contains('relationship')) {
-      return 'Love is at the heart of the Christian faith. 1 John 4:19 tells us "We love because he first loved us." God\'s love for us is unconditional and eternal.\n\nIn our relationships with others, we\'re called to love as Christ loved us - with patience, kindness, and forgiveness. How can I help you apply God\'s love in your situation?';
+      return l10n.fallbackLoveResponse;
     } else if (message.contains('forgive') || message.contains('forgiveness')) {
-      return 'Forgiveness is one of God\'s greatest gifts to us. As Jesus taught us in Matthew 6:14-15: "If you forgive other people when they sin against you, your heavenly Father will also forgive you."\n\nForgiveness doesn\'t mean forgetting or excusing wrong behavior, but it frees us from the burden of resentment. What situation are you struggling to forgive?';
+      return l10n.fallbackForgivenessResponse;
     } else if (message.contains('purpose') || message.contains('calling')) {
-      return 'God has a unique purpose for your life! Jeremiah 29:11 reminds us: "For I know the plans I have for you," declares the Lord, "plans to prosper you and not to harm you, to give you hope and a future."\n\nYour purpose is found in loving God and serving others. What gifts and passions has God given you that you could use to serve Him?';
+      return l10n.fallbackPurposeResponse;
     } else {
-      return 'Thank you for sharing with me. God cares deeply about every aspect of your life, both big and small. As it says in 1 Peter 5:7: "Cast all your anxiety on him because he cares for you."\n\nRemember that you are loved, valued, and never alone. God is always listening and ready to help. Would you like to explore a specific Bible verse or topic related to your question?';
+      return l10n.fallbackDefaultResponse;
     }
   }
 
@@ -2036,6 +2039,7 @@ class ChatScreen extends HookConsumerWidget {
     ValueNotifier<List<ChatMessage>> messages,
     ValueNotifier<String?> sessionId,
     ConversationService conversationService,
+    AppLocalizations l10n,
   ) async {
     debugPrint('📜 Opening conversation history...');
     final allSessions = await conversationService.getSessions();
@@ -2056,7 +2060,7 @@ class ChatScreen extends HookConsumerWidget {
 
     showCustomBottomSheet(
       context: context,
-      title: 'Conversation History',
+      title: l10n.conversationHistory,
       height: MediaQuery.of(context).size.height * 0.75,
       child: sessions.isEmpty
           ? Center(
@@ -2070,7 +2074,7 @@ class ChatScreen extends HookConsumerWidget {
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   AutoSizeText(
-                    'No conversation history yet',
+                    l10n.noConversationHistory,
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                       color: AppColors.secondaryText,
@@ -2130,7 +2134,7 @@ class ChatScreen extends HookConsumerWidget {
                             ),
                             const SizedBox(height: 12),
                             AutoSizeText(
-                              'This will permanently delete this conversation and all its messages.',
+                              l10n.deleteConversationMessage,
                               style: TextStyle(
                                 color: AppColors.secondaryText,
                                 fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
@@ -2148,11 +2152,11 @@ class ChatScreen extends HookConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 GlassDialogButton(
-                                  text: 'Cancel',
+                                  text: l10n.cancel,
                                   onTap: () => Navigator.pop(context, false),
                                 ),
                                 GlassDialogButton(
-                                  text: 'Delete',
+                                  text: l10n.delete,
                                   isPrimary: true,
                                   onTap: () => Navigator.pop(context, true),
                                 ),
@@ -2194,18 +2198,18 @@ class ChatScreen extends HookConsumerWidget {
                                 width: 1,
                               ),
                             ),
-                            child: const Row(
+                            child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.check_circle,
                                   color: AppTheme.goldColor,
                                   size: 20,
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Expanded(
                                   child: Text(
-                                    'Conversation deleted',
-                                    style: TextStyle(
+                                    l10n.conversationDeleted,
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
@@ -2277,7 +2281,7 @@ class ChatScreen extends HookConsumerWidget {
                         ),
                       ),
                       title: AutoSizeText(
-                        session['title'] as String? ?? 'Conversation',
+                        session['title'] as String? ?? l10n.conversationDefaultTitle,
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                           fontWeight: FontWeight.w600,
@@ -2309,7 +2313,7 @@ class ChatScreen extends HookConsumerWidget {
                             const SizedBox(height: 4),
                           ],
                           AutoSizeText(
-                            '${_formatDate(updatedAt)} • $messageCount messages',
+                            '${_formatDate(updatedAt, l10n)} • $messageCount messages',
                             style: TextStyle(
                               fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 13),
                               color: AppColors.secondaryText,
@@ -2350,6 +2354,7 @@ class ChatScreen extends HookConsumerWidget {
     ValueNotifier<List<ChatMessage>> messages,
     ValueNotifier<String?> sessionId,
     ConversationService conversationService,
+    AppLocalizations l10n,
   ) async {
     debugPrint('🆕 New conversation button clicked');
 
@@ -2365,7 +2370,7 @@ class ChatScreen extends HookConsumerWidget {
       // No real messages yet - just create new session directly
       debugPrint('✨ No messages yet, creating new session directly');
       final newSessionId = await conversationService.createSession(
-        title: 'New Conversation',
+        title: l10n.newConversation,
       );
       sessionId.value = newSessionId;
 
@@ -2442,7 +2447,7 @@ class ChatScreen extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               AutoSizeText(
-                'Start New Conversation?',
+                l10n.startNewConversationTitle,
                 style: TextStyle(
                   color: AppColors.primaryText,
                   fontWeight: FontWeight.w700,
@@ -2455,7 +2460,7 @@ class ChatScreen extends HookConsumerWidget {
               ),
               const SizedBox(height: 16),
               AutoSizeText(
-                'Your current conversation will be saved to history.\n\nStart a fresh conversation?',
+                l10n.startNewConversationMessage,
                 style: TextStyle(
                   color: AppColors.secondaryText,
                   fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
@@ -2473,7 +2478,7 @@ class ChatScreen extends HookConsumerWidget {
                 children: [
                   Expanded(
                     child: GlassButton(
-                      text: 'Cancel',
+                      text: l10n.cancel,
                       height: 48,
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -2481,7 +2486,7 @@ class ChatScreen extends HookConsumerWidget {
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: GlassButton(
-                      text: 'New Chat',
+                      text: l10n.newChat,
                       height: 48,
                       onPressed: () async {
                     debugPrint('✅ User confirmed new conversation');
@@ -2496,7 +2501,7 @@ class ChatScreen extends HookConsumerWidget {
                     // Create new session
                     debugPrint('🆕 Creating new session...');
                     final newSessionId = await conversationService.createSession(
-                      title: 'New Conversation',
+                      title: l10n.newConversation,
                     );
                     sessionId.value = newSessionId;
 
@@ -2607,7 +2612,7 @@ class ChatScreen extends HookConsumerWidget {
     Navigator.pop(context, verseContext);
   }
 
-  String _formatDate(DateTime dateTime) {
+  String _formatDate(DateTime dateTime, AppLocalizations l10n) {
     final now = DateTime.now();
 
     // Compare dates only (ignore time) to handle midnight boundary correctly
@@ -2616,9 +2621,9 @@ class ChatScreen extends HookConsumerWidget {
     final daysDifference = today.difference(messageDate).inDays;
 
     if (daysDifference == 0) {
-      return 'Today';
+      return l10n.today;
     } else if (daysDifference == 1) {
-      return 'Yesterday';
+      return l10n.yesterday;
     } else if (daysDifference < 7) {
       return '$daysDifference days ago';
     } else {
@@ -2626,7 +2631,7 @@ class ChatScreen extends HookConsumerWidget {
     }
   }
 
-  Widget _buildConnectivityBanner(AsyncValue<bool> connectivityStatus) {
+  Widget _buildConnectivityBanner(AsyncValue<bool> connectivityStatus, AppLocalizations l10n) {
     return connectivityStatus.when(
       data: (isConnected) {
         if (isConnected) {
@@ -2657,7 +2662,7 @@ class ChatScreen extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'No Internet Connection',
+                      l10n.noInternetConnection,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 13,
@@ -2666,7 +2671,7 @@ class ChatScreen extends HookConsumerWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      'AI chat requires internet. Your Bible, prayers, and saved verses work offline.',
+                      l10n.aiRequiresInternet,
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.9),
                         fontSize: 11,
