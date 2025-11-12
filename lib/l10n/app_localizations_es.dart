@@ -2154,7 +2154,7 @@ class AppLocalizationsEs extends AppLocalizations {
       '¡Intercambio de mensajes compartido exitosamente!';
 
   @override
-  String get chatOptions => 'Opciones de Chat';
+  String get chatOptions => 'Opciones del Chat';
 
   @override
   String get chatExportConversationDesc =>
@@ -2842,4 +2842,194 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get monthDecember => 'Diciembre';
+
+  @override
+  String get messageOptions => 'Opciones del Mensaje';
+
+  @override
+  String get conversationHistory => 'Historial de Conversaciones';
+
+  @override
+  String get exportConversation => 'Exportar Conversación';
+
+  @override
+  String get exportConversationDesc => 'Ver y copiar texto de la conversación';
+
+  @override
+  String get shareTextDesc => 'Compartir como texto plano';
+
+  @override
+  String get shareAsImage => 'Compartir como Imagen';
+
+  @override
+  String get shareAsImageDesc => 'Compartir conversación como imagen con marca';
+
+  @override
+  String get copyMessage => 'Copiar Mensaje';
+
+  @override
+  String get copyMessageDesc => 'Copiar texto del mensaje al portapapeles';
+
+  @override
+  String get regenerateResponse => 'Regenerar Respuesta';
+
+  @override
+  String get regenerateResponseDesc =>
+      'Generar una nueva respuesta a este mensaje';
+
+  @override
+  String get shareExchange => 'Compartir Intercambio';
+
+  @override
+  String get shareExchangeDesc =>
+      'Compartir este intercambio de mensajes como imagen';
+
+  @override
+  String get subscriptionRequiredRegenerate =>
+      'Se requiere suscripción para regenerar respuestas';
+
+  @override
+  String failedToRegenerate(String error) {
+    return 'Error al regenerar respuesta: $error';
+  }
+
+  @override
+  String get noConversationToExport => 'No hay conversación para exportar';
+
+  @override
+  String get noMessagesToExport => 'No hay mensajes para exportar';
+
+  @override
+  String get conversationExported => 'Conversación exportada exitosamente';
+
+  @override
+  String failedToExport(String error) {
+    return 'Error al exportar: $error';
+  }
+
+  @override
+  String get noConversationToShare => 'No hay conversación para compartir';
+
+  @override
+  String get noMessagesToShare => 'No hay mensajes para compartir';
+
+  @override
+  String get conversationShared => 'Conversación compartida exitosamente';
+
+  @override
+  String failedToShare(String error) {
+    return 'Error al compartir: $error';
+  }
+
+  @override
+  String get conversationImageShared =>
+      'Imagen de conversación compartida exitosamente';
+
+  @override
+  String get failedToShareTryAgain =>
+      'Error al compartir. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get questionNotFound =>
+      'No se pudo encontrar la pregunta para esta respuesta';
+
+  @override
+  String get messageExchangeShared =>
+      '¡Intercambio de mensajes compartido exitosamente!';
+
+  @override
+  String get messageCopied => 'Mensaje copiado al portapapeles';
+
+  @override
+  String get conversationDeleted => 'Conversación eliminada';
+
+  @override
+  String get exportConversationTitle => 'Exportar Conversación';
+
+  @override
+  String get deleteConversationTitle => '¿Eliminar Conversación?';
+
+  @override
+  String get deleteConversationMessage =>
+      'Esto eliminará permanentemente esta conversación y todos sus mensajes.';
+
+  @override
+  String get startNewConversationTitle => '¿Iniciar Nueva Conversación?';
+
+  @override
+  String get startNewConversationMessage =>
+      'Tu conversación actual se guardará en el historial.\n\n¿Iniciar una conversación nueva?';
+
+  @override
+  String get newChat => 'Nuevo Chat';
+
+  @override
+  String get chatWelcomeMessageFull =>
+      '¡La paz sea contigo! 🙏\n\nEstoy aquí para proporcionar apoyo bíblico inteligente directamente de la palabra misma, para preguntas cristianas cotidianas. No dudes en preguntarme sobre:\n\n• Interpretación de las Escrituras\n• Peticiones de oración\n• Desafíos de la vida\n• Preguntas de fe\n• Aliento diario\n\n¿Cómo puedo ayudarte hoy?';
+
+  @override
+  String get errorPreviousMessage =>
+      'No se pudo encontrar el mensaje anterior del usuario';
+
+  @override
+  String get initializingAI => 'Inicializando servicio de IA...';
+
+  @override
+  String usingFallback(String reason) {
+    return 'Usando respuestas alternativas: $reason';
+  }
+
+  @override
+  String aiServiceError(String message) {
+    return 'Error del servicio de IA: $message';
+  }
+
+  @override
+  String get noInternetConnection => 'Sin Conexión a Internet';
+
+  @override
+  String get aiRequiresInternet =>
+      'El chat de IA requiere internet. Tu Biblia, oraciones y versículos guardados funcionan sin conexión.';
+
+  @override
+  String get noConversationHistory => 'Aún no hay historial de conversaciones';
+
+  @override
+  String get conversationDefaultTitle => 'Conversación';
+
+  @override
+  String discussingVerse(String reference) {
+    return 'Discutiendo $reference';
+  }
+
+  @override
+  String get newConversation => 'Nueva Conversación';
+
+  @override
+  String get fallbackPrayerResponse =>
+      'La oración es nuestra línea directa con Dios. Como dice en Filipenses 4:6-7: \"No se inquieten por nada; más bien, en toda ocasión, con oración y ruego, presenten sus peticiones a Dios y denle gracias. Y la paz de Dios, que sobrepasa todo entendimiento, cuidará sus corazones y sus pensamientos en Cristo Jesús.\"\n\n¿En qué área específica te gustaría que oráramos?';
+
+  @override
+  String get fallbackFearResponse =>
+      'Entiendo que te sientes temeroso. Recuerda lo que Dios dice en Isaías 41:10: \"No temas, porque yo estoy contigo; no desmayes, porque yo soy tu Dios que te esfuerzo; siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia.\"\n\nDios está contigo siempre, incluso en tus momentos más oscuros. ¿Qué te está causando este temor?';
+
+  @override
+  String get fallbackLoveResponse =>
+      'El amor está en el corazón de la fe cristiana. 1 Juan 4:19 nos dice \"Nosotros le amamos a él, porque él nos amó primero.\" El amor de Dios por nosotros es incondicional y eterno.\n\nEn nuestras relaciones con los demás, estamos llamados a amar como Cristo nos amó - con paciencia, bondad y perdón. ¿Cómo puedo ayudarte a aplicar el amor de Dios en tu situación?';
+
+  @override
+  String get fallbackForgivenessResponse =>
+      'El perdón es uno de los mayores regalos de Dios para nosotros. Como Jesús nos enseñó en Mateo 6:14-15: \"Porque si perdonan a otros sus ofensas, también los perdonará a ustedes su Padre celestial.\"\n\nEl perdón no significa olvidar o excusar el mal comportamiento, pero nos libera de la carga del resentimiento. ¿Qué situación te cuesta perdonar?';
+
+  @override
+  String get fallbackPurposeResponse =>
+      '¡Dios tiene un propósito único para tu vida! Jeremías 29:11 nos recuerda: \"Porque yo sé los planes que tengo para ustedes,\" declara el Señor, \"planes de bienestar y no de calamidad, a fin de darles un futuro y una esperanza.\"\n\nTu propósito se encuentra en amar a Dios y servir a los demás. ¿Qué dones y pasiones te ha dado Dios que podrías usar para servirle?';
+
+  @override
+  String get fallbackDefaultResponse =>
+      'Gracias por compartir conmigo. Dios se preocupa profundamente por cada aspecto de tu vida, tanto grande como pequeño. Como dice en 1 Pedro 5:7: \"Depositen en él toda ansiedad, porque él cuida de ustedes.\"\n\nRecuerda que eres amado, valorado y nunca estás solo. Dios siempre está escuchando y listo para ayudar. ¿Te gustaría explorar un versículo bíblico específico o un tema relacionado con tu pregunta?';
+
+  @override
+  String get aiRegenerateInstruction =>
+      'Por favor proporciona una perspectiva diferente o una respuesta alternativa a la pregunta anterior.';
 }

@@ -3783,4 +3783,287 @@
   "@monthNovember": {"description": "Month name"},
   "monthDecember": "December",
   "@monthDecember": {"description": "Month name"}
+,
+  "chatOptions": "Chat Options",
+  "@chatOptions": {
+    "description": "Bottom sheet title for chat options"
+  },
+  "messageOptions": "Message Options",
+  "@messageOptions": {
+    "description": "Bottom sheet title for message options"
+  },
+  "conversationHistory": "Conversation History",
+  "@conversationHistory": {
+    "description": "Bottom sheet title for conversation history"
+  },
+  "exportConversation": "Export Conversation",
+  "@exportConversation": {
+    "description": "Menu item: export conversation"
+  },
+  "exportConversationDesc": "View and copy conversation text",
+  "@exportConversationDesc": {
+    "description": "Menu item description: export conversation"
+  },
+  "shareText": "Share Text",
+  "@shareText": {
+    "description": "Menu item: share as text"
+  },
+  "shareTextDesc": "Share as plain text",
+  "@shareTextDesc": {
+    "description": "Menu item description: share as text"
+  },
+  "shareAsImage": "Share as Image",
+  "@shareAsImage": {
+    "description": "Menu item: share as image"
+  },
+  "shareAsImageDesc": "Share conversation as branded image",
+  "@shareAsImageDesc": {
+    "description": "Menu item description: share as image"
+  },
+  "copyMessage": "Copy Message",
+  "@copyMessage": {
+    "description": "Menu item: copy message"
+  },
+  "copyMessageDesc": "Copy message text to clipboard",
+  "@copyMessageDesc": {
+    "description": "Menu item description: copy message"
+  },
+  "regenerateResponse": "Regenerate Response",
+  "@regenerateResponse": {
+    "description": "Menu item: regenerate AI response"
+  },
+  "regenerateResponseDesc": "Generate a new response to this message",
+  "@regenerateResponseDesc": {
+    "description": "Menu item description: regenerate response"
+  },
+  "shareExchange": "Share Exchange",
+  "@shareExchange": {
+    "description": "Menu item: share message exchange"
+  },
+  "shareExchangeDesc": "Share this message exchange as image",
+  "@shareExchangeDesc": {
+    "description": "Menu item description: share exchange"
+  },
+  "subscriptionRequiredRegenerate": "Subscription required to regenerate responses",
+  "@subscriptionRequiredRegenerate": {
+    "description": "Error message when trying to regenerate without subscription"
+  },
+  "failedToRegenerate": "Failed to regenerate response: {error}",
+  "@failedToRegenerate": {
+    "description": "Error message when regeneration fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "noConversationToExport": "No conversation to export",
+  "@noConversationToExport": {
+    "description": "Info message when no conversation exists"
+  },
+  "noMessagesToExport": "No messages to export",
+  "@noMessagesToExport": {
+    "description": "Info message when no messages exist"
+  },
+  "conversationExported": "Conversation exported successfully",
+  "@conversationExported": {
+    "description": "Success message after exporting conversation"
+  },
+  "failedToExport": "Failed to export: {error}",
+  "@failedToExport": {
+    "description": "Error message when export fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Storage error"
+      }
+    }
+  },
+  "noConversationToShare": "No conversation to share",
+  "@noConversationToShare": {
+    "description": "Info message when no conversation exists to share"
+  },
+  "noMessagesToShare": "No messages to share",
+  "@noMessagesToShare": {
+    "description": "Info message when no messages exist to share"
+  },
+  "conversationShared": "Conversation shared successfully",
+  "@conversationShared": {
+    "description": "Success message after sharing conversation"
+  },
+  "failedToShare": "Failed to share: {error}",
+  "@failedToShare": {
+    "description": "Error message when sharing fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "conversationImageShared": "Conversation image shared successfully",
+  "@conversationImageShared": {
+    "description": "Success message after sharing conversation as image"
+  },
+  "failedToShareTryAgain": "Failed to share. Please try again.",
+  "@failedToShareTryAgain": {
+    "description": "Error message when sharing fails (generic)"
+  },
+  "questionNotFound": "Could not find the question for this response",
+  "@questionNotFound": {
+    "description": "Error message when user question not found"
+  },
+  "messageExchangeShared": "Message exchange shared successfully!",
+  "@messageExchangeShared": {
+    "description": "Success message after sharing message exchange"
+  },
+  "messageCopied": "Message copied to clipboard",
+  "@messageCopied": {
+    "description": "Success message after copying message"
+  },
+  "conversationDeleted": "Conversation deleted",
+  "@conversationDeleted": {
+    "description": "Success message after deleting conversation"
+  },
+  "exportConversationTitle": "Export Conversation",
+  "@exportConversationTitle": {
+    "description": "Export dialog title"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "Share button text"
+  },
+  "deleteConversationTitle": "Delete Conversation?",
+  "@deleteConversationTitle": {
+    "description": "Delete conversation dialog title"
+  },
+  "deleteConversationMessage": "This will permanently delete this conversation and all its messages.",
+  "@deleteConversationMessage": {
+    "description": "Delete conversation dialog message"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "startNewConversationTitle": "Start New Conversation?",
+  "@startNewConversationTitle": {
+    "description": "New conversation dialog title"
+  },
+  "startNewConversationMessage": "Your current conversation will be saved to history.\n\nStart a fresh conversation?",
+  "@startNewConversationMessage": {
+    "description": "New conversation dialog message"
+  },
+  "newChat": "New Chat",
+  "@newChat": {
+    "description": "New chat button text"
+  },
+  "chatWelcomeMessageFull": "Peace be with you! 🙏\n\nI'm here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?",
+  "@chatWelcomeMessageFull": {
+    "description": "Full welcome message for new conversations"
+  },
+  "errorPreviousMessage": "Could not find previous user message",
+  "@errorPreviousMessage": {
+    "description": "Error when previous message not found"
+  },
+  "initializingAI": "Initializing AI service...",
+  "@initializingAI": {
+    "description": "Loading message while AI initializes"
+  },
+  "usingFallback": "Using fallback responses: {reason}",
+  "@usingFallback": {
+    "description": "Message when using fallback responses",
+    "placeholders": {
+      "reason": {
+        "type": "String",
+        "example": "Network unavailable"
+      }
+    }
+  },
+  "aiServiceError": "AI service error: {message}",
+  "@aiServiceError": {
+    "description": "AI service error message",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Connection timeout"
+      }
+    }
+  },
+  "noInternetConnection": "No Internet Connection",
+  "@noInternetConnection": {
+    "description": "No internet error title"
+  },
+  "aiRequiresInternet": "AI chat requires internet. Your Bible, prayers, and saved verses work offline.",
+  "@aiRequiresInternet": {
+    "description": "No internet error message"
+  },
+  "noConversationHistory": "No conversation history yet",
+  "@noConversationHistory": {
+    "description": "Empty state message for conversation history"
+  },
+  "conversationDefaultTitle": "Conversation",
+  "@conversationDefaultTitle": {
+    "description": "Default title for untitled conversations"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Date label for today"
+  },
+  "yesterday": "Yesterday",
+  "@yesterday": {
+    "description": "Date label for yesterday"
+  },
+  "discussingVerse": "Discussing {reference}",
+  "@discussingVerse": {
+    "description": "AppBar title when discussing a specific verse",
+    "placeholders": {
+      "reference": {
+        "type": "String",
+        "example": "John 3:16"
+      }
+    }
+  },
+  "newConversation": "New Conversation",
+  "@newConversation": {
+    "description": "AppBar title for new conversation"
+  }
+,
+  "fallbackPrayerResponse": "Prayer is our direct line to God. As it says in Philippians 4:6-7: \"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.\"\n\nWhat specific area would you like prayer for?",
+  "@fallbackPrayerResponse": {
+    "description": "Fallback response about prayer when AI unavailable"
+  },
+  "fallbackFearResponse": "I understand you're feeling fearful. Remember what God says in Isaiah 41:10: \"Fear not, for I am with you; be not dismayed, for I am your God; I will strengthen you, I will help you, I will uphold you with my righteous right hand.\"\n\nGod is always with you, even in your darkest moments. What is causing you to feel this way?",
+  "@fallbackFearResponse": {
+    "description": "Fallback response about fear when AI unavailable"
+  },
+  "fallbackLoveResponse": "Love is at the heart of the Christian faith. 1 John 4:19 tells us \"We love because he first loved us.\" God's love for us is unconditional and eternal.\n\nIn our relationships with others, we're called to love as Christ loved us - with patience, kindness, and forgiveness. How can I help you apply God's love in your situation?",
+  "@fallbackLoveResponse": {
+    "description": "Fallback response about love when AI unavailable"
+  },
+  "fallbackForgivenessResponse": "Forgiveness is one of God's greatest gifts to us. As Jesus taught us in Matthew 6:14-15: \"If you forgive other people when they sin against you, your heavenly Father will also forgive you.\"\n\nForgiveness doesn't mean forgetting or excusing wrong behavior, but it frees us from the burden of resentment. What situation are you struggling to forgive?",
+  "@fallbackForgivenessResponse": {
+    "description": "Fallback response about forgiveness when AI unavailable"
+  },
+  "fallbackPurposeResponse": "God has a unique purpose for your life! Jeremiah 29:11 reminds us: \"For I know the plans I have for you,\" declares the Lord, \"plans to prosper you and not to harm you, to give you hope and a future.\"\n\nYour purpose is found in loving God and serving others. What gifts and passions has God given you that you could use to serve Him?",
+  "@fallbackPurposeResponse": {
+    "description": "Fallback response about purpose when AI unavailable"
+  },
+  "fallbackDefaultResponse": "Thank you for sharing with me. God cares deeply about every aspect of your life, both big and small. As it says in 1 Peter 5:7: \"Cast all your anxiety on him because he cares for you.\"\n\nRemember that you are loved, valued, and never alone. God is always listening and ready to help. Would you like to explore a specific Bible verse or topic related to your question?",
+  "@fallbackDefaultResponse": {
+    "description": "Default fallback response when AI unavailable"
+  }
+,
+  "aiRegenerateInstruction": "Please provide a different perspective or alternative response to the previous question.",
+  "@aiRegenerateInstruction": {
+    "description": "AI instruction for regenerating responses"
+  }
 }

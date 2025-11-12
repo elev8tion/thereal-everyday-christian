@@ -566,7 +566,7 @@ abstract class AppLocalizations {
   /// **'Mark as Answered'**
   String get markAsAnswered;
 
-  /// Menu action
+  /// Delete button text
   ///
   /// In en, this message translates to:
   /// **'Delete'**
@@ -620,7 +620,7 @@ abstract class AppLocalizations {
   /// **'Share more details about your prayer request...'**
   String get shareMoreDetails;
 
-  /// Button text
+  /// Cancel button text
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
@@ -740,13 +740,13 @@ abstract class AppLocalizations {
   /// **'Relationships'**
   String get relationships;
 
-  /// Date label
+  /// Date label for today
   ///
   /// In en, this message translates to:
   /// **'Today'**
   String get today;
 
-  /// Date label
+  /// Date label for yesterday
   ///
   /// In en, this message translates to:
   /// **'Yesterday'**
@@ -1490,7 +1490,7 @@ abstract class AppLocalizations {
   /// **'For help and support, please visit our website or contact us through the app.'**
   String get helpDialogMessage;
 
-  /// Button text
+  /// Close button text
   ///
   /// In en, this message translates to:
   /// **'Close'**
@@ -2067,7 +2067,7 @@ abstract class AppLocalizations {
   /// **'Loading...'**
   String get loading;
 
-  /// Share action label
+  /// Share button text
   ///
   /// In en, this message translates to:
   /// **'Share'**
@@ -2391,7 +2391,7 @@ abstract class AppLocalizations {
   /// **'Verse copied to clipboard'**
   String get verseCopiedToClipboard;
 
-  /// Share as text option
+  /// Menu item: share as text
   ///
   /// In en, this message translates to:
   /// **'Share Text'**
@@ -3921,7 +3921,7 @@ abstract class AppLocalizations {
   /// **'Message exchange shared successfully!'**
   String get chatMessageExchangeSharedSuccess;
 
-  /// Chat options bottom sheet title
+  /// Bottom sheet title for chat options
   ///
   /// In en, this message translates to:
   /// **'Chat Options'**
@@ -5012,6 +5012,324 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'December'**
   String get monthDecember;
+
+  /// Bottom sheet title for message options
+  ///
+  /// In en, this message translates to:
+  /// **'Message Options'**
+  String get messageOptions;
+
+  /// Bottom sheet title for conversation history
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation History'**
+  String get conversationHistory;
+
+  /// Menu item: export conversation
+  ///
+  /// In en, this message translates to:
+  /// **'Export Conversation'**
+  String get exportConversation;
+
+  /// Menu item description: export conversation
+  ///
+  /// In en, this message translates to:
+  /// **'View and copy conversation text'**
+  String get exportConversationDesc;
+
+  /// Menu item description: share as text
+  ///
+  /// In en, this message translates to:
+  /// **'Share as plain text'**
+  String get shareTextDesc;
+
+  /// Menu item: share as image
+  ///
+  /// In en, this message translates to:
+  /// **'Share as Image'**
+  String get shareAsImage;
+
+  /// Menu item description: share as image
+  ///
+  /// In en, this message translates to:
+  /// **'Share conversation as branded image'**
+  String get shareAsImageDesc;
+
+  /// Menu item: copy message
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Message'**
+  String get copyMessage;
+
+  /// Menu item description: copy message
+  ///
+  /// In en, this message translates to:
+  /// **'Copy message text to clipboard'**
+  String get copyMessageDesc;
+
+  /// Menu item: regenerate AI response
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate Response'**
+  String get regenerateResponse;
+
+  /// Menu item description: regenerate response
+  ///
+  /// In en, this message translates to:
+  /// **'Generate a new response to this message'**
+  String get regenerateResponseDesc;
+
+  /// Menu item: share message exchange
+  ///
+  /// In en, this message translates to:
+  /// **'Share Exchange'**
+  String get shareExchange;
+
+  /// Menu item description: share exchange
+  ///
+  /// In en, this message translates to:
+  /// **'Share this message exchange as image'**
+  String get shareExchangeDesc;
+
+  /// Error message when trying to regenerate without subscription
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription required to regenerate responses'**
+  String get subscriptionRequiredRegenerate;
+
+  /// Error message when regeneration fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to regenerate response: {error}'**
+  String failedToRegenerate(String error);
+
+  /// Info message when no conversation exists
+  ///
+  /// In en, this message translates to:
+  /// **'No conversation to export'**
+  String get noConversationToExport;
+
+  /// Info message when no messages exist
+  ///
+  /// In en, this message translates to:
+  /// **'No messages to export'**
+  String get noMessagesToExport;
+
+  /// Success message after exporting conversation
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation exported successfully'**
+  String get conversationExported;
+
+  /// Error message when export fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to export: {error}'**
+  String failedToExport(String error);
+
+  /// Info message when no conversation exists to share
+  ///
+  /// In en, this message translates to:
+  /// **'No conversation to share'**
+  String get noConversationToShare;
+
+  /// Info message when no messages exist to share
+  ///
+  /// In en, this message translates to:
+  /// **'No messages to share'**
+  String get noMessagesToShare;
+
+  /// Success message after sharing conversation
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation shared successfully'**
+  String get conversationShared;
+
+  /// Error message when sharing fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share: {error}'**
+  String failedToShare(String error);
+
+  /// Success message after sharing conversation as image
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation image shared successfully'**
+  String get conversationImageShared;
+
+  /// Error message when sharing fails (generic)
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share. Please try again.'**
+  String get failedToShareTryAgain;
+
+  /// Error message when user question not found
+  ///
+  /// In en, this message translates to:
+  /// **'Could not find the question for this response'**
+  String get questionNotFound;
+
+  /// Success message after sharing message exchange
+  ///
+  /// In en, this message translates to:
+  /// **'Message exchange shared successfully!'**
+  String get messageExchangeShared;
+
+  /// Success message after copying message
+  ///
+  /// In en, this message translates to:
+  /// **'Message copied to clipboard'**
+  String get messageCopied;
+
+  /// Success message after deleting conversation
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation deleted'**
+  String get conversationDeleted;
+
+  /// Export dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Export Conversation'**
+  String get exportConversationTitle;
+
+  /// Delete conversation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Conversation?'**
+  String get deleteConversationTitle;
+
+  /// Delete conversation dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete this conversation and all its messages.'**
+  String get deleteConversationMessage;
+
+  /// New conversation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Start New Conversation?'**
+  String get startNewConversationTitle;
+
+  /// New conversation dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'Your current conversation will be saved to history.\n\nStart a fresh conversation?'**
+  String get startNewConversationMessage;
+
+  /// New chat button text
+  ///
+  /// In en, this message translates to:
+  /// **'New Chat'**
+  String get newChat;
+
+  /// Full welcome message for new conversations
+  ///
+  /// In en, this message translates to:
+  /// **'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?'**
+  String get chatWelcomeMessageFull;
+
+  /// Error when previous message not found
+  ///
+  /// In en, this message translates to:
+  /// **'Could not find previous user message'**
+  String get errorPreviousMessage;
+
+  /// Loading message while AI initializes
+  ///
+  /// In en, this message translates to:
+  /// **'Initializing AI service...'**
+  String get initializingAI;
+
+  /// Message when using fallback responses
+  ///
+  /// In en, this message translates to:
+  /// **'Using fallback responses: {reason}'**
+  String usingFallback(String reason);
+
+  /// AI service error message
+  ///
+  /// In en, this message translates to:
+  /// **'AI service error: {message}'**
+  String aiServiceError(String message);
+
+  /// No internet error title
+  ///
+  /// In en, this message translates to:
+  /// **'No Internet Connection'**
+  String get noInternetConnection;
+
+  /// No internet error message
+  ///
+  /// In en, this message translates to:
+  /// **'AI chat requires internet. Your Bible, prayers, and saved verses work offline.'**
+  String get aiRequiresInternet;
+
+  /// Empty state message for conversation history
+  ///
+  /// In en, this message translates to:
+  /// **'No conversation history yet'**
+  String get noConversationHistory;
+
+  /// Default title for untitled conversations
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation'**
+  String get conversationDefaultTitle;
+
+  /// AppBar title when discussing a specific verse
+  ///
+  /// In en, this message translates to:
+  /// **'Discussing {reference}'**
+  String discussingVerse(String reference);
+
+  /// AppBar title for new conversation
+  ///
+  /// In en, this message translates to:
+  /// **'New Conversation'**
+  String get newConversation;
+
+  /// Fallback response about prayer when AI unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer is our direct line to God. As it says in Philippians 4:6-7: \"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.\"\n\nWhat specific area would you like prayer for?'**
+  String get fallbackPrayerResponse;
+
+  /// Fallback response about fear when AI unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'I understand you\'re feeling fearful. Remember what God says in Isaiah 41:10: \"Fear not, for I am with you; be not dismayed, for I am your God; I will strengthen you, I will help you, I will uphold you with my righteous right hand.\"\n\nGod is always with you, even in your darkest moments. What is causing you to feel this way?'**
+  String get fallbackFearResponse;
+
+  /// Fallback response about love when AI unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Love is at the heart of the Christian faith. 1 John 4:19 tells us \"We love because he first loved us.\" God\'s love for us is unconditional and eternal.\n\nIn our relationships with others, we\'re called to love as Christ loved us - with patience, kindness, and forgiveness. How can I help you apply God\'s love in your situation?'**
+  String get fallbackLoveResponse;
+
+  /// Fallback response about forgiveness when AI unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Forgiveness is one of God\'s greatest gifts to us. As Jesus taught us in Matthew 6:14-15: \"If you forgive other people when they sin against you, your heavenly Father will also forgive you.\"\n\nForgiveness doesn\'t mean forgetting or excusing wrong behavior, but it frees us from the burden of resentment. What situation are you struggling to forgive?'**
+  String get fallbackForgivenessResponse;
+
+  /// Fallback response about purpose when AI unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'God has a unique purpose for your life! Jeremiah 29:11 reminds us: \"For I know the plans I have for you,\" declares the Lord, \"plans to prosper you and not to harm you, to give you hope and a future.\"\n\nYour purpose is found in loving God and serving others. What gifts and passions has God given you that you could use to serve Him?'**
+  String get fallbackPurposeResponse;
+
+  /// Default fallback response when AI unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for sharing with me. God cares deeply about every aspect of your life, both big and small. As it says in 1 Peter 5:7: \"Cast all your anxiety on him because he cares for you.\"\n\nRemember that you are loved, valued, and never alone. God is always listening and ready to help. Would you like to explore a specific Bible verse or topic related to your question?'**
+  String get fallbackDefaultResponse;
+
+  /// AI instruction for regenerating responses
+  ///
+  /// In en, this message translates to:
+  /// **'Please provide a different perspective or alternative response to the previous question.'**
+  String get aiRegenerateInstruction;
 }
 
 class _AppLocalizationsDelegate

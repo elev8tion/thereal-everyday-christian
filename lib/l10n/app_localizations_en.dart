@@ -2802,4 +2802,190 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get monthDecember => 'December';
+
+  @override
+  String get messageOptions => 'Message Options';
+
+  @override
+  String get conversationHistory => 'Conversation History';
+
+  @override
+  String get exportConversation => 'Export Conversation';
+
+  @override
+  String get exportConversationDesc => 'View and copy conversation text';
+
+  @override
+  String get shareTextDesc => 'Share as plain text';
+
+  @override
+  String get shareAsImage => 'Share as Image';
+
+  @override
+  String get shareAsImageDesc => 'Share conversation as branded image';
+
+  @override
+  String get copyMessage => 'Copy Message';
+
+  @override
+  String get copyMessageDesc => 'Copy message text to clipboard';
+
+  @override
+  String get regenerateResponse => 'Regenerate Response';
+
+  @override
+  String get regenerateResponseDesc =>
+      'Generate a new response to this message';
+
+  @override
+  String get shareExchange => 'Share Exchange';
+
+  @override
+  String get shareExchangeDesc => 'Share this message exchange as image';
+
+  @override
+  String get subscriptionRequiredRegenerate =>
+      'Subscription required to regenerate responses';
+
+  @override
+  String failedToRegenerate(String error) {
+    return 'Failed to regenerate response: $error';
+  }
+
+  @override
+  String get noConversationToExport => 'No conversation to export';
+
+  @override
+  String get noMessagesToExport => 'No messages to export';
+
+  @override
+  String get conversationExported => 'Conversation exported successfully';
+
+  @override
+  String failedToExport(String error) {
+    return 'Failed to export: $error';
+  }
+
+  @override
+  String get noConversationToShare => 'No conversation to share';
+
+  @override
+  String get noMessagesToShare => 'No messages to share';
+
+  @override
+  String get conversationShared => 'Conversation shared successfully';
+
+  @override
+  String failedToShare(String error) {
+    return 'Failed to share: $error';
+  }
+
+  @override
+  String get conversationImageShared =>
+      'Conversation image shared successfully';
+
+  @override
+  String get failedToShareTryAgain => 'Failed to share. Please try again.';
+
+  @override
+  String get questionNotFound =>
+      'Could not find the question for this response';
+
+  @override
+  String get messageExchangeShared => 'Message exchange shared successfully!';
+
+  @override
+  String get messageCopied => 'Message copied to clipboard';
+
+  @override
+  String get conversationDeleted => 'Conversation deleted';
+
+  @override
+  String get exportConversationTitle => 'Export Conversation';
+
+  @override
+  String get deleteConversationTitle => 'Delete Conversation?';
+
+  @override
+  String get deleteConversationMessage =>
+      'This will permanently delete this conversation and all its messages.';
+
+  @override
+  String get startNewConversationTitle => 'Start New Conversation?';
+
+  @override
+  String get startNewConversationMessage =>
+      'Your current conversation will be saved to history.\n\nStart a fresh conversation?';
+
+  @override
+  String get newChat => 'New Chat';
+
+  @override
+  String get chatWelcomeMessageFull =>
+      'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?';
+
+  @override
+  String get errorPreviousMessage => 'Could not find previous user message';
+
+  @override
+  String get initializingAI => 'Initializing AI service...';
+
+  @override
+  String usingFallback(String reason) {
+    return 'Using fallback responses: $reason';
+  }
+
+  @override
+  String aiServiceError(String message) {
+    return 'AI service error: $message';
+  }
+
+  @override
+  String get noInternetConnection => 'No Internet Connection';
+
+  @override
+  String get aiRequiresInternet =>
+      'AI chat requires internet. Your Bible, prayers, and saved verses work offline.';
+
+  @override
+  String get noConversationHistory => 'No conversation history yet';
+
+  @override
+  String get conversationDefaultTitle => 'Conversation';
+
+  @override
+  String discussingVerse(String reference) {
+    return 'Discussing $reference';
+  }
+
+  @override
+  String get newConversation => 'New Conversation';
+
+  @override
+  String get fallbackPrayerResponse =>
+      'Prayer is our direct line to God. As it says in Philippians 4:6-7: \"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.\"\n\nWhat specific area would you like prayer for?';
+
+  @override
+  String get fallbackFearResponse =>
+      'I understand you\'re feeling fearful. Remember what God says in Isaiah 41:10: \"Fear not, for I am with you; be not dismayed, for I am your God; I will strengthen you, I will help you, I will uphold you with my righteous right hand.\"\n\nGod is always with you, even in your darkest moments. What is causing you to feel this way?';
+
+  @override
+  String get fallbackLoveResponse =>
+      'Love is at the heart of the Christian faith. 1 John 4:19 tells us \"We love because he first loved us.\" God\'s love for us is unconditional and eternal.\n\nIn our relationships with others, we\'re called to love as Christ loved us - with patience, kindness, and forgiveness. How can I help you apply God\'s love in your situation?';
+
+  @override
+  String get fallbackForgivenessResponse =>
+      'Forgiveness is one of God\'s greatest gifts to us. As Jesus taught us in Matthew 6:14-15: \"If you forgive other people when they sin against you, your heavenly Father will also forgive you.\"\n\nForgiveness doesn\'t mean forgetting or excusing wrong behavior, but it frees us from the burden of resentment. What situation are you struggling to forgive?';
+
+  @override
+  String get fallbackPurposeResponse =>
+      'God has a unique purpose for your life! Jeremiah 29:11 reminds us: \"For I know the plans I have for you,\" declares the Lord, \"plans to prosper you and not to harm you, to give you hope and a future.\"\n\nYour purpose is found in loving God and serving others. What gifts and passions has God given you that you could use to serve Him?';
+
+  @override
+  String get fallbackDefaultResponse =>
+      'Thank you for sharing with me. God cares deeply about every aspect of your life, both big and small. As it says in 1 Peter 5:7: \"Cast all your anxiety on him because he cares for you.\"\n\nRemember that you are loved, valued, and never alone. God is always listening and ready to help. Would you like to explore a specific Bible verse or topic related to your question?';
+
+  @override
+  String get aiRegenerateInstruction =>
+      'Please provide a different perspective or alternative response to the previous question.';
 }
