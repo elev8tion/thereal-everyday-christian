@@ -1039,8 +1039,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       builder: (context) => PopScope(
                         canPop: false,
                         child: Center(
-                          child: FrostedGlassCard(
-                            padding: const EdgeInsets.all(AppSpacing.xl),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.xl,
+                              vertical: AppSpacing.lg,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.8),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -1055,6 +1062,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                                    decoration: TextDecoration.none,
                                   ),
                                 ),
                               ],
