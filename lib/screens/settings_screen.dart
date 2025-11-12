@@ -1032,8 +1032,44 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 if (newLanguage != null) {
                   final languageCode = newLanguage == 'English' ? 'en' : 'es';
                   if (languageCode != currentLocale.languageCode) {
+                    // Show loading dialog while reloading content
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => PopScope(
+                        canPop: false,
+                        child: Center(
+                          child: FrostedGlassCard(
+                            padding: const EdgeInsets.all(AppSpacing.xl),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+                                ),
+                                const SizedBox(width: AppSpacing.lg),
+                                Text(
+                                  languageCode == 'en'
+                                      ? 'Changing to English...'
+                                      : 'Cambiando a Español...',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+
+                    // Change language and reload content
                     await ref.read(languageProvider.notifier).setLanguage(languageCode);
+
+                    // Close loading dialog
                     if (mounted) {
+                      NavigationService.pop();
                       _showSnackBar(
                         languageCode == 'en'
                             ? l10n.languageChangedToEnglish
