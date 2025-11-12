@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../utils/blur_dialog_utils.dart';
 
 class GlassCard extends StatelessWidget {
   final Widget child;
@@ -163,24 +162,3 @@ class GlassBottomSheet extends StatelessWidget {
   }
 }
 
-/// Helper to show bottom sheet with full-screen backdrop blur
-///
-/// DEPRECATED: Use `showCustomBottomSheet` from `base_bottom_sheet.dart` instead
-/// for consistent dark gradient styling across the app.
-@Deprecated('Use showCustomBottomSheet from base_bottom_sheet.dart instead')
-Future<T?> showGlassBottomSheet<T>({
-  required BuildContext context,
-  required Widget child,
-  bool isScrollControlled = false,
-  bool isDismissible = true,
-  bool enableDrag = true,
-}) {
-  return showBlurredBottomSheet<T>(
-    context: context,
-    backgroundColor: Colors.transparent,
-    isScrollControlled: isScrollControlled,
-    isDismissible: isDismissible,
-    enableDrag: enableDrag,
-    builder: (context) => child,
-  );
-}

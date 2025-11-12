@@ -1,4 +1,3 @@
-import 'package:uuid/uuid.dart';
 import '../models/reading_plan.dart';
 import 'database_service.dart';
 import 'reading_plan_generator.dart';
@@ -8,7 +7,6 @@ import 'achievement_service.dart';
 class ReadingPlanProgressService {
   final DatabaseService _database;
   final AchievementService? _achievementService;
-  final _uuid = const Uuid();
   late final ReadingPlanGenerator _generator;
 
   ReadingPlanProgressService(
@@ -229,44 +227,6 @@ class ReadingPlanProgressService {
       await _generator.generateReadingsForPlan(planId, category, totalDays, language: language);
     } catch (e) {
       throw Exception('Failed to generate readings for plan: $e');
-    }
-  }
-
-  /// Create sample daily readings for a plan (DEPRECATED - use generateReadingsForPlan instead)
-  @Deprecated('Use generateReadingsForPlan() instead - this generates incorrect generic readings')
-  Future<void> createSampleReadings(String planId, int totalDays) async {
-    try {
-      final db = await _database.database;
-      final startDate = DateTime.now();
-
-      // Sample Bible books and chapters
-      final sampleReadings = [
-        {'book': 'Genesis', 'chapters': '1-3', 'title': 'The Beginning'},
-        {'book': 'Matthew', 'chapters': '1-2', 'title': 'The Birth of Jesus'},
-        {'book': 'Psalms', 'chapters': '1', 'title': 'Blessed is the One'},
-        {'book': 'John', 'chapters': '1', 'title': 'The Word Became Flesh'},
-        {'book': 'Romans', 'chapters': '8', 'title': 'Life in the Spirit'},
-      ];
-
-      for (int i = 0; i < totalDays; i++) {
-        final sample = sampleReadings[i % sampleReadings.length];
-        final reading = {
-          'id': _uuid.v4(),
-          'plan_id': planId,
-          'title': '${sample['book']} ${sample['chapters']}',
-          'description': sample['title']!,
-          'book': sample['book']!,
-          'chapters': sample['chapters']!,
-          'estimated_time': '${5 + (i % 10)} minutes',
-          'date': startDate.add(Duration(days: i)).millisecondsSinceEpoch,
-          'is_completed': 0,
-          'completed_date': null,
-        };
-
-        await db.insert('daily_readings', reading);
-      }
-    } catch (e) {
-      throw Exception('Failed to create sample readings: $e');
     }
   }
 
