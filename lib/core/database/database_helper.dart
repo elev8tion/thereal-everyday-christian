@@ -11,7 +11,7 @@ import '../logging/app_logger.dart';
 /// Unified database helper with all tables in one schema
 class DatabaseHelper {
   static const String _databaseName = 'everyday_christian.db';
-  static const int _databaseVersion = 19;
+  static const int _databaseVersion = 20;
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -269,8 +269,7 @@ class DatabaseHelper {
         CREATE TABLE shared_chats (
           id TEXT PRIMARY KEY,
           session_id TEXT NOT NULL,
-          shared_at INTEGER NOT NULL,
-          FOREIGN KEY (session_id) REFERENCES chat_sessions (id) ON DELETE CASCADE
+          shared_at INTEGER NOT NULL
         )
       ''');
 
@@ -290,8 +289,7 @@ class DatabaseHelper {
           text TEXT NOT NULL,
           themes TEXT,
           channel TEXT NOT NULL,
-          shared_at INTEGER NOT NULL,
-          FOREIGN KEY (verse_id) REFERENCES bible_verses (id) ON DELETE CASCADE
+          shared_at INTEGER NOT NULL
         )
       ''');
 
@@ -303,8 +301,7 @@ class DatabaseHelper {
         CREATE TABLE shared_devotionals (
           id TEXT PRIMARY KEY,
           devotional_id TEXT NOT NULL,
-          shared_at INTEGER NOT NULL,
-          FOREIGN KEY (devotional_id) REFERENCES devotionals (id) ON DELETE CASCADE
+          shared_at INTEGER NOT NULL
         )
       ''');
 
@@ -342,8 +339,7 @@ class DatabaseHelper {
           title TEXT NOT NULL,
           category TEXT NOT NULL,
           is_answered INTEGER NOT NULL,
-          shared_at INTEGER NOT NULL,
-          FOREIGN KEY (prayer_id) REFERENCES prayer_requests (id) ON DELETE CASCADE
+          shared_at INTEGER NOT NULL
         )
       ''');
 
@@ -1165,6 +1161,101 @@ class DatabaseHelper {
         _logger.info('✅ Migration v18→v19 complete: Spanish verse schedule generated');
       } catch (e) {
         _logger.error('Migration v18→v19 failed: $e');
+        rethrow;
+      }
+    }
+
+    if (oldVersion < 20) {
+      try {
+        // v19→v20: Remove CASCADE constraints from share tables to preserve achievement progress
+        _logger.info('Migrating v19→v20: Removing CASCADE constraints from share tables');
+
+        // Backup existing share data
+        final chatsBackup = await db.query('shared_chats');
+        final versesBackup = await db.query('shared_verses');
+        final devotionalsBackup = await db.query('shared_devotionals');
+        final prayersBackup = await db.query('shared_prayers');
+
+        _logger.info('Backed up ${chatsBackup.length} chats, ${versesBackup.length} verses, ${devotionalsBackup.length} devotionals, ${prayersBackup.length} prayers');
+
+        // Drop old tables
+        await db.execute('DROP TABLE IF EXISTS shared_chats');
+        await db.execute('DROP TABLE IF EXISTS shared_verses');
+        await db.execute('DROP TABLE IF EXISTS shared_devotionals');
+        await db.execute('DROP TABLE IF EXISTS shared_prayers');
+
+        // Recreate shared_chats without CASCADE
+        await db.execute('''
+          CREATE TABLE shared_chats (
+            id TEXT PRIMARY KEY,
+            session_id TEXT NOT NULL,
+            shared_at INTEGER NOT NULL
+          )
+        ''');
+        await db.execute('CREATE INDEX idx_shared_chats_session ON shared_chats(session_id)');
+        await db.execute('CREATE INDEX idx_shared_chats_timestamp ON shared_chats(shared_at DESC)');
+
+        // Recreate shared_verses without CASCADE
+        await db.execute('''
+          CREATE TABLE shared_verses (
+            id TEXT PRIMARY KEY,
+            verse_id INTEGER NOT NULL,
+            book TEXT NOT NULL,
+            chapter INTEGER NOT NULL,
+            verse_number INTEGER NOT NULL,
+            reference TEXT NOT NULL,
+            translation TEXT NOT NULL,
+            text TEXT NOT NULL,
+            themes TEXT,
+            channel TEXT NOT NULL,
+            shared_at INTEGER NOT NULL
+          )
+        ''');
+        await db.execute('CREATE INDEX idx_shared_verses_verse ON shared_verses(verse_id)');
+        await db.execute('CREATE INDEX idx_shared_verses_timestamp ON shared_verses(shared_at DESC)');
+
+        // Recreate shared_devotionals without CASCADE
+        await db.execute('''
+          CREATE TABLE shared_devotionals (
+            id TEXT PRIMARY KEY,
+            devotional_id TEXT NOT NULL,
+            shared_at INTEGER NOT NULL
+          )
+        ''');
+        await db.execute('CREATE INDEX idx_shared_devotionals_devotional ON shared_devotionals(devotional_id)');
+        await db.execute('CREATE INDEX idx_shared_devotionals_timestamp ON shared_devotionals(shared_at DESC)');
+
+        // Recreate shared_prayers without CASCADE
+        await db.execute('''
+          CREATE TABLE shared_prayers (
+            id TEXT PRIMARY KEY,
+            prayer_id TEXT NOT NULL,
+            title TEXT NOT NULL,
+            category TEXT NOT NULL,
+            is_answered INTEGER NOT NULL,
+            shared_at INTEGER NOT NULL
+          )
+        ''');
+        await db.execute('CREATE INDEX idx_shared_prayers_prayer ON shared_prayers(prayer_id)');
+        await db.execute('CREATE INDEX idx_shared_prayers_timestamp ON shared_prayers(shared_at DESC)');
+
+        // Restore data
+        for (final chat in chatsBackup) {
+          await db.insert('shared_chats', chat);
+        }
+        for (final verse in versesBackup) {
+          await db.insert('shared_verses', verse);
+        }
+        for (final devotional in devotionalsBackup) {
+          await db.insert('shared_devotionals', devotional);
+        }
+        for (final prayer in prayersBackup) {
+          await db.insert('shared_prayers', prayer);
+        }
+
+        _logger.info('✅ Migration v19→v20 complete: Share records now persist independently of source data');
+      } catch (e) {
+        _logger.error('Migration v19→v20 failed: $e');
         rethrow;
       }
     }

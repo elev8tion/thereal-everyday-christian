@@ -34,6 +34,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void initState() {
     super.initState();
     _loadUserData();
+    // Invalidate providers on screen load to fetch fresh data
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.invalidate(profileStatsProvider);
+      ref.invalidate(totalSharesCountProvider);
+      ref.invalidate(discipleCompletionCountProvider);
+    });
   }
 
   Future<void> _loadUserData() async {
@@ -85,7 +91,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   // Build achievements list based on real stats
-  List<Achievement> _buildAchievements(BuildContext context, int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive, int devotionalStreak, int totalPrayers, int sharedChats) {
+  List<Achievement> _buildAchievements(BuildContext context, int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive, int devotionalStreak, int totalPrayers, int sharedChats, int discipleCompletionCount) {
     final l10n = AppLocalizations.of(context);
     return [
       Achievement(
@@ -94,8 +100,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.local_fire_department,
         color: Colors.orange,
         isUnlocked: prayerStreak >= 7,
-        progress: prayerStreak >= 7 ? 7 : prayerStreak,
+        progress: prayerStreak >= 7 ? ((prayerStreak - 1) % 7) + 1 : prayerStreak,
         total: 7,
+        completionCount: prayerStreak >= 7 ? (prayerStreak ~/ 7) : null,
       ),
       Achievement(
         title: l10n.achievementRelentless,
@@ -103,8 +110,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.favorite,
         color: Colors.pink,
         isUnlocked: totalPrayers >= 50,
-        progress: totalPrayers >= 50 ? 50 : totalPrayers,
+        progress: totalPrayers >= 50 ? ((totalPrayers - 1) % 50) + 1 : totalPrayers,
         total: 50,
+        completionCount: totalPrayers >= 50 ? (totalPrayers ~/ 50) : null,
       ),
       Achievement(
         title: l10n.achievementCurator,
@@ -112,8 +120,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.book,
         color: Colors.blue,
         isUnlocked: savedVerses >= 100,
-        progress: savedVerses >= 100 ? 100 : savedVerses,
+        progress: savedVerses >= 100 ? ((savedVerses - 1) % 100) + 1 : savedVerses,
         total: 100,
+        completionCount: savedVerses >= 100 ? (savedVerses ~/ 100) : null,
       ),
       Achievement(
         title: l10n.achievementDailyBread,
@@ -121,8 +130,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.auto_stories,
         color: Colors.purple,
         isUnlocked: devotionalsCompleted >= 30,
-        progress: devotionalsCompleted >= 30 ? 30 : devotionalsCompleted,
+        progress: devotionalsCompleted >= 30 ? ((devotionalsCompleted - 1) % 30) + 1 : devotionalsCompleted,
         total: 30,
+        completionCount: devotionalsCompleted >= 30 ? (devotionalsCompleted ~/ 30) : null,
       ),
       Achievement(
         title: l10n.achievementDeepDiver,
@@ -130,8 +140,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.stars,
         color: AppTheme.goldColor,
         isUnlocked: readingPlansActive >= 5,
-        progress: readingPlansActive >= 5 ? 5 : readingPlansActive,
+        progress: readingPlansActive >= 5 ? ((readingPlansActive - 1) % 5) + 1 : readingPlansActive,
         total: 5,
+        completionCount: readingPlansActive >= 5 ? (readingPlansActive ~/ 5) : null,
       ),
       Achievement(
         title: l10n.achievementDisciple,
@@ -139,8 +150,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.share,
         color: Colors.teal,
         isUnlocked: sharedChats >= 10,
-        progress: sharedChats >= 10 ? 10 : sharedChats,
+        progress: sharedChats >= 10 ? ((sharedChats - 1) % 10) + 1 : sharedChats,
         total: 10,
+        completionCount: sharedChats >= 10 ? (sharedChats ~/ 10) : null,
       ),
     ];
   }
@@ -194,6 +206,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               devotionalStreak: profileStats.devotionalStreak,
                               totalPrayers: profileStats.totalPrayers,
                               sharedChats: profileStats.sharedChats,
+                              discipleCompletionCount: profileStats.discipleCompletionCount,
                             ),
                             const SizedBox(height: AppSpacing.xxl),
                             _buildMenuSection(),
@@ -428,6 +441,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     required int devotionalStreak,
     required int totalPrayers,
     required int sharedChats,
+    required int discipleCompletionCount,
   }) {
     final l10n = AppLocalizations.of(context);
     // Build achievements list with real data
@@ -440,6 +454,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       devotionalStreak,
       totalPrayers,
       sharedChats,
+      discipleCompletionCount,
     );
 
     return Column(
@@ -860,6 +875,7 @@ class Achievement {
   final bool isUnlocked;
   final int? progress;
   final int? total;
+  final int? completionCount;  // How many times achievement earned (for multiplier display)
 
   Achievement({
     required this.title,
@@ -869,5 +885,6 @@ class Achievement {
     required this.isUnlocked,
     this.progress,
     this.total,
+    this.completionCount,
   });
 }

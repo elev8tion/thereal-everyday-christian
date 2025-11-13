@@ -8,6 +8,7 @@ class ProfileStats {
   final int prayerStreak;
   final int readingPlansActive;
   final int sharedChats;
+  final int discipleCompletionCount;  // How many times Disciple achievement earned (10, 20, 30 shares...)
 
   const ProfileStats({
     required this.devotionalStreak,
@@ -17,6 +18,7 @@ class ProfileStats {
     required this.prayerStreak,
     required this.readingPlansActive,
     required this.sharedChats,
+    required this.discipleCompletionCount,
   });
 
   /// Empty stats (used as default/loading state)
@@ -28,5 +30,6 @@ class ProfileStats {
     prayerStreak: 0,
     readingPlansActive: 0,
     sharedChats: 0,
+    discipleCompletionCount: 0,
   );
 }

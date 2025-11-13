@@ -670,7 +670,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   // Invalidate all relevant providers to refresh UI
                   ref.invalidate(sharedVersesProvider);
                   ref.invalidate(sharedVersesCountProvider);
-                  ref.invalidate(sharedChatsCountProvider); // For Disciple achievement (all share types)
+                  ref.invalidate(totalSharesCountProvider); // For Disciple achievement (all share types)
                   ref.invalidate(favoriteVersesProvider);
                   ref.invalidate(savedVersesCountProvider);
 

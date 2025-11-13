@@ -180,7 +180,7 @@ final answeredPrayersCountProvider = FutureProvider<int>((ref) async {
 
 /// Provider for count of ALL shares (chats, verses, devotionals, prayers)
 /// Used for the Disciple achievement (10 total shares across all types)
-final sharedChatsCountProvider = FutureProvider<int>((ref) async {
+final totalSharesCountProvider = FutureProvider<int>((ref) async {
   final database = ref.watch(databaseServiceProvider);
   final db = await database.database;
 
@@ -198,6 +198,13 @@ final sharedChatsCountProvider = FutureProvider<int>((ref) async {
   final prayerShares = results[3].first['count'] as int? ?? 0;
 
   return chatShares + verseShares + devotionalShares + prayerShares;
+});
+
+/// Provider for Disciple achievement completion count
+/// Returns how many times the achievement has been earned (10, 20, 30 shares...)
+final discipleCompletionCountProvider = FutureProvider<int>((ref) async {
+  final achievementService = ref.watch(achievementServiceProvider);
+  return await achievementService.getCompletionCount(AchievementType.disciple);
 });
 
 /// Provider for count of active reading plans
@@ -218,7 +225,8 @@ final profileStatsProvider = FutureProvider<ProfileStats>((ref) async {
     ref.watch(totalDevotionalsCompletedProvider.future),
     ref.watch(currentPrayerStreakProvider.future),
     ref.watch(activeReadingPlansCountProvider.future),
-    ref.watch(sharedChatsCountProvider.future),
+    ref.watch(totalSharesCountProvider.future),
+    ref.watch(discipleCompletionCountProvider.future),
   ]);
 
   return ProfileStats(
@@ -229,6 +237,7 @@ final profileStatsProvider = FutureProvider<ProfileStats>((ref) async {
     prayerStreak: results[4],
     readingPlansActive: results[5],
     sharedChats: results[6],
+    discipleCompletionCount: results[7],
   );
 });
 

@@ -989,7 +989,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
       );
 
       // Invalidate shared count providers for achievements
-      ref.invalidate(sharedChatsCountProvider);
+      ref.invalidate(totalSharesCountProvider);
 
       if (!mounted) return;
       AppSnackBar.show(
