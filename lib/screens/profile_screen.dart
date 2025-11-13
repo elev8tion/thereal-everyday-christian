@@ -568,7 +568,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                 ),
-                if (!achievement.isUnlocked && achievement.progress != null) ...[
+                // Show progress bar for both unlocked and not-yet-unlocked achievements
+                // This allows tracking progress toward next badge level
+                if (achievement.progress != null && achievement.total != null) ...[
                   const SizedBox(height: AppSpacing.sm),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(AppRadius.xs / 2),
@@ -580,12 +582,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    '${achievement.progress}/${achievement.total}',
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
-                      color: AppColors.tertiaryText,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${achievement.progress}/${achievement.total}',
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
+                          color: AppColors.tertiaryText,
+                        ),
+                      ),
+                      // Show which level we're working toward if already unlocked
+                      if (achievement.completionCount != null && achievement.completionCount! > 0)
+                        Text(
+                          'Level ${achievement.completionCount! + 1}',
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
+                            color: achievement.color.withValues(alpha: 0.7),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                    ],
                   ),
                 ],
               ],
