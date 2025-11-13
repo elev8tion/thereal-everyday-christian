@@ -604,29 +604,15 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   if (result.status == ShareResultStatus.success) {
                     await ref.read(unifiedVerseServiceProvider).recordSharedVerse(verse);
 
-                    // Remove from saved verses after sharing
-                    if (verse.id != null) {
-                      try {
-                        await ref.read(unifiedVerseServiceProvider).removeFromFavorites(verse.id!);
-                      } catch (removeError) {
-                        if (!mounted) return;
-                        AppSnackBar.showError(
-                          context,
-                          message: 'Verse shared but couldn\'t remove from saved verses',
-                        );
-                        return;
-                      }
-                    }
-
                     ref.invalidate(sharedVersesProvider);
                     ref.invalidate(sharedVersesCountProvider);
-                    ref.invalidate(favoriteVersesProvider);
-                    ref.invalidate(savedVersesCountProvider);
+                    ref.invalidate(totalSharesCountProvider);
+                    // Don't invalidate savedVersesCountProvider - sharing doesn't affect saved count
 
                     if (!mounted) return;
                     AppSnackBar.show(
                       context,
-                      message: 'Verse shared and moved to Shared tab!', // TODO: Add l10n key: verseSharedAndMovedToSharedTab
+                      message: 'Verse shared successfully!',
                       icon: Icons.share,
                       iconColor: AppTheme.primaryColor,
                     );
@@ -653,31 +639,16 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   );
 
                   // VerseShareService already tracks the share
-                  // Now remove from saved verses after successful share
-                  if (verse.id != null) {
-                    try {
-                      await ref.read(unifiedVerseServiceProvider).removeFromFavorites(verse.id!);
-                    } catch (removeError) {
-                      if (!mounted) return;
-                      AppSnackBar.showError(
-                        context,
-                        message: 'Verse shared but couldn\'t remove from saved verses',
-                      );
-                      return;
-                    }
-                  }
-
                   // Invalidate all relevant providers to refresh UI
                   ref.invalidate(sharedVersesProvider);
                   ref.invalidate(sharedVersesCountProvider);
                   ref.invalidate(totalSharesCountProvider); // For Disciple achievement (all share types)
-                  ref.invalidate(favoriteVersesProvider);
-                  ref.invalidate(savedVersesCountProvider);
+                  // Don't invalidate savedVersesCountProvider - sharing doesn't affect saved count
 
                   if (!mounted) return;
                   AppSnackBar.show(
                     context,
-                    message: 'Verse shared as image and moved to Shared tab!', // TODO: Add l10n key: verseSharedAsImageAndMovedToSharedTab
+                    message: 'Verse shared as image successfully!',
                     icon: Icons.image,
                     iconColor: AppTheme.goldColor,
                   );

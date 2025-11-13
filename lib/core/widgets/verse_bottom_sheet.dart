@@ -552,24 +552,15 @@ class VerseBottomSheet extends ConsumerWidget {
 
         await ref.read(unifiedVerseServiceProvider).recordSharedVerse(appVerse);
 
-        // Remove from saved verses after successful share
-        if (verse.id != null) {
-          try {
-            await ref.read(unifiedVerseServiceProvider).removeFromFavorites(verse.id!);
-          } catch (removeError) {
-            // Silently handle removal errors
-          }
-        }
-
         ref.invalidate(sharedVersesProvider);
         ref.invalidate(sharedVersesCountProvider);
-        ref.invalidate(favoriteVersesProvider);
-        ref.invalidate(savedVersesCountProvider);
+        ref.invalidate(totalSharesCountProvider);
+        // Don't invalidate savedVersesCountProvider - sharing doesn't affect saved count
 
         if (!context.mounted) return;
         AppSnackBar.show(
           context,
-          message: 'Verse shared and moved to Shared tab!',
+          message: 'Verse shared successfully!',
           icon: Icons.share,
           iconColor: AppTheme.primaryColor,
         );
