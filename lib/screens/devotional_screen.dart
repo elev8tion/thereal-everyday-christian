@@ -1268,22 +1268,25 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   }
 
   /// Navigate to a Bible verse from a reference string
-  /// Examples: "John 3:16", "1 Thessalonians 5:18 - Give thanks", "Psalm 136:1 - His loving kindness"
+  /// Examples: "John 3:16", "1 Thessalonians 5:18 - Give thanks", "Psalm 136:1 - His loving kindness", "Psalm 136:1-3"
   void _navigateToVerse(String reference) {
     try {
       // Remove any text after " - " (e.g., "Psalm 136:1 - His loving kindness" -> "Psalm 136:1")
       final cleanReference = reference.split(' - ').first.trim();
 
-      // Parse the reference (e.g., "1 Thessalonians 5:18")
+      // Parse the reference (e.g., "1 Thessalonians 5:18" or "1 Thessalonians 5:18-20")
       final parts = cleanReference.split(':');
       if (parts.length != 2) {
         debugPrint('⚠️ Invalid reference format: $cleanReference');
         return;
       }
 
-      final verseNumber = int.tryParse(parts[1].trim());
+      // Handle verse ranges like "18-20" by taking the first verse
+      final versePart = parts[1].trim();
+      final verseRange = versePart.split('-');
+      final verseNumber = int.tryParse(verseRange.first.trim());
       if (verseNumber == null) {
-        debugPrint('⚠️ Invalid verse number: ${parts[1]}');
+        debugPrint('⚠️ Invalid verse number: $versePart');
         return;
       }
 

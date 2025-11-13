@@ -85,17 +85,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     _checkCompletion();
     _initializeTts();
     _checkShowVerseTutorial();
-
-    // Scroll to initial verse if provided
-    if (widget.initialVerseNumber != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (mounted) {
-            _scrollToVerseNumber(widget.initialVerseNumber!);
-          }
-        });
-      });
-    }
   }
 
   @override
@@ -567,6 +556,17 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     _verseKeys.clear();
     for (int i = 0; i < verses.length; i++) {
       _verseKeys[i] = GlobalKey();
+    }
+
+    // If initial verse number is set and matches current chapter, scroll to it after frame
+    if (widget.initialVerseNumber != null && chapterNum == widget.startChapter && _currentChapterIndex == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(const Duration(milliseconds: 300), () {
+          if (mounted) {
+            _scrollToVerseNumber(widget.initialVerseNumber!);
+          }
+        });
+      });
     }
 
     if (verses.isEmpty) {
