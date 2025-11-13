@@ -405,35 +405,83 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   Widget _buildTabBar() {
     final l10n = AppLocalizations.of(context);
+
+    // Check if we need scrollable tabs based on text length
+    final oldTestamentText = l10n.oldTestament;
+    final newTestamentText = l10n.newTestament;
+    final totalTextLength = oldTestamentText.length + newTestamentText.length;
+
+    // Make scrollable if combined text length is > 25 characters (Spanish needs ~30)
+    final needsScrollable = totalTextLength > 25;
+
     return Container(
       margin: AppSpacing.horizontalXl,
       child: FrostedGlassCard(
         padding: const EdgeInsets.all(4),
-        child: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabAlignment: TabAlignment.center,
-          indicator: BoxDecoration(
-            color: AppTheme.primaryColor.withValues(alpha: 0.3),
-            borderRadius: AppRadius.mediumRadius,
-            border: Border.all(
-              color: AppTheme.primaryColor,
-              width: 1,
+        child: needsScrollable
+          ? Row(
+              children: [
+                Expanded(
+                  child: TabBar(
+                    controller: _tabController,
+                    isScrollable: false,
+                    indicator: BoxDecoration(
+                      color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                      borderRadius: AppRadius.mediumRadius,
+                      border: Border.all(
+                        color: AppTheme.primaryColor,
+                        width: 1,
+                      ),
+                    ),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    dividerColor: Colors.transparent,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.white.withValues(alpha: 0.6),
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                    ),
+                    tabs: [
+                      Tab(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(oldTestamentText),
+                        ),
+                      ),
+                      Tab(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(newTestamentText),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          : TabBar(
+              controller: _tabController,
+              indicator: BoxDecoration(
+                color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                borderRadius: AppRadius.mediumRadius,
+                border: Border.all(
+                  color: AppTheme.primaryColor,
+                  width: 1,
+                ),
+              ),
+              indicatorSize: TabBarIndicatorSize.tab,
+              dividerColor: Colors.transparent,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white.withValues(alpha: 0.6),
+              labelStyle: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+              ),
+              tabs: [
+                Tab(text: oldTestamentText),
+                Tab(text: newTestamentText),
+              ],
             ),
-          ),
-          indicatorSize: TabBarIndicatorSize.tab,
-          dividerColor: Colors.transparent,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white.withValues(alpha: 0.6),
-          labelStyle: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-          ),
-          tabs: [
-            Tab(text: l10n.oldTestament),
-            Tab(text: l10n.newTestament),
-          ],
-        ),
       ),
     );
   }
