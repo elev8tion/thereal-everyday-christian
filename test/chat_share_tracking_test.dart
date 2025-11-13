@@ -1,11 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:everyday_christian/core/services/database_service.dart';
-import 'package:everyday_christian/services/chat_share_service.dart';
 
 void main() {
   late DatabaseService databaseService;
-  late ChatShareService chatShareService;
 
   setUpAll(() {
     sqfliteFfiInit();
@@ -16,7 +14,6 @@ void main() {
     DatabaseService.setTestDatabasePath(inMemoryDatabasePath);
     databaseService = DatabaseService();
     await databaseService.initialize();
-    chatShareService = ChatShareService(databaseService: databaseService);
   });
 
   /// Helper method to create a test chat session
@@ -65,7 +62,7 @@ void main() {
 
     test('should track share in database when sessionId is provided', () async {
       final db = await databaseService.database;
-      final testSessionId = 'test-session-123';
+      const testSessionId = 'test-session-123';
 
       // Create a chat session first (required by foreign key)
       await createTestSession(db, testSessionId);
@@ -94,7 +91,7 @@ void main() {
 
     test('should track multiple shares for same session', () async {
       final db = await databaseService.database;
-      final testSessionId = 'test-session-456';
+      const testSessionId = 'test-session-456';
       final now = DateTime.now().millisecondsSinceEpoch;
 
       // Create a chat session first (required by foreign key)
@@ -183,7 +180,7 @@ void main() {
 
     test('should generate unique IDs for each share', () async {
       final db = await databaseService.database;
-      final testSessionId = 'test-session-789';
+      const testSessionId = 'test-session-789';
       final now = DateTime.now().millisecondsSinceEpoch;
 
       // Create a chat session first (required by foreign key)
@@ -631,7 +628,7 @@ void main() {
 
     test('should prevent duplicate IDs', () async {
       final db = await databaseService.database;
-      final testId = 'duplicate-id-test';
+      const testId = 'duplicate-id-test';
 
       // Create chat sessions first (required by foreign key)
       await createTestSession(db, 'session-1');

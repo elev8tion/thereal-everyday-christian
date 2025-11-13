@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/ai_service.dart';
 import '../services/gemini_ai_service.dart';
@@ -191,7 +192,7 @@ class GeminiAIServiceAdapter implements AIService {
           // Violation recorded - suspension will be enforced on next chat screen load
         } catch (e) {
           // Log error but don't fail the request
-          print('⚠️ Failed to record security violation: $e');
+          debugPrint('⚠️ Failed to record security violation: $e');
         }
       }
 
@@ -338,13 +339,13 @@ class GeminiAIServiceAdapter implements AIService {
           // Violation recorded - suspension will be enforced on next chat screen load
         } catch (e) {
           // Log error but don't fail the request
-          print('⚠️ Failed to record security violation: $e');
+          debugPrint('⚠️ Failed to record security violation: $e');
         }
       }
 
-      // Block malicious input - yield safe rejection message with warning
+      // Block malicious input - for violations show ONLY stern warning, not friendly message
       final responseMessage = warningMessage.isNotEmpty
-          ? '${securityCheck.rejectionReason!}\n\n$warningMessage'
+          ? warningMessage
           : securityCheck.rejectionReason!;
 
       yield responseMessage;
@@ -550,7 +551,7 @@ class GeminiAIServiceAdapter implements AIService {
             'One more violation will result in a 90-day suspension.';
 
       case SuspensionLevel.long:
-        return '🚨 **AI Chat Suspended for 90 Days (Violation ${violationCount}/∞)**\n\n'
+        return '🚨 **AI Chat Suspended for 90 Days (Violation $violationCount/∞)**\n\n'
             'Your AI chat access has been suspended for 90 days due to repeated violations. '
             'The next time you open the chat screen, you will see a suspension overlay.\n\n'
             'Your subscription remains active. You can still use:\n'

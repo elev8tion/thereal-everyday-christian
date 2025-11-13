@@ -2,12 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/standard_screen_header.dart';
 import '../core/navigation/navigation_service.dart';
-import '../core/providers/app_providers.dart';
 import '../core/services/book_name_service.dart';
 import '../core/services/bible_config.dart';
 import '../core/services/bible_book_service.dart';
@@ -149,7 +147,6 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
       }
 
       // Step 2: Filter books - check both English and translated names
-      final l10n = AppLocalizations.of(context);
       final language = Localizations.localeOf(context).languageCode;
 
       _filteredBooks = _allBooks
@@ -635,39 +632,6 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildBookCard(String book) {
-    final textSize = ref.watch(textSizeProvider);
-    final l10n = AppLocalizations.of(context);
-    final language = Localizations.localeOf(context).languageCode;
-    final displayName = BookNameService.getBookName(book, language);
-
-    return GestureDetector(
-      onTap: () => _showChapterSelector(book),
-      child: FrostedGlassCard(
-          padding: EdgeInsets.zero,
-          borderColor: Colors.white.withValues(alpha: 0.2),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
-              child: AutoSizeText(
-                displayName,
-                style: TextStyle(
-                  fontSize: 14 * textSize,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryText,
-                  height: 1.3,
-                ),
-                minFontSize: 11,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
       ),
     );
   }

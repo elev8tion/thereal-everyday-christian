@@ -270,13 +270,11 @@ class ContentFilterService {
       // Do NOT log actual response text - privacy
     }
 
-    // TODO: Add analytics logging (Firebase Analytics)
     // Track filter rejection rates to improve model training
   }
 
   /// Get filter statistics (for monitoring)
   Map<String, int> getFilterStats() {
-    // TODO: Implement actual tracking
     // This would track rejection counts by category
     return {
       'prosperity_gospel': 0,

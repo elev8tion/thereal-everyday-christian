@@ -561,9 +561,9 @@ class WCAGContrast {
 
   /// Calculate relative luminance using WCAG formula
   static double _relativeLuminance(Color color) {
-    double r = color.red / 255.0;
-    double g = color.green / 255.0;
-    double b = color.blue / 255.0;
+    double r = color.r;
+    double g = color.g;
+    double b = color.b;
 
     // Apply sRGB gamma correction
     r = (r <= 0.03928) ? r / 12.92 : _pow((r + 0.055) / 1.055, 2.4);
@@ -611,17 +611,17 @@ class WCAGContrast {
   }
 
   /// Check if contrast meets WCAG AA standard (4.5:1 for normal text)
-  static bool meetsWCAG_AA(Color foreground, Color background) {
+  static bool meetsWcagAA(Color foreground, Color background) {
     return contrastRatio(foreground, background) >= 4.5;
   }
 
   /// Check if contrast meets WCAG AA standard for large text (3:1)
-  static bool meetsWCAG_AA_Large(Color foreground, Color background) {
+  static bool meetsWcagAALarge(Color foreground, Color background) {
     return contrastRatio(foreground, background) >= 3.0;
   }
 
   /// Check if contrast meets WCAG AAA standard (7:1 for normal text)
-  static bool meetsWCAG_AAA(Color foreground, Color background) {
+  static bool meetsWcagAAA(Color foreground, Color background) {
     return contrastRatio(foreground, background) >= 7.0;
   }
 
@@ -636,22 +636,22 @@ class WCAGContrast {
 
   /// Verify app theme colors meet WCAG standards
   static void verifyThemeContrast() {
-    print('\n═══ WCAG Contrast Verification Report ═══\n');
+    debugPrint('\n═══ WCAG Contrast Verification Report ═══\n');
 
     // Test user message bubble (white text on primaryGradient)
-    print('USER MESSAGE BUBBLE:');
-    print('  White on Indigo (#6366F1): ${getContrastReport(Colors.white, AppTheme.primaryColor)}');
-    print('  White on Purple (#8B5CF6): ${getContrastReport(Colors.white, AppTheme.accentColor)}');
+    debugPrint('USER MESSAGE BUBBLE:');
+    debugPrint('  White on Indigo (#6366F1): ${getContrastReport(Colors.white, AppTheme.primaryColor)}');
+    debugPrint('  White on Purple (#8B5CF6): ${getContrastReport(Colors.white, AppTheme.accentColor)}');
 
     // Test gold accent
-    print('\nGOLD ACCENT:');
-    print('  Gold (#D4AF37) on Dark: ${getContrastReport(AppTheme.goldColor, const Color(0xFF1E293B))}');
-    print('  White on Gold: ${getContrastReport(Colors.white, AppTheme.goldColor)}');
+    debugPrint('\nGOLD ACCENT:');
+    debugPrint('  Gold (#D4AF37) on Dark: ${getContrastReport(AppTheme.goldColor, const Color(0xFF1E293B))}');
+    debugPrint('  White on Gold: ${getContrastReport(Colors.white, AppTheme.goldColor)}');
 
     // Test AI message bubble (assumed white text on card color)
-    print('\nAI MESSAGE BUBBLE:');
-    print('  Dark text on Light card: ${getContrastReport(Colors.black87, Colors.white)}');
+    debugPrint('\nAI MESSAGE BUBBLE:');
+    debugPrint('  Dark text on Light card: ${getContrastReport(Colors.black87, Colors.white)}');
 
-    print('\n═══════════════════════════════════════════\n');
+    debugPrint('\n═══════════════════════════════════════════\n');
   }
 }

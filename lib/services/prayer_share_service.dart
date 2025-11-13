@@ -37,7 +37,7 @@ class PrayerShareService {
       final l10n = AppLocalizations.of(context);
 
       // Capture the widget as an image
-      final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
+      final Uint8List imageBytes = await _screenshotController.captureFromWidget(
         MediaQuery(
           data: MediaQuery.of(context),
           child: PrayerShareWidget(
@@ -50,10 +50,6 @@ class PrayerShareService {
         delay: const Duration(milliseconds: 100),
       );
 
-      if (imageBytes == null) {
-        throw Exception('Failed to capture screenshot');
-      }
-
       // Save to temporary file
       final directory = await getTemporaryDirectory();
       final imagePath = '${directory.path}/edc_prayer_share_${DateTime.now().millisecondsSinceEpoch}.png';
@@ -62,6 +58,7 @@ class PrayerShareService {
 
       // Share the image with text
       final status = prayer.isAnswered ? 'Answered Prayer' : 'Prayer Request';
+      // ignore: deprecated_member_use
       await Share.shareXFiles(
         [XFile(imagePath)],
         text: '$status: ${prayer.title}\n\nJoin me in prayer with Everyday Christian 🙏\nhttps://everydaychristian.app',

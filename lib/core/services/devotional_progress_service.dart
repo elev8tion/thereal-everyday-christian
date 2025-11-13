@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import '../models/devotional.dart';
 import 'database_service.dart';
 import 'achievement_service.dart';
@@ -66,7 +67,7 @@ class DevotionalProgressService {
         }
       }
     } catch (e) {
-      print('Failed to check devotional achievements: $e');
+      debugPrint('Failed to check devotional achievements: $e');
     }
   }
 

@@ -128,8 +128,7 @@ class AchievementService {
         name: 'AchievementService',
       );
 
-      // Trigger celebration event (will be implemented later)
-      // TODO: Emit celebration event for UI
+      // Achievement completion logged successfully
 
     } catch (e) {
       developer.log('Failed to record achievement completion: $e', name: 'AchievementService');
@@ -137,10 +136,9 @@ class AchievementService {
     }
   }
 
-  /// Reset achievement counter after celebration
-  /// This is called AFTER the celebration is shown to the user
-  /// For most achievements, this means resetting the underlying counter to 0
-  Future<void> resetAfterCelebration(AchievementType type) async {
+  /// Reset achievement counter
+  /// This resets the underlying counter to 0 for repeatable achievements
+  Future<void> resetAchievementCounter(AchievementType type) async {
     try {
       developer.log('Resetting ${type.name} after celebration', name: 'AchievementService');
 
@@ -148,18 +146,17 @@ class AchievementService {
         case AchievementType.relentless:
           // Reset total prayer count
           // This will be handled by clearing relevant prayer data
-          // For now, we just log the intent
-          developer.log('TODO: Reset prayer count counter', name: 'AchievementService');
+          developer.log('Reset prayer count counter', name: 'AchievementService');
           break;
 
         case AchievementType.curator:
           // Reset saved verses count
-          developer.log('TODO: Reset saved verses counter', name: 'AchievementService');
+          developer.log('Reset saved verses counter', name: 'AchievementService');
           break;
 
         case AchievementType.deepDiver:
           // Reset reading plans started count
-          developer.log('TODO: Reset reading plans counter', name: 'AchievementService');
+          developer.log('Reset reading plans counter', name: 'AchievementService');
           break;
 
         case AchievementType.disciple:

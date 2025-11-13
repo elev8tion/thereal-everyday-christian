@@ -1293,6 +1293,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get clearSharedHistory => 'Limpiar historial compartido';
 
   @override
+  String get shareVersesToQuickAccess =>
+      'Comparte versículos para mantener un historial de acceso rápido aquí.';
+
+  @override
+  String get browseAndManageYourSavedVerses =>
+      'Explorar y gestionar tus versículos guardados';
+
+  @override
+  String get jumpToRecentlySharedVerses =>
+      'Ir a tus versículos compartidos recientemente';
+
+  @override
+  String get removeAllVersesFromSavedCollection =>
+      'Eliminar todos los versículos de tu colección guardada';
+
+  @override
+  String get removeEveryVerseFromSharedActivity =>
+      'Eliminar todos los versículos del historial compartido';
+
+  @override
   String get removedFromSharedHistory => 'Eliminado del historial compartido';
 
   @override

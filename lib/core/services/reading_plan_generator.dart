@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 import '../models/reading_plan.dart';
 import 'database_service.dart';
@@ -287,7 +288,7 @@ class ReadingPlanGenerator {
       );
 
       if (result.isEmpty) {
-        print('⚠️  Book not found in database: $book');
+        debugPrint('⚠️  Book not found in database: $book');
         return false;
       }
     }

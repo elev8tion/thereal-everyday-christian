@@ -50,8 +50,8 @@ void main() {
   Widget createTestWidget(ProviderContainer container) {
     return UncontrolledProviderScope(
       container: container,
-      child: MaterialApp(
-        home: const ProfileScreen(),
+      child: const MaterialApp(
+        home: ProfileScreen(),
       ),
     );
   }

@@ -212,7 +212,7 @@ void main() {
 
   group('Edge Cases & Intent Priority', () {
     test('Guidance takes priority over discussion when both match', () {
-      final input = 'I\'m struggling to understand why God allows suffering';
+      const input = 'I\'m struggling to understand why God allows suffering';
       final result = service.detectIntent(input);
 
       // Should be guidance because "I'm struggling" is weighted higher
@@ -230,7 +230,7 @@ void main() {
     });
 
     test('First-person emotional language boosts guidance', () {
-      final input = 'I feel confused about the end times';
+      const input = 'I feel confused about the end times';
       final result = service.detectIntent(input);
 
       expect(result.intent, ConversationIntent.guidance,
@@ -260,7 +260,7 @@ void main() {
 
   group('Real-World Scenarios', () {
     test('Original problematic example: apocalyptic concern', () {
-      final input = 'This feels like a new times and revelations is happening';
+      const input = 'This feels like a new times and revelations is happening';
       final result = service.detectIntent(input);
 
       expect(result.intent, ConversationIntent.guidance,
@@ -270,7 +270,7 @@ void main() {
     });
 
     test('Marriage crisis', () {
-      final input = 'My marriage is falling apart and I don\'t know what to do';
+      const input = 'My marriage is falling apart and I don\'t know what to do';
       final result = service.detectIntent(input);
 
       expect(result.intent, ConversationIntent.guidance);
@@ -278,14 +278,14 @@ void main() {
     });
 
     test('Academic Bible question', () {
-      final input = 'Can you explain the historical context of the book of Daniel?';
+      const input = 'Can you explain the historical context of the book of Daniel?';
       final result = service.detectIntent(input);
 
       expect(result.intent, ConversationIntent.discussion);
     });
 
     test('Casual faith sharing', () {
-      final input = 'That\'s a beautiful verse, thanks for sharing';
+      const input = 'That\'s a beautiful verse, thanks for sharing';
       final result = service.detectIntent(input);
 
       expect(result.intent, ConversationIntent.casual);

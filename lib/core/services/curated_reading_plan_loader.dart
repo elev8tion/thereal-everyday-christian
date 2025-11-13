@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
@@ -206,7 +207,7 @@ class CuratedReadingPlanLoader {
 
     // If language changed, clear existing plans and reload
     if (currentLang != null && currentLang != language) {
-      print('Language changed from $currentLang to $language, reloading reading plans...');
+      debugPrint('Language changed from $currentLang to $language, reloading reading plans...');
       // Delete daily_readings FIRST to avoid foreign key constraint violations
       await db.delete('daily_readings');
       await db.delete('reading_plans');
@@ -216,11 +217,11 @@ class CuratedReadingPlanLoader {
     // Check if plans already exist for current language
     final alreadyLoaded = await arePlansLoaded();
     if (alreadyLoaded && currentLang == language) {
-      print('Reading plans already loaded for $language, skipping content load');
+      debugPrint('Reading plans already loaded for $language, skipping content load');
       return;
     }
 
-    print('Loading 13 reading plans from JSON files ($language)...');
+    debugPrint('Loading 13 reading plans from JSON files ($language)...');
     await loadAllPlans(language);
 
     // Store the current language in app_metadata

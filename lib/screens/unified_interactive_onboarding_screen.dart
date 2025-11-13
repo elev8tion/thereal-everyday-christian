@@ -241,7 +241,7 @@ class _UnifiedInteractiveOnboardingScreenState
           // Subtitle
           Text(
             l10n.dailyScriptureGuidance,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               color: AppTheme.goldColor,
               fontWeight: FontWeight.w400,
@@ -253,7 +253,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
           Text(
             l10n.beforeWeBeginReview,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               color: AppColors.primaryText,
               fontWeight: FontWeight.w500,
@@ -325,12 +325,12 @@ class _UnifiedInteractiveOnboardingScreenState
             child: ExpansionTile(
               title: Row(
                 children: [
-                  Icon(Icons.health_and_safety,
+                  const Icon(Icons.health_and_safety,
                       color: AppTheme.goldColor, size: 20),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
                     l10n.crisisResources,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.primaryText,
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -405,7 +405,7 @@ class _UnifiedInteractiveOnboardingScreenState
               Expanded(
                 child: Text(
                   label,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.primaryText,
                     fontSize: 15,
                   ),
@@ -417,7 +417,7 @@ class _UnifiedInteractiveOnboardingScreenState
                   onTap: onViewTapped,
                   child: Text(
                     l10n.view,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppTheme.goldColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -556,7 +556,7 @@ class _UnifiedInteractiveOnboardingScreenState
           // Reflection preview
           Text(
             l10n.demoReflectionText,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               color: AppColors.primaryText,
               height: 1.5,
@@ -1082,7 +1082,7 @@ class _UnifiedInteractiveOnboardingScreenState
 
           Text(
             l10n.whatShouldWeCallYou,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: AppColors.primaryText,

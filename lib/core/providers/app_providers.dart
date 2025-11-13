@@ -178,6 +178,16 @@ final answeredPrayersCountProvider = FutureProvider<int>((ref) async {
   return await service.getAnsweredPrayerCount();
 });
 
+/// Provider for count of shared chats
+/// Used for the Conversation Sharer achievement (10 chat shares)
+final sharedChatsCountProvider = FutureProvider<int>((ref) async {
+  final database = ref.watch(databaseServiceProvider);
+  final db = await database.database;
+
+  final result = await db.rawQuery('SELECT COUNT(*) as count FROM shared_chats');
+  return result.first['count'] as int? ?? 0;
+});
+
 /// Provider for count of ALL shares (chats, verses, devotionals, prayers)
 /// Used for the Disciple achievement (10 total shares across all types)
 final totalSharesCountProvider = FutureProvider<int>((ref) async {
@@ -315,22 +325,22 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
     final dbHelper = DatabaseHelper.instance;
     final cleanup = await dbHelper.autoCleanupChatMessages();
     if (cleanup['total_deleted']! > 0) {
-      print('🧹 Auto-cleanup: Removed ${cleanup['total_deleted']} old chat messages');
+      debugPrint('🧹 Auto-cleanup: Removed ${cleanup['total_deleted']} old chat messages');
     }
   } catch (e) {
     // Don't block app initialization if cleanup fails
-    print('⚠️ Auto-cleanup failed: $e');
+    debugPrint('⚠️ Auto-cleanup failed: $e');
   }
 
   // Load Bible on first launch
   final isWEBLoaded = await bibleLoader.isBibleLoaded('WEB');
-  print('📖 [AppInit] Checking if WEB Bible loaded: $isWEBLoaded');
+  debugPrint('📖 [AppInit] Checking if WEB Bible loaded: $isWEBLoaded');
   if (!isWEBLoaded) {
-    print('📖 [AppInit] WEB not loaded, loading all Bibles...');
+    debugPrint('📖 [AppInit] WEB not loaded, loading all Bibles...');
     await bibleLoader.loadAllBibles();
-    print('📖 [AppInit] Bible loading complete');
+    debugPrint('📖 [AppInit] Bible loading complete');
   } else {
-    print('📖 [AppInit] WEB already loaded, skipping Bible load');
+    debugPrint('📖 [AppInit] WEB already loaded, skipping Bible load');
   }
 
   // Load devotional content on first launch (language-specific)
@@ -340,10 +350,10 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   // Load all reading plans on first launch (language-specific, idempotent)
   try {
     await curatedPlanLoader.ensureAllPlansLoaded(language);
-    print('✅ Successfully loaded reading plans for $language');
+    debugPrint('✅ Successfully loaded reading plans for $language');
   } catch (e, stackTrace) {
-    print('❌ ERROR loading reading plans: $e');
-    print('Stack trace: $stackTrace');
+    debugPrint('❌ ERROR loading reading plans: $e');
+    debugPrint('Stack trace: $stackTrace');
     // Don't block app initialization - user can still use other features
   }
 });

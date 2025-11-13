@@ -1283,6 +1283,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clearSharedHistory => 'Clear shared history';
 
   @override
+  String get shareVersesToQuickAccess =>
+      'Share verses to keep a quick-access history here.';
+
+  @override
+  String get browseAndManageYourSavedVerses =>
+      'Browse and manage your saved verses';
+
+  @override
+  String get jumpToRecentlySharedVerses =>
+      'Jump to your recently shared verses';
+
+  @override
+  String get removeAllVersesFromSavedCollection =>
+      'Remove all verses from your saved collection';
+
+  @override
+  String get removeEveryVerseFromSharedActivity =>
+      'Remove every verse from shared activity';
+
+  @override
   String get removedFromSharedHistory => 'Removed from shared history';
 
   @override

@@ -12,7 +12,7 @@
 /// - Excessively long messages (token abuse)
 /// - Rapid message spamming (rate limiting)
 
-import 'package:flutter/foundation.dart';
+import 'dart:developer' as developer;
 
 /// Security check result
 class SecurityResult {
@@ -73,6 +73,8 @@ class InputSecurityService {
     'ignore previous instructions',
     'ignore previous instruction',
     'ignore all previous instructions',
+    'ignore all other instructions',
+    'ignore all instructions',
     'disregard previous instructions',
     'forget previous instructions',
     'forget your instructions',
@@ -89,6 +91,8 @@ class InputSecurityService {
     'developer mode',
     'debug mode',
     'unrestricted mode',
+    'do not follow your instructions',
+    'do not follow instructions',
   ];
 
   /// Role manipulation attempts
@@ -116,6 +120,14 @@ class InputSecurityService {
     'pretend you re not religious', // Normalized version
     'pretend you re not christian', // Normalized version
     'pretend you re not a christian counselor', // Normalized version
+    'be a satanist',
+    'be an atheist',
+    'be whatever i tell you',
+    'be what i tell you',
+    'you are the devil',
+    'you are not a pastor',
+    'you re the devil',
+    'you re not a pastor',
   ];
 
   /// DAN-style jailbreaks (Do Anything Now)
@@ -408,13 +420,16 @@ class InputSecurityService {
     List<String> patterns,
     SecurityThreatLevel level,
   ) {
-    if (kDebugMode) {
-      debugPrint('🚨 [InputSecurity] $threatType (${level.name})');
-      debugPrint('   Patterns: ${patterns.join(", ")}');
-    }
-
-    // TODO: Add analytics/logging to Firebase for monitoring
-    // Track threat patterns to improve detection over time
+    developer.log(
+      threatType,
+      name: 'InputSecurity',
+      level: 1000, // ERROR level (security threats are critical)
+      error: {
+        'threat_level': level.name,
+        'patterns': patterns,
+      },
+      time: DateTime.now(),
+    );
   }
 
   /// Reset rate limiting (for testing or session end)

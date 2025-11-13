@@ -136,6 +136,7 @@ class ChatScreen extends HookConsumerWidget {
           debugPrint('❌ Stack trace: $stackTrace');
           // Fallback to in-memory
           if (verseContext == null) {
+            // ignore: use_build_context_synchronously
             messages.value = [_createWelcomeMessage(context)];
           } else {
             messages.value = [];
@@ -177,6 +178,9 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> sendMessage(String text) async {
       if (text.trim().isEmpty) return;
 
+      // Get current language FIRST (before any async operations)
+      final language = Localizations.localeOf(context).languageCode;
+
       // Get subscription service and status
       final subscriptionService = ref.read(subscriptionServiceProvider);
       final subscriptionStatus = subscriptionService.getSubscriptionStatus();
@@ -198,7 +202,16 @@ class ChatScreen extends HookConsumerWidget {
         return;
       }
 
-      // 2. Check if user has messages remaining
+      // 2. Check if user is suspended for security violations
+      final isSuspended = await ref.read(isSuspendedProvider.future);
+
+      if (isSuspended) {
+        debugPrint('🚫 User is suspended - blocking message send');
+        // User is suspended - the UI overlay will show the suspension message
+        return;
+      }
+
+      // 3. Check if user has messages remaining
       debugPrint('🔍 About to check canSendMessage...');
       final canSend = subscriptionService.canSendMessage;
       debugPrint('🔍 canSendMessage result: $canSend');
@@ -461,9 +474,6 @@ class ChatScreen extends HookConsumerWidget {
         // Accumulate full response
         final fullResponse = StringBuffer();
 
-        // Get current language
-        final language = Localizations.localeOf(context).languageCode;
-
         // Start streaming
         final stream = aiService.generateResponseStream(
           userInput: aiInput, // Send modified input to AI
@@ -612,6 +622,7 @@ class ChatScreen extends HookConsumerWidget {
 
           if (result != true) {
             // User didn't upgrade
+            // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Colors.transparent,
@@ -642,6 +653,7 @@ class ChatScreen extends HookConsumerWidget {
                       Icon(
                         Icons.info_outline,
                         color: Colors.orange.shade300,
+                        // ignore: use_build_context_synchronously
                         size: ResponsiveUtils.iconSize(context, 20),
                       ),
                       const SizedBox(width: 12),
@@ -754,6 +766,7 @@ class ChatScreen extends HookConsumerWidget {
         }
 
         // Get current language
+        // ignore: use_build_context_synchronously
         final language = Localizations.localeOf(context).languageCode;
 
         // Add context to request a different response
@@ -2651,7 +2664,7 @@ class ChatScreen extends HookConsumerWidget {
           ),
           child: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.cloud_off_rounded,
                 color: Colors.white,
                 size: 18,
@@ -2663,7 +2676,7 @@ class ChatScreen extends HookConsumerWidget {
                   children: [
                     Text(
                       l10n.noInternetConnection,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 13,
                         fontWeight: FontWeight.w600,

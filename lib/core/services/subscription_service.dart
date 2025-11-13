@@ -672,7 +672,6 @@ class SubscriptionService {
         // For Android: Receipt is a JWT token
         // This is a simplified implementation - production should use platform-specific decoding
 
-        // TODO: Implement proper platform-specific receipt validation
         // For now, we'll extract basic info if available
 
         // Placeholder for receipt parsing

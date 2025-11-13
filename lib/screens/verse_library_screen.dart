@@ -153,7 +153,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
           return _buildEmptyState(
             icon: Icons.history_toggle_off,
             title: l10n.noSharedVersesYet,
-            subtitle: 'Share verses to keep a quick-access history here.', // TODO: Add l10n key: shareVersesToQuickAccess
+            subtitle: l10n.shareVersesToQuickAccess,
           );
         }
 
@@ -431,7 +431,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
 
     // Don't show internal channel names to users
     final channelLabel = entry.channel?.isNotEmpty == true && entry.channel != 'share_sheet'
-        ? entry.channel!
+        ? entry.channel ?? ''
         : '';
 
     return DarkGlassContainer(
@@ -688,7 +688,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 ),
               ),
               subtitle: Text(
-                'Browse and manage your saved verses', // TODO: Add l10n key: browseAndManageYourSavedVerses
+                l10n.browseAndManageYourSavedVerses,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -707,7 +707,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 ),
               ),
               subtitle: Text(
-                'Jump to your recently shared verses', // TODO: Add l10n key: jumpToRecentlySharedVerses
+                l10n.jumpToRecentlySharedVerses,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -729,7 +729,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 ),
               ),
               subtitle: Text(
-                'Remove all verses from your saved collection', // TODO: Add l10n key: removeAllVersesFromSavedCollection
+                l10n.removeAllVersesFromSavedCollection,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -751,7 +751,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 ),
               ),
               subtitle: Text(
-                'Remove every verse from shared activity', // TODO: Add l10n key: removeEveryVerseFromSharedActivity
+                l10n.removeEveryVerseFromSharedActivity,
                 style: TextStyle(
                   fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
@@ -823,7 +823,10 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
 
     try {
       final service = ref.read(unifiedVerseServiceProvider);
-      await service.removeFromFavorites(verse.id!);
+      final verseId = verse.id;
+      if (verseId != null) {
+        await service.removeFromFavorites(verseId);
+      }
 
       // Invalidate providers to refresh UI counts
       ref.invalidate(favoriteVersesProvider);

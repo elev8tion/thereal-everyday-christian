@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 import '../core/database/database_helper.dart';
@@ -87,7 +88,7 @@ class UnifiedVerseService {
 
   /// Search verses by theme
   Future<List<BibleVerse>> searchByTheme(String theme, {int limit = 20}) async {
-    print('🔍 [searchByTheme] Called with theme: "$theme", limit: $limit');
+    debugPrint('🔍 [searchByTheme] Called with theme: "$theme", limit: $limit');
     final database = await _db.database;
 
     // Search in themes JSON array or category field
@@ -100,11 +101,11 @@ class UnifiedVerseService {
       LIMIT ?
     ''', ['%"${theme.toLowerCase()}"%', '%${theme.toLowerCase()}%', '%$theme%', limit]);
 
-    print('🔍 [searchByTheme] Found ${results.length} verses for theme "$theme"');
+    debugPrint('🔍 [searchByTheme] Found ${results.length} verses for theme "$theme"');
     if (results.isNotEmpty) {
       // Log first 2 verses for verification
       for (int i = 0; i < results.length && i < 2; i++) {
-        print('  📖 Verse ${i + 1}: ${results[i]['reference']} - ${results[i]['text']?.toString().substring(0, 50)}...');
+        debugPrint('  📖 Verse ${i + 1}: ${results[i]['reference']} - ${results[i]['text']?.toString().substring(0, 50)}...');
       }
     }
 
@@ -330,7 +331,7 @@ class UnifiedVerseService {
         }
       }
     } catch (e) {
-      print('Failed to check verse achievements: $e');
+      debugPrint('Failed to check verse achievements: $e');
     }
   }
 
@@ -533,5 +534,52 @@ class UnifiedVerseService {
       'favorite_verses': favoriteCount.first['count'],
       'popular_themes': [],
     };
+  }
+
+  // ============================================================================
+  // PREFERENCES METHODS
+  // ============================================================================
+
+  /// Update preferred themes for verse selection
+  Future<void> updatePreferredThemes(List<String> themes) async {
+    final database = await _db.database;
+    final themesValue = themes.join(',');
+
+    await database.insert(
+      'verse_preferences',
+      {
+        'preference_key': 'preferred_themes',
+        'preference_value': themesValue,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  /// Update number of days to avoid recently shown verses
+  Future<void> updateAvoidRecentDays(int days) async {
+    final database = await _db.database;
+
+    await database.insert(
+      'verse_preferences',
+      {
+        'preference_key': 'avoid_recent_days',
+        'preference_value': days.toString(),
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  /// Update preferred Bible version
+  Future<void> updatePreferredVersion(String version) async {
+    final database = await _db.database;
+
+    await database.insert(
+      'verse_preferences',
+      {
+        'preference_key': 'preferred_version',
+        'preference_value': version,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 }

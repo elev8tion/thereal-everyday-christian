@@ -36,8 +36,8 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: MaterialApp(
-            home: const ChapterReadingScreen(
+          child: const MaterialApp(
+            home: ChapterReadingScreen(
               book: 'John',
               startChapter: 3,
               endChapter: 3,
@@ -68,8 +68,8 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: MaterialApp(
-            home: const ChapterReadingScreen(
+          child: const MaterialApp(
+            home: ChapterReadingScreen(
               book: 'Psalm',
               startChapter: 136,
               endChapter: 136,
@@ -106,8 +106,8 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: MaterialApp(
-            home: const ChapterReadingScreen(
+          child: const MaterialApp(
+            home: ChapterReadingScreen(
               book: 'John',
               startChapter: 1,
               endChapter: 1,
@@ -170,7 +170,7 @@ void main() {
     test('Verse keys are created for each verse in chapter', () {
       // Simulates _buildChapterPage logic where keys are generated
       final Map<int, GlobalKey> verseKeys = {};
-      final verseCount = 26; // Example: Psalm 136 has 26 verses
+      const verseCount = 26; // Example: Psalm 136 has 26 verses
 
       // Clear and regenerate keys (as done in _buildChapterPage line 464-467)
       verseKeys.clear();
@@ -244,8 +244,8 @@ void main() {
     test('Missing verse key does not crash', () {
       // Simulates _scrollToVerseNumber when key is missing (line 776-778)
       final Map<int, GlobalKey> verseKeys = {};
-      final verseNumber = 16;
-      final verseIndex = verseNumber - 1;
+      const verseNumber = 16;
+      const verseIndex = verseNumber - 1;
 
       // Try to get key that doesn't exist
       final key = verseKeys[verseIndex];
@@ -266,8 +266,8 @@ void main() {
       }
 
       // Try to access verse 20 (index 19) which doesn't exist
-      final invalidVerseNumber = 20;
-      final invalidVerseIndex = invalidVerseNumber - 1;
+      const invalidVerseNumber = 20;
+      const invalidVerseIndex = invalidVerseNumber - 1;
       final key = verseKeys[invalidVerseIndex];
 
       expect(key, isNull,
@@ -276,8 +276,8 @@ void main() {
 
     test('Verse number 0 is handled correctly', () {
       // Verse numbers start at 1, not 0
-      final verseNumber = 0;
-      final verseIndex = verseNumber - 1; // -1
+      const verseNumber = 0;
+      const verseIndex = verseNumber - 1; // -1
 
       expect(verseIndex, equals(-1),
           reason: 'Verse 0 should map to index -1');
@@ -293,8 +293,8 @@ void main() {
     });
 
     test('Negative verse number is handled', () {
-      final verseNumber = -5;
-      final verseIndex = verseNumber - 1; // -6
+      const verseNumber = -5;
+      const verseIndex = verseNumber - 1; // -6
 
       expect(verseIndex, lessThan(0),
           reason: 'Negative verse should produce negative index');
@@ -400,7 +400,7 @@ void main() {
       const delayTime = 500; // milliseconds
       const scrollAnimationTime = 800; // milliseconds
 
-      final totalTime = postFrameTime + delayTime + scrollAnimationTime;
+      const totalTime = postFrameTime + delayTime + scrollAnimationTime;
 
       expect(totalTime, lessThan(2000),
           reason: 'Total scroll time should be under 2 seconds for good UX');

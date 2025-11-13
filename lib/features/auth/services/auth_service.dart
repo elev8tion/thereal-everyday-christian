@@ -314,8 +314,6 @@ class AuthService extends StateNotifier<AuthState> {
       }
     } catch (e) {
       // Log error but don't fail auth
-      // Log error but don't fail auth
-      // print('Failed to update user settings: $e'); // TODO: Replace with proper logging
     }
   }
 

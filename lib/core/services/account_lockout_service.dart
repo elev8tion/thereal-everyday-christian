@@ -200,7 +200,6 @@ class AccountLockoutService {
     await _prefs.remove(_keyCrisisEvents);
     await _prefs.remove(_keyStatus);
 
-    // TODO: Clear other user data (preferences, favorites, etc.)
     // This should cascade to all user-related data for GDPR compliance
 
     await _prefs.setString(_keyStatus, LockoutStatus.pendingDeletion.toString());

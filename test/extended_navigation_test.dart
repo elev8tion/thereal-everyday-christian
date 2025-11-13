@@ -4,7 +4,7 @@ void main() {
   group('Test 3: Extended Section Navigation', () {
     test('should parse Psalm 136:1 correctly', () {
       // Simulate the parsing logic from _navigateToVerse
-      final reference = 'Psalm 136:1';
+      const reference = 'Psalm 136:1';
 
       // Remove any text after " - "
       final cleanReference = reference.split(' - ').first.trim();
@@ -33,7 +33,7 @@ void main() {
     });
 
     test('should parse 1 Thessalonians 5:18 correctly', () {
-      final reference = '1 Thessalonians 5:18';
+      const reference = '1 Thessalonians 5:18';
 
       final cleanReference = reference.split(' - ').first.trim();
       expect(cleanReference, equals('1 Thessalonians 5:18'));
@@ -57,7 +57,7 @@ void main() {
     });
 
     test('should parse Psalm 136:1 - His loving kindness correctly', () {
-      final reference = 'Psalm 136:1 - His loving kindness';
+      const reference = 'Psalm 136:1 - His loving kindness';
 
       // Remove text after " - "
       final cleanReference = reference.split(' - ').first.trim();
@@ -79,7 +79,7 @@ void main() {
     });
 
     test('should parse John 3:16 correctly', () {
-      final reference = 'John 3:16';
+      const reference = 'John 3:16';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');
@@ -99,7 +99,7 @@ void main() {
     });
 
     test('should parse 2 Corinthians 5:17 correctly', () {
-      final reference = '2 Corinthians 5:17';
+      const reference = '2 Corinthians 5:17';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');
@@ -119,7 +119,7 @@ void main() {
     });
 
     test('should parse Song of Solomon 2:10 correctly', () {
-      final reference = 'Song of Solomon 2:10';
+      const reference = 'Song of Solomon 2:10';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');
@@ -139,7 +139,7 @@ void main() {
     });
 
     test('should handle invalid reference format gracefully', () {
-      final reference = 'Invalid Reference';
+      const reference = 'Invalid Reference';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');
@@ -150,7 +150,7 @@ void main() {
     });
 
     test('should handle invalid verse number gracefully', () {
-      final reference = 'John 3:ABC';
+      const reference = 'John 3:ABC';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');
@@ -162,7 +162,7 @@ void main() {
     });
 
     test('should handle invalid chapter number gracefully', () {
-      final reference = 'John ABC:16';
+      const reference = 'John ABC:16';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');
@@ -177,7 +177,7 @@ void main() {
     });
 
     test('should handle empty reference gracefully', () {
-      final reference = '';
+      const reference = '';
 
       final cleanReference = reference.split(' - ').first.trim();
       expect(cleanReference, isEmpty);
@@ -189,7 +189,7 @@ void main() {
     });
 
     test('should parse reference with extra spaces', () {
-      final reference = '  Psalm  136 : 1  ';
+      const reference = '  Psalm  136 : 1  ';
 
       final cleanReference = reference.split(' - ').first.trim();
       expect(cleanReference, equals('Psalm  136 : 1'));
@@ -214,7 +214,7 @@ void main() {
     });
 
     test('should parse reference with multiple descriptions', () {
-      final reference = 'Psalm 136:1 - His loving kindness - endures forever';
+      const reference = 'Psalm 136:1 - His loving kindness - endures forever';
 
       // split(' - ').first only takes the first part
       final cleanReference = reference.split(' - ').first.trim();
@@ -241,7 +241,7 @@ void main() {
 
   group('Edge Cases for Extended Navigation', () {
     test('should handle book names without spaces', () {
-      final reference = 'Genesis 1:1';
+      const reference = 'Genesis 1:1';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');
@@ -254,7 +254,7 @@ void main() {
     });
 
     test('should handle high chapter numbers', () {
-      final reference = 'Psalm 119:105';
+      const reference = 'Psalm 119:105';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');
@@ -268,7 +268,7 @@ void main() {
     });
 
     test('should handle single verse number', () {
-      final reference = 'John 1:1';
+      const reference = 'John 1:1';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');
@@ -278,7 +278,7 @@ void main() {
     });
 
     test('should handle three-digit verse numbers', () {
-      final reference = 'Psalm 119:176';
+      const reference = 'Psalm 119:176';
 
       final cleanReference = reference.split(' - ').first.trim();
       final parts = cleanReference.split(':');

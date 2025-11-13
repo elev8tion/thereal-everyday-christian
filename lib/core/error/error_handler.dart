@@ -210,7 +210,6 @@ class ErrorHandler {
     // Only send in release mode
     if (!kReleaseMode) return;
 
-    // TODO: Integrate with Firebase Crashlytics or Sentry
     // Example:
     // FirebaseCrashlytics.instance.recordError(
     //   error,

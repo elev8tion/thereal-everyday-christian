@@ -2433,6 +2433,36 @@ abstract class AppLocalizations {
   /// **'Clear shared history'**
   String get clearSharedHistory;
 
+  /// Empty shared verses state subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Share verses to keep a quick-access history here.'**
+  String get shareVersesToQuickAccess;
+
+  /// Saved verses menu option subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Browse and manage your saved verses'**
+  String get browseAndManageYourSavedVerses;
+
+  /// View shared history menu option subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to your recently shared verses'**
+  String get jumpToRecentlySharedVerses;
+
+  /// Clear saved verses menu option subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all verses from your saved collection'**
+  String get removeAllVersesFromSavedCollection;
+
+  /// Clear shared history menu option subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Remove every verse from shared activity'**
+  String get removeEveryVerseFromSharedActivity;
+
   /// Shared verse deleted success message
   ///
   /// In en, this message translates to:

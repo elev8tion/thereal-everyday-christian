@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -12,16 +13,16 @@ class BibleLoaderService {
 
   /// Load all Bible versions into the database
   Future<void> loadAllBibles() async {
-    print('📖 [BibleLoader] Starting to load all Bibles...');
+    debugPrint('📖 [BibleLoader] Starting to load all Bibles...');
     // Copy English Bible
-    print('📖 [BibleLoader] Loading English Bible (WEB)...');
+    debugPrint('📖 [BibleLoader] Loading English Bible (WEB)...');
     await _copyEnglishBible();
-    print('📖 [BibleLoader] ✅ English Bible loaded');
+    debugPrint('📖 [BibleLoader] ✅ English Bible loaded');
     // Copy Spanish Bible
-    print('📖 [BibleLoader] Loading Spanish Bible (RVR1909)...');
+    debugPrint('📖 [BibleLoader] Loading Spanish Bible (RVR1909)...');
     await _copySpanishBible();
-    print('📖 [BibleLoader] ✅ Spanish Bible loaded');
-    print('📖 [BibleLoader] ✅ ALL BIBLES LOADED SUCCESSFULLY');
+    debugPrint('📖 [BibleLoader] ✅ Spanish Bible loaded');
+    debugPrint('📖 [BibleLoader] ✅ ALL BIBLES LOADED SUCCESSFULLY');
   }
 
   /// Copy English Bible verses from the pre-populated asset database

@@ -416,7 +416,7 @@ class IntentDetectionService {
   IntentResult detectIntent(String userInput, {String language = 'en'}) {
     // Handle empty/whitespace input - default to guidance
     if (userInput.trim().isEmpty) {
-      return IntentResult(
+      return const IntentResult(
         intent: ConversationIntent.guidance,
         confidence: 0.3,
         detectedPatterns: [],

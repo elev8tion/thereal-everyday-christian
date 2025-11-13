@@ -220,6 +220,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             // Wait for animations to play
                             await Future.delayed(const Duration(milliseconds: 600));
                             if (mounted) {
+                              // Context is safe here - guarded by mounted check
+                              // ignore: use_build_context_synchronously
                               await BiometricSetupDialog.show(context);
                             }
                           }

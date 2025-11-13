@@ -320,7 +320,6 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
     return AnimatedScale(
       scale: _isVisible ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 700),

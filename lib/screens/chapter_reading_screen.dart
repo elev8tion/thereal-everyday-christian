@@ -139,7 +139,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   }
 
   void _loadVerses() {
-    final l10n = AppLocalizations.of(context);
     final language = Localizations.localeOf(context).languageCode;
     final version = BibleConfig.getVersion(language);
 

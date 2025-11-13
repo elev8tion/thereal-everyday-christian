@@ -78,8 +78,8 @@ class FabTooltip extends StatelessWidget {
             // Arrow pointing down
             Container(
               margin: const EdgeInsets.only(left: 8),
-              child: CustomPaint(
-                size: const Size(16, 12),
+              child: const CustomPaint(
+                size: Size(16, 12),
                 painter: _ArrowPainter(pointingUp: false),
               ),
             )
@@ -90,8 +90,8 @@ class FabTooltip extends StatelessWidget {
             // Original layout: Arrow up, then content (for FAB)
             Container(
               margin: const EdgeInsets.only(left: 8),
-              child: CustomPaint(
-                size: const Size(16, 12),
+              child: const CustomPaint(
+                size: Size(16, 12),
                 painter: _ArrowPainter(pointingUp: true),
               ),
             )

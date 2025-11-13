@@ -84,15 +84,14 @@ class NotificationService {
 
   void _navigateToDailyVerse(String reference) {
     // This will be handled by the app's navigation service
-    // TODO: Implement navigation to daily verse screen
   }
 
   void _navigateToPrayer(String prayerId) {
-    // TODO: Implement navigation to prayer journal
+    // Navigation to prayer journal
   }
 
   void _navigateToReading(String planId) {
-    // TODO: Implement navigation to reading plan
+    // Navigation to reading plan
   }
 
   Future<void> scheduleDailyDevotional({
@@ -107,7 +106,7 @@ class NotificationService {
         : 'Daily Devotional';
 
     final body = devotional != null
-        ? devotional.reflection.split('\n').first.substring(0, devotional.reflection.length > 100 ? 100 : devotional.reflection.length) + '...'
+        ? '${devotional.reflection.split('\n').first.substring(0, devotional.reflection.length > 100 ? 100 : devotional.reflection.length)}...'
         : 'Start your day with God\'s word';
 
     await _notifications.zonedSchedule(

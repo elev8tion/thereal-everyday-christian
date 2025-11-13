@@ -1770,6 +1770,26 @@
   "@clearSharedHistory": {
     "description": "Clear shared history menu option"
   },
+  "shareVersesToQuickAccess": "Share verses to keep a quick-access history here.",
+  "@shareVersesToQuickAccess": {
+    "description": "Empty shared verses state subtitle"
+  },
+  "browseAndManageYourSavedVerses": "Browse and manage your saved verses",
+  "@browseAndManageYourSavedVerses": {
+    "description": "Saved verses menu option subtitle"
+  },
+  "jumpToRecentlySharedVerses": "Jump to your recently shared verses",
+  "@jumpToRecentlySharedVerses": {
+    "description": "View shared history menu option subtitle"
+  },
+  "removeAllVersesFromSavedCollection": "Remove all verses from your saved collection",
+  "@removeAllVersesFromSavedCollection": {
+    "description": "Clear saved verses menu option subtitle"
+  },
+  "removeEveryVerseFromSharedActivity": "Remove every verse from shared activity",
+  "@removeEveryVerseFromSharedActivity": {
+    "description": "Clear shared history menu option subtitle"
+  },
   "removedFromSharedHistory": "Removed from shared history",
   "@removedFromSharedHistory": {
     "description": "Shared verse deleted success message"

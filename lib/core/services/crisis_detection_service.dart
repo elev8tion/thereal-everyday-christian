@@ -504,7 +504,6 @@ class CrisisDetectionService {
     if (kDebugMode) {
     }
 
-    // TODO: Add analytics logging (Firebase Analytics, etc.)
     // Do NOT log actual user input - privacy violation
   }
 }

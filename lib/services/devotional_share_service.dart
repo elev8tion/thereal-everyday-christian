@@ -38,7 +38,7 @@ class DevotionalShareService {
       final l10n = AppLocalizations.of(context);
 
       // Capture the widget as an image
-      final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
+      final Uint8List imageBytes = await _screenshotController.captureFromWidget(
         MediaQuery(
           data: MediaQuery.of(context),
           child: DevotionalShareWidget(
@@ -52,10 +52,6 @@ class DevotionalShareService {
         delay: const Duration(milliseconds: 100),
       );
 
-      if (imageBytes == null) {
-        throw Exception('Failed to capture screenshot');
-      }
-
       // Save to temporary file
       final directory = await getTemporaryDirectory();
       final imagePath = '${directory.path}/edc_devotional_share_${DateTime.now().millisecondsSinceEpoch}.png';
@@ -63,6 +59,7 @@ class DevotionalShareService {
       await imageFile.writeAsBytes(imageBytes);
 
       // Share the image with text
+      // ignore: deprecated_member_use
       await Share.shareXFiles(
         [XFile(imagePath)],
         text: '${devotional.title}\n\n"${devotional.keyVerseText}"\n— ${devotional.keyVerseReference}\n\nDaily devotionals with Everyday Christian 🙏\nhttps://everydaychristian.app',

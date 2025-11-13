@@ -180,7 +180,6 @@ class CrisisDialog extends StatelessWidget {
 
   /// Build primary hotline call button
   Widget _buildHotlineButton(BuildContext context, String language) {
-    final l10n = AppLocalizations.of(context);
     final hotline = crisisResult.getHotline(language: language);
     final isPhoneNumber = hotline.startsWith('988') || hotline.startsWith('800');
 

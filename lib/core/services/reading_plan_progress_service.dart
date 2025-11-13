@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import '../models/reading_plan.dart';
 import 'database_service.dart';
 import 'reading_plan_generator.dart';
@@ -615,7 +616,7 @@ class ReadingPlanProgressService {
         }
       }
     } catch (e) {
-      print('Failed to check reading plan achievements: $e');
+      debugPrint('Failed to check reading plan achievements: $e');
     }
   }
 

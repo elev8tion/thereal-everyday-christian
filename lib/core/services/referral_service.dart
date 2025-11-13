@@ -168,7 +168,6 @@ class ReferralService {
 
   /// Get referral statistics (for monitoring)
   Map<ReferralType, int> getReferralStats() {
-    // TODO: Implement actual tracking
     // This would track how often each referral type is shown
     return {
       ReferralType.therapy: 0,

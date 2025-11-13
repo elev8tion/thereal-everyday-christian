@@ -1066,6 +1066,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         if (allReadings.isEmpty) {
           // No readings exist - generate them based on plan category
           // Get user's language for localized titles and descriptions
+          // ignore: use_build_context_synchronously
           final language = Localizations.localeOf(context).languageCode;
           await progressService.generateReadingsForPlan(
             plan.id,

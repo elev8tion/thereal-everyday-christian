@@ -44,9 +44,7 @@ class _VersePreferencesWidgetState extends State<VersePreferencesWidget> {
   }
 
   Future<void> _initializeServices() async {
-    final databaseService = DatabaseService();
-    await databaseService.initialize();
-    _verseService = UnifiedVerseService(databaseService);
+    _verseService = UnifiedVerseService();
     await _loadPreferences();
   }
 

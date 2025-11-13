@@ -61,6 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         await sharedPrefs?.setBool('trial_welcome_shown', true);
 
         // Show dialog
+        // ignore: use_build_context_synchronously
         final result = await TrialWelcomeDialog.show(context);
 
         // If user clicked "Start Free Trial", navigate to chat

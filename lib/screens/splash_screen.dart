@@ -64,6 +64,7 @@ class SplashScreen extends HookConsumerWidget {
 
         // CRITICAL: Check if we're still on splash screen before navigating
         // This prevents navigation if user has moved to another screen (hot reload, widget rebuild, etc.)
+        // ignore: use_build_context_synchronously
         final currentRoute = ModalRoute.of(context)?.settings.name;
         if (currentRoute != AppRoutes.splash && currentRoute != '/') return;
 

@@ -208,7 +208,7 @@ void main() {
       expect(history[4].completionCount, 1); // Oldest (1st completion)
     });
 
-    test('resetAfterCelebration for disciple should clear shared_chats', () async {
+    test('resetAchievementCounter for disciple should clear shared_chats', () async {
       // First, create a chat_session (parent record required by foreign key)
       final db = await databaseService.database;
       await db.insert('chat_sessions', {
@@ -230,7 +230,7 @@ void main() {
       expect(beforeReset.length, 1);
 
       // Reset
-      await achievementService.resetAfterCelebration(AchievementType.disciple);
+      await achievementService.resetAchievementCounter(AchievementType.disciple);
 
       // Verify it's deleted
       final afterReset = await db.query('shared_chats');
