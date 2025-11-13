@@ -130,15 +130,42 @@ class SubscriptionService {
       // This check survives app uninstall/reinstall and prevents
       // users from getting unlimited trials by reinstalling the app.
       // Privacy-first: All data stays on device in secure Keychain/KeyStore
+      //
+      // ENHANCED: Now includes trial date validation to prevent blocking:
+      // - Active ongoing trials (user within 3-day window)
+      // - Premium subscribers (even during restore glitches)
       final hasUsedBefore = await hasUsedTrialBefore();
+
       if (hasUsedBefore && !isPremium) {
-        // User previously used trial on this device and is not a paid subscriber
-        // Block new trial to prevent abuse
-        await _prefs?.setBool('trial_blocked', true);
-        debugPrint('📊 [SubscriptionService] Trial blocked - previously used on this device');
+        // Keychain says trial was used before AND user is not premium
+        // Additional safety: Check if user has an active trial in progress
+        final trialStartDate = _getTrialStartDate();
+
+        if (trialStartDate != null) {
+          // User has a trial start date - verify if it's actually expired
+          final daysSinceStart = DateTime.now().difference(trialStartDate).inDays;
+
+          if (daysSinceStart >= trialDurationDays) {
+            // Trial period expired (3+ days), safe to block
+            await _prefs?.setBool('trial_blocked', true);
+            debugPrint('📊 [SubscriptionService] Trial blocked - expired ($daysSinceStart days since start)');
+          } else {
+            // Trial still within valid 3-day window, don't block
+            await _prefs?.setBool('trial_blocked', false);
+            debugPrint('📊 [SubscriptionService] Trial active - $daysSinceStart/$trialDurationDays days used');
+          }
+        } else {
+          // No trial start date but Keychain says used before
+          // This means trial was fully exhausted in the past, safe to block
+          await _prefs?.setBool('trial_blocked', true);
+          debugPrint('📊 [SubscriptionService] Trial blocked - previously exhausted on this device');
+        }
       } else {
-        // Either first-time user or paid subscriber - allow trial/access
+        // Either first-time user OR paid subscriber - allow access
         await _prefs?.setBool('trial_blocked', false);
+        if (isPremium) {
+          debugPrint('📊 [SubscriptionService] Premium subscriber - trial check bypassed');
+        }
       }
 
       // Check if user should be automatically subscribed (day 3 without cancellation)
@@ -162,6 +189,9 @@ class SubscriptionService {
 
       // Reset message counters if needed
       await _checkAndResetCounters();
+
+      // Check if trial expired while app was closed
+      await _checkAndMarkTrialExpiry();
 
       _isInitialized = true;
       debugPrint('📊 [SubscriptionService] SubscriptionService initialized');
@@ -265,10 +295,10 @@ class SubscriptionService {
     await _prefs?.setInt(_keyTrialMessagesUsed, 0);
     // Note: No longer setting _keyTrialLastResetDate (no daily resets)
 
-    // Mark trial as used in Keychain (survives app uninstall)
-    await markTrialAsUsed();
+    // Note: Keychain marking moved to trial expiry (when 3 days or 15 messages exhausted)
+    // This prevents blocking active trials on app restart
 
-    debugPrint('📊 [SubscriptionService] Trial started and marked in Keychain');
+    debugPrint('📊 [SubscriptionService] Trial started');
   }
 
   // ============================================================================
@@ -558,6 +588,10 @@ class SubscriptionService {
         await _prefs?.setInt(_keyTrialMessagesUsed, used);
         // No longer calling _updateTrialResetDate() - no daily resets
         debugPrint('📊 [SubscriptionService] Trial message consumed ($used/$trialTotalMessages total)');
+
+        // Check if trial just expired (message limit or time limit)
+        await _checkAndMarkTrialExpiry();
+
         return true;
       }
 
@@ -718,6 +752,46 @@ class SubscriptionService {
       }
     } catch (e) {
       debugPrint('📊 [SubscriptionService] Failed to reset counters: $e');
+    }
+  }
+
+  /// Check if trial has expired and mark in Keychain if so
+  /// Marks trial as used when EITHER condition is met:
+  /// 1. User has consumed all 15 messages
+  /// 2. 3 days have passed since trial started
+  Future<void> _checkAndMarkTrialExpiry() async {
+    try {
+      // Only check if user is in trial (not premium)
+      if (isPremium || !hasStartedTrial) return;
+
+      bool shouldMark = false;
+      String reason = '';
+
+      // Check message limit (15 total messages)
+      final used = trialMessagesUsed;
+      if (used >= trialTotalMessages) {
+        shouldMark = true;
+        reason = '$used/$trialTotalMessages messages exhausted';
+      }
+
+      // Check time limit (3 days)
+      final trialStartDate = _getTrialStartDate();
+      if (trialStartDate != null) {
+        final daysSinceStart = DateTime.now().difference(trialStartDate).inDays;
+        if (daysSinceStart >= trialDurationDays) {
+          shouldMark = true;
+          reason = '$daysSinceStart days elapsed';
+        }
+      }
+
+      // Mark trial as expired in Keychain if limit reached
+      if (shouldMark) {
+        await markTrialAsUsed();
+        debugPrint('📊 [SubscriptionService] Trial expired and marked in Keychain ($reason)');
+      }
+    } catch (e) {
+      debugPrint('📊 [SubscriptionService] Failed to check trial expiry: $e');
+      // Non-critical - don't block message sending
     }
   }
 
