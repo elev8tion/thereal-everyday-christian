@@ -163,51 +163,89 @@ class ReadingProgressStatsWidget extends StatelessWidget {
 
     return FrostedGlassCard(
       padding: const EdgeInsets.all(AppSpacing.md),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withValues(alpha: 0.2),
-              borderRadius: AppRadius.mediumRadius,
-            ),
-            child: Icon(
-              Icons.calendar_month,
-              color: AppTheme.primaryColor,
-              size: ResponsiveUtils.iconSize(context, 24),
-            ),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                  borderRadius: AppRadius.mediumRadius,
+                ),
+                child: Icon(
+                  Icons.calendar_month,
+                  color: AppTheme.primaryColor,
+                  size: ResponsiveUtils.iconSize(context, 24),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.estimatedCompletion,
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                        color: AppColors.secondaryText,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _formatDate(estimatedDate, context),
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primaryText,
+                      ),
+                    ),
+                    Text(
+                      daysUntil > 0
+                          ? l10n.inDays(daysUntil, l10n.streakDays(daysUntil))
+                          : daysUntil == 0
+                              ? l10n.todayExclamation
+                              : l10n.daysOverdue(-daysUntil, l10n.streakDays(-daysUntil)),
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                        color: daysUntil < 0 ? Colors.orange : AppColors.tertiaryText,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
+          const SizedBox(height: AppSpacing.sm),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(AppSpacing.sm),
+            decoration: BoxDecoration(
+              color: Colors.blue.withValues(alpha: 0.1),
+              borderRadius: AppRadius.smallRadius,
+              border: Border.all(
+                color: Colors.blue.withValues(alpha: 0.3),
+                width: 1,
+              ),
+            ),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  l10n.estimatedCompletion,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                    color: AppColors.secondaryText,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Icon(
+                  Icons.info_outline,
+                  size: ResponsiveUtils.iconSize(context, 16),
+                  color: Colors.blue,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  _formatDate(estimatedDate, context),
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryText,
-                  ),
-                ),
-                Text(
-                  daysUntil > 0
-                      ? l10n.inDays(daysUntil, l10n.streakDays(daysUntil))
-                      : daysUntil == 0
-                          ? l10n.todayExclamation
-                          : l10n.daysOverdue(-daysUntil, l10n.streakDays(-daysUntil)),
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                    color: daysUntil < 0 ? Colors.orange : AppColors.tertiaryText,
+                const SizedBox(width: AppSpacing.xs),
+                Expanded(
+                  child: Text(
+                    l10n.estimatedCompletionExplanation,
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
+                      color: Colors.blue.shade200,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ),
               ],

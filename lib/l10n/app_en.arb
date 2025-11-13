@@ -3715,6 +3715,10 @@
   "@estimatedCompletion": {
     "description": "Estimated completion date label"
   },
+  "estimatedCompletionExplanation": "Based on your current reading pace. Skipping days will adjust this estimate.",
+  "@estimatedCompletionExplanation": {
+    "description": "Explanation of how estimated completion date is calculated"
+  },
   "inDays": "in {count} {days}",
   "@inDays": {
     "description": "Format for 'in X days'",

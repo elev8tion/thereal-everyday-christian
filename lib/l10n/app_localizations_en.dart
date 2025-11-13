@@ -2746,6 +2746,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get estimatedCompletion => 'Estimated Completion';
 
   @override
+  String get estimatedCompletionExplanation =>
+      'Based on your current reading pace. Skipping days will adjust this estimate.';
+
+  @override
   String inDays(int count, String days) {
     return 'in $count $days';
   }

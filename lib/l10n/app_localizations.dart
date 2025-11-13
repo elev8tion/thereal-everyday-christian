@@ -4905,6 +4905,12 @@ abstract class AppLocalizations {
   /// **'Estimated Completion'**
   String get estimatedCompletion;
 
+  /// Explanation of how estimated completion date is calculated
+  ///
+  /// In en, this message translates to:
+  /// **'Based on your current reading pace. Skipping days will adjust this estimate.'**
+  String get estimatedCompletionExplanation;
+
   /// Format for 'in X days'
   ///
   /// In en, this message translates to:
