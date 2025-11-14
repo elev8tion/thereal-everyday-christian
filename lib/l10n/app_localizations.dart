@@ -5366,6 +5366,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please provide a different perspective or alternative response to the previous question.'**
   String get aiRegenerateInstruction;
+
+  /// Error message when user submits empty message
+  ///
+  /// In en, this message translates to:
+  /// **'Message cannot be empty.'**
+  String get securityMessageEmpty;
+
+  /// Error message when message is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Message is too short. Please share what\'s on your heart.'**
+  String get securityMessageTooShort;
+
+  /// Error message when message exceeds max length
+  ///
+  /// In en, this message translates to:
+  /// **'Message is too long. Please keep your message under {maxLength} characters.'**
+  String securityMessageTooLong(int maxLength);
+
+  /// Error message when user exceeds rate limit
+  ///
+  /// In en, this message translates to:
+  /// **'Please slow down. You can send up to {maxMessages} messages per minute.'**
+  String securityRateLimit(int maxMessages);
+
+  /// Suspension message for jailbreak attempts - stern only, no guidance offer
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been suspended due to violations of our community guidelines.'**
+  String get securityJailbreakAttempt;
+
+  /// Warning message for profanity detection
+  ///
+  /// In en, this message translates to:
+  /// **'Please use respectful language. I\'m here to support you with compassion.'**
+  String get securityProfanity;
+
+  /// Respectful redirection message for faith-targeted offensive content
+  ///
+  /// In en, this message translates to:
+  /// **'I respect where you\'re coming from. If you have doubts or questions about faith, I\'m happy to discuss them respectfully.'**
+  String get securityFaithOffense;
 }
 
 class _AppLocalizationsDelegate

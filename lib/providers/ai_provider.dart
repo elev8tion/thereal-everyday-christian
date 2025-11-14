@@ -148,7 +148,7 @@ class GeminiAIServiceAdapter implements AIService {
     // ============================================================================
     // SECURITY: Validate user input BEFORE sending to AI
     // ============================================================================
-    final securityCheck = _inputSecurity.validateInput(userInput);
+    final securityCheck = _inputSecurity.validateInput(userInput, language: language);
 
     if (securityCheck.isRejected) {
       // ============================================================================
@@ -291,7 +291,7 @@ class GeminiAIServiceAdapter implements AIService {
     // ============================================================================
     // SECURITY: Validate user input BEFORE sending to AI
     // ============================================================================
-    final securityCheck = _inputSecurity.validateInput(userInput);
+    final securityCheck = _inputSecurity.validateInput(userInput, language: language);
 
     if (securityCheck.isRejected) {
       // ============================================================================

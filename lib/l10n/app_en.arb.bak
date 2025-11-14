@@ -4090,45 +4090,4 @@
   "@aiRegenerateInstruction": {
     "description": "AI instruction for regenerating responses"
   }
-,
-  "securityMessageEmpty": "Message cannot be empty.",
-  "@securityMessageEmpty": {
-    "description": "Error message when user submits empty message"
-  },
-  "securityMessageTooShort": "Message is too short. Please share what's on your heart.",
-  "@securityMessageTooShort": {
-    "description": "Error message when message is too short"
-  },
-  "securityMessageTooLong": "Message is too long. Please keep your message under {maxLength} characters.",
-  "@securityMessageTooLong": {
-    "description": "Error message when message exceeds max length",
-    "placeholders": {
-      "maxLength": {
-        "type": "int",
-        "example": "1000"
-      }
-    }
-  },
-  "securityRateLimit": "Please slow down. You can send up to {maxMessages} messages per minute.",
-  "@securityRateLimit": {
-    "description": "Error message when user exceeds rate limit",
-    "placeholders": {
-      "maxMessages": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "securityJailbreakAttempt": "Your account has been suspended due to violations of our community guidelines.",
-  "@securityJailbreakAttempt": {
-    "description": "Suspension message for jailbreak attempts - stern only, no guidance offer"
-  },
-  "securityProfanity": "Please use respectful language. I'm here to support you with compassion.",
-  "@securityProfanity": {
-    "description": "Warning message for profanity detection"
-  },
-  "securityFaithOffense": "I respect where you're coming from. If you have doubts or questions about faith, I'm happy to discuss them respectfully.",
-  "@securityFaithOffense": {
-    "description": "Respectful redirection message for faith-targeted offensive content"
-  }
 }

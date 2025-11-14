@@ -3056,4 +3056,33 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get aiRegenerateInstruction =>
       'Por favor proporciona una perspectiva diferente o una respuesta alternativa a la pregunta anterior.';
+
+  @override
+  String get securityMessageEmpty => 'El mensaje no puede estar vacío.';
+
+  @override
+  String get securityMessageTooShort =>
+      'El mensaje es demasiado corto. Por favor comparte lo que hay en tu corazón.';
+
+  @override
+  String securityMessageTooLong(int maxLength) {
+    return 'El mensaje es demasiado largo. Por favor mantén tu mensaje bajo $maxLength caracteres.';
+  }
+
+  @override
+  String securityRateLimit(int maxMessages) {
+    return 'Por favor ve más despacio. Puedes enviar hasta $maxMessages mensajes por minuto.';
+  }
+
+  @override
+  String get securityJailbreakAttempt =>
+      'Tu cuenta ha sido suspendida debido a violaciones de nuestras pautas comunitarias.';
+
+  @override
+  String get securityProfanity =>
+      'Por favor usa lenguaje respetuoso. Estoy aquí para apoyarte con compasión.';
+
+  @override
+  String get securityFaithOffense =>
+      'Respeto de dónde vienes. Si tienes dudas o preguntas sobre la fe, estaré feliz de discutirlas respetuosamente.';
 }

@@ -1034,12 +1034,4 @@
   "fallbackDefaultResponse": "Gracias por compartir conmigo. Dios se preocupa profundamente por cada aspecto de tu vida, tanto grande como pequeño. Como dice en 1 Pedro 5:7: \"Depositen en él toda ansiedad, porque él cuida de ustedes.\"\n\nRecuerda que eres amado, valorado y nunca estás solo. Dios siempre está escuchando y listo para ayudar. ¿Te gustaría explorar un versículo bíblico específico o un tema relacionado con tu pregunta?"
 ,
   "aiRegenerateInstruction": "Por favor proporciona una perspectiva diferente o una respuesta alternativa a la pregunta anterior."
-,
-  "securityMessageEmpty": "El mensaje no puede estar vacío.",
-  "securityMessageTooShort": "El mensaje es demasiado corto. Por favor comparte lo que hay en tu corazón.",
-  "securityMessageTooLong": "El mensaje es demasiado largo. Por favor mantén tu mensaje bajo {maxLength} caracteres.",
-  "securityRateLimit": "Por favor ve más despacio. Puedes enviar hasta {maxMessages} mensajes por minuto.",
-  "securityJailbreakAttempt": "Tu cuenta ha sido suspendida debido a violaciones de nuestras pautas comunitarias.",
-  "securityProfanity": "Por favor usa lenguaje respetuoso. Estoy aquí para apoyarte con compasión.",
-  "securityFaithOffense": "Respeto de dónde vienes. Si tienes dudas o preguntas sobre la fe, estaré feliz de discutirlas respetuosamente."
 }

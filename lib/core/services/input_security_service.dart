@@ -311,34 +311,35 @@ class InputSecurityService {
   // ============================================================================
 
   /// Main security check for user input
-  SecurityResult validateInput(String userInput) {
+  /// [language] - Language code ('en' or 'es') for localized error messages
+  SecurityResult validateInput(String userInput, {String language = 'en'}) {
     if (userInput.isEmpty || userInput.trim().isEmpty) {
       return SecurityResult.rejected(
-        'Message cannot be empty.',
+        _getMessageEmptyError(language),
         level: SecurityThreatLevel.low,
       );
     }
 
     // 1. Check message length
-    final lengthCheck = _checkMessageLength(userInput);
+    final lengthCheck = _checkMessageLength(userInput, language);
     if (lengthCheck.isRejected) return lengthCheck;
 
     // 2. Check rate limiting
-    final rateCheck = _checkRateLimit();
+    final rateCheck = _checkRateLimit(language);
     if (rateCheck.isRejected) return rateCheck;
 
     final normalized = _normalizeText(userInput);
 
     // 3. Check for jailbreak attempts (HIGHEST PRIORITY)
-    final jailbreakCheck = _checkJailbreakPatterns(normalized);
+    final jailbreakCheck = _checkJailbreakPatterns(normalized, language);
     if (jailbreakCheck.isRejected) return jailbreakCheck;
 
     // 4. Check for profanity
-    final profanityCheck = _checkProfanity(normalized);
+    final profanityCheck = _checkProfanity(normalized, language);
     if (profanityCheck.isRejected) return profanityCheck;
 
     // 5. Check for offensive content targeting faith
-    final offenseCheck = _checkFaithOffense(normalized);
+    final offenseCheck = _checkFaithOffense(normalized, language);
     if (offenseCheck.isRejected) return offenseCheck;
 
     // All checks passed
@@ -346,17 +347,17 @@ class InputSecurityService {
   }
 
   /// Check message length constraints
-  SecurityResult _checkMessageLength(String input) {
+  SecurityResult _checkMessageLength(String input, String language) {
     if (input.length < _minMessageLength) {
       return SecurityResult.rejected(
-        'Message is too short. Please share what\'s on your heart.',
+        _getMessageTooShortError(language),
         level: SecurityThreatLevel.low,
       );
     }
 
     if (input.length > _maxMessageLength) {
       return SecurityResult.rejected(
-        'Message is too long. Please keep your message under $_maxMessageLength characters.',
+        _getMessageTooLongError(language, _maxMessageLength),
         level: SecurityThreatLevel.low,
       );
     }
@@ -365,7 +366,7 @@ class InputSecurityService {
   }
 
   /// Check rate limiting (5 messages per minute)
-  SecurityResult _checkRateLimit() {
+  SecurityResult _checkRateLimit(String language) {
     final now = DateTime.now();
 
     // Remove timestamps older than 1 minute
@@ -375,7 +376,7 @@ class InputSecurityService {
 
     if (_messageTimestamps.length >= _maxMessagesPerMinute) {
       return SecurityResult.rejected(
-        'Please slow down. You can send up to $_maxMessagesPerMinute messages per minute.',
+        _getRateLimitError(language, _maxMessagesPerMinute),
         level: SecurityThreatLevel.medium,
       );
     }
@@ -387,7 +388,7 @@ class InputSecurityService {
   }
 
   /// Check for jailbreak/prompt injection patterns
-  SecurityResult _checkJailbreakPatterns(String normalizedInput) {
+  SecurityResult _checkJailbreakPatterns(String normalizedInput, String language) {
     final detectedPatterns = <String>[];
 
     // Check English instruction override attempts
@@ -447,7 +448,7 @@ class InputSecurityService {
       );
 
       return SecurityResult.rejected(
-        'I\'m here to provide biblical guidance and support. How can I help you today?',
+        _getJailbreakMessage(language),
         level: SecurityThreatLevel.high,
         patterns: detectedPatterns,
       );
@@ -457,7 +458,7 @@ class InputSecurityService {
   }
 
   /// Check for profanity
-  SecurityResult _checkProfanity(String normalizedInput) {
+  SecurityResult _checkProfanity(String normalizedInput, String language) {
     final detectedProfanity = <String>[];
 
     // Check English profanity
@@ -486,7 +487,7 @@ class InputSecurityService {
       );
 
       return SecurityResult.rejected(
-        'Please use respectful language. I\'m here to support you with compassion.',
+        _getProfanityMessage(language),
         level: SecurityThreatLevel.low,
         patterns: detectedProfanity,
       );
@@ -496,7 +497,7 @@ class InputSecurityService {
   }
 
   /// Check for offensive content targeting faith
-  SecurityResult _checkFaithOffense(String normalizedInput) {
+  SecurityResult _checkFaithOffense(String normalizedInput, String language) {
     final detectedOffenses = <String>[];
 
     // Check English faith offenses
@@ -521,7 +522,7 @@ class InputSecurityService {
       );
 
       return SecurityResult.rejected(
-        'I respect where you\'re coming from. If you have doubts or questions about faith, I\'m happy to discuss them respectfully.',
+        _getFaithOffenseMessage(language),
         level: SecurityThreatLevel.medium,
         patterns: detectedOffenses,
       );
@@ -585,5 +586,58 @@ class InputSecurityService {
       'max_per_minute': _maxMessagesPerMinute,
       'remaining': _maxMessagesPerMinute - _messageTimestamps.length,
     };
+  }
+
+  // ============================================================================
+  // LOCALIZATION HELPERS
+  // ============================================================================
+
+  /// Get localized empty message error
+  String _getMessageEmptyError(String language) {
+    return language == 'es'
+        ? 'El mensaje no puede estar vacío.'
+        : 'Message cannot be empty.';
+  }
+
+  /// Get localized too short error
+  String _getMessageTooShortError(String language) {
+    return language == 'es'
+        ? 'El mensaje es demasiado corto. Por favor comparte lo que hay en tu corazón.'
+        : 'Message is too short. Please share what\'s on your heart.';
+  }
+
+  /// Get localized too long error
+  String _getMessageTooLongError(String language, int maxLength) {
+    return language == 'es'
+        ? 'El mensaje es demasiado largo. Por favor mantén tu mensaje bajo $maxLength caracteres.'
+        : 'Message is too long. Please keep your message under $maxLength characters.';
+  }
+
+  /// Get localized rate limit error
+  String _getRateLimitError(String language, int maxMessages) {
+    return language == 'es'
+        ? 'Por favor ve más despacio. Puedes enviar hasta $maxMessages mensajes por minuto.'
+        : 'Please slow down. You can send up to $maxMessages messages per minute.';
+  }
+
+  /// Get localized jailbreak attempt message
+  String _getJailbreakMessage(String language) {
+    return language == 'es'
+        ? 'Tu cuenta ha sido suspendida debido a violaciones de nuestras pautas comunitarias.'
+        : 'Your account has been suspended due to violations of our community guidelines.';
+  }
+
+  /// Get localized profanity warning
+  String _getProfanityMessage(String language) {
+    return language == 'es'
+        ? 'Por favor usa lenguaje respetuoso. Estoy aquí para apoyarte con compasión.'
+        : 'Please use respectful language. I\'m here to support you with compassion.';
+  }
+
+  /// Get localized faith offense message
+  String _getFaithOffenseMessage(String language) {
+    return language == 'es'
+        ? 'Respeto de dónde vienes. Si tienes dudas o preguntas sobre la fe, estaré feliz de discutirlas respetuosamente.'
+        : 'I respect where you\'re coming from. If you have doubts or questions about faith, I\'m happy to discuss them respectfully.';
   }
 }
