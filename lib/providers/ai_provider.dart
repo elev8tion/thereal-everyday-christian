@@ -8,10 +8,13 @@ import '../models/chat_message.dart';
 import '../core/services/content_filter_service.dart';
 import '../core/services/input_security_service.dart';
 import '../core/services/suspension_service.dart';
+import '../core/providers/subscription_providers.dart';
 
 /// Provider for AI service instance (Gemini AI)
 final aiServiceProvider = Provider<AIService>((ref) {
-  return GeminiAIServiceAdapter();
+  // Import the suspension service provider
+  final suspensionService = ref.read(suspensionServiceProvider);
+  return GeminiAIServiceAdapter(suspensionService: suspensionService);
 });
 
 /// Provider for AI service initialization status
@@ -120,9 +123,10 @@ class GeminiAIServiceAdapter implements AIService {
   final UnifiedVerseService _verseService = UnifiedVerseService();
   final ContentFilterService _contentFilter = ContentFilterService();
   final InputSecurityService _inputSecurity = InputSecurityService();
-  final SuspensionService _suspensionService = SuspensionService();
+  final SuspensionService _suspensionService;
 
-  bool _suspensionServiceInitialized = false;
+  GeminiAIServiceAdapter({required SuspensionService suspensionService})
+      : _suspensionService = suspensionService;
 
   @override
   Future<void> initialize() async {
@@ -151,11 +155,7 @@ class GeminiAIServiceAdapter implements AIService {
       // VIOLATION TRACKING: Record high-threat attempts for suspension system
       // ============================================================================
 
-      // Initialize suspension service if needed
-      if (!_suspensionServiceInitialized) {
-        await _suspensionService.initialize();
-        _suspensionServiceInitialized = true;
-      }
+      // Suspension service is initialized on app startup
 
       // Determine if this should trigger a violation record
       bool shouldRecordViolation = false;
@@ -298,11 +298,7 @@ class GeminiAIServiceAdapter implements AIService {
       // VIOLATION TRACKING: Record high-threat attempts for suspension system
       // ============================================================================
 
-      // Initialize suspension service if needed
-      if (!_suspensionServiceInitialized) {
-        await _suspensionService.initialize();
-        _suspensionServiceInitialized = true;
-      }
+      // Suspension service is initialized on app startup
 
       // Determine if this should trigger a violation record
       bool shouldRecordViolation = false;

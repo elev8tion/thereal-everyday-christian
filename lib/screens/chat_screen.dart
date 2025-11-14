@@ -203,6 +203,8 @@ class ChatScreen extends HookConsumerWidget {
       }
 
       // 2. Check if user is suspended for security violations
+      // Invalidate to get fresh status (suspension may have been applied in previous message)
+      ref.invalidate(isSuspendedProvider);
       final isSuspended = await ref.read(isSuspendedProvider.future);
 
       if (isSuspended) {

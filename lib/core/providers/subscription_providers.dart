@@ -104,9 +104,12 @@ final trialMessagesRemainingProvider = Provider<int>((ref) {
 // Suspension Service Providers
 // ============================================================================
 
+// Create a single instance of SuspensionService that's reused across the app
+final _suspensionServiceInstance = SuspensionService();
+
 /// Provides access to the SuspensionService singleton.
 final suspensionServiceProvider = Provider<SuspensionService>((ref) {
-  return SuspensionService();
+  return _suspensionServiceInstance;
 });
 
 /// Ensures suspension service initialization runs during bootstrap.

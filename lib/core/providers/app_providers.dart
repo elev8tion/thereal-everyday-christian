@@ -309,6 +309,7 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   final database = ref.read(databaseServiceProvider);
   final notifications = ref.read(notificationServiceProvider);
   final subscription = ref.read(subscriptionServiceProvider);
+  final suspension = ref.read(suspensionServiceProvider);
   final bibleLoader = ref.read(bibleLoaderServiceProvider);
   final devotionalLoader = ref.read(devotionalContentLoaderProvider);
   final curatedPlanLoader = ref.read(curatedReadingPlanLoaderProvider);
@@ -319,6 +320,7 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
   await database.initialize();
   await notifications.initialize();
   await subscription.initialize();
+  await suspension.initialize();
 
   // Automatic cleanup: Remove old chat messages (60+ days OR keep only 100 most recent)
   try {
