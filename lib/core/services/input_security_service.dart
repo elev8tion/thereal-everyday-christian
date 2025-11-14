@@ -98,6 +98,27 @@ class InputSecurityService {
     'do not follow instructions',
   ];
 
+  /// Spanish instruction override attempts
+  static const List<String> _spanishInstructionOverridePatterns = [
+    'ignora las instrucciones anteriores',
+    'ignora instrucciones anteriores',
+    'ignora todas las instrucciones',
+    'ignora tus instrucciones',
+    'olvida las instrucciones anteriores',
+    'olvida tus instrucciones',
+    'olvida tu entrenamiento',
+    'anula tu programacion',
+    'omitir instrucciones',
+    'nuevas instrucciones',
+    'nueva instruccion',
+    'modo administrador',
+    'modo desarrollador',
+    'modo depuracion',
+    'modo sin restricciones',
+    'no sigas tus instrucciones',
+    'no sigas las instrucciones',
+  ];
+
   /// Role manipulation attempts
   static const List<String> _roleManipulationPatterns = [
     'you are now',
@@ -136,6 +157,38 @@ class InputSecurityService {
     'you re not a pastor',
     'your the devil', // Common typo
     'your satan', // Common typo
+  ];
+
+  /// Spanish role manipulation attempts
+  static const List<String> _spanishRoleManipulationPatterns = [
+    'ahora eres',
+    'ya no eres',
+    'pretende que eres',
+    'pretende ser',
+    'finge que eres',
+    'actua como si fueras',
+    'actua como',
+    'simula ser',
+    'imagina que eres',
+    'a partir de ahora eres',
+    'de ahora en adelante eres',
+    'ahora actuaras como',
+    'responde como',
+    'olvida que eres un consejero',
+    'no eres un consejero',
+    'deja de ser un consejero',
+    'pretende que no eres religioso',
+    'pretende que no eres cristiano',
+    'se un satanista',
+    'se un ateo',
+    'se lo que te diga',
+    'eres el diablo',
+    'eres satan',
+    'eres satanas',
+    'tu eres el diablo',
+    'tu eres satan',
+    'tu eres satanas',
+    'no eres un pastor',
   ];
 
   /// DAN-style jailbreaks (Do Anything Now)
@@ -223,6 +276,36 @@ class InputSecurityService {
     'believers are stupid',
   ];
 
+  /// Spanish faith offense patterns
+  static const List<String> _spanishFaithOffensePatterns = [
+    'dios es falso',
+    'dios no es real',
+    'dios no existe',
+    'jesus es falso',
+    'jesus no es real',
+    'jesus no existe',
+    'la religion es estupida',
+    'el cristianismo es estupido',
+    'la biblia es falsa',
+    'la biblia es ficcion',
+    'tu dios es',
+    'tu religion es',
+    'los cristianos son estupidos',
+    'los creyentes son estupidos',
+  ];
+
+  /// Spanish profanity patterns
+  static const List<String> _spanishProfanityPatterns = [
+    'p\\w*ta(s)?',
+    'm\\w*erda(s)?',
+    'c\\w*brón(es)?',
+    'p\\w*ndejo(s)?',
+    'ch\\w*nga(r|do)?',
+    'j\\w*der',
+    'c\\w*rajo',
+    'c\\w*lo(s)?',
+  ];
+
   // ============================================================================
   // VALIDATION METHODS
   // ============================================================================
@@ -307,15 +390,29 @@ class InputSecurityService {
   SecurityResult _checkJailbreakPatterns(String normalizedInput) {
     final detectedPatterns = <String>[];
 
-    // Check instruction override attempts
+    // Check English instruction override attempts
     for (final pattern in _instructionOverridePatterns) {
       if (normalizedInput.contains(pattern)) {
         detectedPatterns.add(pattern);
       }
     }
 
-    // Check role manipulation attempts
+    // Check Spanish instruction override attempts
+    for (final pattern in _spanishInstructionOverridePatterns) {
+      if (normalizedInput.contains(pattern)) {
+        detectedPatterns.add(pattern);
+      }
+    }
+
+    // Check English role manipulation attempts
     for (final pattern in _roleManipulationPatterns) {
+      if (normalizedInput.contains(pattern)) {
+        detectedPatterns.add(pattern);
+      }
+    }
+
+    // Check Spanish role manipulation attempts
+    for (final pattern in _spanishRoleManipulationPatterns) {
       if (normalizedInput.contains(pattern)) {
         detectedPatterns.add(pattern);
       }
@@ -363,9 +460,18 @@ class InputSecurityService {
   SecurityResult _checkProfanity(String normalizedInput) {
     final detectedProfanity = <String>[];
 
+    // Check English profanity
     for (final word in _profanityPatterns) {
       // Use word boundaries to avoid false positives
       // Patterns already have \w+ for wildcards
+      final pattern = RegExp(r'\b' + word + r'\b', caseSensitive: false);
+      if (pattern.hasMatch(normalizedInput)) {
+        detectedProfanity.add(word);
+      }
+    }
+
+    // Check Spanish profanity
+    for (final word in _spanishProfanityPatterns) {
       final pattern = RegExp(r'\b' + word + r'\b', caseSensitive: false);
       if (pattern.hasMatch(normalizedInput)) {
         detectedProfanity.add(word);
@@ -393,7 +499,15 @@ class InputSecurityService {
   SecurityResult _checkFaithOffense(String normalizedInput) {
     final detectedOffenses = <String>[];
 
+    // Check English faith offenses
     for (final pattern in _faithOffensePatterns) {
+      if (normalizedInput.contains(pattern)) {
+        detectedOffenses.add(pattern);
+      }
+    }
+
+    // Check Spanish faith offenses
+    for (final pattern in _spanishFaithOffensePatterns) {
       if (normalizedInput.contains(pattern)) {
         detectedOffenses.add(pattern);
       }
