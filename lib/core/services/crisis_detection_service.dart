@@ -438,11 +438,13 @@ class CrisisDetectionService {
   }
 
   /// Normalize user input for keyword matching
+  /// Preserves Spanish accents (á, é, í, ó, ú, ñ) and other Unicode characters
   String _normalizeInput(String input) {
     return input
         .toLowerCase()
         .trim()
-        .replaceAll(RegExp(r'[^\w\s]'), ' ') // Remove punctuation
+        // Remove common punctuation but preserve letters (including accented ones)
+        .replaceAll(RegExp('[.,;:!?¡¿()\\[\\]{}"\'`]'), ' ')
         .replaceAll(RegExp(r'\s+'), ' '); // Normalize whitespace
   }
 
