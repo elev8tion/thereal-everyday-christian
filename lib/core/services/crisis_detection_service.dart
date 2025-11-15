@@ -229,15 +229,24 @@ class CrisisDetectionService {
     'terminar con mi vida',
     'acabar con mi vida',
     'quitarme la vida',
+    'quitar la vida', // Infinitive form (voy a quitar la vida)
     'no hay razón para vivir',
     'no hay razon para vivir',
+    'no veo ninguna razón para vivir',
+    'no veo ninguna razon para vivir',
     'no puedo seguir',
     'todos estarían mejor sin mi',
     'todos estarian mejor sin mi',
+    'todos estarían mejor sin mí', // With accent on mí
+    'todos estarian mejor sin mí',
     'el mundo estaría mejor sin mi',
     'el mundo estaria mejor sin mi',
+    'el mundo estaría mejor sin mí',
+    'el mundo estaria mejor sin mí',
     'adiós para siempre',
     'adios para siempre',
+    'adiós a todos para siempre', // Extended goodbye
+    'adios a todos para siempre',
     'mensaje final',
 
     // Indirect patterns
@@ -274,6 +283,8 @@ class CrisisDetectionService {
   static const List<String> _spanishSelfHarmKeywords = [
     // Direct statements
     'cortarme',
+    'cortando', // Gerund form (estado cortando)
+    'cortar', // Infinitive (quiero cortar)
     'hacerme daño',
     'hacerme dano',
     'lastimarme',
@@ -283,9 +294,14 @@ class CrisisDetectionService {
     'auto lesion',
     'cortándome',
     'cortandome',
+    'estado cortando', // He estado cortando
+    'estado cortándome',
+    'estado cortandome',
+    'cortarse', // Infinitive reflexive (hablando de cortarse)
     'quemarme',
     'quemándome',
     'quemandome',
+    'quemando', // Gerund (estoy quemando)
     'quiero hacerme daño',
     'quiero hacerme dano',
     'he estado haciéndome daño',
@@ -313,6 +329,10 @@ class CrisisDetectionService {
     'cortarme ayuda',
     'cicatrices',
     'cortes frescos',
+    'cortes', // Cuts (found cuts on arms)
+    'encontré cortes', // Found cuts
+    'encontre cortes',
+    'tiene cortes', // Has cuts
     'recaí',
     'recai',
   ];
@@ -354,8 +374,12 @@ class CrisisDetectionService {
     'golpeandome',
     'violento',
     'violenta',
+    'violencia', // General violence
+    'violencia en casa', // Violence at home
     'me amenaza',
     'temo por mi seguridad',
+    'tengo miedo por mi seguridad', // Variant with "tengo miedo"
+    'miedo por mi seguridad',
     'físicamente lastimado',
     'fisicamente lastimado',
     'físicamente lastimada',
@@ -414,22 +438,23 @@ class CrisisDetectionService {
       );
     }
 
+    // Check for abuse keywords (second priority) - English + Spanish
+    // Abuse is prioritized over self-harm because it indicates immediate external danger
+    final abuseMatches = _findMatches(normalized, [..._abuseKeywords, ..._spanishAbuseKeywords]);
+    if (abuseMatches.isNotEmpty) {
+      return CrisisDetectionResult(
+        type: CrisisType.abuse,
+        matchedKeywords: abuseMatches,
+        userInput: userInput,
+      );
+    }
+
     // Check for self-harm keywords - English + Spanish
     final selfHarmMatches = _findMatches(normalized, [..._selfHarmKeywords, ..._spanishSelfHarmKeywords]);
     if (selfHarmMatches.isNotEmpty) {
       return CrisisDetectionResult(
         type: CrisisType.selfHarm,
         matchedKeywords: selfHarmMatches,
-        userInput: userInput,
-      );
-    }
-
-    // Check for abuse keywords - English + Spanish
-    final abuseMatches = _findMatches(normalized, [..._abuseKeywords, ..._spanishAbuseKeywords]);
-    if (abuseMatches.isNotEmpty) {
-      return CrisisDetectionResult(
-        type: CrisisType.abuse,
-        matchedKeywords: abuseMatches,
         userInput: userInput,
       );
     }
@@ -464,16 +489,30 @@ class CrisisDetectionService {
 
   /// Check if input is likely a crisis based on patterns
   /// This is a more lenient check for borderline cases
+  /// Supports both English and Spanish patterns
   bool isPotentialCrisis(String userInput) {
     final normalized = _normalizeInput(userInput);
 
     // Check for concerning patterns (case insensitive)
+    // English patterns
     final concerningPatterns = [
       RegExp(r"\b(no|don\s*t|dont)\s+(point|reason|want)\s+(to\s+)?(live|go\s+on)\b", caseSensitive: false),
       RegExp(r"\b(can\s*t|cant)\s+(take\s+it|do\s+this)\s+(anymore|any\s+more)\b", caseSensitive: false),
       RegExp(r'\b(give|giving)\s+up\b', caseSensitive: false),
       RegExp(r'\b(hopeless|worthless)\b', caseSensitive: false),
       RegExp(r'\b(any|no)\s+reason\s+to\s+live\b', caseSensitive: false),
+
+      // Spanish patterns
+      RegExp(r'\b(no\s+veo|ninguna)\s+(razón|razon)\s+para\s+vivir\b', caseSensitive: false), // No reason to live
+      RegExp(r'\bno\s+(puedo|aguanto)\s+más\b', caseSensitive: false), // Can't take it anymore
+      RegExp(r'\bno\s+(puedo|aguanto)\s+mas\b', caseSensitive: false), // Without accent
+      RegExp(r'\b(rendirse|rindiéndome|rindiendome|rindiendo|rindiéndose)\b', caseSensitive: false), // Giving up
+      RegExp(r'\bsin\s+esperanza\b', caseSensitive: false), // Hopeless
+      RegExp(r'\binsoportable\b', caseSensitive: false), // Unbearable
+      RegExp(r'\batrapado\b', caseSensitive: false), // Trapped
+      RegExp(r'\batrapada\b', caseSensitive: false), // Trapped (feminine)
+      RegExp(r'\bnada\s+va\s+a\s+cambiar\b', caseSensitive: false), // Nothing will change
+      RegExp(r'\bnunca\s+va\s+a\s+mejorar\b', caseSensitive: false), // It will never get better
     ];
 
     for (final pattern in concerningPatterns) {
