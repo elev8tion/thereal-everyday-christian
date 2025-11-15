@@ -4130,5 +4130,13 @@
   "securityFaithOffense": "I respect where you're coming from. If you have doubts or questions about faith, I'm happy to discuss them respectfully.",
   "@securityFaithOffense": {
     "description": "Respectful redirection message for faith-targeted offensive content"
+  },
+  "demoDevotionalVerseText": "\"Give thanks to the LORD, for he is good, for his loving kindness endures forever.\"",
+  "@demoDevotionalVerseText": {
+    "description": "Psalm 107:1 verse text for devotional demo in onboarding"
+  },
+  "demoDevotionalVerseReference": "Psalm 107:1",
+  "@demoDevotionalVerseReference": {
+    "description": "Psalm 107:1 reference for devotional demo in onboarding"
   }
 }

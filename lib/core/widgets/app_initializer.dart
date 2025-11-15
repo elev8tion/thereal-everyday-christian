@@ -51,6 +51,7 @@ class _LoadingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Logo (clean, minimal)
+                      // Normalized container for both English and Spanish logos
                       Image.asset(
                         languageCode == 'es'
                             ? 'assets/images/logo_spanish.png'
@@ -58,29 +59,29 @@ class _LoadingScreen extends StatelessWidget {
                         width: 200,
                         height: 200,
                         fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            colors: [
-                              AppTheme.goldColor.withValues(alpha: 0.3),
-                              AppTheme.goldColor.withValues(alpha: 0.1),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                        child: const Icon(
-                          Icons.auto_stories,
-                          size: 60,
-                          color: AppTheme.goldColor,
-                        ),
-                      );
-                    },
-                  ),
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            width: 200,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppTheme.goldColor.withValues(alpha: 0.3),
+                                  AppTheme.goldColor.withValues(alpha: 0.1),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.auto_stories,
+                              size: 60,
+                              color: AppTheme.goldColor,
+                            ),
+                          );
+                        },
+                      ),
 
                   const SizedBox(height: 32),
 

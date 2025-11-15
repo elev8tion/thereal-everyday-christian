@@ -5408,6 +5408,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'I respect where you\'re coming from. If you have doubts or questions about faith, I\'m happy to discuss them respectfully.'**
   String get securityFaithOffense;
+
+  /// Psalm 107:1 verse text for devotional demo in onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'\"Give thanks to the LORD, for he is good, for his loving kindness endures forever.\"'**
+  String get demoDevotionalVerseText;
+
+  /// Psalm 107:1 reference for devotional demo in onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Psalm 107:1'**
+  String get demoDevotionalVerseReference;
 }
 
 class _AppLocalizationsDelegate

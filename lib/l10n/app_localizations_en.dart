@@ -3041,4 +3041,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get securityFaithOffense =>
       'I respect where you\'re coming from. If you have doubts or questions about faith, I\'m happy to discuss them respectfully.';
+
+  @override
+  String get demoDevotionalVerseText =>
+      '\"Give thanks to the LORD, for he is good, for his loving kindness endures forever.\"';
+
+  @override
+  String get demoDevotionalVerseReference => 'Psalm 107:1';
 }

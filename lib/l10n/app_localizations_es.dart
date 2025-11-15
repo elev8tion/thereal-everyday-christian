@@ -3085,4 +3085,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get securityFaithOffense =>
       'Respeto de dónde vienes. Si tienes dudas o preguntas sobre la fe, estaré feliz de discutirlas respetuosamente.';
+
+  @override
+  String get demoDevotionalVerseText =>
+      '\"ALABAD á Jehová, porque es bueno; porque para siempre es su misericordia.\"';
+
+  @override
+  String get demoDevotionalVerseReference => 'Salmos 107:1';
 }

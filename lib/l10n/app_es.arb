@@ -1,13 +1,11 @@
 {
   "@@locale": "es",
-
   "appName": "Cristiano",
   "appNameSecond": "Cada Dia",
   "tagline": "Sabiduría guiada por la fe para los momentos de la vida",
   "loadingJourney": "Preparando su jornada espiritual...",
   "version": "Versión 1.0.0",
   "builtWithFaith": "Hecho con ❤️ para la fe",
-
   "faithGuidedCompanion": "Su compañero de fe para la vida",
   "aiBiblicalGuidance": "Guía Bíblica con IA",
   "aiBiblicalGuidanceDesc": "Versículos y sabiduría bíblica personalizada",
@@ -17,7 +15,6 @@
   "completePrivacyDesc": "Sus conversaciones permanecen en su dispositivo",
   "beginYourJourney": "Comience Su Jornada",
   "continueAsGuest": "Continuar como Invitado",
-
   "welcomeBack": "Bienvenido de Nuevo",
   "signInToContinue": "Continúe su jornada espiritual",
   "privacyNote": "Sus conversaciones son completamente privadas",
@@ -35,7 +32,6 @@
   "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
   "pleaseEnterName": "Por favor ingrese su nombre",
   "or": "o",
-
   "riseAndShine": "Buenos días",
   "goodAfternoon": "Buenas tardes",
   "goodEvening": "Buenas noches",
@@ -61,13 +57,11 @@
   "verseOfTheDay": "Versículo del Día",
   "comfort": "Consuelo",
   "startSpiritualConversation": "Iniciar Conversación",
-
   "biblicalAIGuidance": "Guía Bíblica con IA",
   "poweredByLocalAI": "Impulsado por IA local",
   "askForBiblicalGuidance": "Pida guía bíblica...",
   "peaceBeWithYou": "¡La paz sea con usted! 🙏",
   "chatWelcomeMessage": "Estoy aquí para brindar guía bíblica y apoyo espiritual. No dude en preguntarme sobre:\n\n• Interpretación de las Escrituras\n• Peticiones de oración\n• Desafíos de la vida\n• Preguntas de fe\n• Aliento diario\n\n¿Cómo puedo ayudarle hoy?",
-
   "bringRequestsToGod": "Traiga sus peticiones a Dios",
   "active": "Activa",
   "answered": "Respondida",
@@ -106,7 +100,6 @@
   "today": "Hoy",
   "yesterday": "Ayer",
   "daysAgo": "hace {count} días",
-
   "dayStreakCount": "racha de {count} días",
   "completed": "{count} completados",
   "dayNumber": "Día {number}",
@@ -124,7 +117,6 @@
   "noDevotionalsAvailable": "No Hay Devocionales Disponibles",
   "checkBackForDevotionals": "Regrese más tarde para los devocionales diarios",
   "errorLoadingDevotionals": "Error al Cargar Devocionales",
-
   "growInGodsWord": "Palabra de Dios cada día",
   "todayTab": "Hoy",
   "myPlans": "Mis Planes",
@@ -151,7 +143,6 @@
   "errorResettingPlan": "Error al restablecer el plan: {error}",
   "oopsSomethingWrong": "¡Ups! Algo salió mal",
   "percentComplete": "{percent}% completado",
-
   "verseLibrary": "Biblioteca de Versículos",
   "findComfortInGodsWord": "Encuentre consuelo en la palabra de Dios",
   "searchVersesOrReferences": "Buscar versículos o referencias...",
@@ -177,7 +168,6 @@
   "copyToClipboard": "Copiar al Portapapeles",
   "shareWithFriends": "Compartir con Amigos",
   "createImageQuote": "Crear Imagen con Cita",
-
   "notifications": "Notificaciones",
   "dailyNotifications": "Notificaciones Diarias",
   "dailyNotificationsDesc": "Recordatorios espirituales diarios",
@@ -226,7 +216,6 @@
   "openingAppStore": "Abriendo App Store...",
   "openingPrivacyPolicy": "Abriendo política de privacidad...",
   "openingTermsOfService": "Abriendo términos de servicio...",
-
   "yourSpiritualJourney": "Su Jornada Espiritual",
   "prayerStreak": "Racha de Oración",
   "totalPrayers": "Total de Oraciones",
@@ -252,7 +241,6 @@
   "signOutQuestion": "¿Cerrar Sesión?",
   "signOutConfirmation": "¿Está seguro de que desea cerrar sesión?",
   "memberSince": "Miembro desde {date}",
-
   "paywallTitle": "Premium",
   "paywallSubtitle": "Desbloquee el chat de IA",
   "paywallTrialDaysLeft": "{days} días restantes en la prueba",
@@ -329,8 +317,8 @@
   "welcomeFreeTrial": "¡Bienvenido! Comience Su Prueba Gratuita",
   "experienceAiGuidance": "Experimente la orientación bíblica impulsada por IA",
   "trialFeatureMessages": "15 mensajes de IA durante 3 días",
-  "trialFeatureScripture": "Interpretación y orientación de las Escrituras",
-  "trialFeaturePrayer": "Apoyo y aliento en la oración",
+  "trialFeatureScripture": "Interpretación bíblica y orientación",
+  "trialFeaturePrayer": "Apoyo en la oración y ánimo",
   "afterTrialPricing": "Después de la prueba: ~$35.99/año por 150 mensajes/mes",
   "pricingVariesDisclaimer": "(el precio puede variar según la región y la moneda)",
   "startFreeTrial": "Iniciar Prueba Gratuita",
@@ -345,7 +333,6 @@
   "benefitChatHistory": "Acceso a todo su historial de chat",
   "benefitPersonalizedGuidance": "Orientación bíblica personalizada",
   "freeFeaturesList": "El diario de oración, la lectura de la Biblia y los versículos permanecen gratuitos e ilimitados",
-
   "welcomeToEverydayChristian": "Bienvenido a Cristiano De Cada Dia",
   "appFeatureSubtitle": "Estudio Bíblico, Oración y Devocionales",
   "beforeWeBeginReview": "Antes de comenzar, por favor revise:",
@@ -417,8 +404,7 @@
   "iHaveReadAndAgree": "He leído y acepto",
   "mustAcceptBothDocuments": "Debe aceptar ambos documentos para usar esta aplicación",
   "processing": "Procesando...",
-
-  "chatFailedToSend": "No se pudo enviar el mensaje. Por favor, inténtalo de nuevo.",
+  "chatFailedToSend": "Error al enviar el mensaje. Por favor, inténtalo de nuevo.",
   "chatSubscriptionRequiredRegenerate": "Se requiere suscripción para regenerar respuestas",
   "crisisResourcesAvailable": "Recursos de Crisis Disponibles",
   "crisisResourcesTapToView": "Toca para ver recursos →",
@@ -445,7 +431,7 @@
   "chatFailedToShareTryAgain": "Error al compartir. Por favor, inténtalo de nuevo.",
   "chatCouldNotFindQuestion": "No se pudo encontrar la pregunta para esta respuesta",
   "chatMessageExchangeSharedSuccess": "¡Intercambio de mensajes compartido exitosamente!",
-  "chatOptions": "Opciones de Chat",
+  "chatOptions": "Opciones del Chat",
   "chatExportConversationDesc": "Ver y copiar texto de la conversación",
   "chatShareText": "Compartir Texto",
   "chatShareTextDesc": "Compartir como texto plano",
@@ -492,11 +478,10 @@
   "crisisSuicideMessage": "Detectamos que podrías estar teniendo pensamientos suicidas. Tu vida importa. Por favor, llama al 988 (Suicide & Crisis Lifeline - EE.UU.) ahora mismo. Están disponibles 24/7. \n\nFuera de EE.UU.:\n• México: 55-5259-8121 (Línea de la Vida)\n• España: 024 (Teléfono de la Esperanza)\n• O busca servicios de crisis locales en tu país",
   "crisisSelfHarmMessage": "Detectamos que podrías estar considerando autolesionarte. No tienes que enfrentar esto solo. Por favor, envía HOME al 741741 (Crisis Text Line - EE.UU.) para apoyo inmediato.\n\nFuera de EE.UU.:\n• México: 55-5259-8121 (Línea de la Vida)\n• España: 024 (Teléfono de la Esperanza)\n• O busca servicios de crisis locales en tu país",
   "crisisAbuseMessage": "Detectamos que podrías estar experimentando abuso. Tu seguridad importa. Por favor, llama a RAINN al 800-656-4673 (EE.UU.) para apoyo confidencial.\n\nFuera de EE.UU.:\n• México: 55-5259-8121 (Línea de la Vida)\n• España: 016 (Violencia de Género)\n• O busca servicios de ayuda locales en tu país",
-
-  "chapterPlaybackComplete": "Reproducción del capítulo completa",
-  "readingMarkedComplete": "¡Lectura marcada como completa!",
+  "chapterPlaybackComplete": "Reproducción del capítulo completada",
+  "readingMarkedComplete": "¡Lectura marcada como completada!",
   "errorUpdatingReading": "Error al actualizar la lectura: {error}",
-  "audioPlaybackError": "Error en la reproducción de audio",
+  "audioPlaybackError": "Error de reproducción de audio",
   "chapterOfTotal": "Capítulo {current} de {total}",
   "oneChapter": "1 capítulo",
   "noVersesFoundForBook": "No se encontraron versículos para {book} {chapter}",
@@ -507,8 +492,8 @@
   "errorLoadingChapter": "Error al cargar el capítulo",
   "retry": "Reintentar",
   "noVersesAvailable": "No hay versículos disponibles",
-  "couldNotFindVersesForRange": "No se encontraron versículos para {book} {startChapter}-{endChapter}",
-  "devotionalOptions": "Opciones del Devocional",
+  "couldNotFindVersesForRange": "No se pudieron encontrar versículos para {book} {startChapter}-{endChapter}",
+  "devotionalOptions": "Opciones de Devocional",
   "shareDevotional": "Compartir Devocional",
   "devotionalShared": "¡Devocional compartido!",
   "unableToShareDevotional": "No se pudo compartir el devocional: {error}",
@@ -516,7 +501,7 @@
   "lifeApplication": "Aplicación a la Vida",
   "prayer": "Oración",
   "todaysActionStep": "Paso de Acción de Hoy",
-  "extended": "Profundizando",
+  "extended": "Extendido",
   "monthYearProgress": "Progreso de {month} {year}",
   "demoDevotionalTitle": "Cultivando un Corazón Agradecido",
   "everydayVerses": "Versículos cotidianos",
@@ -565,7 +550,6 @@
   "answeredPrayer": "Oración Respondida",
   "prayerRequest": "Petición de Oración",
   "joinMeInPrayer": "Únete a Mí en Oración",
-
   "filterByCategory": "Filtrar por Categoría",
   "clearFilter": "Quitar Filtro",
   "noActivePrayersSubtitle": "Agrega aquí tus oraciones para volver a ellas, reflexionar y mantener tu compromiso",
@@ -598,12 +582,11 @@
   "selectCategory": "Seleccionar Categoría",
   "resetCurrentPlanTooltip": "Restablece tu plan actual antes de iniciar uno nuevo",
   "couldNotOpenReading": "No se pudo abrir la lectura: {error}",
-  "thisWillPermanentlyDelete": "⚠️ Esto eliminará permanentemente:",
+  "thisWillPermanentlyDelete": "Esto eliminará permanentemente:",
   "completedReadingsCount": "{count, plural, =1{1 lectura completada} other{# lecturas completadas}}",
   "yourStreakDays": "Tu racha de {streak} días 🔥",
   "allProgressHistory": "Todo el historial de progreso",
   "actionCannotBeUndone": "Esta acción no se puede deshacer.",
-
   "fabTooltipMessage": "Toca aquí para navegar ✨",
   "biblicalChat": "Chat Bíblico",
   "biblicalChatDesc": "Sabiduría bíblica para tu vida",
@@ -643,7 +626,6 @@
   "dataExportSubject": "Everyday Christian - Exportación de Datos",
   "dataExported": "📤 Exportados {prayerCount} diario(s) de oración y {chatCount} conversación(es)",
   "failedToExport": "Error al exportar: {error}",
-  "thisWillPermanentlyDelete": "Esto eliminará permanentemente:",
   "deleteItemPrayerJournal": "✝️ Todas las entradas del diario de oración",
   "deleteItemChatConversations": "💬 Todas las conversaciones del chat IA",
   "deleteItemReadingPlan": "📖 Progreso del plan de lectura",
@@ -682,7 +664,6 @@
   "errorLoadingProfile": "Error al cargar perfil: {error}",
   "couldNotOpenEmailApp": "No se pudo abrir la aplicación de correo",
   "errorOpeningEmailWithError": "Error al abrir correo: {error}",
-
   "oops": "¡Vaya!",
   "tryAgain": "Reintentar",
   "ok": "Aceptar",
@@ -695,9 +676,8 @@
   "appNameFull": "Everyday Christian",
   "appTaglineBiblical": "Guía bíblica con IA",
   "getEverydayChristian": "Descarga Everyday Christian",
-  "scanToDownload": "Escanea para descargar →",
+  "scanToDownload": "Escanea para descargar",
   "downloadEverydayChristian": "Descarga Everyday Christian →",
-
   "dailyDevotionalTitle": "Devocional Diario: {title}",
   "dailyDevotionalFallback": "Devocional Diario",
   "startDayWithGodsWord": "Comienza tu día con la palabra de Dios",
@@ -717,7 +697,6 @@
   "startReadingPlanNotification": "Inicia un plan de lectura para crecer en la palabra de Dios",
   "readingPlanChannelName": "Plan de Lectura",
   "readingPlanChannelDesc": "Recordatorios del plan de lectura bíblica",
-
   "bibleBrowser": "Navegador Bíblico",
   "readAnyChapterFreely": "Lee cualquier capítulo libremente",
   "searchBooks": "Buscar libros...",
@@ -739,40 +718,7 @@
   "chaptersCount": "{count} capítulos",
   "selectChapterBook": "Seleccionar Capítulo - {book}",
   "versesFoundCount": "{count} versículos encontrados",
-
-  "chapterPlaybackComplete": "Reproducción del capítulo completada",
-  "readingMarkedComplete": "¡Lectura marcada como completada!",
-  "errorUpdatingReading": "Error al actualizar la lectura: {error}",
-  "audioPlaybackError": "Error de reproducción de audio",
-  "chapterOfTotal": "Capítulo {current} de {total}",
-  "oneChapter": "1 capítulo",
-  "noVersesFoundForBook": "No se encontraron versículos para {book} {chapter}",
-  "pressHoldVerseForActions": "Mantén presionado el versículo para acciones ✨",
-  "removedFromVerseLibrary": "Eliminado de la Biblioteca de Versículos",
-  "addedToVerseLibrary": "¡Agregado a la Biblioteca de Versículos!",
-  "readingCompleted": "✓ Lectura Completada",
-  "errorLoadingChapter": "Error al cargar el capítulo",
-  "retry": "Reintentar",
-  "noVersesAvailable": "No hay versículos disponibles",
-  "couldNotFindVersesForRange": "No se pudieron encontrar versículos para {book} {startChapter}-{endChapter}",
-
-  "devotionalOptions": "Opciones de Devocional",
-  "shareDevotional": "Compartir Devocional",
-  "devotionalShared": "¡Devocional compartido!",
-  "unableToShareDevotional": "No se pudo compartir el devocional: {error}",
-  "openingScripture": "Escritura de Apertura",
-  "keyVerseSpotlight": "Versículo Clave Destacado",
-  "lifeApplication": "Aplicación a la Vida",
-  "prayer": "Oración",
-  "todaysActionStep": "Paso de Acción de Hoy",
-  "extended": "Extendido",
-  "monthYearProgress": "Progreso de {month} {year}",
-  "chatFailedToSend": "Error al enviar el mensaje. Por favor, inténtalo de nuevo.",
-  "trialFeatureMessages": "15 mensajes de IA durante 3 días",
-  "trialFeatureScripture": "Interpretación bíblica y orientación",
-  "trialFeaturePrayer": "Apoyo en la oración y ánimo",
   "trialPricingAfterTrial": "Después de la prueba: ~$35.99/año por 150 mensajes/mes",
-
   "faqSubtitle": "Respuestas a tus preguntas",
   "faqGettingStarted": "Primeros Pasos",
   "faqBibleReading": "Lectura de la Biblia",
@@ -782,21 +728,18 @@
   "faqNotifications": "Notificaciones",
   "faqSettingsCustomization": "Configuración y Personalización",
   "faqDataPrivacy": "Datos y Privacidad",
-
   "faqQ1": "¿Cómo empiezo?",
   "faqA1": "¡Bienvenido! Comienza explorando la pantalla de Inicio donde encontrarás devocionales diarios, versículo del día y acceso rápido a oración y lectura bíblica. Navega usando el menú en la esquina superior izquierda.",
   "faqQ2": "¿La aplicación es gratuita?",
   "faqA2": "¡Sí! Everyday Christian ofrece una prueba gratuita con límites diarios de mensajes para el chat de IA. Actualiza a Premium para conversaciones de IA ilimitadas y acceso completo a todas las funciones.",
   "faqQ3": "¿Qué versión de la Biblia se usa?",
   "faqA3": "La aplicación usa la Reina-Valera 1909 (RVR1909), una traducción clásica de dominio público que es fiel a los textos originales y ampliamente reconocida.",
-
   "faqQ4": "¿Puedo leer la Biblia sin conexión?",
   "faqA4": "¡Sí! La Biblia completa se descarga cuando instalas la aplicación por primera vez. Puedes leer los 66 libros, capítulos y versículos sin conexión a Internet.",
   "faqQ5": "¿Cómo busco versículos?",
   "faqA5": "Navega a la sección de Biblia desde el menú principal. Usa la barra de búsqueda para encontrar versículos por palabras clave, o navega por libro, capítulo y versículo.",
   "faqQ6": "¿Puedo cambiar la versión de la Biblia?",
   "faqA6": "La Reina-Valera 1909 (RVR1909) es actualmente la única versión disponible en español. Esto garantiza un acceso sin conexión consistente y un rendimiento óptimo.",
-
   "faqQ7": "¿Cómo agrego una oración?",
   "faqA7": "Abre el Diario de Oración desde el menú principal y toca el botón flotante +. Ingresa el título de tu oración, descripción y elige una categoría (Personal, Familia, Salud, etc.), luego guarda.",
   "faqQ8": "¿Puedo marcar oraciones como respondidas?",
@@ -805,35 +748,30 @@
   "faqA9": "Ve a Configuración > Datos y Privacidad > Exportar Datos. Esto crea un archivo de texto formateado que contiene todas tus oraciones (activas y respondidas) que puedes guardar o compartir.",
   "faqQ10": "¿Puedo organizar oraciones por categoría?",
   "faqA10": "¡Sí! Cada oración puede asignarse a una categoría. Usa el filtro de categoría en la parte superior del Diario de Oración para ver oraciones por categorías específicas.",
-
   "faqQ11": "¿Dónde puedo encontrar devocionales diarios?",
   "faqA11": "Los devocionales diarios aparecen en tu pantalla de Inicio. Puedes marcar devocionales como completados para seguir tu progreso y construir tu racha devocional.",
   "faqQ12": "¿Cómo funcionan los planes de lectura?",
   "faqA12": "Elige un plan de lectura desde la sección de Planes de Lectura. Toca \"Iniciar Plan\" para comenzar. La aplicación rastrea tu progreso a medida que completas las lecturas diarias. Solo un plan puede estar activo a la vez.",
   "faqQ13": "¿Puedo rastrear mi racha devocional?",
   "faqA13": "¡Sí! La aplicación rastrea automáticamente cuántos días consecutivos has completado devocionales. Ve tu racha actual en tu pantalla de Perfil.",
-
   "faqQ14": "¿Qué puedo preguntarle a la IA?",
   "faqA14": "Puedes preguntar sobre interpretación de las Escrituras, peticiones de oración, desafíos de la vida, preguntas de fe y aliento diario. La IA proporciona orientación y apoyo basados en la Biblia.",
   "faqQ15": "¿Cuántos mensajes puedo enviar?",
   "faqA15": "Los usuarios gratuitos tienen un límite diario de mensajes. Los suscriptores Premium obtienen mensajes ilimitados. Consulta Configuración > Suscripción para ver tu plan actual y los mensajes restantes.",
   "faqQ16": "¿Mis conversaciones se guardan?",
   "faqA16": "¡Sí! Todas tus conversaciones de IA se guardan en tu dispositivo. Cada chat crea una nueva sesión a la que puedes acceder desde el historial de conversaciones.",
-
   "faqQ17": "¿Cómo cambio los horarios de las notificaciones?",
   "faqA17": "Ve a Configuración > Notificaciones > Hora de Notificación. Selecciona tu hora preferida para los recordatorios diarios.",
   "faqQ18": "¿Puedo desactivar notificaciones específicas?",
   "faqA18": "¡Sí! En Configuración > Notificaciones, puedes alternar cada tipo de notificación (Devocional Diario, Recordatorios de Oración, Versículo del Día) de forma independiente.",
   "faqQ19": "¿Por qué no recibo notificaciones?",
   "faqA19": "Verifica la configuración de tu dispositivo para asegurarte de que las notificaciones estén habilitadas para Everyday Christian. También verifica que cada tipo de notificación esté habilitado en Configuración > Notificaciones.",
-
   "faqQ20": "¿Cómo ajusto el tamaño del texto?",
   "faqA20": "Ve a Configuración > Apariencia > Tamaño del Texto. Usa el control deslizante para ajustar el tamaño del texto en toda la aplicación del 80% al 150% del tamaño normal.",
   "faqQ21": "¿Puedo agregar una foto de perfil?",
   "faqA21": "¡Sí! Toca tu avatar de perfil en Configuración o en tu pantalla de Perfil. Elige tomar una foto o seleccionar una de tu galería.",
   "faqQ22": "¿Qué hace el modo sin conexión?",
   "faqA22": "El modo sin conexión te permite usar funciones principales (lectura de la Biblia, ver oraciones guardadas y devocionales) sin conexión a Internet. El chat de IA requiere Internet.",
-
   "faqQ23": "¿Mis datos son privados y seguros?",
   "faqA23": "¡Sí! Tus oraciones, notas y datos personales se almacenan de forma segura en tu dispositivo. Nunca vendemos tu información a terceros.",
   "faqQ24": "¿Qué datos se almacenan en mi dispositivo?",
@@ -844,15 +782,10 @@
   "faqA26": "Ve a Configuración > Datos y Privacidad > Borrar Caché. Esto elimina archivos temporales y caché de imágenes para liberar espacio de almacenamiento. Tus oraciones, conversaciones y datos personales NO se eliminan - solo se eliminan archivos de caché temporales.",
   "faqQ27": "¿Cómo elimino todos mis datos?",
   "faqA27": "Ve a Configuración > Datos y Privacidad > Eliminar Todos los Datos. Se te pedirá que escribas \"DELETE\" para confirmar. Esto borra permanentemente todas las oraciones, conversaciones, planes de lectura, favoritos, configuraciones y foto de perfil. Exporta tu diario de oración primero si deseas conservar una copia de seguridad. Esta acción no se puede deshacer.",
-  "answeredPrayer": "Oración Respondida",
-  "prayerRequest": "Petición de Oración",
-  "joinMeInPrayer": "Únete a Mí en Oración",
   "downloadApp": "Descarga Cristiano Cotidiano",
   "getApp": "Obtén Cristiano Cotidiano",
-  "scanToDownload": "Escanea para descargar",
   "dailyScriptureAndGuidance": "Escritura y Guía Diaria",
   "aiPoweredBiblicalGuidance": "Guía Bíblica con IA",
-
   "languageChangedToEnglish": "Idioma cambiado a Inglés",
   "languageChangedToSpanish": "Idioma cambiado a Español",
   "failedToDeleteData": "❌ Error al eliminar datos: {error}",
@@ -947,36 +880,57 @@
     "description": "Heatmap legend label for more activity"
   },
   "monthJanuary": "Enero",
-  "@monthJanuary": {"description": "Month name"},
+  "@monthJanuary": {
+    "description": "Month name"
+  },
   "monthFebruary": "Febrero",
-  "@monthFebruary": {"description": "Month name"},
+  "@monthFebruary": {
+    "description": "Month name"
+  },
   "monthMarch": "Marzo",
-  "@monthMarch": {"description": "Month name"},
+  "@monthMarch": {
+    "description": "Month name"
+  },
   "monthApril": "Abril",
-  "@monthApril": {"description": "Month name"},
+  "@monthApril": {
+    "description": "Month name"
+  },
   "monthMay": "Mayo",
-  "@monthMay": {"description": "Month name"},
+  "@monthMay": {
+    "description": "Month name"
+  },
   "monthJune": "Junio",
-  "@monthJune": {"description": "Month name"},
+  "@monthJune": {
+    "description": "Month name"
+  },
   "monthJuly": "Julio",
-  "@monthJuly": {"description": "Month name"},
+  "@monthJuly": {
+    "description": "Month name"
+  },
   "monthAugust": "Agosto",
-  "@monthAugust": {"description": "Month name"},
+  "@monthAugust": {
+    "description": "Month name"
+  },
   "monthSeptember": "Septiembre",
-  "@monthSeptember": {"description": "Month name"},
+  "@monthSeptember": {
+    "description": "Month name"
+  },
   "monthOctober": "Octubre",
-  "@monthOctober": {"description": "Month name"},
+  "@monthOctober": {
+    "description": "Month name"
+  },
   "monthNovember": "Noviembre",
-  "@monthNovember": {"description": "Month name"},
+  "@monthNovember": {
+    "description": "Month name"
+  },
   "monthDecember": "Diciembre",
-  "@monthDecember": {"description": "Month name"}
-,
-  "chatOptions": "Opciones del Chat",
+  "@monthDecember": {
+    "description": "Month name"
+  },
   "messageOptions": "Opciones del Mensaje",
   "conversationHistory": "Historial de Conversaciones",
   "exportConversation": "Exportar Conversación",
   "exportConversationDesc": "Ver y copiar texto de la conversación",
-  "shareText": "Compartir Texto",
   "shareTextDesc": "Compartir como texto plano",
   "shareAsImage": "Compartir como Imagen",
   "shareAsImageDesc": "Compartir conversación como imagen con marca",
@@ -991,7 +945,6 @@
   "noConversationToExport": "No hay conversación para exportar",
   "noMessagesToExport": "No hay mensajes para exportar",
   "conversationExported": "Conversación exportada exitosamente",
-  "failedToExport": "Error al exportar: {error}",
   "noConversationToShare": "No hay conversación para compartir",
   "noMessagesToShare": "No hay mensajes para compartir",
   "conversationShared": "Conversación compartida exitosamente",
@@ -1003,12 +956,8 @@
   "messageCopied": "Mensaje copiado al portapapeles",
   "conversationDeleted": "Conversación eliminada",
   "exportConversationTitle": "Exportar Conversación",
-  "close": "Cerrar",
-  "share": "Compartir",
   "deleteConversationTitle": "¿Eliminar Conversación?",
   "deleteConversationMessage": "Esto eliminará permanentemente esta conversación y todos sus mensajes.",
-  "cancel": "Cancelar",
-  "delete": "Eliminar",
   "startNewConversationTitle": "¿Iniciar Nueva Conversación?",
   "startNewConversationMessage": "Tu conversación actual se guardará en el historial.\n\n¿Iniciar una conversación nueva?",
   "newChat": "Nuevo Chat",
@@ -1021,25 +970,22 @@
   "aiRequiresInternet": "El chat de IA requiere internet. Tu Biblia, oraciones y versículos guardados funcionan sin conexión.",
   "noConversationHistory": "Aún no hay historial de conversaciones",
   "conversationDefaultTitle": "Conversación",
-  "today": "Hoy",
-  "yesterday": "Ayer",
   "discussingVerse": "Discutiendo {reference}",
-  "newConversation": "Nueva Conversación"
-,
+  "newConversation": "Nueva Conversación",
   "fallbackPrayerResponse": "La oración es nuestra línea directa con Dios. Como dice en Filipenses 4:6-7: \"No se inquieten por nada; más bien, en toda ocasión, con oración y ruego, presenten sus peticiones a Dios y denle gracias. Y la paz de Dios, que sobrepasa todo entendimiento, cuidará sus corazones y sus pensamientos en Cristo Jesús.\"\n\n¿En qué área específica te gustaría que oráramos?",
   "fallbackFearResponse": "Entiendo que te sientes temeroso. Recuerda lo que Dios dice en Isaías 41:10: \"No temas, porque yo estoy contigo; no desmayes, porque yo soy tu Dios que te esfuerzo; siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia.\"\n\nDios está contigo siempre, incluso en tus momentos más oscuros. ¿Qué te está causando este temor?",
   "fallbackLoveResponse": "El amor está en el corazón de la fe cristiana. 1 Juan 4:19 nos dice \"Nosotros le amamos a él, porque él nos amó primero.\" El amor de Dios por nosotros es incondicional y eterno.\n\nEn nuestras relaciones con los demás, estamos llamados a amar como Cristo nos amó - con paciencia, bondad y perdón. ¿Cómo puedo ayudarte a aplicar el amor de Dios en tu situación?",
   "fallbackForgivenessResponse": "El perdón es uno de los mayores regalos de Dios para nosotros. Como Jesús nos enseñó en Mateo 6:14-15: \"Porque si perdonan a otros sus ofensas, también los perdonará a ustedes su Padre celestial.\"\n\nEl perdón no significa olvidar o excusar el mal comportamiento, pero nos libera de la carga del resentimiento. ¿Qué situación te cuesta perdonar?",
   "fallbackPurposeResponse": "¡Dios tiene un propósito único para tu vida! Jeremías 29:11 nos recuerda: \"Porque yo sé los planes que tengo para ustedes,\" declara el Señor, \"planes de bienestar y no de calamidad, a fin de darles un futuro y una esperanza.\"\n\nTu propósito se encuentra en amar a Dios y servir a los demás. ¿Qué dones y pasiones te ha dado Dios que podrías usar para servirle?",
-  "fallbackDefaultResponse": "Gracias por compartir conmigo. Dios se preocupa profundamente por cada aspecto de tu vida, tanto grande como pequeño. Como dice en 1 Pedro 5:7: \"Depositen en él toda ansiedad, porque él cuida de ustedes.\"\n\nRecuerda que eres amado, valorado y nunca estás solo. Dios siempre está escuchando y listo para ayudar. ¿Te gustaría explorar un versículo bíblico específico o un tema relacionado con tu pregunta?"
-,
-  "aiRegenerateInstruction": "Por favor proporciona una perspectiva diferente o una respuesta alternativa a la pregunta anterior."
-,
+  "fallbackDefaultResponse": "Gracias por compartir conmigo. Dios se preocupa profundamente por cada aspecto de tu vida, tanto grande como pequeño. Como dice en 1 Pedro 5:7: \"Depositen en él toda ansiedad, porque él cuida de ustedes.\"\n\nRecuerda que eres amado, valorado y nunca estás solo. Dios siempre está escuchando y listo para ayudar. ¿Te gustaría explorar un versículo bíblico específico o un tema relacionado con tu pregunta?",
+  "aiRegenerateInstruction": "Por favor proporciona una perspectiva diferente o una respuesta alternativa a la pregunta anterior.",
   "securityMessageEmpty": "El mensaje no puede estar vacío.",
   "securityMessageTooShort": "El mensaje es demasiado corto. Por favor comparte lo que hay en tu corazón.",
   "securityMessageTooLong": "El mensaje es demasiado largo. Por favor mantén tu mensaje bajo {maxLength} caracteres.",
   "securityRateLimit": "Por favor ve más despacio. Puedes enviar hasta {maxMessages} mensajes por minuto.",
   "securityJailbreakAttempt": "Tu cuenta ha sido suspendida debido a violaciones de nuestras pautas comunitarias.",
   "securityProfanity": "Por favor usa lenguaje respetuoso. Estoy aquí para apoyarte con compasión.",
-  "securityFaithOffense": "Respeto de dónde vienes. Si tienes dudas o preguntas sobre la fe, estaré feliz de discutirlas respetuosamente."
+  "securityFaithOffense": "Respeto de dónde vienes. Si tienes dudas o preguntas sobre la fe, estaré feliz de discutirlas respetuosamente.",
+  "demoDevotionalVerseText": "\"ALABAD á Jehová, porque es bueno; porque para siempre es su misericordia.\"",
+  "demoDevotionalVerseReference": "Salmos 107:1"
 }
