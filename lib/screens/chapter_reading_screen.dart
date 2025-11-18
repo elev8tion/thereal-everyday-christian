@@ -372,111 +372,119 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 16.0, right: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Back button
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withValues(alpha: 0.2),
-                  Colors.white.withValues(alpha: 0.1),
-                ],
-              ),
-              borderRadius: AppRadius.mediumRadius,
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.2),
-                width: 1,
-              ),
-            ),
-            child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
-              onPressed: () => NavigationService.pop(),
-              tooltip: 'Back',
-              constraints: const BoxConstraints(
-                minWidth: 44,
-                minHeight: 44,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Adaptive audio pill width based on available space
+          final availableWidth = constraints.maxWidth;
+          final audioPillMaxWidth = availableWidth < 400 ? 170.0 : 200.0;
 
-          // Title and subtitle stacked (compact)
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '${widget.book} $currentChapter',
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 22),
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
-                    height: 1.2,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        totalChapters > 1
-                          ? l10n.chapterOfTotal(_currentChapterIndex + 1, totalChapters)
-                          : l10n.oneChapter,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 11, maxSize: 13),
-                          color: Colors.white.withValues(alpha: 0.7),
-                          fontWeight: FontWeight.w500,
-                          height: 1.2,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    if (_isCompleted) ...[
-                      const SizedBox(width: 6),
-                      Icon(
-                        Icons.check_circle,
-                        size: 12,
-                        color: Colors.green.shade300,
-                      ),
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Back button
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.white.withValues(alpha: 0.2),
+                      Colors.white.withValues(alpha: 0.1),
                     ],
+                  ),
+                  borderRadius: AppRadius.mediumRadius,
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    width: 1,
+                  ),
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
+                  onPressed: () => NavigationService.pop(),
+                  tooltip: 'Back',
+                  constraints: const BoxConstraints(
+                    minWidth: 44,
+                    minHeight: 44,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+
+              // Title and subtitle stacked (compact)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '${widget.book} $currentChapter',
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 22),
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        height: 1.2,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            totalChapters > 1
+                              ? l10n.chapterOfTotal(_currentChapterIndex + 1, totalChapters)
+                              : l10n.oneChapter,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 11, maxSize: 13),
+                              color: Colors.white.withValues(alpha: 0.7),
+                              fontWeight: FontWeight.w500,
+                              height: 1.2,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        if (_isCompleted) ...[
+                          const SizedBox(width: 6),
+                          Icon(
+                            Icons.check_circle,
+                            size: 12,
+                            color: Colors.green.shade300,
+                          ),
+                        ],
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-
-          const SizedBox(width: 8),
-
-          // Audio player on the right side with max width constraint
-          if (currentVerses.isNotEmpty)
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 160),
-              child: AudioControlPill(
-                isPlaying: _isAudioPlaying,
-                isPaused: _ttsService.isPaused,
-                speedLabel: _ttsService.speedLabel,
-                currentVerse: _currentPlayingVerseIndex >= 0 ? _currentPlayingVerseIndex + 1 : null,
-                totalVerses: currentVerses.length,
-                onPlayPause: () {
-                  if (!_isAudioPlaying) {
-                    _playAudio(currentVerses);
-                  } else if (_ttsService.isPaused) {
-                    _resumeAudio();
-                  } else {
-                    _pauseAudio();
-                  }
-                },
-                onStop: _stopAudio,
-                onSpeedTap: _cycleSpeed,
               ),
-            ),
-        ],
+
+              const SizedBox(width: 8),
+
+              // Audio player with adaptive width constraint
+              if (currentVerses.isNotEmpty)
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: audioPillMaxWidth),
+                  child: AudioControlPill(
+                    isPlaying: _isAudioPlaying,
+                    isPaused: _ttsService.isPaused,
+                    speedLabel: _ttsService.speedLabel,
+                    currentVerse: _currentPlayingVerseIndex >= 0 ? _currentPlayingVerseIndex + 1 : null,
+                    totalVerses: currentVerses.length,
+                    onPlayPause: () {
+                      if (!_isAudioPlaying) {
+                        _playAudio(currentVerses);
+                      } else if (_ttsService.isPaused) {
+                        _resumeAudio();
+                      } else {
+                        _pauseAudio();
+                      }
+                    },
+                    onStop: _stopAudio,
+                    onSpeedTap: _cycleSpeed,
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }

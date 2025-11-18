@@ -35,7 +35,7 @@ class AudioControlPill extends StatelessWidget {
           // Compact frosted glass pill
           Container(
             height: 48,
-            padding: const EdgeInsets.symmetric(horizontal: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -59,7 +59,7 @@ class AudioControlPill extends StatelessWidget {
               ],
             ),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 // Stop button (only when playing) - smaller size
                 if (isPlaying) ...[
@@ -69,7 +69,7 @@ class AudioControlPill extends StatelessWidget {
                     size: 32, // Smaller than default 40
                     label: 'Stop audio',
                   ),
-                  const SizedBox(width: 2), // Reduced from 4
+                  const SizedBox(width: 4),
                 ],
 
                 // Play/Pause button
@@ -83,15 +83,16 @@ class AudioControlPill extends StatelessWidget {
                   label: isPlaying ? (isPaused ? 'Play audio' : 'Pause audio') : 'Play audio',
                 ),
 
-                const SizedBox(width: 2), // Reduced from 4
-
-                // Speed button (flexible to prevent overflow)
-                Flexible(
-                  child: _buildSpeedButton(
-                    label: speedLabel,
-                    onTap: onSpeedTap,
+                // Speed button - only visible when NOT playing
+                if (!isPlaying) ...[
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: _buildSpeedButton(
+                      label: speedLabel,
+                      onTap: onSpeedTap,
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -165,18 +166,24 @@ class AudioControlPill extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        constraints: const BoxConstraints(
+          minHeight: 32,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white.withValues(alpha: 0.1),
         ),
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-            letterSpacing: 0.3,
+        child: Center(
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+              letterSpacing: 0.2,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
