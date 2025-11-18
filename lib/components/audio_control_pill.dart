@@ -67,6 +67,7 @@ class AudioControlPill extends StatelessWidget {
                     icon: Icons.stop_rounded,
                     onTap: onStop,
                     size: 32, // Smaller than default 40
+                    label: 'Stop audio',
                   ),
                   const SizedBox(width: 2), // Reduced from 4
                 ],
@@ -79,6 +80,7 @@ class AudioControlPill extends StatelessWidget {
                   onTap: onPlayPause,
                   isPrimary: true,
                   isActive: isActive,
+                  label: isPlaying ? (isPaused ? 'Play audio' : 'Pause audio') : 'Play audio',
                 ),
 
                 const SizedBox(width: 2), // Reduced from 4
@@ -118,28 +120,39 @@ class AudioControlPill extends StatelessWidget {
     bool isPrimary = false,
     bool isActive = false,
     double size = 40, // Add size parameter with default
+    String? label, // Add semantic label parameter
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isPrimary && isActive
-              ? AppTheme.goldColor.withValues(alpha: 0.2)
-              : Colors.transparent,
-          border: isPrimary && isActive
-              ? Border.all(
-                  color: AppTheme.goldColor.withValues(alpha: 0.4),
-                  width: 1,
-                )
-              : null,
-        ),
-        child: Icon(
-          icon,
-          color: Colors.white,
-          size: isPrimary ? 24 : (size * 0.5), // Scale icon with button size
+    return Semantics(
+      label: label,
+      button: true,
+      child: GestureDetector(
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            minWidth: 44,
+            minHeight: 44,
+          ),
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isPrimary && isActive
+                  ? AppTheme.goldColor.withValues(alpha: 0.2)
+                  : Colors.transparent,
+              border: isPrimary && isActive
+                  ? Border.all(
+                      color: AppTheme.goldColor.withValues(alpha: 0.4),
+                      width: 1,
+                    )
+                  : null,
+            ),
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: isPrimary ? 24 : (size * 0.5), // Scale icon with button size
+            ),
+          ),
         ),
       ),
     );

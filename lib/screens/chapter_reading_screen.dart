@@ -393,6 +393,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
               onPressed: () => NavigationService.pop(),
+              tooltip: 'Back',
+              constraints: const BoxConstraints(
+                minWidth: 44,
+                minHeight: 44,
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -500,6 +505,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                     }
                   }
                 : null,
+            tooltip: 'Previous chapter',
+            constraints: const BoxConstraints(
+              minWidth: 44,
+              minHeight: 44,
+            ),
           ),
           Expanded(
             child: Container(
@@ -542,6 +552,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                     }
                   }
                 : null,
+            tooltip: 'Next chapter',
+            constraints: const BoxConstraints(
+              minWidth: 44,
+              minHeight: 44,
+            ),
           ),
         ],
       ),
@@ -850,6 +865,11 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
               color: isFavorite ? Colors.red : Colors.white.withValues(alpha: 0.7),
             ),
             onPressed: () => _toggleFavorite(verse),
+            tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
+            constraints: const BoxConstraints(
+              minWidth: 44,
+              minHeight: 44,
+            ),
           ),
         );
       },

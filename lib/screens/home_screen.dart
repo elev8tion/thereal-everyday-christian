@@ -314,10 +314,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 color: color.withValues(alpha: 0.2),
                 borderRadius: AppRadius.mediumRadius,
               ),
-              child: Icon(
-                icon,
-                size: ResponsiveUtils.iconSize(context, 20),
-                color: AppColors.secondaryText,
+              child: ExcludeSemantics(
+                child: Icon(
+                  icon,
+                  size: ResponsiveUtils.iconSize(context, 20),
+                  color: AppColors.secondaryText,
+                ),
               ),
             ),
             const SizedBox(height: 4),
@@ -406,10 +408,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 color: color.withValues(alpha: 0.2),
                 borderRadius: AppRadius.mediumRadius,
               ),
-              child: Icon(
-                icon,
-                size: ResponsiveUtils.iconSize(context, 20),
-                color: AppColors.secondaryText,
+              child: ExcludeSemantics(
+                child: Icon(
+                  icon,
+                  size: ResponsiveUtils.iconSize(context, 20),
+                  color: AppColors.secondaryText,
+                ),
               ),
             ),
             const SizedBox(height: 4),

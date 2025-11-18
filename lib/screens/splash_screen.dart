@@ -143,13 +143,16 @@ class SplashScreen extends HookConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // Logo (appropriately sized)
-                        Image.asset(
-                          Localizations.localeOf(context).languageCode == 'es'
-                              ? 'assets/images/logo_spanish.png'
-                              : 'assets/images/logo_transparent.png',
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.contain,
+                        Semantics(
+                          label: 'Everyday Christian app logo',
+                          image: true,
+                          child: Image.asset(
+                            Localizations.localeOf(context).languageCode == 'es'
+                                ? 'assets/images/logo_spanish.png'
+                                : 'assets/images/logo_transparent.png',
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
                             // Fallback icon if logo not found
                             return Container(
@@ -173,6 +176,7 @@ class SplashScreen extends HookConsumerWidget {
                               ),
                             );
                           },
+                          ),
                         ),
 
                         const SizedBox(height: 32),

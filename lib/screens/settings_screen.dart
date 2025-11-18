@@ -27,6 +27,7 @@ import '../components/blur_dropdown.dart';
 import 'paywall_screen.dart';
 import '../utils/blur_dialog_utils.dart';
 import '../l10n/app_localizations.dart';
+import '../core/widgets/app_snackbar.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -627,38 +628,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
       if (!canCheckBiometrics || !isDeviceSupported) {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            behavior: SnackBarBehavior.floating,
-            content: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
-                ),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.red.withValues(alpha: 0.5),
-                  width: 1,
-                ),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.error_outline, color: Colors.red, size: 20),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      l10n.biometricNotAvailable,
-                      style: const TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
+        AppSnackBar.showError(context, message: l10n.biometricNotAvailable);
         return;
       }
 
@@ -681,37 +651,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           });
 
           if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              content: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.green.withValues(alpha: 0.5),
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.check_circle, color: Colors.green, size: 20),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        l10n.appLockEnabled,
-                        style: const TextStyle(color: Colors.white, fontSize: 14),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          AppSnackBar.show(
+            context,
+            message: l10n.appLockEnabled,
+            icon: Icons.check_circle,
+            iconColor: Colors.green,
           );
         }
       } else {
@@ -723,37 +667,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         });
 
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            behavior: SnackBarBehavior.floating,
-            content: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
-                ),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.orange.withValues(alpha: 0.5),
-                  width: 1,
-                ),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.lock_open, color: Colors.orange, size: 20),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      l10n.appLockDisabled,
-                      style: const TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+        AppSnackBar.show(
+          context,
+          message: l10n.appLockDisabled,
+          icon: Icons.lock_open,
+          iconColor: Colors.orange,
         );
       }
     } catch (e) {
@@ -1519,7 +1437,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               text,
               style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.9),
-                fontSize: 13,
+                fontSize: ResponsiveUtils.fontSize(context, 13),
               ),
             ),
           ),
@@ -1929,9 +1847,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Expanded(
                 child: Text(
                   message,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: ResponsiveUtils.fontSize(context, 14),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -1996,8 +1914,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 16),
                       fontWeight: FontWeight.w600,
                       color: AppColors.primaryText,
                     ),
@@ -2006,7 +1924,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   Text(
                     subtitle,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: ResponsiveUtils.fontSize(context, 14),
                       color: AppColors.secondaryText,
                     ),
                   ),

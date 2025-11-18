@@ -104,6 +104,11 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         child: IconButton(
           icon: Icon(Icons.more_vert, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
           onPressed: _showVerseOptions,
+          tooltip: 'Verse options',
+          constraints: const BoxConstraints(
+            minWidth: 44,
+            minHeight: 44,
+          ),
         ),
       ),
     );

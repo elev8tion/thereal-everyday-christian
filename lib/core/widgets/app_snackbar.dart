@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 
 import '../../theme/app_theme.dart';
 import '../../utils/responsive_utils.dart';
@@ -55,6 +56,9 @@ class AppSnackBar {
     required List<Color> gradientColors,
     required Duration duration,
   }) {
+    // Announce message to screen readers
+    SemanticsService.announce(message, TextDirection.ltr);
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.transparent,

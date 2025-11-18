@@ -281,53 +281,10 @@ class ChatScreen extends HookConsumerWidget {
 
       if (!consumed) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 3),
-              margin: const EdgeInsets.all(16),
-              padding: EdgeInsets.zero,
-              content: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF1E293B), // slate-800
-                      Color(0xFF0F172A), // slate-900
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.red.withValues(alpha: 0.5),
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      color: Colors.red.shade300,
-                      size: ResponsiveUtils.iconSize(context, 20),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        l10n.chatFailedToSend,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          AppSnackBar.showError(
+            context,
+            message: l10n.chatFailedToSend,
+            duration: const Duration(seconds: 3),
           );
         }
         return;
@@ -662,9 +619,9 @@ class ChatScreen extends HookConsumerWidget {
                       Expanded(
                         child: Text(
                           l10n.subscriptionRequiredRegenerate,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: ResponsiveUtils.fontSize(context, 14),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -726,9 +683,9 @@ class ChatScreen extends HookConsumerWidget {
                     Expanded(
                       child: Text(
                         l10n.errorPreviousMessage,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: ResponsiveUtils.fontSize(context, 14),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -865,12 +822,12 @@ class ChatScreen extends HookConsumerWidget {
                       size: ResponsiveUtils.iconSize(context, 20),
                     ),
                     const SizedBox(width: 12),
-                    const Expanded(
+                    Expanded(
                       child: Text(
                         '✨ Response regenerated successfully',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: ResponsiveUtils.fontSize(context, 14),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -922,9 +879,9 @@ class ChatScreen extends HookConsumerWidget {
                     Expanded(
                       child: Text(
                         l10n.failedToRegenerate(e.toString()),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: ResponsiveUtils.fontSize(context, 14),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -1445,7 +1402,7 @@ class ChatScreen extends HookConsumerWidget {
                   // AI Service initialization status banner
                   _buildAIStatusBanner(aiServiceState, l10n),
                   // Connectivity status banner
-                  _buildConnectivityBanner(connectivityStatus, l10n),
+                  _buildConnectivityBanner(context, connectivityStatus, l10n),
                   // CustomScrollView with pinned header and action buttons
                   Expanded(
                     child: CustomScrollView(
@@ -1903,11 +1860,15 @@ class ChatScreen extends HookConsumerWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(AppRadius.sm),
-                  child: Image.asset(
-                    l10n.localeName == 'es'
-                        ? 'assets/images/logo_spanish.png'
-                        : 'assets/images/logo_cropped.png',
-                    fit: BoxFit.contain,
+                  child: Semantics(
+                    label: 'AI assistant logo',
+                    image: true,
+                    child: Image.asset(
+                      l10n.localeName == 'es'
+                          ? 'assets/images/logo_spanish.png'
+                          : 'assets/images/logo_cropped.png',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
@@ -2226,9 +2187,9 @@ class ChatScreen extends HookConsumerWidget {
                                 Expanded(
                                   child: Text(
                                     l10n.conversationDeleted,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 14,
+                                      fontSize: ResponsiveUtils.fontSize(context, 14),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -2427,7 +2388,7 @@ class ChatScreen extends HookConsumerWidget {
                   width: 1,
                 ),
               ),
-              child: const Row(
+              child: Row(
                 children: [
                   Icon(
                     Icons.check_circle,
@@ -2440,7 +2401,7 @@ class ChatScreen extends HookConsumerWidget {
                       '✨ New conversation started',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: ResponsiveUtils.fontSize(context, 14),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -2557,7 +2518,7 @@ class ChatScreen extends HookConsumerWidget {
                                 width: 1,
                               ),
                             ),
-                            child: const Row(
+                            child: Row(
                               children: [
                                 Icon(
                                   Icons.check_circle,
@@ -2570,7 +2531,7 @@ class ChatScreen extends HookConsumerWidget {
                                     '✨ New conversation started! Previous chat saved to history.',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 14,
+                                      fontSize: ResponsiveUtils.fontSize(context, 14),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -2648,7 +2609,7 @@ class ChatScreen extends HookConsumerWidget {
     }
   }
 
-  Widget _buildConnectivityBanner(AsyncValue<bool> connectivityStatus, AppLocalizations l10n) {
+  Widget _buildConnectivityBanner(BuildContext context, AsyncValue<bool> connectivityStatus, AppLocalizations l10n) {
     return connectivityStatus.when(
       data: (isConnected) {
         if (isConnected) {
@@ -2680,9 +2641,9 @@ class ChatScreen extends HookConsumerWidget {
                   children: [
                     Text(
                       l10n.noInternetConnection,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 13,
+                        fontSize: ResponsiveUtils.fontSize(context, 13),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -2691,7 +2652,7 @@ class ChatScreen extends HookConsumerWidget {
                       l10n.aiRequiresInternet,
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.9),
-                        fontSize: 11,
+                        fontSize: ResponsiveUtils.fontSize(context, 11),
                       ),
                     ),
                   ],

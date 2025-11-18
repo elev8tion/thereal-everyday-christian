@@ -1,7 +1,7 @@
 name: everyday_christian
 description: A faith-centered mobile app providing personalized biblical guidance through AI-powered conversations
 publish_to: 'none'
-version: 1.0.0+12
+version: 1.0.0+13
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -20,7 +20,7 @@ dependencies:
 
   # Database & Storage
   sqflite: ^2.3.0
-  path: ^1.8.3
+  path: ^1.8.3111
   shared_preferences: ^2.2.3
   flutter_secure_storage: ^9.0.0
   path_provider: ^2.1.1

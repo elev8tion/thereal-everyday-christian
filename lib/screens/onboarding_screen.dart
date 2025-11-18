@@ -91,11 +91,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         effectSize: 3.0,
                         dispersionStrength: 0.3,
                         blurIntensity: 0.05,
-                        child: Image.asset(
-                          'assets/images/logo_transparent.png',
-                          width: isVerySmallScreen ? 140 : (isSmallScreen ? 170 : 200),
-                          height: isVerySmallScreen ? 140 : (isSmallScreen ? 170 : 200),
-                          fit: BoxFit.contain,
+                        child: Semantics(
+                          label: 'Everyday Christian app logo',
+                          image: true,
+                          child: Image.asset(
+                            'assets/images/logo_transparent.png',
+                            width: isVerySmallScreen ? 140 : (isSmallScreen ? 170 : 200),
+                            height: isVerySmallScreen ? 140 : (isSmallScreen ? 170 : 200),
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
 
