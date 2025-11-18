@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 
 /// Compact frosted glass audio control pill matching app aesthetic
@@ -26,6 +27,7 @@ class AudioControlPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final isActive = isPlaying && !isPaused;
 
     return Padding(
@@ -67,7 +69,7 @@ class AudioControlPill extends StatelessWidget {
                     icon: Icons.stop_rounded,
                     onTap: onStop,
                     size: 32, // Smaller than default 40
-                    label: 'Stop audio',
+                    label: l10n.stopAudio,
                   ),
                   const SizedBox(width: 4),
                 ],
@@ -80,7 +82,7 @@ class AudioControlPill extends StatelessWidget {
                   onTap: onPlayPause,
                   isPrimary: true,
                   isActive: isActive,
-                  label: isPlaying ? (isPaused ? 'Play audio' : 'Pause audio') : 'Play audio',
+                  label: isPlaying ? (isPaused ? l10n.playAudio : l10n.pauseAudio) : l10n.playAudio,
                 ),
 
                 // Speed button - only visible when NOT playing

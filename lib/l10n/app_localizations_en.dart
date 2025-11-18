@@ -1025,7 +1025,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get devotionalOptions => 'Devotional Options';
+  String get devotionalOptions => 'Devotional options';
 
   @override
   String get shareDevotional => 'Share Devotional';
@@ -3048,4 +3048,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get demoDevotionalVerseReference => 'Psalm 107:1';
+
+  @override
+  String get stopAudio => 'Stop audio';
+
+  @override
+  String get playAudio => 'Play audio';
+
+  @override
+  String get pauseAudio => 'Pause audio';
+
+  @override
+  String get backButton => 'Back';
+
+  @override
+  String get previousChapter => 'Previous chapter';
+
+  @override
+  String get nextChapter => 'Next chapter';
+
+  @override
+  String get addToFavorites => 'Add to favorites';
+
+  @override
+  String get removeFromFavorites => 'Remove from favorites';
+
+  @override
+  String get verseOptions => 'Verse options';
+
+  @override
+  String get clearSearch => 'Clear search';
+
+  @override
+  String get appLogo => 'Everyday Christian app logo';
+
+  @override
+  String get aiAssistantLogo => 'AI assistant logo';
 }

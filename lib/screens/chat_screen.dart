@@ -1861,7 +1861,7 @@ class ChatScreen extends HookConsumerWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                   child: Semantics(
-                    label: 'AI assistant logo',
+                    label: l10n.aiAssistantLogo,
                     image: true,
                     child: Image.asset(
                       l10n.localeName == 'es'

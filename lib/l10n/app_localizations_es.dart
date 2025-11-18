@@ -1031,7 +1031,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get devotionalOptions => 'Opciones de Devocional';
+  String get devotionalOptions => 'Opciones del devocional';
 
   @override
   String get shareDevotional => 'Compartir Devocional';
@@ -3092,4 +3092,40 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get demoDevotionalVerseReference => 'Salmos 107:1';
+
+  @override
+  String get stopAudio => 'Detener audio';
+
+  @override
+  String get playAudio => 'Reproducir audio';
+
+  @override
+  String get pauseAudio => 'Pausar audio';
+
+  @override
+  String get backButton => 'Atrás';
+
+  @override
+  String get previousChapter => 'Capítulo anterior';
+
+  @override
+  String get nextChapter => 'Capítulo siguiente';
+
+  @override
+  String get addToFavorites => 'Agregar a favoritos';
+
+  @override
+  String get removeFromFavorites => 'Quitar de favoritos';
+
+  @override
+  String get verseOptions => 'Opciones del versículo';
+
+  @override
+  String get clearSearch => 'Limpiar búsqueda';
+
+  @override
+  String get appLogo => 'Logotipo de la aplicación Everyday Christian';
+
+  @override
+  String get aiAssistantLogo => 'Logotipo del asistente de IA';
 }

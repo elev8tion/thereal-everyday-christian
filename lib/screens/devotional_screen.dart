@@ -315,7 +315,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
         child: IconButton(
           icon: Icon(Icons.more_vert, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
           onPressed: _showDevotionalOptions,
-          tooltip: 'Devotional options',
+          tooltip: l10n.devotionalOptions,
           constraints: const BoxConstraints(
             minWidth: 44,
             minHeight: 44,

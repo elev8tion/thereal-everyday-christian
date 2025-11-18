@@ -987,5 +987,57 @@
   "securityProfanity": "Por favor usa lenguaje respetuoso. Estoy aquí para apoyarte con compasión.",
   "securityFaithOffense": "Respeto de dónde vienes. Si tienes dudas o preguntas sobre la fe, estaré feliz de discutirlas respetuosamente.",
   "demoDevotionalVerseText": "\"ALABAD á Jehová, porque es bueno; porque para siempre es su misericordia.\"",
-  "demoDevotionalVerseReference": "Salmos 107:1"
+  "demoDevotionalVerseReference": "Salmos 107:1",
+  "stopAudio": "Detener audio",
+  "@stopAudio": {
+    "description": "Etiqueta semántica para el botón de detener audio"
+  },
+  "playAudio": "Reproducir audio",
+  "@playAudio": {
+    "description": "Etiqueta semántica para el botón de reproducir audio"
+  },
+  "pauseAudio": "Pausar audio",
+  "@pauseAudio": {
+    "description": "Etiqueta semántica para el botón de pausar audio"
+  },
+  "backButton": "Atrás",
+  "@backButton": {
+    "description": "Información sobre herramienta para el botón de navegación hacia atrás"
+  },
+  "previousChapter": "Capítulo anterior",
+  "@previousChapter": {
+    "description": "Información sobre herramienta para el botón de navegación al capítulo anterior"
+  },
+  "nextChapter": "Capítulo siguiente",
+  "@nextChapter": {
+    "description": "Información sobre herramienta para el botón de navegación al capítulo siguiente"
+  },
+  "addToFavorites": "Agregar a favoritos",
+  "@addToFavorites": {
+    "description": "Información sobre herramienta para el botón de agregar a favoritos"
+  },
+  "removeFromFavorites": "Quitar de favoritos",
+  "@removeFromFavorites": {
+    "description": "Información sobre herramienta para el botón de quitar de favoritos"
+  },
+  "devotionalOptions": "Opciones del devocional",
+  "@devotionalOptions": {
+    "description": "Información sobre herramienta para el botón de opciones del devocional"
+  },
+  "verseOptions": "Opciones del versículo",
+  "@verseOptions": {
+    "description": "Información sobre herramienta para el botón de opciones del versículo"
+  },
+  "clearSearch": "Limpiar búsqueda",
+  "@clearSearch": {
+    "description": "Información sobre herramienta para el botón de limpiar búsqueda"
+  },
+  "appLogo": "Logotipo de la aplicación Everyday Christian",
+  "@appLogo": {
+    "description": "Etiqueta semántica para la imagen del logotipo de la aplicación"
+  },
+  "aiAssistantLogo": "Logotipo del asistente de IA",
+  "@aiAssistantLogo": {
+    "description": "Etiqueta semántica para la imagen del logotipo del asistente de IA"
+  }
 }

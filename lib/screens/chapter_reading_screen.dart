@@ -313,7 +313,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                     _buildHeader(currentChapter, totalChapters, currentVerses),
 
                     // Chapter indicator
-                    _buildChapterIndicator(currentChapter, totalChapters),
+                    _buildChapterIndicator(context, currentChapter, totalChapters),
 
                     // Content
                     Expanded(
@@ -399,7 +399,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                 child: IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
                   onPressed: () => NavigationService.pop(),
-                  tooltip: 'Back',
+                  tooltip: l10n.backButton,
                   constraints: const BoxConstraints(
                     minWidth: 44,
                     minHeight: 44,
@@ -489,8 +489,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     );
   }
 
-  Widget _buildChapterIndicator(int currentChapter, int totalChapters) {
+  Widget _buildChapterIndicator(BuildContext context, int currentChapter, int totalChapters) {
     if (totalChapters == 1) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -513,7 +514,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                     }
                   }
                 : null,
-            tooltip: 'Previous chapter',
+            tooltip: l10n.previousChapter,
             constraints: const BoxConstraints(
               minWidth: 44,
               minHeight: 44,
@@ -560,7 +561,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                     }
                   }
                 : null,
-            tooltip: 'Next chapter',
+            tooltip: l10n.nextChapter,
             constraints: const BoxConstraints(
               minWidth: 44,
               minHeight: 44,
@@ -838,6 +839,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     return FutureBuilder<bool>(
       future: ref.read(unifiedVerseServiceProvider).isVerseFavorite(verse.id!),
       builder: (context, snapshot) {
+        final l10n = AppLocalizations.of(context);
         final isFavorite = snapshot.data ?? false;
 
         return Container(
@@ -873,7 +875,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
               color: isFavorite ? Colors.red : Colors.white.withValues(alpha: 0.7),
             ),
             onPressed: () => _toggleFavorite(verse),
-            tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
+            tooltip: isFavorite ? l10n.removeFromFavorites : l10n.addToFavorites,
             constraints: const BoxConstraints(
               minWidth: 44,
               minHeight: 44,

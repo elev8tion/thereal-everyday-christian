@@ -92,7 +92,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         dispersionStrength: 0.3,
                         blurIntensity: 0.05,
                         child: Semantics(
-                          label: 'Everyday Christian app logo',
+                          label: l10n.appLogo,
                           image: true,
                           child: Image.asset(
                             'assets/images/logo_transparent.png',

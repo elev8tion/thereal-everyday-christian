@@ -1977,10 +1977,10 @@ abstract class AppLocalizations {
   String couldNotFindVersesForRange(
       String book, int startChapter, int endChapter);
 
-  /// Devotional options bottom sheet title
+  /// Tooltip for devotional options button
   ///
   /// In en, this message translates to:
-  /// **'Devotional Options'**
+  /// **'Devotional options'**
   String get devotionalOptions;
 
   /// Share devotional menu option
@@ -5420,6 +5420,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Psalm 107:1'**
   String get demoDevotionalVerseReference;
+
+  /// Semantic label for stop audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Stop audio'**
+  String get stopAudio;
+
+  /// Semantic label for play audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Play audio'**
+  String get playAudio;
+
+  /// Semantic label for pause audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Pause audio'**
+  String get pauseAudio;
+
+  /// Tooltip for back navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get backButton;
+
+  /// Tooltip for previous chapter navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Previous chapter'**
+  String get previousChapter;
+
+  /// Tooltip for next chapter navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Next chapter'**
+  String get nextChapter;
+
+  /// Tooltip for add to favorites button
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favorites'**
+  String get addToFavorites;
+
+  /// Tooltip for remove from favorites button
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favorites'**
+  String get removeFromFavorites;
+
+  /// Tooltip for verse options button
+  ///
+  /// In en, this message translates to:
+  /// **'Verse options'**
+  String get verseOptions;
+
+  /// Tooltip for clear search button
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get clearSearch;
+
+  /// Semantic label for app logo image
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday Christian app logo'**
+  String get appLogo;
+
+  /// Semantic label for AI assistant logo image
+  ///
+  /// In en, this message translates to:
+  /// **'AI assistant logo'**
+  String get aiAssistantLogo;
 }
 
 class _AppLocalizationsDelegate

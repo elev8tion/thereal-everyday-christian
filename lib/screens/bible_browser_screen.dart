@@ -392,7 +392,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                   _searchController.clear();
                   _filterBooks('');
                 },
-                tooltip: 'Clear search',
+                tooltip: l10n.clearSearch,
                 constraints: const BoxConstraints(
                   minWidth: 44,
                   minHeight: 44,

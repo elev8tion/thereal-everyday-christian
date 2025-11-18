@@ -144,7 +144,7 @@ class SplashScreen extends HookConsumerWidget {
                       children: [
                         // Logo (appropriately sized)
                         Semantics(
-                          label: 'Everyday Christian app logo',
+                          label: l10n.appLogo,
                           image: true,
                           child: Image.asset(
                             Localizations.localeOf(context).languageCode == 'es'

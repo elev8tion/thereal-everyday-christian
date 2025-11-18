@@ -4138,5 +4138,57 @@
   "demoDevotionalVerseReference": "Psalm 107:1",
   "@demoDevotionalVerseReference": {
     "description": "Psalm 107:1 reference for devotional demo in onboarding"
+  },
+  "stopAudio": "Stop audio",
+  "@stopAudio": {
+    "description": "Semantic label for stop audio button"
+  },
+  "playAudio": "Play audio",
+  "@playAudio": {
+    "description": "Semantic label for play audio button"
+  },
+  "pauseAudio": "Pause audio",
+  "@pauseAudio": {
+    "description": "Semantic label for pause audio button"
+  },
+  "backButton": "Back",
+  "@backButton": {
+    "description": "Tooltip for back navigation button"
+  },
+  "previousChapter": "Previous chapter",
+  "@previousChapter": {
+    "description": "Tooltip for previous chapter navigation button"
+  },
+  "nextChapter": "Next chapter",
+  "@nextChapter": {
+    "description": "Tooltip for next chapter navigation button"
+  },
+  "addToFavorites": "Add to favorites",
+  "@addToFavorites": {
+    "description": "Tooltip for add to favorites button"
+  },
+  "removeFromFavorites": "Remove from favorites",
+  "@removeFromFavorites": {
+    "description": "Tooltip for remove from favorites button"
+  },
+  "devotionalOptions": "Devotional options",
+  "@devotionalOptions": {
+    "description": "Tooltip for devotional options button"
+  },
+  "verseOptions": "Verse options",
+  "@verseOptions": {
+    "description": "Tooltip for verse options button"
+  },
+  "clearSearch": "Clear search",
+  "@clearSearch": {
+    "description": "Tooltip for clear search button"
+  },
+  "appLogo": "Everyday Christian app logo",
+  "@appLogo": {
+    "description": "Semantic label for app logo image"
+  },
+  "aiAssistantLogo": "AI assistant logo",
+  "@aiAssistantLogo": {
+    "description": "Semantic label for AI assistant logo image"
   }
 }
