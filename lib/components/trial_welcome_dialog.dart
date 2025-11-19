@@ -1,12 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../components/glass_button.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/blur_dialog_utils.dart';
 import '../l10n/app_localizations.dart';
+import '../core/providers/app_providers.dart';
 
-class TrialWelcomeDialog extends StatelessWidget {
+class TrialWelcomeDialog extends ConsumerWidget {
   const TrialWelcomeDialog({super.key});
 
   static Future<bool?> show(BuildContext context) {
@@ -18,8 +20,10 @@ class TrialWelcomeDialog extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final subscriptionService = ref.watch(subscriptionServiceProvider);
+    final premiumProduct = subscriptionService.premiumProduct;
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
@@ -75,7 +79,7 @@ class TrialWelcomeDialog extends StatelessWidget {
 
                   // Title
                   Text(
-                    l10n.subscriptionStartFreeTrialButton,
+                    l10n.subscriptionStartFreeTrialButton(premiumProduct?.price ?? "\$35.99"),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
@@ -147,7 +151,7 @@ class TrialWelcomeDialog extends StatelessWidget {
                   Column(
                     children: [
                       GlassButton(
-                        text: l10n.subscriptionStartFreeTrialButton,
+                        text: l10n.subscriptionStartFreeTrialButton(premiumProduct?.price ?? "\$35.99"),
                         onPressed: () => Navigator.of(context).pop(true),
                         height: 50,
                       ),
