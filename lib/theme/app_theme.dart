@@ -488,7 +488,7 @@ class AppAnimations {
   static const Duration instant = Duration(milliseconds: 0);
   static const Duration fast = Duration(milliseconds: 200);
   static const Duration normal = Duration(milliseconds: 400);
-  static const Duration slow = Duration(milliseconds: 600);
+  static const Duration slow = Duration(milliseconds: 350);
   static const Duration verySlow = Duration(milliseconds: 800);
 
   // Sequential animation delays
