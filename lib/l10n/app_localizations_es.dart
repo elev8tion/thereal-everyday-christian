@@ -1526,8 +1526,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get subscriptionBenefit150Messages => '150 Mensajes Mensuales';
 
   @override
-  String get subscriptionBenefit150MessagesDesc =>
-      'Más que suficiente para conversaciones diarias';
+  String subscriptionBenefit150MessagesDesc(String price) {
+    return 'Más que suficiente para conversaciones diarias. ¡Solo $price/año!';
+  }
 
   @override
   String get subscriptionBenefitContextAware => 'Respuestas Contextuales';
@@ -1552,22 +1553,27 @@ class AppLocalizationsEs extends AppLocalizations {
       'Todas las funciones gratuitas permanecen disponibles';
 
   @override
-  String get subscriptionSubscribeNowButton =>
-      'Suscribirse Ahora - ~\$35.99/año*';
+  String subscriptionSubscribeNowButton(String price) {
+    return 'Suscribirse Ahora - $price/año*';
+  }
 
   @override
-  String get subscriptionStartFreeTrialButton => 'Iniciar Prueba Gratuita';
+  String subscriptionStartFreeTrialButton(String price) {
+    return 'Iniciar Prueba Gratuita - $price/año';
+  }
 
   @override
   String get subscriptionManageButton => 'Administrar Suscripción';
 
   @override
-  String get subscriptionRenewalInfoPremium =>
-      'Su suscripción se renueva automáticamente a menos que se cancele al menos 24 horas antes del final del período actual. Administre su suscripción en la configuración de su cuenta de App Store.';
+  String subscriptionRenewalInfoPremium(String price) {
+    return 'Su suscripción se renueva automáticamente a $price/año a menos que se cancele al menos 24 horas antes del final del período actual. Administre su suscripción en la configuración de su cuenta de App Store.';
+  }
 
   @override
-  String get subscriptionRenewalInfoTrial =>
-      'Comience su prueba gratuita de 3 días con 15 mensajes de IA en total (úselos en cualquier momento). Después de la prueba: ~\$35.99/año (el precio puede variar según la región y la moneda) por 150 mensajes por mes. Cancele en cualquier momento en la configuración de App Store.';
+  String subscriptionRenewalInfoTrial(String price) {
+    return 'Comience su prueba gratuita de 3 días con 15 mensajes de IA en total (úselos en cualquier momento). Después de la prueba: $price/año por 150 mensajes por mes. Cancele en cualquier momento en la configuración de App Store.';
+  }
 
   @override
   String get subscriptionUnableToOpenSettings =>

@@ -2850,8 +2850,8 @@ abstract class AppLocalizations {
   /// Benefit description
   ///
   /// In en, this message translates to:
-  /// **'More than enough for daily conversations'**
-  String get subscriptionBenefit150MessagesDesc;
+  /// **'More than enough for daily conversations. Only {price}/year!'**
+  String subscriptionBenefit150MessagesDesc(String price);
 
   /// Benefit title
   ///
@@ -2892,14 +2892,14 @@ abstract class AppLocalizations {
   /// Subscribe now button text
   ///
   /// In en, this message translates to:
-  /// **'Subscribe Now - ~\$35.99/year*'**
-  String get subscriptionSubscribeNowButton;
+  /// **'Subscribe Now - {price}/year*'**
+  String subscriptionSubscribeNowButton(String price);
 
   /// Start free trial button text
   ///
   /// In en, this message translates to:
-  /// **'Start Free Trial'**
-  String get subscriptionStartFreeTrialButton;
+  /// **'Start Free Trial - {price}/year'**
+  String subscriptionStartFreeTrialButton(String price);
 
   /// Manage subscription button text
   ///
@@ -2910,14 +2910,14 @@ abstract class AppLocalizations {
   /// Premium subscription renewal info
   ///
   /// In en, this message translates to:
-  /// **'Your subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.'**
-  String get subscriptionRenewalInfoPremium;
+  /// **'Your subscription automatically renews at {price}/year unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.'**
+  String subscriptionRenewalInfoPremium(String price);
 
   /// Trial subscription info
   ///
   /// In en, this message translates to:
-  /// **'Start your 3-day free trial with 15 AI messages total (use anytime). After trial: ~\$35.99/year (pricing may vary by region and currency) for 150 messages per month. Cancel anytime in App Store settings.'**
-  String get subscriptionRenewalInfoTrial;
+  /// **'Start your 3-day free trial with 15 AI messages total (use anytime). After trial: {price}/year for 150 messages per month. Cancel anytime in App Store settings.'**
+  String subscriptionRenewalInfoTrial(String price);
 
   /// Error message when unable to open subscription settings
   ///

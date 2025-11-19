@@ -2077,9 +2077,15 @@
   "@subscriptionBenefit150Messages": {
     "description": "Benefit title"
   },
-  "subscriptionBenefit150MessagesDesc": "More than enough for daily conversations",
+  "subscriptionBenefit150MessagesDesc": "More than enough for daily conversations. Only {price}/year!",
   "@subscriptionBenefit150MessagesDesc": {
-    "description": "Benefit description"
+    "description": "Benefit description",
+    "placeholders": {
+      "price": {
+        "type": "String",
+        "example": "$35.99"
+      }
+    }
   },
   "subscriptionBenefitContextAware": "Context-Aware Responses",
   "@subscriptionBenefitContextAware": {
@@ -2105,25 +2111,49 @@
   "@subscriptionBenefitFullBibleAccessDesc": {
     "description": "Benefit description"
   },
-  "subscriptionSubscribeNowButton": "Subscribe Now - ~$35.99/year*",
+  "subscriptionSubscribeNowButton": "Subscribe Now - {price}/year*",
   "@subscriptionSubscribeNowButton": {
-    "description": "Subscribe now button text"
+    "description": "Subscribe now button text",
+    "placeholders": {
+      "price": {
+        "type": "String",
+        "example": "$35.99"
+      }
+    }
   },
-  "subscriptionStartFreeTrialButton": "Start Free Trial",
+  "subscriptionStartFreeTrialButton": "Start Free Trial - {price}/year",
   "@subscriptionStartFreeTrialButton": {
-    "description": "Start free trial button text"
+    "description": "Start free trial button text",
+    "placeholders": {
+      "price": {
+        "type": "String",
+        "example": "$35.99"
+      }
+    }
   },
   "subscriptionManageButton": "Manage Subscription",
   "@subscriptionManageButton": {
     "description": "Manage subscription button text"
   },
-  "subscriptionRenewalInfoPremium": "Your subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.",
+  "subscriptionRenewalInfoPremium": "Your subscription automatically renews at {price}/year unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.",
   "@subscriptionRenewalInfoPremium": {
-    "description": "Premium subscription renewal info"
+    "description": "Premium subscription renewal info",
+    "placeholders": {
+      "price": {
+        "type": "String",
+        "example": "$35.99"
+      }
+    }
   },
-  "subscriptionRenewalInfoTrial": "Start your 3-day free trial with 15 AI messages total (use anytime). After trial: ~$35.99/year (pricing may vary by region and currency) for 150 messages per month. Cancel anytime in App Store settings.",
+  "subscriptionRenewalInfoTrial": "Start your 3-day free trial with 15 AI messages total (use anytime). After trial: {price}/year for 150 messages per month. Cancel anytime in App Store settings.",
   "@subscriptionRenewalInfoTrial": {
-    "description": "Trial subscription info"
+    "description": "Trial subscription info",
+    "placeholders": {
+      "price": {
+        "type": "String",
+        "example": "$35.99"
+      }
+    }
   },
   "subscriptionUnableToOpenSettings": "Unable to open subscription settings",
   "@subscriptionUnableToOpenSettings": {

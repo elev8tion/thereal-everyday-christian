@@ -37,6 +37,8 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
     final remainingMessages = ref.watch(remainingMessagesProvider);
     final messagesUsed = ref.watch(messagesUsedProvider);
     final trialDaysRemaining = ref.watch(trialDaysRemainingProvider);
+    final subscriptionService = ref.watch(subscriptionServiceProvider);
+    final premiumProduct = subscriptionService.premiumProduct;
 
     return Scaffold(
       body: Stack(
@@ -80,15 +82,15 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                           icon: Icons.workspace_premium,
                         ),
                         const SizedBox(height: AppSpacing.lg),
-                        _buildBenefitsList(l10n, isPremium),
+                        _buildBenefitsList(l10n, isPremium, premiumProduct),
                         const SizedBox(height: AppSpacing.xxl),
 
                         // Action Buttons
                         if (!isPremium) ...[
                           GlassButton(
                             text: hasTrialExpired
-                                ? l10n.subscriptionSubscribeNowButton
-                                : l10n.subscriptionStartFreeTrialButton,
+                                ? l10n.subscriptionSubscribeNowButton(premiumProduct?.price ?? "\$35.99")
+                                : l10n.subscriptionStartFreeTrialButton(premiumProduct?.price ?? "\$35.99"),
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
@@ -122,8 +124,8 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                               const SizedBox(height: AppSpacing.sm),
                               AutoSizeText(
                                 isPremium
-                                    ? l10n.subscriptionRenewalInfoPremium
-                                    : l10n.subscriptionRenewalInfoTrial,
+                                    ? l10n.subscriptionRenewalInfoPremium(premiumProduct?.price ?? "\$35.99")
+                                    : l10n.subscriptionRenewalInfoTrial(premiumProduct?.price ?? "\$35.99"),
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: AppColors.secondaryText,
@@ -331,7 +333,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
   }
 
   /// Build benefits list
-  Widget _buildBenefitsList(AppLocalizations l10n, bool isPremium) {
+  Widget _buildBenefitsList(AppLocalizations l10n, bool isPremium, dynamic premiumProduct) {
     final benefits = [
       {
         'icon': Icons.chat_bubble_outline,
@@ -341,7 +343,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
       {
         'icon': Icons.all_inclusive,
         'title': l10n.subscriptionBenefit150Messages,
-        'subtitle': l10n.subscriptionBenefit150MessagesDesc,
+        'subtitle': l10n.subscriptionBenefit150MessagesDesc(premiumProduct?.price ?? "\$35.99"),
       },
       {
         'icon': Icons.psychology,

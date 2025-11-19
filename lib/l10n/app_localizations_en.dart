@@ -1515,8 +1515,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionBenefit150Messages => '150 Messages Monthly';
 
   @override
-  String get subscriptionBenefit150MessagesDesc =>
-      'More than enough for daily conversations';
+  String subscriptionBenefit150MessagesDesc(String price) {
+    return 'More than enough for daily conversations. Only $price/year!';
+  }
 
   @override
   String get subscriptionBenefitContextAware => 'Context-Aware Responses';
@@ -1540,21 +1541,27 @@ class AppLocalizationsEn extends AppLocalizations {
       'All free features remain available';
 
   @override
-  String get subscriptionSubscribeNowButton => 'Subscribe Now - ~\$35.99/year*';
+  String subscriptionSubscribeNowButton(String price) {
+    return 'Subscribe Now - $price/year*';
+  }
 
   @override
-  String get subscriptionStartFreeTrialButton => 'Start Free Trial';
+  String subscriptionStartFreeTrialButton(String price) {
+    return 'Start Free Trial - $price/year';
+  }
 
   @override
   String get subscriptionManageButton => 'Manage Subscription';
 
   @override
-  String get subscriptionRenewalInfoPremium =>
-      'Your subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.';
+  String subscriptionRenewalInfoPremium(String price) {
+    return 'Your subscription automatically renews at $price/year unless cancelled at least 24 hours before the end of the current period. Manage your subscription in App Store account settings.';
+  }
 
   @override
-  String get subscriptionRenewalInfoTrial =>
-      'Start your 3-day free trial with 15 AI messages total (use anytime). After trial: ~\$35.99/year (pricing may vary by region and currency) for 150 messages per month. Cancel anytime in App Store settings.';
+  String subscriptionRenewalInfoTrial(String price) {
+    return 'Start your 3-day free trial with 15 AI messages total (use anytime). After trial: $price/year for 150 messages per month. Cancel anytime in App Store settings.';
+  }
 
   @override
   String get subscriptionUnableToOpenSettings =>
