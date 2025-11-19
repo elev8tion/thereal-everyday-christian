@@ -286,7 +286,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       GlassButton(
                         text: _isProcessing
                             ? l10n.paywallProcessing
-                            : l10n.paywallStartPremiumButton(premiumProduct?.price ?? "\$35.99"),
+                            : l10n.paywallStartPremiumButton,
                         onPressed: _isProcessing ? null : _handlePurchase,
                       ),
                       const SizedBox(height: AppSpacing.lg),

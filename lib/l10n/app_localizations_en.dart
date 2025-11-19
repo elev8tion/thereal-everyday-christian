@@ -1212,9 +1212,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paywallProcessing => 'Processing...';
 
   @override
-  String paywallStartPremiumButton(String price) {
-    return 'Start Premium - $price/year';
-  }
+  String get paywallStartPremiumButton => 'Start Free Trial';
 
   @override
   String get paywallRestorePurchase => 'Restore Previous Purchase';
@@ -1546,9 +1544,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String subscriptionStartFreeTrialButton(String price) {
-    return 'Start Free Trial - $price/year';
-  }
+  String get subscriptionStartFreeTrialButton => 'Start Free Trial';
 
   @override
   String get subscriptionManageButton => 'Manage Subscription';

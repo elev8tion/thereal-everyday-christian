@@ -1673,15 +1673,9 @@
   "@paywallProcessing": {
     "description": "Processing purchase button text"
   },
-  "paywallStartPremiumButton": "Start Premium - {price}/year",
+  "paywallStartPremiumButton": "Start Free Trial",
   "@paywallStartPremiumButton": {
-    "description": "Start premium subscription button",
-    "placeholders": {
-      "price": {
-        "type": "String",
-        "example": "$35.99"
-      }
-    }
+    "description": "Start premium subscription button"
   },
   "paywallRestorePurchase": "Restore Previous Purchase",
   "@paywallRestorePurchase": {
@@ -2121,15 +2115,9 @@
       }
     }
   },
-  "subscriptionStartFreeTrialButton": "Start Free Trial - {price}/year",
+  "subscriptionStartFreeTrialButton": "Start Free Trial",
   "@subscriptionStartFreeTrialButton": {
-    "description": "Start free trial button text",
-    "placeholders": {
-      "price": {
-        "type": "String",
-        "example": "$35.99"
-      }
-    }
+    "description": "Start free trial button text"
   },
   "subscriptionManageButton": "Manage Subscription",
   "@subscriptionManageButton": {

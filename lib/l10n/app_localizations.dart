@@ -2310,8 +2310,8 @@ abstract class AppLocalizations {
   /// Start premium subscription button
   ///
   /// In en, this message translates to:
-  /// **'Start Premium - {price}/year'**
-  String paywallStartPremiumButton(String price);
+  /// **'Start Free Trial'**
+  String get paywallStartPremiumButton;
 
   /// Restore purchase button text
   ///
@@ -2898,8 +2898,8 @@ abstract class AppLocalizations {
   /// Start free trial button text
   ///
   /// In en, this message translates to:
-  /// **'Start Free Trial - {price}/year'**
-  String subscriptionStartFreeTrialButton(String price);
+  /// **'Start Free Trial'**
+  String get subscriptionStartFreeTrialButton;
 
   /// Manage subscription button text
   ///

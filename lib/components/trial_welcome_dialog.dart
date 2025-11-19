@@ -79,7 +79,7 @@ class TrialWelcomeDialog extends ConsumerWidget {
 
                   // Title
                   Text(
-                    l10n.subscriptionStartFreeTrialButton(premiumProduct?.price ?? "\$35.99"),
+                    l10n.subscriptionStartFreeTrialButton,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
@@ -151,7 +151,7 @@ class TrialWelcomeDialog extends ConsumerWidget {
                   Column(
                     children: [
                       GlassButton(
-                        text: l10n.subscriptionStartFreeTrialButton(premiumProduct?.price ?? "\$35.99"),
+                        text: l10n.subscriptionStartFreeTrialButton,
                         onPressed: () => Navigator.of(context).pop(true),
                         height: 50,
                       ),

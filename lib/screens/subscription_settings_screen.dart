@@ -90,7 +90,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                           GlassButton(
                             text: hasTrialExpired
                                 ? l10n.subscriptionSubscribeNowButton(premiumProduct?.price ?? "\$35.99")
-                                : l10n.subscriptionStartFreeTrialButton(premiumProduct?.price ?? "\$35.99"),
+                                : l10n.subscriptionStartFreeTrialButton,
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
