@@ -23,7 +23,6 @@ import '../widgets/time_picker/time_range_sheet.dart';
 import '../widgets/time_picker/time_range_sheet_style.dart';
 import '../components/glass_button.dart';
 import '../components/dark_glass_container.dart';
-import '../components/blur_dropdown.dart';
 import 'paywall_screen.dart';
 import '../utils/blur_dialog_utils.dart';
 import '../l10n/app_localizations.dart';
@@ -176,7 +175,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 l10n.bibleVersion,
                 BibleConfig.getVersion(Localizations.localeOf(context).languageCode),
               ),
-              _buildLanguageTile(),
             ],
           ),
           const SizedBox(height: AppSpacing.xxl),
@@ -886,125 +884,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
               color: AppColors.secondaryText,
               fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLanguageTile() {
-    final currentLocale = ref.watch(languageProvider);
-    final l10n = AppLocalizations.of(context);
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: AppSpacing.cardPadding,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.white.withValues(alpha: 0.1),
-            Colors.white.withValues(alpha: 0.05),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: AppRadius.mediumRadius,
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.language,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryText,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  l10n.languageDesc,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
-                    color: AppColors.secondaryText,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: BlurDropdown(
-              value: currentLocale.languageCode == 'en' ? 'English' : 'Español',
-              items: const ['English', 'Español'],
-              onChanged: (String? newLanguage) async {
-                if (newLanguage != null) {
-                  final languageCode = newLanguage == 'English' ? 'en' : 'es';
-                  if (languageCode != currentLocale.languageCode) {
-                    // Show loading dialog while reloading content
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) => PopScope(
-                        canPop: false,
-                        child: Center(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.xl,
-                              vertical: AppSpacing.lg,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.8),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
-                                ),
-                                const SizedBox(width: AppSpacing.lg),
-                                Text(
-                                  languageCode == 'en'
-                                      ? 'Changing to English...'
-                                      : 'Cambiando a Español...',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                                    decoration: TextDecoration.none,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-
-                    // Change language and reload content
-                    await ref.read(languageProvider.notifier).setLanguage(languageCode);
-
-                    // Close loading dialog
-                    if (mounted) {
-                      NavigationService.pop();
-                      _showSnackBar(
-                        languageCode == 'en'
-                            ? l10n.languageChangedToEnglish
-                            : l10n.languageChangedToSpanish,
-                      );
-                    }
-                  }
-                }
-              },
             ),
           ),
         ],

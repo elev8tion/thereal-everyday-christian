@@ -69,8 +69,8 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   // Verse tutorial tooltip state
   bool _showVerseTutorial = false;
 
-  // Flag to ensure we only load verses once
-  bool _hasLoadedVerses = false;
+  // Guard flag to load verses only once (language never changes at runtime)
+  bool _versesLoaded = false;
 
   @override
   void initState() {
@@ -92,9 +92,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     super.didChangeDependencies();
 
     // Load verses after dependencies are available (including AppLocalizations)
-    if (!_hasLoadedVerses) {
+    // Guard prevents unnecessary reloads (language doesn't change at runtime)
+    if (!_versesLoaded) {
       _loadVerses();
-      _hasLoadedVerses = true;
+      _versesLoaded = true;
     }
   }
 

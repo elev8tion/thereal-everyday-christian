@@ -581,22 +581,19 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 // Language Provider
 final languageProvider = StateNotifierProvider<LanguageNotifier, Locale>((ref) {
   final preferencesAsync = ref.watch(preferencesServiceProvider);
-  return LanguageNotifier(preferencesAsync, ref);
+  return LanguageNotifier(preferencesAsync);
 });
 
 class LanguageNotifier extends StateNotifier<Locale> {
   final AsyncValue<PreferencesService> _preferencesAsync;
-  final Ref _ref;
-  PreferencesService? _preferences;
 
-  LanguageNotifier(this._preferencesAsync, this._ref) : super(const Locale('en')) {
+  LanguageNotifier(this._preferencesAsync) : super(const Locale('en')) {
     _initializeLanguage();
   }
 
   /// Initialize language from saved preferences or detect system language on first run
   Future<void> _initializeLanguage() async {
     _preferencesAsync.whenData((prefs) async {
-      _preferences = prefs;
       final savedLanguage = prefs.loadLanguage();
 
       // Check if this is first run (language preference not set)
@@ -624,68 +621,6 @@ class LanguageNotifier extends StateNotifier<Locale> {
     });
   }
 
-  /// Set language preference (accepts language code like 'en' or 'es')
-  /// Also reloads language-specific content (devotionals & reading plans)
-  Future<void> setLanguage(String languageCode) async {
-    state = Locale(languageCode);
-
-    if (_preferences == null) {
-      developer.log(
-        'Language preferences not yet loaded; skipping persistence.',
-        name: 'AppProviders.language',
-      );
-      return;
-    }
-
-    final success = await _preferences!.setLanguage(languageCode);
-    if (!success) {
-      developer.log(
-        'Failed to persist language preference: $languageCode',
-        name: 'AppProviders.language',
-        level: 900,
-      );
-    }
-
-    // Reload language-specific content
-    try {
-      developer.log(
-        'Reloading content for language: $languageCode',
-        name: 'AppProviders.language',
-      );
-
-      // Reload devotionals for new language
-      final devotionalLoader = _ref.read(devotionalContentLoaderProvider);
-      await devotionalLoader.loadDevotionals(language: languageCode);
-
-      // Reload reading plans for new language
-      final curatedPlanLoader = _ref.read(curatedReadingPlanLoaderProvider);
-      await curatedPlanLoader.ensureAllPlansLoaded(languageCode);
-
-      // Invalidate providers to refresh UI
-      _ref.invalidate(allDevotionalsProvider);
-      _ref.invalidate(allReadingPlansProvider);
-      _ref.invalidate(activeReadingPlansProvider);
-
-      developer.log(
-        'Successfully reloaded content for $languageCode',
-        name: 'AppProviders.language',
-      );
-    } catch (e, stackTrace) {
-      developer.log(
-        'Failed to reload content for $languageCode: $e',
-        name: 'AppProviders.language',
-        error: e,
-        stackTrace: stackTrace,
-        level: 900,
-      );
-    }
-  }
-
-  /// Toggle between English and Spanish
-  Future<void> toggleLanguage() async {
-    final newLanguage = state.languageCode == 'en' ? 'es' : 'en';
-    await setLanguage(newLanguage);
-  }
 }
 
 // Text Size Provider
