@@ -194,6 +194,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       ref.invalidate(allReadingPlansProvider);
       ref.invalidate(todaysReadingsProvider(planId));
       ref.invalidate(planProgressPercentageProvider(planId));
+      ref.invalidate(planCompletionStatsProvider(planId));
 
       if (mounted) {
         final l10n = AppLocalizations.of(context);
@@ -416,7 +417,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      '${widget.book} $currentChapter',
+                      '${widget.book} Chapter $currentChapter',
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 22),
                         fontWeight: FontWeight.w800,
@@ -433,7 +434,7 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                           child: Text(
                             totalChapters > 1
                               ? l10n.chapterOfTotal(_currentChapterIndex + 1, totalChapters)
-                              : l10n.oneChapter,
+                              : 'Chapter $currentChapter',
                             style: TextStyle(
                               fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 11, maxSize: 13),
                               color: Colors.white.withValues(alpha: 0.7),
