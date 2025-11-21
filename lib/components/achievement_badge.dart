@@ -127,17 +127,16 @@ class AchievementBadgeRow extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        alignment: WrapAlignment.center,
         children: badges.map((badge) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: AchievementBadge(
-              icon: badge.icon,
-              color: badge.color,
-              completionCount: badge.completionCount,
-              title: badge.title,
-            ),
+          return AchievementBadge(
+            icon: badge.icon,
+            color: badge.color,
+            completionCount: badge.completionCount,
+            title: badge.title,
           );
         }).toList(),
       ),

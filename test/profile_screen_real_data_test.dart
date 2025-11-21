@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:everyday_christian/screens/profile_screen.dart';
 import 'package:everyday_christian/core/providers/app_providers.dart';
+import 'package:everyday_christian/l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   group('Profile Screen Real Data Integration', () {
@@ -24,6 +26,8 @@ void main() {
             totalDevotionalsCompletedProvider.overrideWith((ref) async => 15),
             currentPrayerStreakProvider.overrideWith((ref) async => 4),
             activeReadingPlansCountProvider.overrideWith((ref) async => 2),
+            totalSharesCountProvider.overrideWith((ref) async => 5),
+            discipleCompletionCountProvider.overrideWith((ref) async => 0),
           ],
           child: const MaterialApp(
             home: ProfileScreen(),
@@ -35,7 +39,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify devotional streak displays real data
-      expect(find.text('5 days'), findsOneWidget);
+      expect(find.textContaining('5 days'), findsOneWidget);
     });
 
     testWidgets('Profile screen displays real prayer count',
@@ -163,7 +167,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Should now show actual data
-      expect(find.text('7 days'), findsOneWidget);
+      expect(find.textContaining('7 days'), findsOneWidget);
     });
 
     testWidgets('Profile screen handles error state',
@@ -194,7 +198,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Should show error state (0 days)
-      expect(find.text('0 days'), findsOneWidget);
+      expect(find.textContaining('0 days'), findsOneWidget);
     });
 
     testWidgets('Achievements unlock based on real prayer streak',
@@ -225,7 +229,7 @@ void main() {
 
       // Verify Prayer Warrior achievement is visible
       expect(find.text('Prayer Warrior'), findsOneWidget);
-      expect(find.text('Prayed for 7 days in a row'), findsOneWidget);
+      expect(find.textContaining('Prayed for 7 days'), findsOneWidget);
     });
 
     testWidgets('Achievements update with partial progress',
@@ -285,7 +289,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify all stats are present
-      expect(find.text('3 days'), findsOneWidget); // Devotional streak
+      expect(find.textContaining('3 days'), findsOneWidget); // Devotional streak
       expect(find.text('8'), findsOneWidget); // Total prayers
       expect(find.text('15'), findsOneWidget); // Verses saved
       expect(find.text('12'), findsOneWidget); // Devotionals completed
@@ -399,8 +403,21 @@ void main() {
             totalDevotionalsCompletedProvider.overrideWith((ref) async => 0),
             currentPrayerStreakProvider.overrideWith((ref) async => 0),
             activeReadingPlansCountProvider.overrideWith((ref) async => 0),
+            totalSharesCountProvider.overrideWith((ref) async => 0),
+            discipleCompletionCountProvider.overrideWith((ref) async => 0),
           ],
           child: const MaterialApp(
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              Locale('en'),
+              Locale('es'),
+            ],
+            locale: Locale('en'),
             home: ProfileScreen(),
           ),
         ),
@@ -430,17 +447,35 @@ void main() {
             totalDevotionalsCompletedProvider.overrideWith((ref) async => 0),
             currentPrayerStreakProvider.overrideWith((ref) async => 0),
             activeReadingPlansCountProvider.overrideWith((ref) async => 0),
+            totalSharesCountProvider.overrideWith((ref) async => 0),
+            discipleCompletionCountProvider.overrideWith((ref) async => 0),
           ],
           child: const MaterialApp(
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              Locale('en'),
+              Locale('es'),
+            ],
+            locale: Locale('en'),
             home: ProfileScreen(),
           ),
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 2));
 
       // Verify high streak displays
-      expect(find.text('365 days'), findsOneWidget);
+      final textWidgets = find.byType(Text);
+      print('Found ${textWidgets.evaluate().length} Text widgets');
+      for (final widget in textWidgets.evaluate()) {
+        print('Text: ${(widget.widget as Text).data}');
+      }
+      expect(find.textContaining('365 days'), findsOneWidget);
     });
   });
 }

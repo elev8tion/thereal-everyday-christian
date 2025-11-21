@@ -5,6 +5,7 @@ import '../theme/app_theme.dart';
 import '../core/navigation/app_routes.dart';
 import '../utils/responsive_utils.dart';
 import '../l10n/app_localizations.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 /// Glassmorphic Floating Action Button Menu
 ///
@@ -186,11 +187,11 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
     final double topPadding = ResponsiveUtils.scaleSize(context, 70, minScale: 0.9, maxScale: 1.1); // Below FAB
 
     // EXACT height calculation for 2px gaps:
-    // padding(8+8) + icon(30) + border(3) + shadow(3) = 52px per item
-    // Add exactly 2px gap = 54px total spacing between items
-    const double itemHeight = 52.0; // Exact container height
+    // padding(8+8) + icon(30) + text(up to 2 lines) + border(3) + shadow(3) = 64px per item
+    // Add exactly 2px gap = 66px total spacing between items
+    const double itemHeight = 64.0; // Exact container height (increased for 2-line text)
     const double gap = 2.0; // Exactly 2px gap
-    const double itemSpacing = itemHeight + gap; // 54px total
+    const double itemSpacing = itemHeight + gap; // 66px total
 
     return List.generate(options.length, (index) {
       final option = options[index];
@@ -252,7 +253,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
           filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
           child: Container(
             width: ResponsiveUtils.scaleSize(context, 200, minScale: 0.85, maxScale: 1.2),
-            height: 52, // Fixed height for precise 2px gap calculation
+            height: 64, // Fixed height for precise 2px gap calculation (increased for 2-line text)
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               borderRadius: AppRadius.cardRadius,
@@ -278,18 +279,21 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  child: Text(
+                  child: AutoSizeText(
                     option.title,
                     style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                       decoration: TextDecoration.none,
                       shadows: AppTheme.textShadowSubtle,
+                      height: 1.2, // Tighter line height for compact 2-line display
                     ),
-                    maxLines: 1,
+                    maxLines: 2,
+                    minFontSize: 10,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

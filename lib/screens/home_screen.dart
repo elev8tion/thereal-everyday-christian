@@ -172,10 +172,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final prayersCountAsync = ref.watch(activePrayersCountProvider);
     final versesCountAsync = ref.watch(savedVersesCountProvider);
 
+    // Scale height based on BOTH screen size AND text scale factor
+    final textScaleFactor = MediaQuery.textScalerOf(context).scale(1.0);
+    final baseHeight = ResponsiveUtils.scaleSize(context, 110,
+        minScale: 0.8, maxScale: 1.2);
+    // Apply text scale factor with damping (not full 1.5x, but enough to prevent overflow)
+    final scaledHeight = baseHeight * (1.0 + (textScaleFactor - 1.0) * 0.5);
+
     return LayoutBuilder(
       builder: (context, constraints) => SizedBox(
-        height: ResponsiveUtils.scaleSize(context, 145,
-            minScale: 0.75, maxScale: 1.3),
+        height: scaledHeight.clamp(88.0, 165.0), // Min 88px, max 165px
         child: ListView(
           scrollDirection: Axis.horizontal,
           padding: AppSpacing.horizontalXl,
@@ -307,62 +313,62 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.2),
-                borderRadius: AppRadius.mediumRadius,
-              ),
-              child: ExcludeSemantics(
-                child: Icon(
-                  icon,
-                  size: ResponsiveUtils.iconSize(context, 20),
-                  color: AppColors.secondaryText,
+        // FittedBox scales down entire content to fit container (Rule 2)
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.2),
+                  borderRadius: AppRadius.mediumRadius,
+                ),
+                child: ExcludeSemantics(
+                  child: Icon(
+                    icon,
+                    size: ResponsiveUtils.iconSize(context, 20),
+                    color: AppColors.secondaryText,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 6),
-            // Value text with auto-sizing to prevent overflow
-            AutoSizeText(
-              value,
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 20,
-                    minSize: 16, maxSize: 22),
-                fontWeight: FontWeight.w800,
-                color: AppColors.primaryText,
-                shadows: AppTheme.textShadowStrong,
-              ),
-              maxLines: 1,
-              minFontSize: 14,
-              maxFontSize: 22,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            // Label text with auto-sizing
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: AutoSizeText(
-                label,
+              const SizedBox(height: 4),
+              // Value text
+              Text(
+                value,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 9,
-                      minSize: 8, maxSize: 11),
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withValues(alpha: 0.9),
-                  shadows: AppTheme.textShadowSubtle,
+                  fontSize: ResponsiveUtils.fontSize(context, 20,
+                      minSize: 16, maxSize: 22),
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primaryText,
+                  shadows: AppTheme.textShadowStrong,
                 ),
-                textAlign: TextAlign.center,
                 maxLines: 1,
-                minFontSize: 7,
-                maxFontSize: 11,
                 overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
+              const SizedBox(height: 2),
+              // Label text
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 9,
+                        minSize: 8, maxSize: 11),
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withValues(alpha: 0.9),
+                    shadows: AppTheme.textShadowSubtle,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     )
@@ -463,9 +469,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildMainFeatures() {
     final l10n = AppLocalizations.of(context);
 
-    // Calculate dynamic height based on text scale factor
-    final textScale = MediaQuery.textScalerOf(context).scale(1.0);
-    final cardHeight = (160 * textScale).clamp(140.0, 200.0);
+    // Calculate dynamic height using unified responsive scale
+    final cardHeight = ResponsiveUtils.scaleSize(context, 160, minScale: 0.8, maxScale: 1.5);
 
     return Padding(
       padding: AppSpacing.horizontalXl,
@@ -689,6 +694,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildQuickActions() {
     final l10n = AppLocalizations.of(context);
+    // Scale height based on BOTH screen size AND text scale factor
+    final textScaleFactor = MediaQuery.textScalerOf(context).scale(1.0);
+    final baseHeight = ResponsiveUtils.scaleSize(context, 110,
+        minScale: 0.8, maxScale: 1.2);
+    final scaledHeight = baseHeight * (1.0 + (textScaleFactor - 1.0) * 0.5);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -708,8 +719,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         const SizedBox(height: AppSpacing.lg),
         LayoutBuilder(
           builder: (context, constraints) => SizedBox(
-            height: ResponsiveUtils.scaleSize(context, 140,
-                minScale: 0.75, maxScale: 1.3),
+            height: scaledHeight.clamp(88.0, 165.0), // Min 88px, max 165px
             child: ListView(
               scrollDirection: Axis.horizontal,
               padding: AppSpacing.horizontalXl,
@@ -778,7 +788,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Container(
           width: ResponsiveUtils.scaleSize(context, 100,
               minScale: 0.9, maxScale: 1.2),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
             gradient: AppGradients.glassMedium,
             borderRadius: BorderRadius.circular(AppRadius.md),
@@ -811,20 +821,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
-              AutoSizeText(
-                label,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 11,
-                      minSize: 9, maxSize: 13),
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withValues(alpha: 0.9),
-                  shadows: AppTheme.textShadowSubtle,
+              Flexible(
+                child: AutoSizeText(
+                  label,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 11,
+                        minSize: 9, maxSize: 11),
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withValues(alpha: 0.9),
+                    shadows: AppTheme.textShadowSubtle,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  minFontSize: 7,
+                  maxFontSize: 11,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                minFontSize: 7,
-                maxFontSize: 13,
-                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

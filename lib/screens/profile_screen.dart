@@ -585,21 +585,33 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '${achievement.progress}/${achievement.total}',
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
-                          color: AppColors.tertiaryText,
+                      Expanded(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${achievement.progress}/${achievement.total}',
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
+                              color: AppColors.tertiaryText,
+                            ),
+                          ),
                         ),
                       ),
                       // Show which level we're working toward if already unlocked
                       if (achievement.completionCount != null && achievement.completionCount! > 0)
-                        Text(
-                          'Level ${achievement.completionCount! + 1}',
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
-                            color: achievement.color.withValues(alpha: 0.7),
-                            fontWeight: FontWeight.w600,
+                        Expanded(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              'Level ${achievement.completionCount! + 1}',
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
+                                color: achievement.color.withValues(alpha: 0.7),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                     ],

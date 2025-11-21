@@ -299,13 +299,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryText,
-                  shadows: AppTheme.textShadowSubtle,
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryText,
+                    shadows: AppTheme.textShadowSubtle,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -319,8 +322,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
 
   Widget _buildSliderTile(String title, String subtitle, double value, double min, double max, Function(double) onChanged) {
-    final textSize = ref.watch(textSizeProvider);
-
     return DarkGlassContainer(
       margin: const EdgeInsets.only(bottom: 12),
       borderRadius: AppRadius.md,
@@ -337,7 +338,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       title,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18) * textSize,
+                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                         fontWeight: FontWeight.w600,
                         color: AppColors.primaryText,
                       ),
@@ -346,7 +347,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15) * textSize,
+                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                         color: Colors.white.withValues(alpha: 0.7),
                       ),
                     ),
@@ -356,7 +357,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Text(
                 '${(value * 100).round()}%',
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16) * textSize,
+                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
@@ -697,6 +698,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       minute: int.parse(parts[1]),
     );
 
+    // Get text scale factor to adjust dimensions dynamically for accessibility
+    final textScaleFactor = MediaQuery.textScalerOf(context).scale(1.0);
+    final safeBottomPadding = MediaQuery.of(context).padding.bottom;
+
     // Custom glassmorphic time picker style matching app theme components
     final customStyle = TimeRangeSheetStyle(
       // Match GlassBottomSheet - transparent background (blur from wrapper)
@@ -718,13 +723,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       cornerRadius: 24, // Sheet corner radius
       buttonCornerRadius: 28, // Button corner radius like GlassButton
 
-      // Sheet dimensions
-      sheetHeight: 450,
-      pickerItemHeight: 45,
+      // Sheet dimensions - dynamically scaled for text size and bottom safe area
+      // Increased height to accommodate 1.5x text scale + extra bottom padding
+      sheetHeight: 500 + (textScaleFactor > 1.0 ? (textScaleFactor - 1.0) * 100 : 0) + safeBottomPadding,
+      // Scale picker item height with text scale factor for proper spacing at 150%
+      pickerItemHeight: (45 * textScaleFactor).clamp(45, 70),
       buttonHeight: 56, // Match GlassButton height
 
-      // Padding and spacing
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      // Padding and spacing - add substantial bottom padding for scaled text
+      // Ensures bottom numbers (07, 08, 09, 10) are fully visible at 150% scale
+      padding: EdgeInsets.only(
+        left: AppSpacing.lg,
+        right: AppSpacing.lg,
+        top: AppSpacing.lg,
+        bottom: AppSpacing.lg + 50 + safeBottomPadding, // Extra 50px + safe area
+      ),
       buttonPadding: const EdgeInsets.all(AppSpacing.md),
 
       // Use 12-hour format to match display
@@ -870,20 +883,30 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-              fontWeight: FontWeight.w600,
-              color: AppColors.primaryText,
+          Flexible(
+            flex: 1,
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                fontWeight: FontWeight.w600,
+                color: AppColors.primaryText,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-              color: AppColors.secondaryText,
-              fontWeight: FontWeight.w500,
+          const SizedBox(width: AppSpacing.md),
+          Flexible(
+            flex: 1,
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                color: AppColors.secondaryText,
+                fontWeight: FontWeight.w500,
+              ),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
             ),
           ),
         ],
@@ -929,12 +952,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    Text(
-                      l10n.clearCacheDialogTitle,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                    Expanded(
+                      child: Text(
+                        l10n.clearCacheDialogTitle,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -1120,12 +1146,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    Text(
-                      l10n.deleteAllData,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                    Expanded(
+                      child: Text(
+                        l10n.deleteAllData,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        softWrap: true,
+                        maxLines: 2,
+                        overflow: TextOverflow.visible,
                       ),
                     ),
                   ],
@@ -1447,12 +1478,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    Text(
-                      l10n.helpFAQ,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryText,
+                    Expanded(
+                      child: Text(
+                        l10n.helpFAQ,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryText,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
