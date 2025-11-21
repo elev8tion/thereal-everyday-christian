@@ -111,7 +111,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.only(top: AppSpacing.xl), // Top padding
+              padding: const EdgeInsets.only(
+                top: AppSpacing.xl,
+                bottom: AppSpacing.xxxl, // Extra bottom padding for button visibility
+              ),
               // Optimize scrolling performance
               physics: const BouncingScrollPhysics(),
               child: Column(
@@ -130,6 +133,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   _buildDailyVerse(),
                   const SizedBox(height: AppSpacing.xxl),
                   _buildStartChatButton(),
+                  const SizedBox(height: AppSpacing.xl), // Extra space at bottom
                 ],
               ),
             ),
@@ -170,8 +174,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return LayoutBuilder(
       builder: (context, constraints) => SizedBox(
-        height: ResponsiveUtils.scaleSize(context, 100,
-            minScale: 0.9, maxScale: 1.2),
+        height: ResponsiveUtils.scaleSize(context, 145,
+            minScale: 0.75, maxScale: 1.3),
         child: ListView(
           scrollDirection: Axis.horizontal,
           padding: AppSpacing.horizontalXl,
@@ -287,7 +291,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       builder: (context, constraints) => Container(
         width: ResponsiveUtils.scaleSize(context, 120,
             minScale: 0.9, maxScale: 1.2),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         decoration: BoxDecoration(
           gradient: AppGradients.glassMedium,
           borderRadius: AppRadius.cardRadius,
@@ -322,44 +326,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             // Value text with auto-sizing to prevent overflow
-            Flexible(
-              child: AutoSizeText(
-                value,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 20,
-                      minSize: 16, maxSize: 22),
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.primaryText,
-                  shadows: AppTheme.textShadowStrong,
-                ),
-                maxLines: 1,
-                minFontSize: 14,
-                maxFontSize: 22,
-                overflow: TextOverflow.ellipsis,
+            AutoSizeText(
+              value,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 20,
+                    minSize: 16, maxSize: 22),
+                fontWeight: FontWeight.w800,
+                color: AppColors.primaryText,
+                shadows: AppTheme.textShadowStrong,
               ),
+              maxLines: 1,
+              minFontSize: 14,
+              maxFontSize: 22,
+              overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             // Label text with auto-sizing
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: AutoSizeText(
-                  label,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 9,
-                        minSize: 8, maxSize: 11),
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white.withValues(alpha: 0.9),
-                    shadows: AppTheme.textShadowSubtle,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  minFontSize: 7,
-                  maxFontSize: 11,
-                  overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: AutoSizeText(
+                label,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 9,
+                      minSize: 8, maxSize: 11),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white.withValues(alpha: 0.9),
+                  shadows: AppTheme.textShadowSubtle,
                 ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                minFontSize: 7,
+                maxFontSize: 11,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -381,7 +381,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       builder: (context, constraints) => Container(
         width: ResponsiveUtils.scaleSize(context, 120,
             minScale: 0.9, maxScale: 1.2),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         decoration: BoxDecoration(
           gradient: AppGradients.glassMedium,
           borderRadius: AppRadius.cardRadius,
@@ -416,43 +416,39 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             // Placeholder text instead of infinite spinner (fixes test timeouts)
-            Flexible(
-              child: AutoSizeText(
-                "...",
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 20,
-                      minSize: 16, maxSize: 22),
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.primaryText.withValues(alpha: 0.5),
-                  shadows: AppTheme.textShadowStrong,
-                ),
-                maxLines: 1,
-                minFontSize: 14,
-                maxFontSize: 22,
-                textAlign: TextAlign.center,
+            AutoSizeText(
+              "...",
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 20,
+                    minSize: 16, maxSize: 22),
+                fontWeight: FontWeight.w800,
+                color: AppColors.primaryText.withValues(alpha: 0.5),
+                shadows: AppTheme.textShadowStrong,
               ),
+              maxLines: 1,
+              minFontSize: 14,
+              maxFontSize: 22,
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 2),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: AutoSizeText(
-                  label,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 9,
-                        minSize: 8, maxSize: 11),
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white.withValues(alpha: 0.9),
-                    shadows: AppTheme.textShadowSubtle,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  minFontSize: 7,
-                  maxFontSize: 11,
-                  overflow: TextOverflow.ellipsis,
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: AutoSizeText(
+                label,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 9,
+                      minSize: 8, maxSize: 11),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white.withValues(alpha: 0.9),
+                  shadows: AppTheme.textShadowSubtle,
                 ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                minFontSize: 7,
+                maxFontSize: 11,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -466,21 +462,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildMainFeatures() {
     final l10n = AppLocalizations.of(context);
+
+    // Calculate dynamic height based on text scale factor
+    final textScale = MediaQuery.textScalerOf(context).scale(1.0);
+    final cardHeight = (160 * textScale).clamp(140.0, 200.0);
+
     return Padding(
       padding: AppSpacing.horizontalXl,
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: ResponsiveUtils.scaleSize(context, 140,
-                      minScale: 0.9, maxScale: 1.2),
+          SizedBox(
+            height: cardHeight,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
                   child: FrostedGlassCard(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(14),
                     onTap: () => NavigationService.goToChat(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         ClearGlassCard(
                           padding: const EdgeInsets.all(8),
@@ -491,7 +493,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         const SizedBox(height: AppSpacing.sm),
-                        Text(
+                        AutoSizeText(
                           l10n.biblicalChat,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16,
@@ -500,35 +502,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             color: AppColors.primaryText,
                           ),
                           maxLines: 1,
+                          minFontSize: 12,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.biblicalChatDesc,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12,
-                                minSize: 10, maxSize: 14),
-                            color: AppColors.secondaryText,
-                            height: 1.3,
+                        const SizedBox(height: 6),
+                        Flexible(
+                          child: AutoSizeText(
+                            l10n.biblicalChatDesc,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 12,
+                                  minSize: 10, maxSize: 14),
+                              color: AppColors.secondaryText,
+                              height: 1.3,
+                            ),
+                            maxLines: 3,
+                            minFontSize: 9,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: SizedBox(
-                  height: ResponsiveUtils.scaleSize(context, 140,
-                      minScale: 0.9, maxScale: 1.2),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
                   child: FrostedGlassCard(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(14),
                     onTap: () => NavigationService.goToDevotional(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         ClearGlassCard(
                           padding: const EdgeInsets.all(8),
@@ -539,7 +542,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         const SizedBox(height: AppSpacing.sm),
-                        Text(
+                        AutoSizeText(
                           l10n.dailyDevotional,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16,
@@ -548,39 +551,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             color: AppColors.primaryText,
                           ),
                           maxLines: 1,
+                          minFontSize: 12,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.dailyDevotionalDesc,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12,
-                                minSize: 10, maxSize: 14),
-                            color: AppColors.secondaryText,
-                            height: 1.3,
+                        const SizedBox(height: 6),
+                        Flexible(
+                          child: AutoSizeText(
+                            l10n.dailyDevotionalDesc,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 12,
+                                  minSize: 10, maxSize: 14),
+                              color: AppColors.secondaryText,
+                              height: 1.3,
+                            ),
+                            maxLines: 3,
+                            minFontSize: 9,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ],
-          ).animate().fadeIn(delay: 1000.ms).scale(delay: 1000.ms),
+              ],
+            ).animate().fadeIn(delay: 1000.ms).scale(delay: 1000.ms),
+          ),
           const SizedBox(height: AppSpacing.md),
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: ResponsiveUtils.scaleSize(context, 140,
-                      minScale: 0.9, maxScale: 1.2),
+          SizedBox(
+            height: cardHeight,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
                   child: FrostedGlassCard(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(14),
                     onTap: () => NavigationService.goToPrayerJournal(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         ClearGlassCard(
                           padding: const EdgeInsets.all(8),
@@ -591,7 +599,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         const SizedBox(height: AppSpacing.sm),
-                        Text(
+                        AutoSizeText(
                           l10n.prayerJournal,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16,
@@ -600,35 +608,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             color: AppColors.primaryText,
                           ),
                           maxLines: 1,
+                          minFontSize: 12,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.prayerJournalDesc,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12,
-                                minSize: 10, maxSize: 14),
-                            color: AppColors.secondaryText,
-                            height: 1.3,
+                        const SizedBox(height: 6),
+                        Flexible(
+                          child: AutoSizeText(
+                            l10n.prayerJournalDesc,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 12,
+                                  minSize: 10, maxSize: 14),
+                              color: AppColors.secondaryText,
+                              height: 1.3,
+                            ),
+                            maxLines: 3,
+                            minFontSize: 9,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: SizedBox(
-                  height: ResponsiveUtils.scaleSize(context, 140,
-                      minScale: 0.9, maxScale: 1.2),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
                   child: FrostedGlassCard(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(14),
                     onTap: () => NavigationService.goToReadingPlan(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         ClearGlassCard(
                           padding: const EdgeInsets.all(8),
@@ -639,7 +648,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         const SizedBox(height: AppSpacing.sm),
-                        Text(
+                        AutoSizeText(
                           l10n.readingPlans,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16,
@@ -648,27 +657,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             color: AppColors.primaryText,
                           ),
                           maxLines: 1,
+                          minFontSize: 12,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.readingPlansDesc,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12,
-                                minSize: 10, maxSize: 14),
-                            color: AppColors.secondaryText,
-                            height: 1.3,
+                        const SizedBox(height: 6),
+                        Flexible(
+                          child: AutoSizeText(
+                            l10n.readingPlansDesc,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 12,
+                                  minSize: 10, maxSize: 14),
+                              color: AppColors.secondaryText,
+                              height: 1.3,
+                            ),
+                            maxLines: 3,
+                            minFontSize: 9,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ],
-          ).animate().fadeIn(delay: 1100.ms).scale(delay: 1100.ms),
+              ],
+            ).animate().fadeIn(delay: 1100.ms).scale(delay: 1100.ms),
+          ),
         ],
       ),
     );
@@ -695,8 +708,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         const SizedBox(height: AppSpacing.lg),
         LayoutBuilder(
           builder: (context, constraints) => SizedBox(
-            height: ResponsiveUtils.scaleSize(context, 100,
-                minScale: 0.9, maxScale: 1.2),
+            height: ResponsiveUtils.scaleSize(context, 140,
+                minScale: 0.75, maxScale: 1.3),
             child: ListView(
               scrollDirection: Axis.horizontal,
               padding: AppSpacing.horizontalXl,
@@ -765,7 +778,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Container(
           width: ResponsiveUtils.scaleSize(context, 100,
               minScale: 0.9, maxScale: 1.2),
-          padding: AppSpacing.cardPadding,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
           decoration: BoxDecoration(
             gradient: AppGradients.glassMedium,
             borderRadius: BorderRadius.circular(AppRadius.md),
@@ -798,22 +811,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
-              Flexible(
-                child: AutoSizeText(
-                  label,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 11,
-                        minSize: 9, maxSize: 13),
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white.withValues(alpha: 0.9),
-                    shadows: AppTheme.textShadowSubtle,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  minFontSize: 7,
-                  maxFontSize: 13,
-                  overflow: TextOverflow.ellipsis,
+              AutoSizeText(
+                label,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 11,
+                      minSize: 9, maxSize: 13),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white.withValues(alpha: 0.9),
+                  shadows: AppTheme.textShadowSubtle,
                 ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                minFontSize: 7,
+                maxFontSize: 13,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

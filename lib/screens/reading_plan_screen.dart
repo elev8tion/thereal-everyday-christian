@@ -576,6 +576,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                         fontWeight: FontWeight.w700,
                         color: AppColors.primaryText,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -584,6 +586,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                         fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                         color: AppColors.secondaryText,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Row(
@@ -600,6 +604,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                             fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                             color: AppColors.tertiaryText,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -656,6 +662,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                           fontWeight: FontWeight.w700,
                           color: AppColors.primaryText,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -665,6 +673,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -679,13 +689,19 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                 color: Colors.white.withValues(alpha: 0.9),
                 height: 1.4,
               ),
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: AppSpacing.lg),
             Row(
               children: [
-                _buildPlanStat(Icons.schedule, plan.estimatedTimePerDay),
+                Flexible(
+                  child: _buildPlanStat(Icons.schedule, plan.estimatedTimePerDay),
+                ),
                 const SizedBox(width: AppSpacing.lg),
-                _buildPlanStat(Icons.calendar_today, plan.duration),
+                Flexible(
+                  child: _buildPlanStat(Icons.calendar_today, plan.duration),
+                ),
               ],
             ),
             if (plan.isStarted) ...[
@@ -737,45 +753,36 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             // Conditionally disable "Start Plan" button if viewing from Explore tab and another plan is active
             if (currentPlanAsync != null)
               currentPlanAsync.when(
-                loading: () => Row(
-                  children: [
-                    Expanded(
-                      child: GlassButton(
-                        text: l10n.startPlan,
-                        height: 48,
-                        onPressed: () => _handlePlanAction(plan),
-                      ),
-                    ),
-                  ],
+                loading: () => SizedBox(
+                  width: double.infinity,
+                  child: GlassButton(
+                    text: l10n.startPlan,
+                    height: 48,
+                    onPressed: () => _handlePlanAction(plan),
+                  ),
                 ),
-                error: (_, __) => Row(
-                  children: [
-                    Expanded(
-                      child: GlassButton(
-                        text: l10n.startPlan,
-                        height: 48,
-                        onPressed: () => _handlePlanAction(plan),
-                      ),
-                    ),
-                  ],
+                error: (_, __) => SizedBox(
+                  width: double.infinity,
+                  child: GlassButton(
+                    text: l10n.startPlan,
+                    height: 48,
+                    onPressed: () => _handlePlanAction(plan),
+                  ),
                 ),
                 data: (currentPlan) {
                   final hasActivePlan = currentPlan != null;
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: Tooltip(
-                          message: hasActivePlan
-                              ? 'Reset your current plan before starting a new one'
-                              : '',
-                          child: GlassButton(
-                            text: l10n.startPlan,
-                            height: 48,
-                            onPressed: hasActivePlan ? null : () => _handlePlanAction(plan),
-                          ),
-                        ),
+                  return SizedBox(
+                    width: double.infinity,
+                    child: Tooltip(
+                      message: hasActivePlan
+                          ? 'Reset your current plan before starting a new one'
+                          : '',
+                      child: GlassButton(
+                        text: l10n.startPlan,
+                        height: 48,
+                        onPressed: hasActivePlan ? null : () => _handlePlanAction(plan),
                       ),
-                    ],
+                    ),
                   );
                 },
               )
@@ -833,6 +840,8 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
             color: AppColors.secondaryText,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
