@@ -883,8 +883,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Flexible(
-            flex: 1,
+          Expanded(
             child: Text(
               title,
               style: TextStyle(
@@ -896,18 +895,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           const SizedBox(width: AppSpacing.md),
-          Flexible(
-            flex: 1,
-            child: Text(
-              value,
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-                color: AppColors.secondaryText,
-                fontWeight: FontWeight.w500,
-              ),
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.end,
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+              color: AppColors.secondaryText,
+              fontWeight: FontWeight.w500,
             ),
+            textAlign: TextAlign.end,
           ),
         ],
       ),
