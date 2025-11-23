@@ -351,24 +351,13 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
                     const SizedBox(width: AppSpacing.sm),
                     Flexible(
                       child: Text(
-                        verse.reference,
+                        '${verse.reference} (${verse.translation})',
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 14,
                               minSize: 12, maxSize: 16),
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w600,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    Text(
-                      '(${verse.translation})',
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 12,
-                            minSize: 10, maxSize: 14),
-                        color: Colors.white.withValues(alpha: 0.6),
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -492,27 +481,14 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
                         const SizedBox(width: AppSpacing.sm),
                         Flexible(
                           child: Text(
-                            verse.reference,
+                            '${verse.reference} (${verse.translation})',
                             style: TextStyle(
                               fontSize: ResponsiveUtils.fontSize(context, 14,
                                   minSize: 12, maxSize: 16),
                               color: Colors.white.withValues(alpha: 0.9),
                               fontWeight: FontWeight.w600,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        const SizedBox(width: AppSpacing.sm),
-                        Text(
-                          '(${verse.translation})',
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 12,
-                                minSize: 10, maxSize: 14),
-                            color: Colors.white.withValues(alpha: 0.6),
-                            fontWeight: FontWeight.w500,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -526,8 +502,6 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
                             minSize: 10, maxSize: 14),
                         color: Colors.white.withValues(alpha: 0.55),
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
