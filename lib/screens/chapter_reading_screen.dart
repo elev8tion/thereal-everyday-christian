@@ -376,9 +376,16 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 16.0, right: 8.0),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Adaptive audio pill width based on available space
+          // Adaptive audio pill width - compact to allow more title space
           final availableWidth = constraints.maxWidth;
-          final audioPillMaxWidth = availableWidth < 400 ? 170.0 : 200.0;
+          final audioPillMaxWidth = availableWidth < 400 ? 140.0 : 160.0;
+
+          // Only use abbreviated names at large text scales (130%+)
+          // At 100-120%, show full book names
+          final textScale = MediaQuery.textScalerOf(context).scale(1.0);
+          final displayBookName = textScale >= 1.3
+              ? BookNameService.getAbbreviation(widget.book)
+              : widget.book;
 
           return Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -417,14 +424,14 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      widget.book,
+                      displayBookName,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 22),
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                         height: 1.2,
                       ),
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),

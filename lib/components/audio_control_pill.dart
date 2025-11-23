@@ -31,13 +31,13 @@ class AudioControlPill extends StatelessWidget {
     final isActive = isPlaying && !isPaused;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
       child: Column(
         children: [
           // Compact frosted glass pill
           Container(
-            height: 48,
-            padding: const EdgeInsets.symmetric(horizontal: 6),
+            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -63,15 +63,15 @@ class AudioControlPill extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                // Stop button (only when playing) - smaller size
+                // Stop button (only when playing) - compact size
                 if (isPlaying) ...[
                   _buildIconButton(
                     icon: Icons.stop_rounded,
                     onTap: onStop,
-                    size: 32, // Smaller than default 40
+                    size: 28,
                     label: l10n.stopAudio,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 2),
                 ],
 
                 // Play/Pause button
@@ -87,7 +87,7 @@ class AudioControlPill extends StatelessWidget {
 
                 // Speed button - only visible when NOT playing
                 if (!isPlaying) ...[
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 2),
                   Expanded(
                     child: _buildSpeedButton(
                       label: speedLabel,
@@ -122,8 +122,8 @@ class AudioControlPill extends StatelessWidget {
     required VoidCallback onTap,
     bool isPrimary = false,
     bool isActive = false,
-    double size = 40, // Add size parameter with default
-    String? label, // Add semantic label parameter
+    double size = 34, // Compact size for smaller pill
+    String? label,
   }) {
     return Semantics(
       label: label,
@@ -132,8 +132,8 @@ class AudioControlPill extends StatelessWidget {
         onTap: onTap,
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            minWidth: 44,
-            minHeight: 44,
+            minWidth: 40,
+            minHeight: 40,
           ),
           child: Container(
             width: size,
@@ -153,7 +153,7 @@ class AudioControlPill extends StatelessWidget {
             child: Icon(
               icon,
               color: Colors.white,
-              size: isPrimary ? 24 : (size * 0.5), // Scale icon with button size
+              size: isPrimary ? 20 : (size * 0.5), // Smaller icons
             ),
           ),
         ),
@@ -169,18 +169,18 @@ class AudioControlPill extends StatelessWidget {
       onTap: onTap,
       child: Container(
         constraints: const BoxConstraints(
-          minHeight: 32,
+          minHeight: 28,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(10),
           color: Colors.white.withValues(alpha: 0.1),
         ),
         child: Center(
           child: Text(
             label,
             style: const TextStyle(
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: FontWeight.w700,
               color: Colors.white,
               letterSpacing: 0.2,
