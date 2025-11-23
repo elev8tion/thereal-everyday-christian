@@ -462,84 +462,90 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // Category badge and answered icon at LEFT
                 Flexible(
-                  child: categoriesAsync.when(
-                    data: (categories) {
-                      final category = categories.firstWhere(
-                        (c) => c.id == prayer.categoryId,
-                        orElse: () => categories.isNotEmpty ? categories.first : _getDefaultCategory(),
-                      );
-                      return CategoryBadge(
-                        text: _getLocalizedCategoryName(category.name),
-                        badgeColor: category.color,
-                        icon: category.icon,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-                      );
-                    },
-                    loading: () => CategoryBadge(
-                      text: l10n.loading,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-                    ),
-                    error: (_, __) => CategoryBadge(
-                      text: l10n.general,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                if (prayer.isAnswered)
-                  Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withValues(alpha: 0.2),
-                          borderRadius: AppRadius.smallRadius,
-                        ),
-                        child: Icon(
-                          Icons.check_circle,
-                          size: ResponsiveUtils.iconSize(context, 16),
-                          color: Colors.green,
+                      Flexible(
+                        child: categoriesAsync.when(
+                          data: (categories) {
+                            final category = categories.firstWhere(
+                              (c) => c.id == prayer.categoryId,
+                              orElse: () => categories.isNotEmpty ? categories.first : _getDefaultCategory(),
+                            );
+                            return CategoryBadge(
+                              text: _getLocalizedCategoryName(category.name),
+                              badgeColor: category.color,
+                              icon: category.icon,
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
+                            );
+                          },
+                          loading: () => CategoryBadge(
+                            text: l10n.loading,
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
+                          ),
+                          error: (_, __) => CategoryBadge(
+                            text: l10n.general,
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      BlurPopupMenu(
-                        items: [
-                          BlurPopupMenuItem(
-                            value: 'share',
-                            icon: Icons.share,
-                            label: l10n.share,
-                          ),
-                          BlurPopupMenuItem(
-                            value: 'delete',
-                            icon: Icons.delete,
-                            label: l10n.delete,
-                            iconColor: Colors.red,
-                            textColor: Colors.red,
-                          ),
-                        ],
-                        onSelected: (value) {
-                          if (value == 'share') {
-                            _sharePrayer(prayer);
-                          } else if (value == 'delete') {
-                            _deletePrayer(prayer);
-                          }
-                        },
-                        child: Container(
+                      if (prayer.isAnswered) ...[
+                        const SizedBox(width: 8),
+                        Container(
                           padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withValues(alpha: 0.2),
+                            borderRadius: AppRadius.smallRadius,
+                          ),
                           child: Icon(
-                            Icons.more_vert,
-                            size: ResponsiveUtils.iconSize(context, 18),
-                            color: AppColors.primaryText,
+                            Icons.check_circle,
+                            size: ResponsiveUtils.iconSize(context, 16),
+                            color: Colors.green,
                           ),
                         ),
+                      ],
+                    ],
+                  ),
+                ),
+                // Menu button at far RIGHT
+                if (prayer.isAnswered)
+                  BlurPopupMenu(
+                    items: [
+                      BlurPopupMenuItem(
+                        value: 'share',
+                        icon: Icons.share,
+                        label: l10n.share,
+                      ),
+                      BlurPopupMenuItem(
+                        value: 'delete',
+                        icon: Icons.delete,
+                        label: l10n.delete,
+                        iconColor: Colors.red,
+                        textColor: Colors.red,
                       ),
                     ],
+                    onSelected: (value) {
+                      if (value == 'share') {
+                        _sharePrayer(prayer);
+                      } else if (value == 'delete') {
+                        _deletePrayer(prayer);
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      child: Icon(
+                        Icons.more_vert,
+                        size: ResponsiveUtils.iconSize(context, 18),
+                        color: AppColors.primaryText,
+                      ),
+                    ),
                   )
                 else
                   BlurPopupMenu(
