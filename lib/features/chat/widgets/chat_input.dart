@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../theme/app_theme.dart';
 import '../../../components/glass_card.dart';
+import '../../../utils/responsive_utils.dart';
 
 /// Widget for chat message input with suggestions and controls
 class ChatInput extends StatefulWidget {
@@ -144,19 +145,19 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Column(
             children: [
-              const Row(
+              Row(
                 children: [
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Icon(
                     Icons.lightbulb_outline,
-                    size: 16,
+                    size: ResponsiveUtils.iconSize(context, 16),
                     color: AppTheme.primaryColor,
                   ),
-                  SizedBox(width: 6),
+                  const SizedBox(width: 6),
                   Text(
                     'Suggestions',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 18),
                       color: AppTheme.primaryColor,
                       fontWeight: FontWeight.w500,
                     ),
@@ -184,7 +185,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
           child: Text(
             suggestion,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 11, maxSize: 21),
               color: Colors.white.withValues(alpha: 0.9),
             ),
           ),
@@ -208,15 +209,15 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                     child: TextField(
                       controller: _controller,
                       focusNode: _focusNode,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 13, maxSize: 24),
                       ),
                       decoration: InputDecoration(
                         hintText: 'Share what\'s on your heart...',
                         hintStyle: TextStyle(
                           color: Colors.white.withValues(alpha: 0.5),
-                          fontSize: 16,
+                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 13, maxSize: 24),
                         ),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(vertical: 12),
@@ -240,9 +241,9 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                           color: AppTheme.primaryColor.withValues(alpha: 0.2),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.mic,
-                          size: 20,
+                          size: ResponsiveUtils.iconSize(context, 20),
                           color: AppTheme.primaryColor,
                         ),
                       ),
@@ -258,8 +259,8 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
           GestureDetector(
             onTap: widget.isLoading ? null : _sendMessage,
             child: Container(
-              width: 48,
-              height: 48,
+              width: ResponsiveUtils.scaleSize(context, 48, minScale: 0.8, maxScale: 1.5),
+              height: ResponsiveUtils.scaleSize(context, 48, minScale: 0.8, maxScale: 1.5),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: widget.isLoading || _currentText.isEmpty
@@ -284,20 +285,20 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                       ],
               ),
               child: widget.isLoading
-                  ? const Center(
+                  ? Center(
                       child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
+                        width: ResponsiveUtils.scaleSize(context, 20, minScale: 0.8, maxScale: 1.5),
+                        height: ResponsiveUtils.scaleSize(context, 20, minScale: 0.8, maxScale: 1.5),
+                        child: const CircularProgressIndicator(
                           strokeWidth: 2,
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       ),
                     )
-                  : const Icon(
+                  : Icon(
                       Icons.send,
                       color: Colors.white,
-                      size: 20,
+                      size: ResponsiveUtils.iconSize(context, 20),
                     ),
             ),
           ),

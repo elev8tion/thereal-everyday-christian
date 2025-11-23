@@ -26,7 +26,8 @@ import '../core/services/achievement_service.dart';
 import '../l10n/app_localizations.dart';
 
 // Provider for all saved verses
-final filteredVersesProvider = FutureProvider.autoDispose<List<BibleVerse>>((ref) async {
+final filteredVersesProvider =
+    FutureProvider.autoDispose<List<BibleVerse>>((ref) async {
   final service = ref.watch(unifiedVerseServiceProvider);
   return await service.getAllVerses(limit: 100);
 });
@@ -38,7 +39,8 @@ class VerseLibraryScreen extends ConsumerStatefulWidget {
   ConsumerState<VerseLibraryScreen> createState() => _VerseLibraryScreenState();
 }
 
-class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with TickerProviderStateMixin {
+class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   late VerseShareService _verseShareService;
 
@@ -102,7 +104,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
           ),
         ),
         child: IconButton(
-          icon: Icon(Icons.more_vert, color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
+          icon: Icon(Icons.more_vert,
+              color: Colors.white, size: ResponsiveUtils.iconSize(context, 24)),
           onPressed: _showVerseOptions,
           tooltip: l10n.verseOptions,
           constraints: const BoxConstraints(
@@ -113,7 +116,6 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
       ),
     );
   }
-
 
   Widget _buildTabBar() {
     final l10n = AppLocalizations.of(context);
@@ -137,7 +139,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
           unselectedLabelColor: Colors.white.withValues(alpha: 0.6),
           labelStyle: TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+            fontSize:
+                ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
           ),
           tabs: [
             Tab(text: l10n.savedVerses),
@@ -163,14 +166,18 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
+          padding:
+              const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
           itemCount: entries.length,
           itemBuilder: (context, index) {
             final entry = entries[index];
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: _buildSharedVerseCard(entry, index).animate()
-                  .fadeIn(duration: AppAnimations.slow, delay: (100 + index * 50).ms)
+              child: _buildSharedVerseCard(entry, index)
+                  .animate()
+                  .fadeIn(
+                      duration: AppAnimations.slow,
+                      delay: (100 + index * 50).ms)
                   .slideY(begin: 0.3),
             );
           },
@@ -203,14 +210,18 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
+          padding:
+              const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
           itemCount: verses.length,
           itemBuilder: (context, index) {
             final verse = verses[index];
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: _buildVerseCard(verse, index).animate()
-                  .fadeIn(duration: AppAnimations.slow, delay: (100 + index * 50).ms)
+              child: _buildVerseCard(verse, index)
+                  .animate()
+                  .fadeIn(
+                      duration: AppAnimations.slow,
+                      delay: (100 + index * 50).ms)
                   .slideY(begin: 0.3),
             );
           },
@@ -243,27 +254,34 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                 size: ResponsiveUtils.iconSize(context, 48),
                 color: AppColors.tertiaryText,
               ),
-            ).animate().fadeIn(duration: AppAnimations.slow).scale(begin: const Offset(0.8, 0.8)),
+            )
+                .animate()
+                .fadeIn(duration: AppAnimations.slow)
+                .scale(begin: const Offset(0.8, 0.8)),
             const SizedBox(height: AppSpacing.xxl),
             Text(
               title,
               style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                fontSize: ResponsiveUtils.fontSize(context, 20,
+                    minSize: 18, maxSize: 24),
                 fontWeight: FontWeight.w700,
                 color: AppColors.primaryText,
               ),
               textAlign: TextAlign.center,
-            ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),
+            ).animate().fadeIn(
+                duration: AppAnimations.slow, delay: AppAnimations.fast),
             const SizedBox(height: AppSpacing.md),
             Text(
               subtitle,
               style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                fontSize: ResponsiveUtils.fontSize(context, 14,
+                    minSize: 12, maxSize: 16),
                 color: AppColors.secondaryText,
                 height: 1.4,
               ),
               textAlign: TextAlign.center,
-            ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.normal),
+            ).animate().fadeIn(
+                duration: AppAnimations.slow, delay: AppAnimations.normal),
           ],
         ),
       ),
@@ -287,7 +305,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             Text(
               l10n.somethingWentWrong,
               style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                fontSize: ResponsiveUtils.fontSize(context, 20,
+                    minSize: 18, maxSize: 24),
                 fontWeight: FontWeight.w700,
                 color: AppColors.primaryText,
               ),
@@ -297,7 +316,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             Text(
               error,
               style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                fontSize: ResponsiveUtils.fontSize(context, 14,
+                    minSize: 12, maxSize: 16),
                 color: AppColors.secondaryText,
                 height: 1.4,
               ),
@@ -312,258 +332,283 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
   Widget _buildVerseCard(BibleVerse verse, int index) {
     final l10n = AppLocalizations.of(context);
     return DarkGlassContainer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Book/Chapter/Verse on left
-                Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.book,
-                        size: ResponsiveUtils.iconSize(context, 16),
-                        color: AppTheme.goldColor.withValues(alpha: 0.8),
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      Flexible(
-                        child: Text(
-                          verse.reference,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                            color: Colors.white.withValues(alpha: 0.9),
-                            fontWeight: FontWeight.w600,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      Text(
-                        '(${verse.translation})',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Book/Chapter/Verse on left
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.book,
+                      size: ResponsiveUtils.iconSize(context, 16),
+                      color: AppTheme.goldColor.withValues(alpha: 0.8),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    Flexible(
+                      child: Text(
+                        verse.reference,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                          color: Colors.white.withValues(alpha: 0.6),
-                          fontWeight: FontWeight.w500,
+                          fontSize: ResponsiveUtils.fontSize(context, 14,
+                              minSize: 12, maxSize: 16),
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontWeight: FontWeight.w600,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                // 3-dot menu for actions
-                BlurPopupMenu(
-                  items: [
-                    BlurPopupMenuItem(
-                      value: 'share',
-                      icon: Icons.share,
-                      label: l10n.share,
-                    ),
-                    BlurPopupMenuItem(
-                      value: 'delete',
-                      icon: Icons.delete,
-                      label: l10n.delete,
-                      iconColor: Colors.red,
-                      textColor: Colors.red,
-                    ),
-                  ],
-                  onSelected: (value) {
-                    if (value == 'share') {
-                      _showShareOptions(verse);
-                    } else if (value == 'delete') {
-                      _deleteSavedVerse(verse);
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(AppSpacing.sm),
-                    child: Icon(
-                      Icons.more_vert,
-                      size: ResponsiveUtils.iconSize(context, 20),
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            Text(
-              '"${verse.text}"',
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                color: AppColors.primaryText,
-                height: 1.5,
-                fontWeight: FontWeight.w500,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-            if (verse.themes.length > 1) ...[
-              const SizedBox(height: AppSpacing.md),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: verse.themes.skip(1).take(3).map((theme) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
-                      borderRadius: AppRadius.smallRadius,
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.2),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    child: Text(
-                      theme.substring(0, 1).toUpperCase() + theme.substring(1),
+                    const SizedBox(width: AppSpacing.sm),
+                    Text(
+                      '(${verse.translation})',
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-                        color: Colors.white.withValues(alpha: 0.7),
+                        fontSize: ResponsiveUtils.fontSize(context, 12,
+                            minSize: 10, maxSize: 14),
+                        color: Colors.white.withValues(alpha: 0.6),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  );
-                }).toList(),
+                  ],
+                ),
+              ),
+              // 3-dot menu for actions
+              BlurPopupMenu(
+                items: [
+                  BlurPopupMenuItem(
+                    value: 'share',
+                    icon: Icons.share,
+                    label: l10n.share,
+                  ),
+                  BlurPopupMenuItem(
+                    value: 'delete',
+                    icon: Icons.delete,
+                    label: l10n.delete,
+                    iconColor: Colors.red,
+                    textColor: Colors.red,
+                  ),
+                ],
+                onSelected: (value) {
+                  if (value == 'share') {
+                    _showShareOptions(verse);
+                  } else if (value == 'delete') {
+                    _deleteSavedVerse(verse);
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(AppSpacing.sm),
+                  child: Icon(
+                    Icons.more_vert,
+                    size: ResponsiveUtils.iconSize(context, 20),
+                    color: AppColors.primaryText,
+                  ),
+                ),
               ),
             ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          Text(
+            '"${verse.text}"',
+            style: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(context, 16,
+                  minSize: 14, maxSize: 18),
+              color: AppColors.primaryText,
+              height: 1.5,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.italic,
+            ),
+            maxLines: 5,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (verse.themes.length > 1) ...[
+            const SizedBox(height: AppSpacing.md),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: verse.themes.skip(1).take(3).map((theme) {
+                return Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.1),
+                    borderRadius: AppRadius.smallRadius,
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.2),
+                    ),
+                  ),
+                  child: Text(
+                    theme.substring(0, 1).toUpperCase() + theme.substring(1),
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 11,
+                          minSize: 9, maxSize: 13),
+                      color: Colors.white.withValues(alpha: 0.7),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              }).toList(),
+            ),
           ],
-        ),
+        ],
+      ),
     );
   }
 
   Widget _buildSharedVerseCard(SharedVerseEntry entry, int index) {
     final l10n = AppLocalizations.of(context);
     final verse = entry.toBibleVerse();
-    final sharedTimestamp = DateFormat('MMM d, yyyy • h:mm a').format(entry.sharedAt);
+    final sharedTimestamp =
+        DateFormat('MMM d, yyyy • h:mm a').format(entry.sharedAt);
 
     // Don't show internal channel names to users
-    final channelLabel = entry.channel?.isNotEmpty == true && entry.channel != 'share_sheet'
-        ? entry.channel ?? ''
-        : '';
+    final channelLabel =
+        entry.channel?.isNotEmpty == true && entry.channel != 'share_sheet'
+            ? entry.channel ?? ''
+            : '';
 
     return DarkGlassContainer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.history,
-                            size: ResponsiveUtils.iconSize(context, 16),
-                            color: AppTheme.primaryColor.withValues(alpha: 0.8),
-                          ),
-                          const SizedBox(width: AppSpacing.sm),
-                          Flexible(
-                            child: Text(
-                              verse.reference,
-                              style: TextStyle(
-                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                                color: Colors.white.withValues(alpha: 0.9),
-                                fontWeight: FontWeight.w600,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const SizedBox(width: AppSpacing.sm),
-                          Text(
-                            '(${verse.translation})',
-                            style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                              color: Colors.white.withValues(alpha: 0.6),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        channelLabel.isNotEmpty
-                            ? '$sharedTimestamp • $channelLabel'
-                            : sharedTimestamp,
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                          color: Colors.white.withValues(alpha: 0.55),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.history,
+                          size: ResponsiveUtils.iconSize(context, 16),
+                          color: AppTheme.primaryColor.withValues(alpha: 0.8),
                         ),
+                        const SizedBox(width: AppSpacing.sm),
+                        Flexible(
+                          child: Text(
+                            verse.reference,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 14,
+                                  minSize: 12, maxSize: 16),
+                              color: Colors.white.withValues(alpha: 0.9),
+                              fontWeight: FontWeight.w600,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.sm),
+                        Text(
+                          '(${verse.translation})',
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 12,
+                                minSize: 10, maxSize: 14),
+                            color: Colors.white.withValues(alpha: 0.6),
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      channelLabel.isNotEmpty
+                          ? '$sharedTimestamp • $channelLabel'
+                          : sharedTimestamp,
+                      style: TextStyle(
+                        fontSize: ResponsiveUtils.fontSize(context, 12,
+                            minSize: 10, maxSize: 14),
+                        color: Colors.white.withValues(alpha: 0.55),
                       ),
-                    ],
-                  ),
-                ),
-                // 3-dot menu for actions
-                BlurPopupMenu(
-                  items: [
-                    BlurPopupMenuItem(
-                      value: 'delete',
-                      icon: Icons.delete,
-                      label: l10n.delete,
-                      iconColor: Colors.red,
-                      textColor: Colors.red,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
-                  onSelected: (value) {
-                    if (value == 'delete') {
-                      _deleteSharedVerse(entry.id);
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(AppSpacing.sm),
-                    child: Icon(
-                      Icons.more_vert,
-                      size: ResponsiveUtils.iconSize(context, 20),
-                      color: AppColors.primaryText,
-                    ),
+                ),
+              ),
+              // 3-dot menu for actions
+              BlurPopupMenu(
+                items: [
+                  BlurPopupMenuItem(
+                    value: 'delete',
+                    icon: Icons.delete,
+                    label: l10n.delete,
+                    iconColor: Colors.red,
+                    textColor: Colors.red,
+                  ),
+                ],
+                onSelected: (value) {
+                  if (value == 'delete') {
+                    _deleteSharedVerse(entry.id);
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(AppSpacing.sm),
+                  child: Icon(
+                    Icons.more_vert,
+                    size: ResponsiveUtils.iconSize(context, 20),
+                    color: AppColors.primaryText,
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            Text(
-              '"${entry.text}"',
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                color: AppColors.primaryText,
-                height: 1.5,
-                fontWeight: FontWeight.w500,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-            if (entry.themes.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.md),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: entry.themes.take(3).map((theme) {
-                  final displayTheme = theme.isNotEmpty
-                      ? theme.substring(0, 1).toUpperCase() + theme.substring(1)
-                      : 'General';
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
-                      borderRadius: AppRadius.smallRadius,
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.2),
-                      ),
-                    ),
-                    child: Text(
-                      displayTheme,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-                        color: Colors.white.withValues(alpha: 0.7),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  );
-                }).toList(),
               ),
             ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          Text(
+            '"${entry.text}"',
+            style: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(context, 16,
+                  minSize: 14, maxSize: 18),
+              color: AppColors.primaryText,
+              height: 1.5,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.italic,
+            ),
+            maxLines: 5,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (entry.themes.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: entry.themes.take(3).map((theme) {
+                final displayTheme = theme.isNotEmpty
+                    ? theme.substring(0, 1).toUpperCase() + theme.substring(1)
+                    : 'General';
+                return Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.1),
+                    borderRadius: AppRadius.smallRadius,
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.2),
+                    ),
+                  ),
+                  child: Text(
+                    displayTheme,
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 11,
+                          minSize: 9, maxSize: 13),
+                      color: Colors.white.withValues(alpha: 0.7),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              }).toList(),
+            ),
           ],
-        ),
+        ],
+      ),
     );
   }
 
@@ -579,9 +624,11 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
           children: [
             ListTile(
               leading: _buildSheetIcon(Icons.copy),
-              title: Text(l10n.copyToClipboard, style: const TextStyle(color: Colors.white)),
+              title: Text(l10n.copyToClipboard,
+                  style: const TextStyle(color: Colors.white)),
               onTap: () {
-                final text = '"${verse.text}"\n\n${verse.reference} (${verse.translation})';
+                final text =
+                    '"${verse.text}"\n\n${verse.reference} (${verse.translation})';
                 Clipboard.setData(ClipboardData(text: text));
                 NavigationService.pop();
                 if (!mounted) return;
@@ -593,7 +640,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             ),
             ListTile(
               leading: _buildSheetIcon(Icons.share),
-              title: Text(l10n.shareText, style: const TextStyle(color: Colors.white)),
+              title: Text(l10n.shareText,
+                  style: const TextStyle(color: Colors.white)),
               onTap: () async {
                 NavigationService.pop();
                 final shareText = '"${verse.text}"\n\n— ${verse.reference}';
@@ -607,7 +655,9 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
 
                   // Only proceed if share was successful (not dismissed/cancelled)
                   if (result.status == ShareResultStatus.success) {
-                    await ref.read(unifiedVerseServiceProvider).recordSharedVerse(verse);
+                    await ref
+                        .read(unifiedVerseServiceProvider)
+                        .recordSharedVerse(verse);
 
                     ref.invalidate(sharedVersesProvider);
                     ref.invalidate(sharedVersesCountProvider);
@@ -633,7 +683,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             ),
             ListTile(
               leading: _buildSheetIcon(Icons.image),
-              title: Text(l10n.chatShareAsImage, style: const TextStyle(color: Colors.white)),
+              title: Text(l10n.chatShareAsImage,
+                  style: const TextStyle(color: Colors.white)),
               onTap: () async {
                 NavigationService.pop();
                 try {
@@ -647,7 +698,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                   // Invalidate all relevant providers to refresh UI
                   ref.invalidate(sharedVersesProvider);
                   ref.invalidate(sharedVersesCountProvider);
-                  ref.invalidate(totalSharesCountProvider); // For Disciple achievement (all share types)
+                  ref.invalidate(
+                      totalSharesCountProvider); // For Disciple achievement (all share types)
                   // Don't invalidate savedVersesCountProvider - sharing doesn't affect saved count
 
                   if (!mounted) return;
@@ -695,9 +747,12 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
               subtitle: Text(
                 l10n.browseAndManageYourSavedVerses,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                  fontSize: ResponsiveUtils.fontSize(context, 12,
+                      minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               onTap: () => Navigator.pop(context),
             ),
@@ -714,9 +769,12 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
               subtitle: Text(
                 l10n.jumpToRecentlySharedVerses,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                  fontSize: ResponsiveUtils.fontSize(context, 12,
+                      minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -725,7 +783,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             ),
             const SizedBox(height: AppSpacing.md),
             ListTile(
-              leading: _buildSheetIcon(Icons.delete_forever, iconColor: Colors.redAccent),
+              leading: _buildSheetIcon(Icons.delete_forever,
+                  iconColor: Colors.redAccent),
               title: Text(
                 l10n.clearSavedVerses,
                 style: const TextStyle(
@@ -736,7 +795,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
               subtitle: Text(
                 l10n.removeAllVersesFromSavedCollection,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                  fontSize: ResponsiveUtils.fontSize(context, 12,
+                      minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
                 ),
               ),
@@ -747,7 +807,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
             ),
             const SizedBox(height: AppSpacing.md),
             ListTile(
-              leading: _buildSheetIcon(Icons.delete_sweep, iconColor: Colors.redAccent),
+              leading: _buildSheetIcon(Icons.delete_sweep,
+                  iconColor: Colors.redAccent),
               title: Text(
                 l10n.clearSharedHistory,
                 style: const TextStyle(
@@ -758,7 +819,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
               subtitle: Text(
                 l10n.removeEveryVerseFromSharedActivity,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                  fontSize: ResponsiveUtils.fontSize(context, 12,
+                      minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
                 ),
               ),
@@ -875,7 +937,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                     child: Text(
                       l10n.clearSharedHistoryQuestion,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+                        fontSize: ResponsiveUtils.fontSize(context, 18,
+                            minSize: 16, maxSize: 20),
                         fontWeight: FontWeight.w700,
                         color: AppColors.primaryText,
                       ),
@@ -887,10 +950,13 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
               Text(
                 l10n.clearSharedHistoryConfirmation,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  fontSize: ResponsiveUtils.fontSize(context, 14,
+                      minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
                   height: 1.4,
                 ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: AppSpacing.xl),
               Row(
@@ -976,7 +1042,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
                     child: Text(
                       l10n.clearSavedVersesQuestion,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+                        fontSize: ResponsiveUtils.fontSize(context, 18,
+                            minSize: 16, maxSize: 20),
                         fontWeight: FontWeight.w700,
                         color: AppColors.primaryText,
                       ),
@@ -988,10 +1055,13 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen> with Ti
               Text(
                 l10n.clearSavedVersesConfirmation,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  fontSize: ResponsiveUtils.fontSize(context, 14,
+                      minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
                   height: 1.4,
                 ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: AppSpacing.xl),
               Row(

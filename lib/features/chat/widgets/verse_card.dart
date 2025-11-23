@@ -5,6 +5,7 @@ import '../../../models/bible_verse.dart';
 import '../../../theme/app_theme.dart';
 import '../../../components/glass_card.dart';
 import '../../../components/category_badge.dart';
+import '../../../utils/responsive_utils.dart';
 
 /// Beautiful card widget for displaying Bible verses
 class VerseCard extends StatelessWidget {
@@ -72,7 +73,9 @@ class VerseCard extends StatelessWidget {
           child: Text(
             verse.translation,
             style: TextStyle(
-              fontSize: compact ? 10 : 11,
+              fontSize: compact
+                ? ResponsiveUtils.fontSize(context, 10, minSize: 8, maxSize: 15)
+                : ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 16),
               fontWeight: FontWeight.w600,
               color: AppTheme.primaryColor,
             ),
@@ -85,7 +88,9 @@ class VerseCard extends StatelessWidget {
           child: Text(
             verse.reference,
             style: TextStyle(
-              fontSize: compact ? 14 : 16,
+              fontSize: compact
+                ? ResponsiveUtils.fontSize(context, 14, minSize: 11, maxSize: 21)
+                : ResponsiveUtils.fontSize(context, 16, minSize: 13, maxSize: 24),
               fontWeight: FontWeight.w600,
               color: AppTheme.primaryColor,
             ),
@@ -95,7 +100,9 @@ class VerseCard extends StatelessWidget {
         if (verse.isPopular) ...[
           Icon(
             Icons.star,
-            size: compact ? 16 : 18,
+            size: compact
+              ? ResponsiveUtils.iconSize(context, 16)
+              : ResponsiveUtils.iconSize(context, 18),
             color: Colors.amber,
           ),
         ],
@@ -107,7 +114,9 @@ class VerseCard extends StatelessWidget {
     return Text(
       verse.text,
       style: TextStyle(
-        fontSize: compact ? 14 : 16,
+        fontSize: compact
+          ? ResponsiveUtils.fontSize(context, 14, minSize: 11, maxSize: 21)
+          : ResponsiveUtils.fontSize(context, 16, minSize: 13, maxSize: 24),
         height: 1.5,
         color: Colors.white,
         fontStyle: FontStyle.italic,
@@ -133,6 +142,7 @@ class VerseCard extends StatelessWidget {
     return Row(
       children: [
         _buildActionButton(
+          context,
           icon: Icons.copy,
           label: compact ? null : 'Copy',
           onTap: () => _copyVerse(context),
@@ -141,6 +151,7 @@ class VerseCard extends StatelessWidget {
         const SizedBox(width: 8),
 
         _buildActionButton(
+          context,
           icon: Icons.share,
           label: compact ? null : 'Share',
           onTap: () => _shareVerse(context),
@@ -149,6 +160,7 @@ class VerseCard extends StatelessWidget {
         if (onBookmark != null) ...[
           const SizedBox(width: 8),
           _buildActionButton(
+            context,
             icon: isBookmarked ? Icons.bookmark : Icons.bookmark_border,
             label: compact ? null : (isBookmarked ? 'Saved' : 'Save'),
             onTap: onBookmark!,
@@ -161,7 +173,7 @@ class VerseCard extends StatelessWidget {
         Text(
           '${verse.length.emoji} ${compact ? '' : verse.length.description.split(' ').first}',
           style: TextStyle(
-            fontSize: 10,
+            fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 8, maxSize: 15),
             color: Colors.white.withValues(alpha: 0.5),
           ),
         ),
@@ -169,7 +181,8 @@ class VerseCard extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton({
+  Widget _buildActionButton(
+    BuildContext context, {
     required IconData icon,
     String? label,
     required VoidCallback onTap,
@@ -202,7 +215,7 @@ class VerseCard extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 14,
+              size: ResponsiveUtils.iconSize(context, 14),
               color: isSelected
                   ? AppTheme.primaryColor
                   : Colors.white.withValues(alpha: 0.7),
@@ -212,7 +225,7 @@ class VerseCard extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 16),
                   color: isSelected
                       ? AppTheme.primaryColor
                       : Colors.white.withValues(alpha: 0.7),
@@ -255,20 +268,20 @@ class VerseCard extends StatelessWidget {
               width: 1,
             ),
           ),
-          child: const Row(
+          child: Row(
             children: [
               Icon(
                 Icons.check_circle,
                 color: AppTheme.goldColor,
-                size: 20,
+                size: ResponsiveUtils.iconSize(context, 20),
               ),
-              SizedBox(width: 12),
+              const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   'Verse copied to clipboard',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 11, maxSize: 21),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -337,17 +350,17 @@ class CompactVerseCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     verse.reference,
-                    style: const TextStyle(
-                      fontSize: 12,
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 18),
                       fontWeight: FontWeight.w600,
                       color: AppTheme.primaryColor,
                     ),
                   ),
                 ),
                 if (verse.isPopular)
-                  const Icon(
+                  Icon(
                     Icons.star,
-                    size: 12,
+                    size: ResponsiveUtils.iconSize(context, 12),
                     color: Colors.amber,
                   ),
               ],
@@ -360,7 +373,7 @@ class CompactVerseCard extends StatelessWidget {
                   ? '${verse.text.substring(0, 77)}...'
                   : verse.text,
               style: TextStyle(
-                fontSize: 11,
+                fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 16),
                 color: Colors.white.withValues(alpha: 0.8),
                 height: 1.3,
               ),
@@ -405,8 +418,8 @@ class VerseCollection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             title,
-            style: const TextStyle(
-              fontSize: 18,
+            style: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 14, maxSize: 27),
               fontWeight: FontWeight.w600,
               color: AppTheme.primaryColor,
             ),

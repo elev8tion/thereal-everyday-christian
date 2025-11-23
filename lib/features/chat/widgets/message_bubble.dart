@@ -119,6 +119,8 @@ class MessageBubble extends StatelessWidget {
                       color: AppTheme.primaryColor,
                       fontWeight: FontWeight.w500,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -132,6 +134,8 @@ class MessageBubble extends StatelessWidget {
                 color: Colors.white,
                 height: 1.4,
               ),
+              maxLines: 500,
+              overflow: TextOverflow.visible,
             ),
 
             if (message.status == MessageStatus.sending) ...[
@@ -155,6 +159,8 @@ class MessageBubble extends StatelessWidget {
                       fontSize: 12,
                       color: Colors.white.withValues(alpha: 0.6),
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -176,6 +182,8 @@ class MessageBubble extends StatelessWidget {
                       fontSize: 12,
                       color: Colors.red.withValues(alpha: 0.8),
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -206,6 +214,8 @@ class MessageBubble extends StatelessWidget {
         fontSize: 11,
         color: Colors.white.withValues(alpha: 0.5),
       ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
@@ -380,6 +390,8 @@ class MessageBubble extends StatelessWidget {
       title: Text(
         title,
         style: const TextStyle(color: Colors.white),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
       onTap: onTap,
     );
@@ -474,6 +486,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
                     fontSize: 14,
                     color: Colors.white.withValues(alpha: 0.8),
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(width: 8),
                 AnimatedBuilder(

@@ -132,6 +132,8 @@ class ModernMessageBubble extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       color: message.isUser ? Colors.white70 : AppTheme.primaryColor,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -147,6 +149,8 @@ class ModernMessageBubble extends StatelessWidget {
                 height: 1.4,
                 fontWeight: FontWeight.w500,
               ),
+              maxLines: 500,
+              overflow: TextOverflow.visible,
             ),
           ],
         ),
@@ -252,6 +256,8 @@ class ModernMessageBubble extends StatelessWidget {
           color: Colors.grey.shade500,
           fontWeight: FontWeight.w500,
         ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
@@ -359,6 +365,8 @@ class ModernVerseCard extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                             color: AppTheme.primaryColor,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       if (onTap != null)
@@ -379,6 +387,8 @@ class ModernVerseCard extends StatelessWidget {
                       color: Theme.of(context).textTheme.bodyLarge?.color,
                       fontWeight: FontWeight.w500,
                     ),
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   if (verse.themes.isNotEmpty) ...[
                     const SizedBox(height: 8),
@@ -398,6 +408,8 @@ class ModernVerseCard extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               color: AppTheme.primaryColor,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ).toList(),

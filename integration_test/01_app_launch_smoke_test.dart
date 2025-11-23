@@ -24,11 +24,11 @@ void main() {
 
       // Launch the app
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           overrides: [
             // Override subscription service with initialized instance
           ],
-          child: const app.MyApp(),
+          child: app.MyApp(),
         ),
       );
 
@@ -52,8 +52,8 @@ void main() {
       await subscriptionService.initialize();
 
       await tester.pumpWidget(
-        ProviderScope(
-          child: const app.MyApp(),
+        const ProviderScope(
+          child: app.MyApp(),
         ),
       );
 
@@ -82,8 +82,8 @@ void main() {
       await subscriptionService.initialize();
 
       await tester.pumpWidget(
-        ProviderScope(
-          child: const app.MyApp(),
+        const ProviderScope(
+          child: app.MyApp(),
         ),
       );
 
@@ -146,8 +146,8 @@ void main() {
       await subscriptionService.initialize();
 
       await tester.pumpWidget(
-        ProviderScope(
-          child: const app.MyApp(),
+        const ProviderScope(
+          child: app.MyApp(),
         ),
       );
 
@@ -171,8 +171,8 @@ void main() {
       await subscriptionService.initialize();
 
       await tester.pumpWidget(
-        ProviderScope(
-          child: const app.MyApp(),
+        const ProviderScope(
+          child: app.MyApp(),
         ),
       );
 
@@ -215,8 +215,8 @@ void main() {
         await subscriptionService.initialize();
 
         await tester.pumpWidget(
-          ProviderScope(
-            child: const app.MyApp(),
+          const ProviderScope(
+            child: app.MyApp(),
           ),
         );
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../theme/app_theme.dart';
+import '../../utils/responsive_utils.dart';
 
 /// Shows a glass morphism style dialog
 ///
@@ -101,11 +102,13 @@ class GlassDialogButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonColor = color ?? (isPrimary ? AppTheme.primaryColor : AppTheme.secondaryColor);
+    final responsivePaddingHorizontal = ResponsiveUtils.scaleSize(context, 24, minScale: 0.8, maxScale: 1.5);
+    final responsivePaddingVertical = ResponsiveUtils.scaleSize(context, 12, minScale: 0.8, maxScale: 1.5);
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: responsivePaddingHorizontal, vertical: responsivePaddingVertical),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -134,7 +137,7 @@ class GlassDialogButton extends StatelessWidget {
           text,
           style: GoogleFonts.plusJakartaSans(
             color: Colors.white,
-            fontSize: 14,
+            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 11, maxSize: 21),
             fontWeight: FontWeight.bold,
           ),
         ),

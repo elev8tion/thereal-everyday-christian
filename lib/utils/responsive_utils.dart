@@ -30,8 +30,9 @@ class ResponsiveUtils {
   static bool isDesktop(BuildContext context) =>
       MediaQuery.of(context).size.width >= tabletBreakpoint;
 
-  /// Get responsive font size based on screen width
-  /// Base size scales proportionally with screen width, clamped to min/max
+  /// Get responsive font size based on screen width AND user's text scale preference
+  /// Base size scales proportionally with screen width, multiplied by user's text scale,
+  /// then clamped to min/max constraints
   static double fontSize(
     BuildContext context,
     double baseSize, {
@@ -40,14 +41,20 @@ class ResponsiveUtils {
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
     // Scale factor: 375 is baseline (iPhone SE/8), desktop gets larger
-    final scaleFactor = screenWidth / 375;
-    final scaled = baseSize * scaleFactor;
+    final screenScaleFactor = screenWidth / 375;
 
-    // Apply constraints
-    if (minSize != null && scaled < minSize) return minSize;
-    if (maxSize != null && scaled > maxSize) return maxSize;
+    // Apply user's text scale preference (from textSizeProvider via MediaQuery)
+    final textScaleFactor = MediaQuery.textScalerOf(context).scale(1.0);
 
-    return scaled;
+    // Apply both scaling factors to base size
+    final scaled = baseSize * screenScaleFactor * textScaleFactor;
+
+    // Apply constraints to the final scaled result
+    double finalSize = scaled;
+    if (minSize != null && finalSize < minSize) finalSize = minSize;
+    if (maxSize != null && finalSize > maxSize) finalSize = maxSize;
+
+    return finalSize;
   }
 
   /// Get responsive spacing based on screen size
@@ -183,12 +190,12 @@ class ResponsiveUtils {
 
   /// Get responsive border radius
   static double borderRadius(BuildContext context, double baseRadius) {
-    return scaleSize(context, baseRadius, minScale: 0.9, maxScale: 1.2);
+    return scaleSize(context, baseRadius, minScale: 0.8, maxScale: 1.5);
   }
 
   /// Get responsive icon size
   static double iconSize(BuildContext context, double baseSize) {
-    return scaleSize(context, baseSize, minScale: 0.85, maxScale: 1.3);
+    return scaleSize(context, baseSize, minScale: 0.8, maxScale: 1.5);
   }
 }
 

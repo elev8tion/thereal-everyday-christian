@@ -149,12 +149,15 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                 child: Row(
                   children: [
-                    Text(
-                      l10n.filterByCategory,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.secondaryText,
+                    Flexible(
+                      child: Text(
+                        l10n.filterByCategory,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.secondaryText,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const Spacer(),
@@ -181,7 +184,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
               ),
               const SizedBox(height: 8),
               SizedBox(
-                height: ResponsiveUtils.scaleSize(context, 36, minScale: 0.9, maxScale: 1.2),
+                height: ResponsiveUtils.scaleSize(context, 38, minScale: 0.9, maxScale: 1.4),
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
@@ -194,7 +197,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                           ref.read(selectedCategoryFilterProvider.notifier).state = null;
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                           decoration: BoxDecoration(
                             gradient: selectedCategory == null
                                 ? LinearGradient(
@@ -307,7 +310,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
+          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 100),
           itemCount: prayers.length,
           itemBuilder: (context, index) {
             final prayer = prayers[index];
@@ -363,7 +366,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
+          padding: const EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 100),
           itemCount: prayers.length,
           itemBuilder: (context, index) {
             final prayer = prayers[index];
@@ -456,35 +459,38 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
     return DarkGlassContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
-                categoriesAsync.when(
-                  data: (categories) {
-                    final category = categories.firstWhere(
-                      (c) => c.id == prayer.categoryId,
-                      orElse: () => categories.isNotEmpty ? categories.first : _getDefaultCategory(),
-                    );
-                    return CategoryBadge(
-                      text: _getLocalizedCategoryName(category.name),
-                      badgeColor: category.color,
-                      icon: category.icon,
+                Flexible(
+                  child: categoriesAsync.when(
+                    data: (categories) {
+                      final category = categories.firstWhere(
+                        (c) => c.id == prayer.categoryId,
+                        orElse: () => categories.isNotEmpty ? categories.first : _getDefaultCategory(),
+                      );
+                      return CategoryBadge(
+                        text: _getLocalizedCategoryName(category.name),
+                        badgeColor: category.color,
+                        icon: category.icon,
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
+                      );
+                    },
+                    loading: () => CategoryBadge(
+                      text: l10n.loading,
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-                    );
-                  },
-                  loading: () => CategoryBadge(
-                    text: l10n.loading,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-                  ),
-                  error: (_, __) => CategoryBadge(
-                    text: l10n.general,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
+                    ),
+                    error: (_, __) => CategoryBadge(
+                      text: l10n.general,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
+                    ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 if (prayer.isAnswered)
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -607,6 +613,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       l10n.howGodAnswered,
@@ -630,37 +637,51 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
               ),
             ],
             const SizedBox(height: AppSpacing.md),
-            Row(
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
               children: [
-                Icon(
-                  Icons.schedule,
-                  size: ResponsiveUtils.iconSize(context, 14),
-                  color: AppColors.tertiaryText,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  _formatDate(prayer.dateCreated),
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                    color: AppColors.tertiaryText,
-                  ),
-                ),
-                if (prayer.isAnswered && prayer.dateAnswered != null) ...[
-                  const SizedBox(width: AppSpacing.lg),
-                  Icon(
-                    Icons.check_circle,
-                    size: ResponsiveUtils.iconSize(context, 14),
-                    color: Colors.green.withValues(alpha: 0.8),
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    l10n.answered_date(_formatDate(prayer.dateAnswered!)),
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                      color: Colors.green.withValues(alpha: 0.8),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.schedule,
+                      size: ResponsiveUtils.iconSize(context, 14),
+                      color: AppColors.tertiaryText,
                     ),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        _formatDate(prayer.dateCreated),
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                          color: AppColors.tertiaryText,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                if (prayer.isAnswered && prayer.dateAnswered != null)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        size: ResponsiveUtils.iconSize(context, 14),
+                        color: Colors.green.withValues(alpha: 0.8),
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          l10n.answered_date(_formatDate(prayer.dateAnswered!)),
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                            color: Colors.green.withValues(alpha: 0.8),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
               ],
             ),
           ],
@@ -699,132 +720,140 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                   behavior: HitTestBehavior.translucent,
                   onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                   child: FrostedGlassCard(
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.8,
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                        Text(
-                          l10n.addPrayerRequest,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primaryText,
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
                           ),
-                        ),
-                        const SizedBox(height: AppSpacing.xl),
-
-                        Text(
-                          l10n.title,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryText,
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        TextField(
-                          onChanged: (value) => title = value,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintText: l10n.whatArePrayingFor,
-                            hintStyle: TextStyle(color: AppColors.tertiaryText),
-                            filled: true,
-                            fillColor: Colors.white.withValues(alpha: 0.1),
-                            border: OutlineInputBorder(
-                              borderRadius: AppRadius.mediumRadius,
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(height: AppSpacing.lg),
-                        Text(
-                          l10n.category,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryText,
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        if (categories.isNotEmpty)
-                          SizedBox(
-                            height: ResponsiveUtils.scaleSize(context, 40, minScale: 0.9, maxScale: 1.2),
-                            child: BlurDropdown(
-                              value: _getLocalizedCategoryName(categories.firstWhere((c) => c.id == selectedCategoryId, orElse: () => categories.first).name),
-                              items: categories.map((category) => _getLocalizedCategoryName(category.name)).toList(),
-                              hint: l10n.selectCategory,
-                              onChanged: (value) {
-                                if (value != null) {
-                                  setState(() {
-                                    // Find category by matching localized name back to English
-                                    final matchedCategory = categories.firstWhere(
-                                      (c) => _getLocalizedCategoryName(c.name) == value,
-                                      orElse: () => categories.first,
-                                    );
-                                    selectedCategoryId = matchedCategory.id;
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-
-                  const SizedBox(height: AppSpacing.lg),
-                  Text(
-                    l10n.description,
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  TextField(
-                    onChanged: (value) => description = value,
-                    maxLines: 3,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: l10n.shareMoreDetails,
-                      hintStyle: TextStyle(color: AppColors.tertiaryText),
-                      filled: true,
-                      fillColor: Colors.white.withValues(alpha: 0.1),
-                      border: OutlineInputBorder(
-                        borderRadius: AppRadius.mediumRadius,
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-
-                        const SizedBox(height: AppSpacing.xxl),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: GlassButton(
-                                text: l10n.cancel,
-                                height: 48,
-                                onPressed: () => NavigationService.pop(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            Text(
+                              l10n.addPrayerRequest,
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primaryText,
                               ),
                             ),
-                            const SizedBox(width: AppSpacing.md),
-                            Expanded(
-                              child: GlassButton(
-                                text: l10n.addPrayerButton,
-                                height: 48,
-                                onPressed: () {
-                                  if (title.isNotEmpty && description.isNotEmpty && selectedCategoryId != null) {
-                                    _addPrayer(title, description, selectedCategoryId!);
-                                    NavigationService.pop();
-                                  }
-                                },
+                            const SizedBox(height: AppSpacing.xl),
+
+                            Text(
+                              l10n.title,
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryText,
                               ),
                             ),
+                            const SizedBox(height: AppSpacing.sm),
+                            TextField(
+                              onChanged: (value) => title = value,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: l10n.whatArePrayingFor,
+                                hintStyle: TextStyle(color: AppColors.tertiaryText),
+                                filled: true,
+                                fillColor: Colors.white.withValues(alpha: 0.1),
+                                border: OutlineInputBorder(
+                                  borderRadius: AppRadius.mediumRadius,
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: AppSpacing.lg),
+                            Text(
+                              l10n.category,
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryText,
+                              ),
+                            ),
+                            const SizedBox(height: AppSpacing.sm),
+                            if (categories.isNotEmpty)
+                              SizedBox(
+                                height: ResponsiveUtils.scaleSize(context, 40, minScale: 0.9, maxScale: 1.2),
+                                child: BlurDropdown(
+                                  value: _getLocalizedCategoryName(categories.firstWhere((c) => c.id == selectedCategoryId, orElse: () => categories.first).name),
+                                  items: categories.map((category) => _getLocalizedCategoryName(category.name)).toList(),
+                                  hint: l10n.selectCategory,
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      setState(() {
+                                        // Find category by matching localized name back to English
+                                        final matchedCategory = categories.firstWhere(
+                                          (c) => _getLocalizedCategoryName(c.name) == value,
+                                          orElse: () => categories.first,
+                                        );
+                                        selectedCategoryId = matchedCategory.id;
+                                      });
+                                    }
+                                  },
+                                ),
+                              ),
+
+                      const SizedBox(height: AppSpacing.lg),
+                      Text(
+                        l10n.description,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryText,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      TextField(
+                        onChanged: (value) => description = value,
+                        maxLines: 4,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: l10n.shareMoreDetails,
+                          hintStyle: TextStyle(color: AppColors.tertiaryText),
+                          filled: true,
+                          fillColor: Colors.white.withValues(alpha: 0.1),
+                          border: OutlineInputBorder(
+                            borderRadius: AppRadius.mediumRadius,
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+
+                            const SizedBox(height: AppSpacing.xxl),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: GlassButton(
+                                    text: l10n.cancel,
+                                    height: 48,
+                                    onPressed: () => NavigationService.pop(),
+                                  ),
+                                ),
+                                const SizedBox(width: AppSpacing.md),
+                                Expanded(
+                                  child: GlassButton(
+                                    text: l10n.addPrayerButton,
+                                    height: 48,
+                                    onPressed: () {
+                                      if (title.isNotEmpty && description.isNotEmpty && selectedCategoryId != null) {
+                                        _addPrayer(title, description, selectedCategoryId!);
+                                        NavigationService.pop();
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: AppSpacing.md),
                           ],
+                          ),
                         ),
-                      ],
                       ),
                     ),
                   ),
@@ -880,90 +909,107 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
 
         return Dialog(
           backgroundColor: Colors.transparent,
-          child: FrostedGlassCard(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.answered,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryText,
-                  ),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: FrostedGlassCard(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.7,
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.answered,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primaryText,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.xl),
 
-                Text(
-                  l10n.howDidGodAnswer,
-                  style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryText,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                TextField(
-                  onChanged: (value) => answerDescription = value,
-                  maxLines: 3,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintText: l10n.shareHowGodAnswered,
-                    hintStyle: TextStyle(color: AppColors.tertiaryText),
-                    filled: true,
-                    fillColor: Colors.white.withValues(alpha: 0.1),
-                    border: OutlineInputBorder(
-                      borderRadius: AppRadius.mediumRadius,
-                      borderSide: BorderSide.none,
+                        Text(
+                          l10n.howDidGodAnswer,
+                          style: TextStyle(
+                            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryText,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        TextField(
+                          onChanged: (value) => answerDescription = value,
+                          maxLines: 4,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            hintText: l10n.shareHowGodAnswered,
+                            hintStyle: TextStyle(color: AppColors.tertiaryText),
+                            filled: true,
+                            fillColor: Colors.white.withValues(alpha: 0.1),
+                            border: OutlineInputBorder(
+                              borderRadius: AppRadius.mediumRadius,
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: AppSpacing.xxl),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: GlassButton(
+                                text: l10n.cancel,
+                                height: 48,
+                                onPressed: () => NavigationService.pop(),
+                              ),
+                            ),
+                            const SizedBox(width: AppSpacing.md),
+                            Expanded(
+                              child: GlassButton(
+                                text: l10n.answered,
+                                height: 48,
+                                onPressed: () async {
+                                  if (answerDescription.isNotEmpty) {
+                                    final actions = ref.read(prayerActionsProvider);
+
+                                    try {
+                                      await actions.markAnswered(prayer.id, answerDescription);
+                                      if (!context.mounted) return;
+
+                                      NavigationService.pop();
+                                      AppSnackBar.show(
+                                        context,
+                                        message: l10n.prayerMarkedAnswered,
+                                        icon: Icons.check_circle,
+                                        duration: const Duration(seconds: 2),
+                                      );
+                                    } catch (e) {
+                                      if (!context.mounted) return;
+                                      AppSnackBar.showError(
+                                        context,
+                                        message: l10n.errorWithMessage(e.toString()),
+                                      );
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                      ],
                     ),
                   ),
                 ),
-
-                const SizedBox(height: AppSpacing.xxl),
-                Row(
-                  children: [
-                    Expanded(
-                      child: GlassButton(
-                        text: l10n.cancel,
-                        height: 48,
-                        onPressed: () => NavigationService.pop(),
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: GlassButton(
-                        text: l10n.answered,
-                        height: 48,
-                        onPressed: () async {
-                          if (answerDescription.isNotEmpty) {
-                            final actions = ref.read(prayerActionsProvider);
-
-                            try {
-                              await actions.markAnswered(prayer.id, answerDescription);
-                              if (!context.mounted) return;
-
-                              NavigationService.pop();
-                              AppSnackBar.show(
-                                context,
-                                message: l10n.prayerMarkedAnswered,
-                                icon: Icons.check_circle,
-                                duration: const Duration(seconds: 2),
-                              );
-                            } catch (e) {
-                              if (!context.mounted) return;
-                              AppSnackBar.showError(
-                                context,
-                                message: l10n.errorWithMessage(e.toString()),
-                              );
-                            }
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
           ),
         );
@@ -1180,5 +1226,5 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
     }
   }
 
-  
+
 }

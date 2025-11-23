@@ -107,7 +107,7 @@ void main() {
       }
 
       // Calculate statistics
-      final expectedUsagePerKey = launchCount / poolSize; // Should be 50
+      const expectedUsagePerKey = launchCount / poolSize; // Should be 50
       final maxDeviation = keyUsageCounts.map((count) => (count - expectedUsagePerKey).abs()).reduce((a, b) => a > b ? a : b);
       final avgUsage = keyUsageCounts.reduce((a, b) => a + b) / poolSize;
 
@@ -159,7 +159,7 @@ void main() {
       }
 
       print('\n📊 Starting Position Distribution (100 users):');
-      final expectedPerPosition = userCount / poolSize; // Should be ~5
+      const expectedPerPosition = userCount / poolSize; // Should be ~5
       for (int i = 0; i < poolSize; i++) {
         final percentage = (startingPositionCounts[i] / userCount * 100).toStringAsFixed(1);
         final bar = '█' * startingPositionCounts[i];
@@ -195,7 +195,7 @@ void main() {
       }
 
       print('\n📊 Concurrent Load Distribution (10,000 users at peak hour):');
-      final expectedUsersPerKey = userCount / poolSize; // Should be 500
+      const expectedUsersPerKey = userCount / poolSize; // Should be 500
       final maxUsersOnOneKey = currentKeyUsage.reduce((a, b) => a > b ? a : b);
       final minUsersOnOneKey = currentKeyUsage.reduce((a, b) => a < b ? a : b);
 
@@ -260,14 +260,14 @@ void main() {
       }
 
       print('\n📊 Long-Term Distribution (100 users × 50 launches = 5,000 total):');
-      final expectedUsagePerKey = totalLaunches / poolSize; // Should be 250
+      const expectedUsagePerKey = totalLaunches / poolSize; // Should be 250
 
       for (int i = 0; i < poolSize; i++) {
         final percentage = (totalKeyUsage[i] / totalLaunches * 100).toStringAsFixed(1);
         final deviation = (totalKeyUsage[i] - expectedUsagePerKey).toStringAsFixed(1);
         final deviationSign = totalKeyUsage[i] > expectedUsagePerKey ? '+' : '';
         final bar = '█' * (totalKeyUsage[i] ~/ 10);
-        print('Key #${(i + 1).toString().padLeft(2)}: ${totalKeyUsage[i].toString().padLeft(4)} ($percentage%) ${deviationSign}$deviation $bar');
+        print('Key #${(i + 1).toString().padLeft(2)}: ${totalKeyUsage[i].toString().padLeft(4)} ($percentage%) $deviationSign$deviation $bar');
       }
 
       final avgUsage = totalKeyUsage.reduce((a, b) => a + b) / poolSize;

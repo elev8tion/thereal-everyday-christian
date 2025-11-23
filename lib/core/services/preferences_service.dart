@@ -59,7 +59,7 @@ class PreferencesService {
   // Default values
   static const String _defaultThemeMode = 'dark';
   static const String _defaultLanguage = 'English';
-  static const double _defaultTextSize = 16.0;
+  static const double _defaultTextSize = 1.0; // Scale factor (1.0 = 100%)
   static const bool _defaultNotificationsEnabled = true;
   static const String _defaultNotificationTime = '08:00'; // 8:00 AM
   static const String _defaultDevotionalTime = '07:00'; // 7:00 AM
@@ -210,7 +210,7 @@ class PreferencesService {
 
   /// Load text size from preferences
   ///
-  /// Returns saved text size or defaults to 16.0 if not found.
+  /// Returns saved text size scale factor or defaults to 1.0 (100%) if not found.
   double loadTextSize() {
     try {
       final double? size = _preferences?.getDouble(_textSizeKey);
@@ -694,5 +694,15 @@ class PreferencesService {
       'language': _preferences!.getString(_languageKey),
       'text_size': _preferences!.getDouble(_textSizeKey),
     };
+  }
+
+  /// Reset singleton instance for testing
+  ///
+  /// WARNING: This method should ONLY be used in tests to reset the singleton
+  /// state between test runs. Do not call this in production code.
+  @visibleForTesting
+  static void resetForTesting() {
+    _instance = null;
+    _preferences = null;
   }
 }

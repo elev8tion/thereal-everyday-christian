@@ -345,11 +345,18 @@ class ChatScreen extends HookConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(crisisResult.getMessage(language: currentLanguage), style: const TextStyle(fontSize: 14, color: Colors.white)),
+                  Text(
+                    crisisResult.getMessage(language: currentLanguage),
+                    style: const TextStyle(fontSize: 14, color: Colors.white),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   const SizedBox(height: 8),
                   Text(
                     l10n.crisisResourcesTapToView,
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.orange.shade300),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -624,6 +631,8 @@ class ChatScreen extends HookConsumerWidget {
                             fontSize: ResponsiveUtils.fontSize(context, 14),
                             fontWeight: FontWeight.w500,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -688,6 +697,8 @@ class ChatScreen extends HookConsumerWidget {
                           fontSize: ResponsiveUtils.fontSize(context, 14),
                           fontWeight: FontWeight.w500,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -830,6 +841,8 @@ class ChatScreen extends HookConsumerWidget {
                           fontSize: ResponsiveUtils.fontSize(context, 14),
                           fontWeight: FontWeight.w500,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -884,6 +897,8 @@ class ChatScreen extends HookConsumerWidget {
                           fontSize: ResponsiveUtils.fontSize(context, 14),
                           fontWeight: FontWeight.w500,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -2390,12 +2405,12 @@ class ChatScreen extends HookConsumerWidget {
               ),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.check_circle,
                     color: AppTheme.goldColor,
                     size: 20,
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       '✨ New conversation started',
@@ -2520,12 +2535,12 @@ class ChatScreen extends HookConsumerWidget {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.check_circle,
                                   color: AppTheme.goldColor,
                                   size: 20,
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Expanded(
                                   child: Text(
                                     '✨ New conversation started! Previous chat saved to history.',
@@ -2646,6 +2661,8 @@ class ChatScreen extends HookConsumerWidget {
                         fontSize: ResponsiveUtils.fontSize(context, 13),
                         fontWeight: FontWeight.w600,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -2654,6 +2671,8 @@ class ChatScreen extends HookConsumerWidget {
                         color: Colors.white.withValues(alpha: 0.9),
                         fontSize: ResponsiveUtils.fontSize(context, 11),
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

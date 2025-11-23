@@ -417,14 +417,14 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      '${widget.book} Chapter $currentChapter',
+                      widget.book,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 22),
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                         height: 1.2,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),

@@ -122,7 +122,17 @@ class SubscriptionService {
       await _loadProducts();
 
       // Auto-restore purchases on app launch (prevents data loss after "Delete All Data")
-      await restorePurchases();
+      // Use timeout to prevent hanging on simulator or when StoreKit is unavailable
+      try {
+        await restorePurchases().timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            debugPrint('📊 [SubscriptionService] Restore purchases timed out (expected on simulator)');
+          },
+        );
+      } catch (e) {
+        debugPrint('📊 [SubscriptionService] Restore purchases failed: $e');
+      }
 
       // ============================================================
       // TRIAL ABUSE PREVENTION: Check Keychain for previous trial

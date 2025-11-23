@@ -198,6 +198,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                     top: AppSpacing.xl,
                     left: AppSpacing.xl,
                     right: AppSpacing.xl,
+                    bottom: AppSpacing.xxl * 2, // Add substantial bottom padding to prevent overflow
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,11 +248,11 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
                       // Navigation Buttons
                       _buildNavigationButtons(devotionals.length, devotionals),
-                      const SizedBox(height: AppSpacing.xl),
+                      const SizedBox(height: AppSpacing.xxl),
 
                       // Progress Indicator
                       _buildProgressIndicator(devotionals),
-                      const SizedBox(height: AppSpacing.xl),
+                      const SizedBox(height: AppSpacing.xxl),
                     ],
                   ),
                 );
