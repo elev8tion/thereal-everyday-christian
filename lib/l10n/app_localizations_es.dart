@@ -356,7 +356,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String dayStreakCount(int count) {
-    return 'racha de $count días';
+    return '$count días de racha';
   }
 
   @override

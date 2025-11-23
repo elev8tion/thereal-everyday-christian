@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/clear_glass_card.dart';
@@ -323,53 +322,47 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
           ),
         ),
       ),
-      customSubtitle: Row(
+      customSubtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Flexible(
-            child: streakAsync.when(
-              data: (streak) => Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.local_fire_department,
-                    color: streak > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.5),
-                    size: ResponsiveUtils.iconSize(context, 16),
-                  ),
-                  const SizedBox(width: 4),
-                  Flexible(
-                    child: AutoSizeText(
-                      l10n.dayStreakCount(streak),
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 8, maxSize: 14),
-                        color: AppColors.secondaryText,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      maxLines: 1,
-                      minFontSize: 8,
+          streakAsync.when(
+            data: (streak) => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.local_fire_department,
+                  color: streak > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.5),
+                  size: ResponsiveUtils.iconSize(context, 16),
+                ),
+                const SizedBox(width: 4),
+                Flexible(
+                  child: Text(
+                    l10n.dayStreakCount(streak),
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                      color: AppColors.secondaryText,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ],
-              ),
-              loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
-            ),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          Flexible(
-            child: totalCompletedAsync.when(
-              data: (total) => AutoSizeText(
-                l10n.completed(total),
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 8, maxSize: 14),
-                  color: AppColors.secondaryText,
-                  fontWeight: FontWeight.w500,
                 ),
-                maxLines: 1,
-                minFontSize: 8,
-              ),
-              loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
+              ],
             ),
+            loading: () => const SizedBox.shrink(),
+            error: (_, __) => const SizedBox.shrink(),
+          ),
+          const SizedBox(height: 2),
+          totalCompletedAsync.when(
+            data: (total) => Text(
+              l10n.completed(total),
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                color: AppColors.secondaryText,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            loading: () => const SizedBox.shrink(),
+            error: (_, __) => const SizedBox.shrink(),
           ),
         ],
       ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast),

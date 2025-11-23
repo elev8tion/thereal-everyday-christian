@@ -100,7 +100,7 @@
   "today": "Hoy",
   "yesterday": "Ayer",
   "daysAgo": "hace {count} días",
-  "dayStreakCount": "racha de {count} días",
+  "dayStreakCount": "{count} días de racha",
   "completed": "{count} completados",
   "dayNumber": "Día {number}",
   "todaysVerse": "Versículo de Hoy",
