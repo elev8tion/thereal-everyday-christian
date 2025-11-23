@@ -618,11 +618,12 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       l10n.howGodAnswered,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                         fontWeight: FontWeight.w600,
@@ -632,6 +633,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                     const SizedBox(height: 4),
                     Text(
                       prayer.answerDescription!,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
                         color: Colors.white.withValues(alpha: 0.9),
