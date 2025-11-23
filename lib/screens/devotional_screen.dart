@@ -996,6 +996,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
       canGoForward = nextDateOnly.isBefore(todayDate) || nextDateOnly.isAtSameMomentAs(todayDate);
     }
 
+    // At 130%+ text scale, show icons only to prevent overflow
+    final textScale = MediaQuery.textScalerOf(context).scale(1.0);
+    final showIconsOnly = textScale >= 1.3;
+
     return Row(
       children: [
         Expanded(
@@ -1015,14 +1019,16 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                           color: AppColors.primaryText,
                           size: ResponsiveUtils.iconSize(context, 16),
                         ),
-                        const SizedBox(width: AppSpacing.sm),
-                        Text(
-                          l10n.previousDay,
-                          style: const TextStyle(
-                            color: AppColors.primaryText,
-                            fontWeight: FontWeight.w600,
+                        if (!showIconsOnly) ...[
+                          const SizedBox(width: AppSpacing.sm),
+                          Text(
+                            l10n.previousDay,
+                            style: const TextStyle(
+                              color: AppColors.primaryText,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
+                        ],
                       ],
                     ),
                   ),
@@ -1043,14 +1049,16 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          l10n.nextDay,
-                          style: const TextStyle(
-                            color: AppColors.primaryText,
-                            fontWeight: FontWeight.w600,
+                        if (!showIconsOnly) ...[
+                          Text(
+                            l10n.nextDay,
+                            style: const TextStyle(
+                              color: AppColors.primaryText,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: AppSpacing.sm),
+                          const SizedBox(width: AppSpacing.sm),
+                        ],
                         Icon(
                           Icons.arrow_forward_ios,
                           color: AppColors.primaryText,
@@ -1085,6 +1093,13 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
     final monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     final monthName = monthNames[currentDate.month - 1];
 
+    // At 130%+ text scale, show shorter header to prevent overflow
+    final textScale = MediaQuery.textScalerOf(context).scale(1.0);
+    final useShortHeader = textScale >= 1.3;
+    final headerText = useShortHeader
+        ? '$monthName ${currentDate.year}'
+        : l10n.monthYearProgress(monthName, currentDate.year.toString());
+
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
@@ -1093,14 +1108,18 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                l10n.monthYearProgress(monthName, currentDate.year.toString()),
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryText,
+              Expanded(
+                child: Text(
+                  headerText,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryText,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: AppSpacing.sm),
               Text(
                 l10n.progressCount(monthlyIndex + 1, monthlyDevotionals.length),
                 style: TextStyle(
