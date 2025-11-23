@@ -489,12 +489,14 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 size: ResponsiveUtils.iconSize(context, 20),
               ),
               const SizedBox(width: AppSpacing.sm),
-              Text(
-                l10n.openingScripture,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryText,
+              Flexible(
+                child: Text(
+                  l10n.openingScripture,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryText,
+                  ),
                 ),
               ),
             ],
@@ -549,12 +551,14 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 size: ResponsiveUtils.iconSize(context, 20),
               ),
               const SizedBox(width: AppSpacing.sm),
-              Text(
-                l10n.keyVerseSpotlight,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryText,
+              Flexible(
+                child: Text(
+                  l10n.keyVerseSpotlight,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryText,
+                  ),
                 ),
               ),
             ],
@@ -641,12 +645,14 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 size: ResponsiveUtils.iconSize(context, 20),
               ),
               const SizedBox(width: AppSpacing.sm),
-              Text(
-                l10n.lifeApplication,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryText,
+              Flexible(
+                child: Text(
+                  l10n.lifeApplication,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryText,
+                  ),
                 ),
               ),
             ],
@@ -686,12 +692,14 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 size: ResponsiveUtils.iconSize(context, 20),
               ),
               const SizedBox(width: AppSpacing.sm),
-              Text(
-                l10n.prayer,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryText,
+              Flexible(
+                child: Text(
+                  l10n.prayer,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryText,
+                  ),
                 ),
               ),
             ],
@@ -792,12 +800,14 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 size: ResponsiveUtils.iconSize(context, 20),
               ),
               const SizedBox(width: AppSpacing.sm),
-              Text(
-                l10n.extended,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryText,
+              Flexible(
+                child: Text(
+                  l10n.extended,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryText,
+                  ),
                 ),
               ),
             ],
@@ -875,12 +885,14 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             size: ResponsiveUtils.iconSize(context, 16),
           ),
           const SizedBox(width: AppSpacing.xs),
-          Text(
-            devotional.readingTime,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-              color: AppColors.secondaryText,
-              fontWeight: FontWeight.w500,
+          Flexible(
+            child: Text(
+              devotional.readingTime,
+              style: TextStyle(
+                fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                color: AppColors.secondaryText,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
