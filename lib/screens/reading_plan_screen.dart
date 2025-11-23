@@ -410,24 +410,32 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
-          Row(
+          // Stats row - use Wrap for accessibility at large text scales
+          Wrap(
+            spacing: AppSpacing.lg,
+            runSpacing: AppSpacing.sm,
             children: [
-              Icon(
-                Icons.schedule,
-                size: ResponsiveUtils.iconSize(context, 16),
-                color: Colors.white.withValues(alpha: 0.7),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.schedule,
+                    size: ResponsiveUtils.iconSize(context, 16),
+                    color: Colors.white.withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    plan.estimatedTimePerDay,
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                      color: AppColors.secondaryText,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 6),
-              Text(
-                plan.estimatedTimePerDay,
-                style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                  color: AppColors.secondaryText,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.lg),
               currentDayAsync.when(
                 data: (day) => Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.calendar_today,
@@ -444,13 +452,13 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                     ),
                   ],
                 ),
-                loading: () => const SizedBox(),
-                error: (_, __) => const SizedBox(),
+                loading: () => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
               ),
-              const Spacer(),
               streakAsync.when(
                 data: (streak) => streak > 0
                     ? Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.local_fire_department,
@@ -468,9 +476,9 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                           ),
                         ],
                       )
-                    : const SizedBox(),
-                loading: () => const SizedBox(),
-                error: (_, __) => const SizedBox(),
+                    : const SizedBox.shrink(),
+                loading: () => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
               ),
             ],
           ),
@@ -689,19 +697,15 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                 color: Colors.white.withValues(alpha: 0.9),
                 height: 1.4,
               ),
-              maxLines: 5,
-              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: AppSpacing.lg),
-            Row(
+            // Stats row - use Wrap for accessibility at large text scales
+            Wrap(
+              spacing: AppSpacing.lg,
+              runSpacing: AppSpacing.sm,
               children: [
-                Flexible(
-                  child: _buildPlanStat(Icons.schedule, plan.estimatedTimePerDay),
-                ),
-                const SizedBox(width: AppSpacing.lg),
-                Flexible(
-                  child: _buildPlanStat(Icons.calendar_today, plan.duration),
-                ),
+                _buildPlanStat(Icons.schedule, plan.estimatedTimePerDay),
+                _buildPlanStat(Icons.calendar_today, plan.duration),
               ],
             ),
             if (plan.isStarted) ...[
@@ -827,6 +831,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
 
   Widget _buildPlanStat(IconData icon, String text) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
           icon,
@@ -834,14 +839,14 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
           color: Colors.white.withValues(alpha: 0.7),
         ),
         const SizedBox(width: 6),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-            color: AppColors.secondaryText,
+        Flexible(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+              color: AppColors.secondaryText,
+            ),
           ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
