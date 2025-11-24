@@ -985,6 +985,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       child: GlassButton(
                         text: l10n.clear,
                         height: 48,
+                        borderColor: Colors.redAccent,
                         onPressed: () async {
                           NavigationService.pop();
                           await _clearCache();
