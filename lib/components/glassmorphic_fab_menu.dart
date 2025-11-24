@@ -31,6 +31,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
   late AnimationController _controller;
   bool _isVisible = false;
   OverlayEntry? _overlayEntry;
+  bool _isNavigating = false; // Debounce protection for rapid taps
 
   // Menu items matching your app routes (now a method to access l10n)
   List<MenuOption> _getMenuOptions(BuildContext context) {
@@ -226,6 +227,10 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
   Widget _buildMenuItem(MenuOption option) {
     return GestureDetector(
       onTap: () {
+        // Debounce protection: prevent rapid double-taps
+        if (_isNavigating) return;
+        _isNavigating = true;
+
         HapticFeedback.lightImpact();
         final route = option.route;
         _toggleMenu();
@@ -245,6 +250,10 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
               Navigator.pushReplacementNamed(context, route);
             }
           }
+          // Reset debounce flag after navigation completes
+          Future.delayed(const Duration(milliseconds: 300), () {
+            if (mounted) _isNavigating = false;
+          });
         });
       },
       child: ClipRRect(

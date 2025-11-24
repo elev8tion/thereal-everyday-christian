@@ -2465,7 +2465,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get startYourFreeTrial => 'Inicia tu prueba gratuita';
 
   @override
-  String get notificationTime => 'Hora de notificación';
+  String get notificationTime => 'Hora Alerta';
 
   @override
   String get biometricNotAvailable =>

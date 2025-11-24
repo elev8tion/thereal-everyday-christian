@@ -2438,7 +2438,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startYourFreeTrial => 'Start your free trial';
 
   @override
-  String get notificationTime => 'Notification Time';
+  String get notificationTime => 'Notify Time';
 
   @override
   String get biometricNotAvailable =>

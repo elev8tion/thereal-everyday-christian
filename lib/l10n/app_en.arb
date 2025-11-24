@@ -3274,7 +3274,7 @@
   "@startYourFreeTrial": {
     "description": "Start free trial link"
   },
-  "notificationTime": "Notification Time",
+  "notificationTime": "Notify Time",
   "@notificationTime": {
     "description": "Notification time setting"
   },

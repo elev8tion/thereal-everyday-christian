@@ -4392,7 +4392,7 @@ abstract class AppLocalizations {
   /// Notification time setting
   ///
   /// In en, this message translates to:
-  /// **'Notification Time'**
+  /// **'Notify Time'**
   String get notificationTime;
 
   /// Biometric not available error
