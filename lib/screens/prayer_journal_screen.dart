@@ -458,7 +458,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
 
     return DarkGlassContainer(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
@@ -591,6 +591,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             const SizedBox(height: AppSpacing.md),
             Text(
               prayer.title,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                 fontWeight: FontWeight.w700,
@@ -600,6 +601,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             const SizedBox(height: AppSpacing.sm),
             Text(
               prayer.description,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
                 color: Colors.white.withValues(alpha: 0.9),
@@ -645,52 +647,55 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
               ),
             ],
             const SizedBox(height: AppSpacing.md),
-            Wrap(
-              spacing: 8,
-              runSpacing: 4,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.schedule,
-                      size: ResponsiveUtils.iconSize(context, 14),
-                      color: AppColors.tertiaryText,
-                    ),
-                    const SizedBox(width: 4),
-                    Flexible(
-                      child: Text(
-                        _formatDate(prayer.dateCreated),
-                        style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                          color: AppColors.tertiaryText,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                if (prayer.isAnswered && prayer.dateAnswered != null)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: [
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
-                        Icons.check_circle,
+                        Icons.schedule,
                         size: ResponsiveUtils.iconSize(context, 14),
-                        color: Colors.green.withValues(alpha: 0.8),
+                        color: AppColors.tertiaryText,
                       ),
                       const SizedBox(width: 4),
                       Flexible(
                         child: Text(
-                          l10n.answered_date(_formatDate(prayer.dateAnswered!)),
+                          _formatDate(prayer.dateCreated),
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                            color: Colors.green.withValues(alpha: 0.8),
+                            color: AppColors.tertiaryText,
                           ),
                         ),
                       ),
                     ],
                   ),
+                  if (prayer.isAnswered && prayer.dateAnswered != null)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.check_circle,
+                          size: ResponsiveUtils.iconSize(context, 14),
+                          color: Colors.green.withValues(alpha: 0.8),
+                        ),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            l10n.answered_date(_formatDate(prayer.dateAnswered!)),
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                              color: Colors.green.withValues(alpha: 0.8),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
               ],
+              ),
             ),
           ],
         ),
