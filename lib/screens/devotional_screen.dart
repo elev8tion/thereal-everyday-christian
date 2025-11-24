@@ -333,14 +333,14 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                 Icon(
                   Icons.local_fire_department,
                   color: streak > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.5),
-                  size: ResponsiveUtils.iconSize(context, 16),
+                  size: ResponsiveUtils.iconSize(context, 14),
                 ),
                 const SizedBox(width: 4),
                 Flexible(
                   child: Text(
                     l10n.dayStreakCount(streak),
                     style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                      fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 10, maxSize: 13),
                       color: AppColors.secondaryText,
                       fontWeight: FontWeight.w600,
                     ),
@@ -353,13 +353,26 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
           ),
           const SizedBox(height: 2),
           totalCompletedAsync.when(
-            data: (total) => Text(
-              l10n.completed(total),
-              style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
-                color: AppColors.secondaryText,
-                fontWeight: FontWeight.w500,
-              ),
+            data: (total) => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.check_circle_outline,
+                  color: total > 0 ? Colors.green : Colors.white.withValues(alpha: 0.5),
+                  size: ResponsiveUtils.iconSize(context, 14),
+                ),
+                const SizedBox(width: 4),
+                Flexible(
+                  child: Text(
+                    l10n.completed(total),
+                    style: TextStyle(
+                      fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 10, maxSize: 13),
+                      color: AppColors.secondaryText,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
             ),
             loading: () => const SizedBox.shrink(),
             error: (_, __) => const SizedBox.shrink(),
