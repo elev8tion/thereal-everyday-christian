@@ -905,10 +905,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bibleBrowser => 'Navegador Bíblico';
 
   @override
-  String get readAnyChapterFreely => 'Lee cualquier capítulo libremente';
+  String get readAnyChapterFreely => 'Lee libremente';
 
   @override
-  String get searchBooks => 'Buscar libros...';
+  String get searchBooks => 'Buscar libros';
 
   @override
   String get searchingVerses => 'Buscando versículos...';

@@ -1775,7 +1775,7 @@ abstract class AppLocalizations {
   /// Search input placeholder
   ///
   /// In en, this message translates to:
-  /// **'Search books...'**
+  /// **'Search books'**
   String get searchBooks;
 
   /// Loading message during verse search

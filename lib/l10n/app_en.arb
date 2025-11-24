@@ -1207,7 +1207,7 @@
   "@readAnyChapterFreely": {
     "description": "Bible browser subtitle"
   },
-  "searchBooks": "Search books...",
+  "searchBooks": "Search books",
   "@searchBooks": {
     "description": "Search input placeholder"
   },

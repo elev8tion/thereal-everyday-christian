@@ -905,7 +905,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get readAnyChapterFreely => 'Read any chapter freely';
 
   @override
-  String get searchBooks => 'Search books...';
+  String get searchBooks => 'Search books';
 
   @override
   String get searchingVerses => 'Searching verses...';
