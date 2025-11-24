@@ -1126,7 +1126,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paywallTitle => 'Premium';
 
   @override
-  String get paywallSubtitle => 'Unlock AI chat features';
+  String get paywallSubtitle => 'Unlock Scripture Chat features';
 
   @override
   String paywallTrialDaysLeft(int days) {
@@ -1135,11 +1135,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paywallTrialBlockedMessage =>
-      'Welcome back!\n\nYour trial has been used on this device.\nSubscribe to continue using AI chat.';
+      'Trial period completed.\nSubscribe to continue using Scripture Chat.';
 
   @override
   String get paywallTrialEndedMessage =>
-      'Your trial has ended.\nUpgrade to continue using AI chat.';
+      'Trial period completed.\nUpgrade to continue using Scripture Chat.';
 
   @override
   String get paywallMessagesLeft => 'Messages\nLeft';
@@ -1164,7 +1164,7 @@ class AppLocalizationsEn extends AppLocalizations {
       '(pricing may vary by region and currency)';
 
   @override
-  String get paywall150MessagesPerMonth => '150 AI messages per month';
+  String get paywall150MessagesPerMonth => '150 Scripture Chats per month';
 
   @override
   String get paywallLessThan3PerMonth => 'Less than \$3 per month';
@@ -1472,7 +1472,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionStatusTrialExpiredDesc =>
-      'Upgrade to continue using AI chat';
+      'Upgrade to continue using Scripture Chat';
 
   @override
   String get subscriptionStatusFreeVersion => 'Free Version';
@@ -1555,7 +1555,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String subscriptionRenewalInfoTrial(String price) {
-    return 'Start your 3-day free trial with 15 AI messages total (use anytime). After trial: $price/year for 150 messages per month. Cancel anytime in App Store settings.';
+    return 'Start your 3-day free trial with 15 Scripture Chats total (use anytime). After trial: $price/year for 150 chats per month. Cancel anytime in App Store settings.';
   }
 
   @override
@@ -1676,7 +1676,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatFailedToSend => 'Failed to send message. Please try again.';
 
   @override
-  String get trialFeatureMessages => '15 AI messages over 3 days';
+  String get trialFeatureMessages => '15 Scripture Chats over 3 days';
 
   @override
   String get trialFeatureScripture => 'Scripture interpretation & guidance';
@@ -1686,7 +1686,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trialPricingAfterTrial =>
-      'After trial: ~\$35.99/year for 150 messages/month';
+      'After trial: ~\$35.99/year for 150 chats/month';
 
   @override
   String get faqSubtitle => 'Find answers to common questions';
@@ -1704,7 +1704,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get faqDevotionalsPlans => 'Devotionals & Reading Plans';
 
   @override
-  String get faqAIChatSupport => 'AI Chat & Support';
+  String get faqAIChatSupport => 'Scripture Chat & Support';
 
   @override
   String get faqNotifications => 'Notifications';
@@ -1727,7 +1727,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get faqA2 =>
-      'Yes! Everyday Christian offers a free trial with daily message limits for AI chat. Upgrade to Premium for unlimited AI conversations and full access to all features.';
+      'Yes! Everyday Christian offers a free trial with daily message limits for Scripture Chat. Upgrade to Premium for unlimited conversations and full access to all features.';
 
   @override
   String get faqQ3 => 'Which Bible version is used?';
@@ -1867,7 +1867,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get faqA22 =>
-      'Offline mode allows you to use core features (Bible reading, viewing saved prayers and devotionals) without an internet connection. AI chat requires internet.';
+      'Offline mode allows you to use core features (Bible reading, viewing saved prayers and devotionals) without an internet connection. Scripture Chat requires internet.';
 
   @override
   String get faqQ23 => 'Is my data private and secure?';
@@ -1937,11 +1937,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get monthlyLimitMessage =>
-      'You\'ve used all 150 messages this month.\nUpgrade your plan or wait for the monthly reset.';
+      'You\'ve used all 150 chats this month.\nUpgrade your plan or wait for the monthly reset.';
 
   @override
   String get trialLimitMessage =>
-      'You\'ve used all 15 trial messages.\nSubscribe now for 150 messages per month!';
+      'You\'ve used all 15 trial chats.\nSubscribe now for 150 Scripture Chats per month!';
 
   @override
   String get upgradePlan => 'Upgrade Plan';
@@ -1956,11 +1956,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcomeFreeTrial => 'Welcome! Start Your Free Trial';
 
   @override
-  String get experienceAiGuidance => 'Experience AI-powered biblical guidance';
+  String get experienceAiGuidance =>
+      'Experience Scripture Chat biblical guidance';
 
   @override
   String get afterTrialPricing =>
-      'After trial: ~\$35.99/year for 150 messages/month';
+      'After trial: ~\$35.99/year for 150 chats/month';
 
   @override
   String get pricingVariesDisclaimer =>
@@ -1973,15 +1974,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountSuspended => 'Account Suspended';
 
   @override
-  String get aiChatRequiresSubscription => 'AI Chat Requires\nSubscription';
+  String get aiChatRequiresSubscription =>
+      'Scripture Chat Requires\nSubscription';
 
   @override
   String get suspensionMessage =>
-      'Your AI chat access has been temporarily suspended due to Terms of Service violations. This suspension will be automatically lifted after the specified period.';
+      'Your Scripture Chat access has been temporarily suspended due to Terms of Service violations. This suspension will be automatically lifted after the specified period.';
 
   @override
   String get trialExpiredMessage =>
-      'Your free trial has ended. Subscribe to view your chat history and continue conversations with AI biblical guidance.';
+      'Your free trial has ended. Subscribe to view your chat history and continue Scripture Chat conversations.';
 
   @override
   String get premiumExpiredMessage =>
@@ -1997,7 +1999,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'If you believe this suspension was issued in error, please contact:';
 
   @override
-  String get benefit150Messages => '150 AI messages per month';
+  String get benefit150Messages => '150 Scripture Chats per month';
 
   @override
   String get benefitChatHistory => 'Access to all your chat history';

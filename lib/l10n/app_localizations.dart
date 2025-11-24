@@ -2160,7 +2160,7 @@ abstract class AppLocalizations {
   /// Paywall screen subtitle
   ///
   /// In en, this message translates to:
-  /// **'Unlock AI chat features'**
+  /// **'Unlock Scripture Chat features'**
   String get paywallSubtitle;
 
   /// Trial days remaining badge
@@ -2172,13 +2172,13 @@ abstract class AppLocalizations {
   /// Message shown when trial was already used
   ///
   /// In en, this message translates to:
-  /// **'Welcome back!\n\nYour trial has been used on this device.\nSubscribe to continue using AI chat.'**
+  /// **'Trial period completed.\nSubscribe to continue using Scripture Chat.'**
   String get paywallTrialBlockedMessage;
 
   /// Message shown when trial has expired
   ///
   /// In en, this message translates to:
-  /// **'Your trial has ended.\nUpgrade to continue using AI chat.'**
+  /// **'Trial period completed.\nUpgrade to continue using Scripture Chat.'**
   String get paywallTrialEndedMessage;
 
   /// Messages remaining stat label
@@ -2226,7 +2226,7 @@ abstract class AppLocalizations {
   /// Monthly message limit feature
   ///
   /// In en, this message translates to:
-  /// **'150 AI messages per month'**
+  /// **'150 Scripture Chats per month'**
   String get paywall150MessagesPerMonth;
 
   /// Cost breakdown message
@@ -2772,7 +2772,7 @@ abstract class AppLocalizations {
   /// Trial expired description
   ///
   /// In en, this message translates to:
-  /// **'Upgrade to continue using AI chat'**
+  /// **'Upgrade to continue using Scripture Chat'**
   String get subscriptionStatusTrialExpiredDesc;
 
   /// Free version status
@@ -2916,7 +2916,7 @@ abstract class AppLocalizations {
   /// Trial subscription info
   ///
   /// In en, this message translates to:
-  /// **'Start your 3-day free trial with 15 AI messages total (use anytime). After trial: {price}/year for 150 messages per month. Cancel anytime in App Store settings.'**
+  /// **'Start your 3-day free trial with 15 Scripture Chats total (use anytime). After trial: {price}/year for 150 chats per month. Cancel anytime in App Store settings.'**
   String subscriptionRenewalInfoTrial(String price);
 
   /// Error message when unable to open subscription settings
@@ -3132,7 +3132,7 @@ abstract class AppLocalizations {
   /// Trial feature: message limit description
   ///
   /// In en, this message translates to:
-  /// **'15 AI messages over 3 days'**
+  /// **'15 Scripture Chats over 3 days'**
   String get trialFeatureMessages;
 
   /// Trial feature: scripture interpretation
@@ -3150,7 +3150,7 @@ abstract class AppLocalizations {
   /// Trial pricing information shown in dialog
   ///
   /// In en, this message translates to:
-  /// **'After trial: ~\$35.99/year for 150 messages/month'**
+  /// **'After trial: ~\$35.99/year for 150 chats/month'**
   String get trialPricingAfterTrial;
 
   /// FAQ dialog subtitle
@@ -3186,7 +3186,7 @@ abstract class AppLocalizations {
   /// FAQ section title
   ///
   /// In en, this message translates to:
-  /// **'AI Chat & Support'**
+  /// **'Scripture Chat & Support'**
   String get faqAIChatSupport;
 
   /// FAQ section title
@@ -3228,7 +3228,7 @@ abstract class AppLocalizations {
   /// FAQ answer 2
   ///
   /// In en, this message translates to:
-  /// **'Yes! Everyday Christian offers a free trial with daily message limits for AI chat. Upgrade to Premium for unlimited AI conversations and full access to all features.'**
+  /// **'Yes! Everyday Christian offers a free trial with daily message limits for Scripture Chat. Upgrade to Premium for unlimited conversations and full access to all features.'**
   String get faqA2;
 
   /// FAQ question 3
@@ -3468,7 +3468,7 @@ abstract class AppLocalizations {
   /// FAQ answer 22
   ///
   /// In en, this message translates to:
-  /// **'Offline mode allows you to use core features (Bible reading, viewing saved prayers and devotionals) without an internet connection. AI chat requires internet.'**
+  /// **'Offline mode allows you to use core features (Bible reading, viewing saved prayers and devotionals) without an internet connection. Scripture Chat requires internet.'**
   String get faqA22;
 
   /// FAQ question 23
@@ -3594,13 +3594,13 @@ abstract class AppLocalizations {
   /// Monthly limit reached message
   ///
   /// In en, this message translates to:
-  /// **'You\'ve used all 150 messages this month.\nUpgrade your plan or wait for the monthly reset.'**
+  /// **'You\'ve used all 150 chats this month.\nUpgrade your plan or wait for the monthly reset.'**
   String get monthlyLimitMessage;
 
   /// Trial limit reached message
   ///
   /// In en, this message translates to:
-  /// **'You\'ve used all 15 trial messages.\nSubscribe now for 150 messages per month!'**
+  /// **'You\'ve used all 15 trial chats.\nSubscribe now for 150 Scripture Chats per month!'**
   String get trialLimitMessage;
 
   /// Upgrade plan button
@@ -3630,13 +3630,13 @@ abstract class AppLocalizations {
   /// Trial welcome subtitle
   ///
   /// In en, this message translates to:
-  /// **'Experience AI-powered biblical guidance'**
+  /// **'Experience Scripture Chat biblical guidance'**
   String get experienceAiGuidance;
 
   /// Pricing after trial
   ///
   /// In en, this message translates to:
-  /// **'After trial: ~\$35.99/year for 150 messages/month'**
+  /// **'After trial: ~\$35.99/year for 150 chats/month'**
   String get afterTrialPricing;
 
   /// Regional pricing disclaimer
@@ -3660,19 +3660,19 @@ abstract class AppLocalizations {
   /// Subscription required lockout title
   ///
   /// In en, this message translates to:
-  /// **'AI Chat Requires\nSubscription'**
+  /// **'Scripture Chat Requires\nSubscription'**
   String get aiChatRequiresSubscription;
 
   /// Account suspension message
   ///
   /// In en, this message translates to:
-  /// **'Your AI chat access has been temporarily suspended due to Terms of Service violations. This suspension will be automatically lifted after the specified period.'**
+  /// **'Your Scripture Chat access has been temporarily suspended due to Terms of Service violations. This suspension will be automatically lifted after the specified period.'**
   String get suspensionMessage;
 
   /// Trial expired lockout message
   ///
   /// In en, this message translates to:
-  /// **'Your free trial has ended. Subscribe to view your chat history and continue conversations with AI biblical guidance.'**
+  /// **'Your free trial has ended. Subscribe to view your chat history and continue Scripture Chat conversations.'**
   String get trialExpiredMessage;
 
   /// Premium expired lockout message
@@ -3696,7 +3696,7 @@ abstract class AppLocalizations {
   /// Premium benefit: message limit
   ///
   /// In en, this message translates to:
-  /// **'150 AI messages per month'**
+  /// **'150 Scripture Chats per month'**
   String get benefit150Messages;
 
   /// Premium benefit: chat history
