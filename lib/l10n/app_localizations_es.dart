@@ -507,7 +507,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get verseLibrary => 'Biblioteca de Versículos';
+  String get verseLibrary => 'Versículos';
 
   @override
   String get findComfortInGodsWord =>
