@@ -1451,7 +1451,7 @@ abstract class AppLocalizations {
   /// Dialog title
   ///
   /// In en, this message translates to:
-  /// **'Clear Cache'**
+  /// **'Cache'**
   String get clearCacheDialogTitle;
 
   /// Dialog message

@@ -969,7 +969,7 @@
   "@termsOfServiceDesc": {
     "description": "Setting description"
   },
-  "clearCacheDialogTitle": "Clear Cache",
+  "clearCacheDialogTitle": "Cache",
   "@clearCacheDialogTitle": {
     "description": "Dialog title"
   },

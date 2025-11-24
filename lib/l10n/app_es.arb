@@ -204,7 +204,7 @@
   "privacyPolicyDesc": "Leer nuestra política de privacidad",
   "termsOfService": "Términos de Servicio",
   "termsOfServiceDesc": "Leer términos y condiciones",
-  "clearCacheDialogTitle": "Borrar Caché",
+  "clearCacheDialogTitle": "Caché",
   "clearCacheDialogMessage": "Esto liberará espacio de almacenamiento pero puede requerir volver a descargar algún contenido.",
   "clear": "Borrar",
   "cacheCleared": "Caché borrado exitosamente",

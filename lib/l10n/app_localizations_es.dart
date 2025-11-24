@@ -736,7 +736,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get termsOfServiceDesc => 'Leer términos y condiciones';
 
   @override
-  String get clearCacheDialogTitle => 'Borrar Caché';
+  String get clearCacheDialogTitle => 'Caché';
 
   @override
   String get clearCacheDialogMessage =>
