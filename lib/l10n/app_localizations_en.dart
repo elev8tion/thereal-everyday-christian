@@ -1130,7 +1130,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String paywallTrialDaysLeft(int days) {
-    return '$days days left in trial';
+    return '$days trial days';
   }
 
   @override
@@ -1464,7 +1464,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String subscriptionStatusTrialDaysRemaining(int days) {
-    return '$days days remaining';
+    return '$days days';
   }
 
   @override

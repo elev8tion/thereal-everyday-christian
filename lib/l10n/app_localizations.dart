@@ -2166,7 +2166,7 @@ abstract class AppLocalizations {
   /// Trial days remaining badge
   ///
   /// In en, this message translates to:
-  /// **'{days} days left in trial'**
+  /// **'{days} trial days'**
   String paywallTrialDaysLeft(int days);
 
   /// Message shown when trial was already used
@@ -2760,7 +2760,7 @@ abstract class AppLocalizations {
   /// Trial days remaining status
   ///
   /// In en, this message translates to:
-  /// **'{days} days remaining'**
+  /// **'{days} days'**
   String subscriptionStatusTrialDaysRemaining(int days);
 
   /// Trial expired status
