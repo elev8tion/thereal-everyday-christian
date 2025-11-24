@@ -673,7 +673,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get textSizeDesc => 'Ajustar tamaño del texto';
 
   @override
-  String get dataPrivacy => 'Datos y Privacidad';
+  String get dataPrivacy => 'Privacidad';
 
   @override
   String get offlineMode => 'Modo Sin Conexión';
