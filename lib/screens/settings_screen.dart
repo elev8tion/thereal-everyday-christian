@@ -1629,6 +1629,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               fontWeight: FontWeight.w600,
               color: AppColors.primaryText,
             ),
+            softWrap: true,
+            maxLines: null,
           ),
           iconColor: AppColors.primaryText,
           collapsedIconColor: Colors.white.withValues(alpha: 0.5),

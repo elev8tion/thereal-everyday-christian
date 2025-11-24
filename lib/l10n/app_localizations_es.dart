@@ -697,7 +697,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get support => 'Soporte';
 
   @override
-  String get helpFAQ => 'Ayuda y Preguntas';
+  String get helpFAQ => 'Ayuda';
 
   @override
   String get helpFAQDesc => 'Obtener respuestas a preguntas comunes';

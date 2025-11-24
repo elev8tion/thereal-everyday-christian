@@ -1373,7 +1373,7 @@ abstract class AppLocalizations {
   /// Setting action
   ///
   /// In en, this message translates to:
-  /// **'Help & FAQ'**
+  /// **'Help'**
   String get helpFAQ;
 
   /// Setting description

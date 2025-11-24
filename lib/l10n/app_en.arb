@@ -917,7 +917,7 @@
   "@support": {
     "description": "Settings section title"
   },
-  "helpFAQ": "Help & FAQ",
+  "helpFAQ": "Help",
   "@helpFAQ": {
     "description": "Setting action"
   },
