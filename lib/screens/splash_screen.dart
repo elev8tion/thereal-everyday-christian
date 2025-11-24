@@ -221,6 +221,7 @@ class SplashScreen extends HookConsumerWidget {
                         // Loading text (simplified)
                         Text(
                           l10n.loadingJourney,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
                             color: AppColors.secondaryText,
@@ -244,6 +245,7 @@ class SplashScreen extends HookConsumerWidget {
                   children: [
                     Text(
                       l10n.version,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                         color: AppColors.secondaryText.withValues(alpha: 0.7),
@@ -252,6 +254,7 @@ class SplashScreen extends HookConsumerWidget {
                     const SizedBox(height: AppSpacing.sm),
                     Text(
                       l10n.builtWithFaith,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
                         color: AppColors.secondaryText.withValues(alpha: 0.7),
