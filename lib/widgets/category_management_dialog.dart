@@ -355,7 +355,9 @@ class _CategoryManagementDialogState extends ConsumerState<CategoryManagementDia
                   child: GlassButton(
                     text: 'Cancel',
                     height: 48,
-                    onPressed: () => _tabController.animateTo(0),
+                    onPressed: () {
+                      if (mounted) _tabController.animateTo(0);
+                    },
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
@@ -370,7 +372,7 @@ class _CategoryManagementDialogState extends ConsumerState<CategoryManagementDia
                           selectedIcon.codePoint,
                           selectedColor.toARGB32(),
                         );
-                        _tabController.animateTo(0);
+                        if (mounted) _tabController.animateTo(0);
                       }
                     },
                   ),

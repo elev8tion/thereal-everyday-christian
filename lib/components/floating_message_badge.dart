@@ -17,13 +17,20 @@ class FloatingMessageBadge extends StatefulWidget {
     required this.isInTrial,
   });
 
+  // Track current overlay entry to prevent duplicates
+  static OverlayEntry? _currentEntry;
+
   /// Show the floating badge with auto-dismiss
+  /// Prevents duplicate entries by removing existing one first
   static void show({
     required BuildContext context,
     required int remainingMessages,
     required bool isPremium,
     required bool isInTrial,
   }) {
+    // Remove existing entry to prevent stacking
+    _removeCurrentEntry();
+
     final overlay = Overlay.of(context);
     late OverlayEntry entry;
 
@@ -32,11 +39,38 @@ class FloatingMessageBadge extends StatefulWidget {
         remainingMessages: remainingMessages,
         isPremium: isPremium,
         isInTrial: isInTrial,
-        onDismiss: () => entry.remove(),
+        onDismiss: () {
+          _removeEntry(entry);
+        },
       ),
     );
 
+    _currentEntry = entry;
     overlay.insert(entry);
+  }
+
+  /// Safely remove an overlay entry
+  static void _removeEntry(OverlayEntry entry) {
+    try {
+      entry.remove();
+      if (_currentEntry == entry) {
+        _currentEntry = null;
+      }
+    } catch (_) {
+      // Entry already removed, ignore
+    }
+  }
+
+  /// Remove current entry if it exists
+  static void _removeCurrentEntry() {
+    if (_currentEntry != null) {
+      try {
+        _currentEntry!.remove();
+      } catch (_) {
+        // Already removed, ignore
+      }
+      _currentEntry = null;
+    }
   }
 
   @override

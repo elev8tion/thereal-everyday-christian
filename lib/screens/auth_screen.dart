@@ -19,8 +19,7 @@ class AuthScreen extends ConsumerStatefulWidget {
   ConsumerState<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends ConsumerState<AuthScreen>
-    with TickerProviderStateMixin {
+class _AuthScreenState extends ConsumerState<AuthScreen> {
   bool _showContent = false;
   final GlobalKey _backgroundKey = GlobalKey();
   bool _hasInitialized = false;

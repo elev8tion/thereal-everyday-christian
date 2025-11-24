@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
 
 /// Glassmorphic streaming message widget for real-time AI responses
@@ -195,22 +194,11 @@ class _GlassStreamingMessageState extends State<GlassStreamingMessage>
                             ),
                           ),
 
-                          // Cursor indicator when streaming
+                          // Cursor indicator when streaming - uses manual animation to avoid dual animation conflict
                           if (!widget.isComplete && widget.streamedText.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Container(
-                                width: 2,
-                                height: 16,
-                                decoration: BoxDecoration(
-                                  color: AppTheme.primaryColor,
-                                  borderRadius: BorderRadius.circular(AppRadius.xs / 8),
-                                ),
-                              )
-                                  .animate(onPlay: (controller) => controller.repeat())
-                                  .fadeIn(duration: 500.ms)
-                                  .then()
-                                  .fadeOut(duration: 500.ms),
+                            const Padding(
+                              padding: EdgeInsets.only(top: 4),
+                              child: _CursorBlink(color: AppTheme.primaryColor),
                             ),
 
                           // Status indicator
@@ -259,9 +247,7 @@ class _GlassStreamingMessageState extends State<GlassStreamingMessage>
           ),
         ],
       ),
-    )
-        .animate()
-        .fadeIn(duration: AppAnimations.normal);
+    );
   }
 
   String _formatTime(DateTime dateTime) {
@@ -269,5 +255,56 @@ class _GlassStreamingMessageState extends State<GlassStreamingMessage>
     final period = dateTime.hour >= 12 ? 'PM' : 'AM';
     final minute = dateTime.minute.toString().padLeft(2, '0');
     return '$hour:$minute $period';
+  }
+}
+
+/// Blinking cursor widget with proper animation lifecycle management
+/// Avoids dual animation system conflict by using single AnimationController
+class _CursorBlink extends StatefulWidget {
+  final Color color;
+
+  const _CursorBlink({required this.color});
+
+  @override
+  State<_CursorBlink> createState() => _CursorBlinkState();
+}
+
+class _CursorBlinkState extends State<_CursorBlink>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _animation,
+      child: Container(
+        width: 2,
+        height: 16,
+        decoration: BoxDecoration(
+          color: widget.color,
+          borderRadius: BorderRadius.circular(AppRadius.xs / 8),
+        ),
+      ),
+    );
   }
 }

@@ -26,6 +26,7 @@ class _BlurFadeState extends State<BlurFade>
   late Animation<double> _blurAnimation;
 
   bool _isFirstBuild = true;
+  bool _isDisposed = false; // Track disposal state for delayed callbacks
 
   @override
   void initState() {
@@ -54,14 +55,19 @@ class _BlurFadeState extends State<BlurFade>
 
   void _handleVisibilityChange() {
     Future.delayed(widget.delay, () {
-      if (!mounted) return;
+      // Double safety check: both mounted and not disposed
+      if (!mounted || _isDisposed) return;
 
-      if (widget.isVisible == true) {
-        _controller.forward();
-      } else if (widget.isVisible == false) {
-        _controller.reverse();
-      } else if (_isFirstBuild) {
-        _controller.forward();
+      try {
+        if (widget.isVisible == true) {
+          _controller.forward();
+        } else if (widget.isVisible == false) {
+          _controller.reverse();
+        } else if (_isFirstBuild) {
+          _controller.forward();
+        }
+      } catch (_) {
+        // Controller was disposed, ignore
       }
 
       _isFirstBuild = false;
@@ -78,6 +84,7 @@ class _BlurFadeState extends State<BlurFade>
 
   @override
   void dispose() {
+    _isDisposed = true; // Mark as disposed before actual disposal
     _controller.dispose();
     super.dispose();
   }

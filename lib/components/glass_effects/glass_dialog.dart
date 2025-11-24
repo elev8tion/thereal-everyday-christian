@@ -29,57 +29,98 @@ Future<T?> showGlassDialog<T>({
       return child;
     },
     transitionBuilder: (context, animation, secondaryAnimation, child) {
-      // EXACT same animation pattern as FAB menu (glassmorphic_fab_menu.dart:138-165)
-      return GestureDetector(
-        onTap: barrierDismissible ? () => Navigator.of(context).pop() : null,
-        behavior: HitTestBehavior.opaque,
-        child: Stack(
-          children: [
-            // Animated blurred backdrop - EXACT same as FAB menu
-            Positioned.fill(
-              child: AnimatedBuilder(
-                animation: animation,
-                builder: (context, _) {
-                  return BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: animation.value * 8, // 0→8 during open, 8→0 during close
-                      sigmaY: animation.value * 8,
-                    ),
-                    child: Container(
-                      color: Colors.black.withValues(alpha: 0.3 * animation.value), // 0→0.3
-                    ),
-                  );
-                },
-              ),
-            ),
-            // Dialog content with fade + scale animation (like FAB menu items)
-            Center(
-              child: FadeTransition(
-                opacity: CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.fastEaseInToSlowEaseOut, // Same curve as FAB menu
-                ),
-                child: ScaleTransition(
-                  scale: CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.fastEaseInToSlowEaseOut,
-                  ),
-                  child: AlertDialog(
-                    backgroundColor: Colors.transparent,
-                    contentPadding: EdgeInsets.zero,
-                    content: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: child,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+      // Use stateful wrapper to prevent rapid tap crashes
+      return _GlassDialogTransition(
+        animation: animation,
+        barrierDismissible: barrierDismissible,
+        child: child,
       );
     },
   );
+}
+
+/// Stateful wrapper for glass dialog transition to prevent rapid tap crashes
+class _GlassDialogTransition extends StatefulWidget {
+  final Animation<double> animation;
+  final bool barrierDismissible;
+  final Widget child;
+
+  const _GlassDialogTransition({
+    required this.animation,
+    required this.barrierDismissible,
+    required this.child,
+  });
+
+  @override
+  State<_GlassDialogTransition> createState() => _GlassDialogTransitionState();
+}
+
+class _GlassDialogTransitionState extends State<_GlassDialogTransition> {
+  bool _isDismissing = false;
+
+  void _handleDismiss() {
+    // Prevent multiple dismissals from rapid tapping
+    if (_isDismissing || !widget.barrierDismissible) return;
+    _isDismissing = true;
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Animated blurred backdrop with tap-to-dismiss - ONLY on the backdrop
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: _handleDismiss,
+            behavior: HitTestBehavior.opaque,
+            child: AnimatedBuilder(
+              animation: widget.animation,
+              builder: (context, _) {
+                return BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: widget.animation.value * 8, // 0→8 during open, 8→0 during close
+                    sigmaY: widget.animation.value * 8,
+                  ),
+                  child: Container(
+                    color: Colors.black.withValues(alpha: 0.3 * widget.animation.value), // 0→0.3
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        // Dialog content with fade + scale animation (like FAB menu items)
+        // GestureDetector stops tap propagation to prevent dismissing when tapping dialog
+        Center(
+          child: GestureDetector(
+            onTap: () {}, // Absorb taps on dialog content to prevent dismissing
+            behavior: HitTestBehavior.deferToChild,
+            child: FadeTransition(
+              opacity: CurvedAnimation(
+                parent: widget.animation,
+                curve: Curves.fastEaseInToSlowEaseOut, // Same curve as FAB menu
+              ),
+              child: ScaleTransition(
+                scale: CurvedAnimation(
+                  parent: widget.animation,
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                ),
+                child: AlertDialog(
+                  backgroundColor: Colors.transparent,
+                  contentPadding: EdgeInsets.zero,
+                  content: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: widget.child,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 /// Glass morphism container widget for dialogs - uses main GlassContainer from glass_card.dart

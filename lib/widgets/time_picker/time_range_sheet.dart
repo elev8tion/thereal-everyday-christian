@@ -179,22 +179,21 @@ class _TimeRangeSheetState extends State<TimeRangeSheet> with TickerProviderStat
   }
 
   FixedExtentScrollController _getOrCreateHourController(int initialItem) {
-    if (_hourController == null || !_hourController!.hasClients) {
-      _hourController?.dispose();
-      _hourController = FixedExtentScrollController(initialItem: initialItem);
-    }
+    // Only create new controller if null - avoid disposing active controllers
+    _hourController ??= FixedExtentScrollController(initialItem: initialItem);
     return _hourController!;
   }
 
   FixedExtentScrollController _getOrCreateMinuteController(int initialItem) {
-    if (_minuteController == null || !_minuteController!.hasClients) {
-      _minuteController?.dispose();
-      _minuteController = FixedExtentScrollController(initialItem: initialItem);
-    }
+    // Only create new controller if null - avoid disposing active controllers
+    _minuteController ??= FixedExtentScrollController(initialItem: initialItem);
     return _minuteController!;
   }
 
   void _animateToCurrentTime() {
+    // Safety check: don't animate if not mounted
+    if (!mounted) return;
+
     // Get the current time for the selected tab
     final time = _selectedTabIndex == 0 ? _startTime : _endTime;
     final hour = _style.use24HourFormat ? time.hour : (time.hour % 12 == 0 ? 12 : time.hour % 12);
@@ -206,6 +205,9 @@ class _TimeRangeSheetState extends State<TimeRangeSheet> with TickerProviderStat
 
     // Animate to the correct positions
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Safety check: don't animate if disposed
+      if (!mounted) return;
+
       if (_hourController != null && _hourController!.hasClients) {
         _hourController!
             .animateToItem(

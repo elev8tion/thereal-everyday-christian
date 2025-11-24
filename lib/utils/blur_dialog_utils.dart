@@ -35,50 +35,91 @@ Future<T?> showBlurredDialog<T>({
       return builder(context);
     },
     transitionBuilder: (context, animation, secondaryAnimation, child) {
-      // EXACT same animation pattern as FAB menu (glassmorphic_fab_menu.dart:138-165)
-      return GestureDetector(
-        onTap: barrierDismissible ? () => Navigator.of(context).pop() : null,
-        behavior: HitTestBehavior.opaque,
-        child: Stack(
-          children: [
-            // Animated blurred backdrop - EXACT same as FAB menu
-            Positioned.fill(
-              child: AnimatedBuilder(
-                animation: animation,
-                builder: (context, _) {
-                  return BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: animation.value * 8, // 0→8 during open, 8→0 during close
-                      sigmaY: animation.value * 8,
-                    ),
-                    child: Container(
-                      color: Colors.black.withValues(alpha: 0.3 * animation.value), // 0→0.3
-                    ),
-                  );
-                },
-              ),
-            ),
-            // Dialog content with fade + scale animation (like FAB menu items)
-            Center(
-              child: FadeTransition(
-                opacity: CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.fastEaseInToSlowEaseOut, // Same curve as FAB menu
-                ),
-                child: ScaleTransition(
-                  scale: CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.fastEaseInToSlowEaseOut,
-                  ),
-                  child: child,
-                ),
-              ),
-            ),
-          ],
-        ),
+      // Use stateful wrapper to prevent rapid tap crashes
+      return _BlurredDialogTransition(
+        animation: animation,
+        barrierDismissible: barrierDismissible,
+        child: child,
       );
     },
   );
+}
+
+/// Stateful wrapper for blurred dialog transition to prevent rapid tap crashes
+class _BlurredDialogTransition extends StatefulWidget {
+  final Animation<double> animation;
+  final bool barrierDismissible;
+  final Widget child;
+
+  const _BlurredDialogTransition({
+    required this.animation,
+    required this.barrierDismissible,
+    required this.child,
+  });
+
+  @override
+  State<_BlurredDialogTransition> createState() => _BlurredDialogTransitionState();
+}
+
+class _BlurredDialogTransitionState extends State<_BlurredDialogTransition> {
+  bool _isDismissing = false;
+
+  void _handleDismiss() {
+    // Prevent multiple dismissals from rapid tapping
+    if (_isDismissing || !widget.barrierDismissible) return;
+    _isDismissing = true;
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Animated blurred backdrop with tap-to-dismiss - ONLY on the backdrop
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: _handleDismiss,
+            behavior: HitTestBehavior.opaque,
+            child: AnimatedBuilder(
+              animation: widget.animation,
+              builder: (context, _) {
+                return BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: widget.animation.value * 8, // 0→8 during open, 8→0 during close
+                    sigmaY: widget.animation.value * 8,
+                  ),
+                  child: Container(
+                    color: Colors.black.withValues(alpha: 0.3 * widget.animation.value), // 0→0.3
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        // Dialog content with fade + scale animation (like FAB menu items)
+        // GestureDetector stops tap propagation to prevent dismissing when tapping dialog
+        Center(
+          child: GestureDetector(
+            onTap: () {}, // Absorb taps on dialog content to prevent dismissing
+            behavior: HitTestBehavior.deferToChild,
+            child: FadeTransition(
+              opacity: CurvedAnimation(
+                parent: widget.animation,
+                curve: Curves.fastEaseInToSlowEaseOut, // Same curve as FAB menu
+              ),
+              child: ScaleTransition(
+                scale: CurvedAnimation(
+                  parent: widget.animation,
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                ),
+                child: widget.child,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 /// Shows a bottom sheet with a blurred backdrop behind it
@@ -128,43 +169,84 @@ Future<T?> showBlurredBottomSheet<T>({
       );
     },
     transitionBuilder: (context, animation, secondaryAnimation, child) {
-      // EXACT same animation pattern as FAB menu
-      return Stack(
-        children: [
-          // Animated blurred backdrop - EXACT same as FAB menu
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: isDismissible ? () => Navigator.of(context).pop() : null,
-              behavior: HitTestBehavior.opaque,
-              child: AnimatedBuilder(
-                animation: animation,
-                builder: (context, _) {
-                  return BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: animation.value * 8, // 0→8 during open, 8→0 during close
-                      sigmaY: animation.value * 8,
-                    ),
-                    child: Container(
-                      color: Colors.black.withValues(alpha: 0.3 * animation.value), // 0→0.3
-                    ),
-                  );
-                },
-              ),
+      // Use stateful wrapper to prevent rapid tap crashes
+      return _BlurredBottomSheetTransition(
+        animation: animation,
+        isDismissible: isDismissible,
+        child: child,
+      );
+    },
+  );
+}
+
+/// Stateful wrapper for blurred bottom sheet transition to prevent rapid tap crashes
+class _BlurredBottomSheetTransition extends StatefulWidget {
+  final Animation<double> animation;
+  final bool isDismissible;
+  final Widget child;
+
+  const _BlurredBottomSheetTransition({
+    required this.animation,
+    required this.isDismissible,
+    required this.child,
+  });
+
+  @override
+  State<_BlurredBottomSheetTransition> createState() => _BlurredBottomSheetTransitionState();
+}
+
+class _BlurredBottomSheetTransitionState extends State<_BlurredBottomSheetTransition> {
+  bool _isDismissing = false;
+
+  void _handleDismiss() {
+    // Prevent multiple dismissals from rapid tapping
+    if (_isDismissing || !widget.isDismissible) return;
+    _isDismissing = true;
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Animated blurred backdrop with tap-to-dismiss - ONLY on the backdrop
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: _handleDismiss,
+            behavior: HitTestBehavior.opaque,
+            child: AnimatedBuilder(
+              animation: widget.animation,
+              builder: (context, _) {
+                return BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: widget.animation.value * 8, // 0→8 during open, 8→0 during close
+                    sigmaY: widget.animation.value * 8,
+                  ),
+                  child: Container(
+                    color: Colors.black.withValues(alpha: 0.3 * widget.animation.value), // 0→0.3
+                  ),
+                );
+              },
             ),
           ),
-          // Bottom sheet slides up from bottom with smooth curve
-          SlideTransition(
+        ),
+        // Bottom sheet slides up from bottom with smooth curve
+        // GestureDetector stops tap propagation to prevent dismissing when tapping sheet
+        GestureDetector(
+          onTap: () {}, // Absorb taps on bottom sheet content to prevent dismissing
+          behavior: HitTestBehavior.deferToChild,
+          child: SlideTransition(
             position: Tween<Offset>(
               begin: const Offset(0, 1),
               end: Offset.zero,
             ).animate(CurvedAnimation(
-              parent: animation,
+              parent: widget.animation,
               curve: Curves.fastEaseInToSlowEaseOut, // Same curve as FAB menu
             )),
-            child: child,
+            child: widget.child,
           ),
-        ],
-      );
-    },
-  );
+        ),
+      ],
+    );
+  }
 }

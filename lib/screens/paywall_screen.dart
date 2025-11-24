@@ -724,10 +724,12 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
   @override
   void dispose() {
-    // Clear callback (check if mounted to avoid using ref after dispose)
-    if (mounted) {
+    // Clear callback - use try-catch since ref may not be accessible after dispose starts
+    try {
       final subscriptionService = ref.read(subscriptionServiceProvider);
       subscriptionService.onPurchaseUpdate = null;
+    } catch (_) {
+      // Widget already disposed, callback will be garbage collected
     }
     super.dispose();
   }

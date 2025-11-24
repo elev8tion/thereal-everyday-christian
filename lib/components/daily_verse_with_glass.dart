@@ -31,12 +31,25 @@ class DailyVerseWithGlassDecoration extends HookWidget {
       ),
     );
 
-    // Trigger animation on mount
+    // Track mounted state for safe delayed callback
+    final isMounted = useRef(true);
+
+    // Trigger animation on mount with safety check
     useEffect(() {
+      isMounted.value = true;
       Future.delayed(const Duration(milliseconds: 300), () {
-        animationController.forward();
+        // Safety check: only forward if still mounted
+        if (isMounted.value) {
+          try {
+            animationController.forward();
+          } catch (_) {
+            // Controller was disposed, ignore
+          }
+        }
       });
-      return null;
+      return () {
+        isMounted.value = false;
+      };
     }, []);
 
     return Stack(

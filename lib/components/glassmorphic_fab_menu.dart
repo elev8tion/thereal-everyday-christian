@@ -105,7 +105,9 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
 
   @override
   void dispose() {
+    // Ensure overlay is removed immediately on dispose, regardless of animation state
     _removeOverlay();
+    _controller.stop(); // Stop any running animation first
     _controller.dispose();
     super.dispose();
   }
@@ -127,7 +129,10 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
       widget.onMenuOpened?.call();
     } else {
       _controller.reverse().then((_) {
-        _removeOverlay();
+        // Safety check: only remove overlay if still mounted
+        if (mounted) {
+          _removeOverlay();
+        }
       });
     }
   }

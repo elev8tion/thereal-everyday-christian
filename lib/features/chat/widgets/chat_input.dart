@@ -61,6 +61,9 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
   }
 
   void _onTextChanged() {
+    // Safety check: don't update state after dispose
+    if (!mounted) return;
+
     final newText = _controller.text;
     setState(() {
       _currentText = newText;
@@ -69,6 +72,8 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                         _focusNode.hasFocus;
     });
 
+    // Safety check before animation
+    if (!mounted) return;
     if (_showSuggestions) {
       _fadeController.forward();
     } else {
@@ -77,12 +82,17 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
   }
 
   void _onFocusChanged() {
+    // Safety check: don't update state after dispose
+    if (!mounted) return;
+
     setState(() {
       _showSuggestions = _focusNode.hasFocus &&
                         _currentText.isNotEmpty &&
                         widget.suggestions.isNotEmpty;
     });
 
+    // Safety check before animation
+    if (!mounted) return;
     if (_showSuggestions) {
       _fadeController.forward();
     } else {
