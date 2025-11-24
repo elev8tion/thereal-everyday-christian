@@ -246,8 +246,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noAnsweredPrayersYet => 'Aún No Hay Oraciones Respondidas';
 
   @override
-  String get markPrayersAnswered =>
-      'Cuando Dios responda sus oraciones, márquelas como respondidas para verlas aquí';
+  String get markPrayersAnswered => 'Las oraciones respondidas aparecen aquí';
 
   @override
   String get markAsAnswered => 'Marcar como Respondida';
@@ -1071,7 +1070,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error => 'Error';
 
   @override
-  String get filterByCategory => 'Filtrar por Categoría';
+  String get filterByCategory => 'Filtrar';
 
   @override
   String get clearFilter => 'Quitar Filtro';

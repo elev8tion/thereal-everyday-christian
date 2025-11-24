@@ -557,7 +557,7 @@ abstract class AppLocalizations {
   /// Empty state subtitle
   ///
   /// In en, this message translates to:
-  /// **'When God answers your prayers, mark them as answered to see them here'**
+  /// **'Answered prayers appear here'**
   String get markPrayersAnswered;
 
   /// Menu action
@@ -2052,7 +2052,7 @@ abstract class AppLocalizations {
   /// Prayer journal category filter label
   ///
   /// In en, this message translates to:
-  /// **'Filter by Category'**
+  /// **'Filter'**
   String get filterByCategory;
 
   /// Clear category filter button

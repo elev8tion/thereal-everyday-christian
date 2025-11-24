@@ -248,8 +248,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noAnsweredPrayersYet => 'No Answered Prayers Yet';
 
   @override
-  String get markPrayersAnswered =>
-      'When God answers your prayers, mark them as answered to see them here';
+  String get markPrayersAnswered => 'Answered prayers appear here';
 
   @override
   String get markAsAnswered => 'Mark as Answered';
@@ -1065,7 +1064,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error => 'Error';
 
   @override
-  String get filterByCategory => 'Filter by Category';
+  String get filterByCategory => 'Filter';
 
   @override
   String get clearFilter => 'Clear Filter';

@@ -304,7 +304,7 @@
   "@noAnsweredPrayersYet": {
     "description": "Empty state title"
   },
-  "markPrayersAnswered": "When God answers your prayers, mark them as answered to see them here",
+  "markPrayersAnswered": "Answered prayers appear here",
   "@markPrayersAnswered": {
     "description": "Empty state subtitle"
   },
@@ -1471,7 +1471,7 @@
   "@error": {
     "description": "Generic error label"
   },
-  "filterByCategory": "Filter by Category",
+  "filterByCategory": "Filter",
   "@filterByCategory": {
     "description": "Prayer journal category filter label"
   },
