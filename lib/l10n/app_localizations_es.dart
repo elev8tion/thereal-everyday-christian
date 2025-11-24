@@ -649,10 +649,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get setTime => 'Establecer Hora';
 
   @override
-  String get bibleSettings => 'Configuración de la Biblia';
+  String get bibleSettings => 'Biblia';
 
   @override
-  String get bibleVersion => 'Versión de la Biblia';
+  String get bibleVersion => 'Versión';
 
   @override
   String get bibleVersionDesc => 'Elija su traducción preferida';
