@@ -105,7 +105,7 @@ class ChatScreenLockoutOverlay extends StatelessWidget {
                         _getTitle(),
                         style: TextStyle(
                           fontSize: ResponsiveUtils.fontSize(context, 28, minSize: 24, maxSize: 32),
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                           color: AppColors.primaryText,
                           height: 1.2,
                         ),
@@ -229,7 +229,7 @@ class ChatScreenLockoutOverlay extends StatelessWidget {
         return 'Account Suspended';
       case LockoutReason.trialExpired:
       case LockoutReason.premiumExpired:
-        return 'AI Chat Requires\nSubscription';
+        return 'Premium\nScripture Chat';
     }
   }
 
