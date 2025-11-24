@@ -1571,7 +1571,7 @@
   "@paywallSubtitle": {
     "description": "Paywall screen subtitle"
   },
-  "paywallTrialDaysLeft": "{days} days left in trial",
+  "paywallTrialDaysLeft": "{days} trial days",
   "@paywallTrialDaysLeft": {
     "description": "Trial days remaining badge",
     "placeholders": {
@@ -2005,7 +2005,7 @@
   "@subscriptionStatusFreeTrial": {
     "description": "Free trial status"
   },
-  "subscriptionStatusTrialDaysRemaining": "{days} days remaining",
+  "subscriptionStatusTrialDaysRemaining": "{days} days",
   "@subscriptionStatusTrialDaysRemaining": {
     "description": "Trial days remaining status",
     "placeholders": {
