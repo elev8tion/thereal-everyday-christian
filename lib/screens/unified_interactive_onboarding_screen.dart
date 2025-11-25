@@ -81,23 +81,36 @@ class _UnifiedInteractiveOnboardingScreenState
     if (_isNavigating) return;
     _isNavigating = true;
 
+    print('🎯 [Onboarding] Starting completion process...');
+
     final prefsService = await PreferencesService.getInstance();
 
     // Save legal agreements
     await prefsService.saveLegalAgreementAcceptance(true);
+    print('🎯 [Onboarding] Legal agreement saved');
 
     // Save name if provided
     final firstName = _nameController.text.trim();
     if (firstName.isNotEmpty) {
       await prefsService.saveFirstName(firstName);
+      print('🎯 [Onboarding] First name saved: $firstName');
     }
 
     // Mark onboarding as completed
     await prefsService.setOnboardingCompleted();
+    print('🎯 [Onboarding] Onboarding marked complete');
 
     // Navigate to home
     if (mounted) {
-      NavigationService.pushReplacementNamed(AppRoutes.home);
+      print('🎯 [Onboarding] Attempting navigation to home...');
+      try {
+        await NavigationService.pushAndRemoveUntil(AppRoutes.home);
+        print('🎯 [Onboarding] Navigation successful!');
+      } catch (e) {
+        print('❌ [Onboarding] Navigation failed: $e');
+      }
+    } else {
+      print('❌ [Onboarding] Widget not mounted, cannot navigate');
     }
   }
 
