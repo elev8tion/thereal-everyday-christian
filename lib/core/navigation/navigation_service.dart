@@ -27,15 +27,27 @@ class NavigationService {
     required void Function(bool) setActive,
     required Future<T?> Function() action,
   }) async {
-    if (isActive()) return null;
+    print('🔒 [NavService] _withDebounce called, isActive: ${isActive()}');
+    if (isActive()) {
+      print('❌ [NavService] BLOCKED by debounce! Returning null.');
+      return null;
+    }
 
+    print('✅ [NavService] Debounce check passed, proceeding...');
     setActive(true);
+    print('🔒 [NavService] Set navigation flag to true');
     try {
+      print('🔒 [NavService] Executing navigation action...');
       final result = await action();
+      print('🔒 [NavService] Navigation action completed with result: $result');
       return result;
     } finally {
       // Reset after a short delay to allow animation to complete
-      Future.delayed(_debounceDuration, () => setActive(false));
+      print('🔒 [NavService] Scheduling flag reset in ${_debounceDuration.inMilliseconds}ms');
+      Future.delayed(_debounceDuration, () {
+        setActive(false);
+        print('🔒 [NavService] Navigation flag reset to false');
+      });
     }
   }
 

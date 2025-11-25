@@ -78,8 +78,14 @@ class _UnifiedInteractiveOnboardingScreenState
   }
 
   Future<void> _completeOnboarding() async {
-    if (_isNavigating) return;
+    print('🎯 [Onboarding] Button pressed! _isNavigating: $_isNavigating');
+
+    if (_isNavigating) {
+      print('❌ [Onboarding] Already navigating, returning early');
+      return;
+    }
     _isNavigating = true;
+    print('🎯 [Onboarding] Set _isNavigating to true');
 
     print('🎯 [Onboarding] Starting completion process...');
 
@@ -102,12 +108,18 @@ class _UnifiedInteractiveOnboardingScreenState
 
     // Navigate to home
     if (mounted) {
-      print('🎯 [Onboarding] Attempting navigation to home...');
+      print('🎯 [Onboarding] Widget is mounted, attempting navigation...');
+      print('🎯 [Onboarding] Calling NavigationService.pushAndRemoveUntil...');
       try {
-        await NavigationService.pushAndRemoveUntil(AppRoutes.home);
-        print('🎯 [Onboarding] Navigation successful!');
+        final result = await NavigationService.pushAndRemoveUntil(AppRoutes.home);
+        print('🎯 [Onboarding] NavigationService returned: $result');
+        if (result == null) {
+          print('❌ [Onboarding] Navigation returned NULL - debounce blocked it!');
+        } else {
+          print('✅ [Onboarding] Navigation successful!');
+        }
       } catch (e) {
-        print('❌ [Onboarding] Navigation failed: $e');
+        print('❌ [Onboarding] Navigation failed with error: $e');
       }
     } else {
       print('❌ [Onboarding] Widget not mounted, cannot navigate');
