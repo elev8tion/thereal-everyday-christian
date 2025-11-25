@@ -106,18 +106,13 @@ class _UnifiedInteractiveOnboardingScreenState
     await prefsService.setOnboardingCompleted();
     print('🎯 [Onboarding] Onboarding marked complete');
 
-    // Navigate to home
+    // Navigate to home using IMMEDIATE navigation (bypasses debounce)
     if (mounted) {
-      print('🎯 [Onboarding] Widget is mounted, attempting navigation...');
-      print('🎯 [Onboarding] Calling NavigationService.pushAndRemoveUntil...');
+      print('🎯 [Onboarding] Widget is mounted, attempting IMMEDIATE navigation...');
+      print('🎯 [Onboarding] Calling NavigationService.pushAndRemoveUntilImmediate...');
       try {
-        final result = await NavigationService.pushAndRemoveUntil(AppRoutes.home);
-        print('🎯 [Onboarding] NavigationService returned: $result');
-        if (result == null) {
-          print('❌ [Onboarding] Navigation returned NULL - debounce blocked it!');
-        } else {
-          print('✅ [Onboarding] Navigation successful!');
-        }
+        await NavigationService.pushAndRemoveUntilImmediate(AppRoutes.home);
+        print('✅ [Onboarding] Navigation completed successfully!');
       } catch (e) {
         print('❌ [Onboarding] Navigation failed with error: $e');
       }

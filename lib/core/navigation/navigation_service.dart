@@ -67,6 +67,20 @@ class NavigationService {
     );
   }
 
+  /// Navigate to a route and remove all previous routes WITHOUT debounce protection
+  /// Use this for critical one-time navigations like onboarding completion
+  static Future<T?> pushAndRemoveUntilImmediate<T extends Object?>(
+    String routeName, {
+    Object? arguments,
+  }) {
+    print('🚀 [NavService] IMMEDIATE navigation (bypassing debounce)');
+    return navigator!.pushNamedAndRemoveUntil(
+      routeName,
+      (route) => false,
+      arguments: arguments,
+    );
+  }
+
   /// Navigate to a route (with debounce protection)
   static Future<T?> pushNamed<T extends Object?>(
     String routeName, {
