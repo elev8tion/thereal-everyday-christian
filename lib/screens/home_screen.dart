@@ -823,7 +823,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(height: AppSpacing.sm),
               Expanded(
                 child: Align(
-                  alignment: Alignment.topCenter,
+                  alignment: Alignment.center,
                   child: AutoSizeText(
                   label,
                   style: TextStyle(
