@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer' as developer;
 import 'dart:ui' show PlatformDispatcher, Locale;
 import 'package:flutter/material.dart';
@@ -306,57 +307,71 @@ final connectivityStateProvider = StreamProvider.autoDispose<bool>((ref) {
 });
 
 final appInitializationProvider = FutureProvider<void>((ref) async {
-  final database = ref.read(databaseServiceProvider);
-  final notifications = ref.read(notificationServiceProvider);
-  final subscription = ref.read(subscriptionServiceProvider);
-  final suspension = ref.read(suspensionServiceProvider);
-  final bibleLoader = ref.read(bibleLoaderServiceProvider);
-  final devotionalLoader = ref.read(devotionalContentLoaderProvider);
-  final curatedPlanLoader = ref.read(curatedReadingPlanLoaderProvider);
-
-  // Wait for preferences to load first (required for language/theme initialization)
-  final prefs = await ref.watch(preferencesServiceProvider.future);
-
-  await database.initialize();
-  await notifications.initialize();
-  await subscription.initialize();
-  await suspension.initialize();
-
-  // Automatic cleanup: Remove old chat messages (60+ days OR keep only 100 most recent)
   try {
-    final dbHelper = DatabaseHelper.instance;
-    final cleanup = await dbHelper.autoCleanupChatMessages();
-    if (cleanup['total_deleted']! > 0) {
-      debugPrint('🧹 Auto-cleanup: Removed ${cleanup['total_deleted']} old chat messages');
-    }
+    // Wrap all initialization in 60-second timeout to prevent infinite loading
+    await Future.delayed(Duration.zero).then((_) async {
+      final database = ref.read(databaseServiceProvider);
+      final notifications = ref.read(notificationServiceProvider);
+      final subscription = ref.read(subscriptionServiceProvider);
+      final suspension = ref.read(suspensionServiceProvider);
+      final bibleLoader = ref.read(bibleLoaderServiceProvider);
+      final devotionalLoader = ref.read(devotionalContentLoaderProvider);
+      final curatedPlanLoader = ref.read(curatedReadingPlanLoaderProvider);
+
+      // Wait for preferences to load first (required for language/theme initialization)
+      final prefs = await ref.watch(preferencesServiceProvider.future);
+
+      await database.initialize();
+      await notifications.initialize();
+      await subscription.initialize();
+      await suspension.initialize();
+
+      // Automatic cleanup: Remove old chat messages (60+ days OR keep only 100 most recent)
+      try {
+        final dbHelper = DatabaseHelper.instance;
+        final cleanup = await dbHelper.autoCleanupChatMessages();
+        if (cleanup['total_deleted']! > 0) {
+          debugPrint('🧹 Auto-cleanup: Removed ${cleanup['total_deleted']} old chat messages');
+        }
+      } catch (e) {
+        // Don't block app initialization if cleanup fails
+        debugPrint('⚠️ Auto-cleanup failed: $e');
+      }
+
+      // Load Bible on first launch
+      final isWEBLoaded = await bibleLoader.isBibleLoaded('WEB');
+      debugPrint('📖 [AppInit] Checking if WEB Bible loaded: $isWEBLoaded');
+      if (!isWEBLoaded) {
+        debugPrint('📖 [AppInit] WEB not loaded, loading all Bibles...');
+        await bibleLoader.loadAllBibles();
+        debugPrint('📖 [AppInit] Bible loading complete');
+      } else {
+        debugPrint('📖 [AppInit] WEB already loaded, skipping Bible load');
+      }
+
+      // Load devotional content on first launch (language-specific)
+      final language = prefs.getLanguage(); // Returns 'en' or 'es'
+      await devotionalLoader.loadDevotionals(language: language);
+
+      // Load all reading plans on first launch (language-specific, idempotent)
+      try {
+        await curatedPlanLoader.ensureAllPlansLoaded(language);
+        debugPrint('✅ Successfully loaded reading plans for $language');
+      } catch (e, stackTrace) {
+        debugPrint('❌ ERROR loading reading plans: $e');
+        debugPrint('Stack trace: $stackTrace');
+        // Don't block app initialization - user can still use other features
+      }
+    }).timeout(
+      const Duration(seconds: 60),
+      onTimeout: () {
+        debugPrint('❌ App initialization timed out after 60 seconds');
+        throw TimeoutException('App initialization timed out. Please check your connection and try again.');
+      },
+    );
   } catch (e) {
-    // Don't block app initialization if cleanup fails
-    debugPrint('⚠️ Auto-cleanup failed: $e');
-  }
-
-  // Load Bible on first launch
-  final isWEBLoaded = await bibleLoader.isBibleLoaded('WEB');
-  debugPrint('📖 [AppInit] Checking if WEB Bible loaded: $isWEBLoaded');
-  if (!isWEBLoaded) {
-    debugPrint('📖 [AppInit] WEB not loaded, loading all Bibles...');
-    await bibleLoader.loadAllBibles();
-    debugPrint('📖 [AppInit] Bible loading complete');
-  } else {
-    debugPrint('📖 [AppInit] WEB already loaded, skipping Bible load');
-  }
-
-  // Load devotional content on first launch (language-specific)
-  final language = prefs.getLanguage(); // Returns 'en' or 'es'
-  await devotionalLoader.loadDevotionals(language: language);
-
-  // Load all reading plans on first launch (language-specific, idempotent)
-  try {
-    await curatedPlanLoader.ensureAllPlansLoaded(language);
-    debugPrint('✅ Successfully loaded reading plans for $language');
-  } catch (e, stackTrace) {
-    debugPrint('❌ ERROR loading reading plans: $e');
-    debugPrint('Stack trace: $stackTrace');
-    // Don't block app initialization - user can still use other features
+    debugPrint('❌ App initialization failed: $e');
+    rethrow;
   }
 });
 

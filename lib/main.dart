@@ -1,3 +1,4 @@
+import 'package:everyday_christian/components/offline_indicator.dart';
 import 'package:everyday_christian/core/navigation/app_routes.dart';
 import 'package:everyday_christian/core/navigation/navigation_service.dart';
 import 'package:everyday_christian/core/providers/app_providers.dart';
@@ -69,7 +70,7 @@ class MyApp extends ConsumerWidget {
           data: MediaQuery.of(context).copyWith(
             textScaler: TextScaler.linear(textSize),
           ),
-          child: child!,
+          child: OfflineIndicator(child: child!),
         );
       },
       theme: ThemeData(

@@ -178,6 +178,49 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> sendMessage(String text) async {
       if (text.trim().isEmpty) return;
 
+      // Check connectivity before sending (chat requires internet)
+      final connectivityAsync = ref.read(connectivityStatusProvider);
+      final isConnected = connectivityAsync.value ?? false;
+
+      if (!isConnected) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.cloud_off, color: Colors.white),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'You\'re offline',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Chat requires internet connection. Try browsing saved verses or devotionals offline.',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.red.withValues(alpha: 0.9),
+              duration: const Duration(seconds: 5),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+        return;
+      }
+
       // Get current language FIRST (before any async operations)
       final language = Localizations.localeOf(context).languageCode;
 
@@ -628,6 +671,7 @@ class ChatScreen extends HookConsumerWidget {
                           l10n.subscriptionRequiredRegenerate,
                           style: TextStyle(
                             color: Colors.white,
+                            // ignore: use_build_context_synchronously
                             fontSize: ResponsiveUtils.fontSize(context, 14),
                             fontWeight: FontWeight.w500,
                           ),

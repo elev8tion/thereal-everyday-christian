@@ -4,6 +4,7 @@ import '../providers/app_providers.dart';
 import '../error/app_error.dart';
 import '../services/preferences_service.dart';
 import '../../components/gradient_background.dart';
+import '../../components/dancing_logo_loader.dart';
 import '../../theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -106,28 +107,24 @@ class _LoadingScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 80),
+                  const SizedBox(height: 60),
 
-                  // Simple loading indicator
-                  const SizedBox(
-                    width: 40,
-                    height: 40,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        AppTheme.goldColor,
-                      ),
-                      strokeWidth: 3,
-                    ),
+                  // Dancing logo loader
+                  DancingLogoLoader(
+                    size: 100,
+                    languageCode: languageCode,
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
 
                       // Simple loading text
                       Text(
                         'Loading...',
                         style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white.withValues(alpha: 0.7),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: 2,
+                          color: Colors.white.withValues(alpha: 0.8),
                         ),
                       ),
                     ],
