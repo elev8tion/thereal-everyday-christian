@@ -297,7 +297,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       builder: (context, constraints) => Container(
         width: ResponsiveUtils.scaleSize(context, 120,
             minScale: 0.9, maxScale: 1.2),
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
         decoration: BoxDecoration(
           gradient: AppGradients.glassMedium,
           borderRadius: AppRadius.cardRadius,
@@ -384,7 +384,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       builder: (context, constraints) => Container(
         width: ResponsiveUtils.scaleSize(context, 120,
             minScale: 0.9, maxScale: 1.2),
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
         decoration: BoxDecoration(
           gradient: AppGradients.glassMedium,
           borderRadius: AppRadius.cardRadius,
@@ -787,7 +787,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Container(
           width: ResponsiveUtils.scaleSize(context, 100,
               minScale: 0.9, maxScale: 1.2),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
           decoration: BoxDecoration(
             gradient: AppGradients.glassMedium,
             borderRadius: BorderRadius.circular(AppRadius.md),
