@@ -200,7 +200,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settings => 'Configuración';
 
   @override
-  String get settingsSubtitle => 'Personaliza tu experiencia';
+  String get settingsSubtitle => 'Personaliza tu aplicación';
 
   @override
   String get profile => 'Perfil';

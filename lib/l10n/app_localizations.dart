@@ -467,7 +467,7 @@ abstract class AppLocalizations {
   /// Settings screen subtitle
   ///
   /// In en, this message translates to:
-  /// **'Customize your app experience'**
+  /// **'Customize your app'**
   String get settingsSubtitle;
 
   /// Profile screen title and menu item

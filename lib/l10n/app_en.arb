@@ -244,7 +244,7 @@
   "@settings": {
     "description": "Settings screen title and menu item"
   },
-  "settingsSubtitle": "Customize your app experience",
+  "settingsSubtitle": "Customize your app",
   "@settingsSubtitle": {
     "description": "Settings screen subtitle"
   },
