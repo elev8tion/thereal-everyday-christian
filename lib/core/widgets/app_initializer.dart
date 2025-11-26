@@ -109,24 +109,10 @@ class _LoadingScreen extends StatelessWidget {
 
                   const SizedBox(height: 60),
 
-                  // Dancing logo loader
+                  // Dancing logo loader (180px, 3s - default values)
                   DancingLogoLoader(
-                    size: 100,
                     languageCode: languageCode,
                   ),
-
-                  const SizedBox(height: 32),
-
-                      // Simple loading text
-                      Text(
-                        'Loading...',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 2,
-                          color: Colors.white.withValues(alpha: 0.8),
-                        ),
-                      ),
                     ],
                   );
                 },

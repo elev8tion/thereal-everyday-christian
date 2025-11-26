@@ -4,6 +4,7 @@ import '../core/services/database_service.dart';
 import '../core/services/bible_config.dart';
 import '../theme/app_theme.dart';
 import '../core/widgets/app_snackbar.dart';
+import '../components/dancing_logo_loader.dart';
 
 class VersePreferencesWidget extends StatefulWidget {
   const VersePreferencesWidget({super.key});
@@ -130,9 +131,7 @@ class _VersePreferencesWidgetState extends State<VersePreferencesWidget> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Center(
-        child: CircularProgressIndicator(
-          color: AppTheme.goldColor,
-        ),
+        child: DancingLogoLoader(size: 120),
       );
     }
 

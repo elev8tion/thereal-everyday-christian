@@ -18,8 +18,8 @@ class DancingLogoLoader extends StatefulWidget {
 
   const DancingLogoLoader({
     super.key,
-    this.size = 80.0,
-    this.duration = const Duration(milliseconds: 1200),
+    this.size = 180.0,
+    this.duration = const Duration(milliseconds: 3000),
     this.languageCode,
   });
 

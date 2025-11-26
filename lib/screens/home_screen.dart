@@ -10,6 +10,7 @@ import '../components/glass_button.dart';
 import '../components/gradient_background.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/dark_glass_container.dart';
+import '../components/dancing_logo_loader.dart';
 import '../components/fab_tooltip.dart';
 import '../core/navigation/app_routes.dart';
 import '../core/providers/app_providers.dart';
@@ -986,9 +987,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             borderRadius: AppRadius.cardRadius,
           ),
           child: const Center(
-            child: CircularProgressIndicator(
-              color: AppTheme.goldColor,
-            ),
+            child: DancingLogoLoader(),
           ),
         ),
       ),
