@@ -328,7 +328,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Only one reading plan can be active at a time. Reset your current plan to start a different one.',
+                      l10n.onlyOnePlanActive,
                       style: TextStyle(
                         color: AppColors.secondaryText,
                         fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
