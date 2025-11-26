@@ -804,7 +804,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
@@ -820,8 +821,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
-              Flexible(
-                child: AutoSizeText(
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: AutoSizeText(
                   label,
                   style: TextStyle(
                     fontSize: ResponsiveUtils.fontSize(context, 11,
@@ -835,6 +838,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   minFontSize: 7,
                   maxFontSize: 11,
                   overflow: TextOverflow.ellipsis,
+                ),
                 ),
               ),
             ],
