@@ -228,6 +228,10 @@
   "@savedVerses": {
     "description": "Stat card label for saved verses count"
   },
+  "saved": "Saved",
+  "@saved": {
+    "description": "Short label for saved verses tab (used at large text sizes)"
+  },
   "fabTooltipMessage": "Tap here to navigate ✨",
   "@fabTooltipMessage": {
     "description": "Tooltip message for FAB menu"
@@ -1709,6 +1713,10 @@
   "shared": "Shared",
   "@shared": {
     "description": "Shared verses tab label"
+  },
+  "sharedShort": "Shared",
+  "@sharedShort": {
+    "description": "Short label for shared verses tab (used at large text sizes)"
   },
   "noSharedVersesYet": "No shared verses yet",
   "@noSharedVersesYet": {

@@ -147,8 +147,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
                 ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
           ),
           tabs: [
-            Tab(text: useShortLabel ? 'Saved' : l10n.savedVerses),
-            Tab(text: l10n.shared),
+            Tab(text: useShortLabel ? l10n.saved : l10n.savedVerses),
+            Tab(text: useShortLabel ? l10n.sharedShort : l10n.shared),
           ],
         ),
       ),
