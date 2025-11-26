@@ -19,7 +19,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Sabiduría guiada por la fe para los momentos de la vida';
 
   @override
-  String get loadingJourney => 'Preparando su jornada espiritual...';
+  String get loadingJourney => 'Preparando su jornada espiritual';
 
   @override
   String get version => 'Versión 1.0.0';

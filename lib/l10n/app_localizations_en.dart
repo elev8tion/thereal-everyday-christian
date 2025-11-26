@@ -18,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tagline => 'Faith-guided wisdom for life\'s moments';
 
   @override
-  String get loadingJourney => 'Preparing your spiritual journey...';
+  String get loadingJourney => 'Preparing your spiritual journey';
 
   @override
   String get version => 'Version 1.0.0';
