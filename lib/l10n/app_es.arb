@@ -508,7 +508,7 @@
   "savedVerses": "Versículos",
   "saved": "Guardados",
   "shared": "Compartidos",
-  "sharedShort": "Compart",
+  "sharedShort": "Compart.",
   "noSharedVersesYet": "Aún no hay versículos compartidos",
   "shareVersesToKeepHistory": "Comparte versículos para mantener un historial de acceso rápido aquí.",
   "noSavedVersesYet": "Aún no hay versículos guardados",
@@ -1042,5 +1042,5 @@
     "description": "Etiqueta semántica para la imagen del logotipo del asistente de IA"
   },
   "activeShort": "Activa",
-  "answeredShort": "Respond"
+  "answeredShort": "Resp."
 }

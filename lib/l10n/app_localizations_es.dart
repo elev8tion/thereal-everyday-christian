@@ -1254,7 +1254,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get shared => 'Compartidos';
 
   @override
-  String get sharedShort => 'Compart';
+  String get sharedShort => 'Compart.';
 
   @override
   String get noSharedVersesYet => 'Aún no hay versículos compartidos';
@@ -3140,5 +3140,5 @@ class AppLocalizationsEs extends AppLocalizations {
   String get activeShort => 'Activa';
 
   @override
-  String get answeredShort => 'Respond';
+  String get answeredShort => 'Resp.';
 }
