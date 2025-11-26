@@ -278,30 +278,28 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   /// Build search overlay that covers TabBarView
   Widget _buildSearchOverlay() {
     final l10n = AppLocalizations.of(context);
-    return Positioned.fill(
-      child: _isSearchingVerses
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const DancingLogoLoader(size: 120),
-                  const SizedBox(height: 16),
-                  Text(
-                    l10n.searchingVerses,
-                    style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                      color: Colors.white.withValues(alpha: 0.7),
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+    return _isSearchingVerses
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const DancingLogoLoader(size: 120),
+                const SizedBox(height: 16),
+                Text(
+                  l10n.searchingVerses,
+                  style: TextStyle(
+                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    color: Colors.white.withValues(alpha: 0.7),
                   ),
-                ],
-              ),
-            )
-          : (_filteredBooks.isNotEmpty
-              ? _buildFilteredBooks()
-              : _buildVerseResults()),
-    );
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          )
+        : (_filteredBooks.isNotEmpty
+            ? _buildFilteredBooks()
+            : _buildVerseResults());
   }
 
   /// Build filtered books list (shown when books match search)
