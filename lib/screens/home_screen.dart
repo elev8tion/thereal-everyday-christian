@@ -483,7 +483,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Expanded(
                   child: FrostedGlassCard(
                     padding: const EdgeInsets.all(14),
-                    onTap: () => NavigationService.goToChat(),
+                    onTap: () async {
+                      if (_isNavigating) return;
+                      _isNavigating = true;
+                      await NavigationService.pushNamedImmediate(AppRoutes.chat);
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        if (mounted) setState(() => _isNavigating = false);
+                      });
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
@@ -533,7 +540,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Expanded(
                   child: FrostedGlassCard(
                     padding: const EdgeInsets.all(14),
-                    onTap: () => NavigationService.goToDevotional(),
+                    onTap: () async {
+                      if (_isNavigating) return;
+                      _isNavigating = true;
+                      await NavigationService.pushNamedImmediate(AppRoutes.devotional);
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        if (mounted) setState(() => _isNavigating = false);
+                      });
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
@@ -580,7 +594,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
               ],
-            ).animate().fadeIn(delay: 1000.ms).scale(delay: 1000.ms),
+            ),
           ),
           const SizedBox(height: AppSpacing.md),
           SizedBox(
@@ -591,7 +605,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Expanded(
                   child: FrostedGlassCard(
                     padding: const EdgeInsets.all(14),
-                    onTap: () => NavigationService.goToPrayerJournal(),
+                    onTap: () async {
+                      if (_isNavigating) return;
+                      _isNavigating = true;
+                      await NavigationService.pushNamedImmediate(AppRoutes.prayerJournal);
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        if (mounted) setState(() => _isNavigating = false);
+                      });
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
@@ -641,7 +662,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Expanded(
                   child: FrostedGlassCard(
                     padding: const EdgeInsets.all(14),
-                    onTap: () => NavigationService.goToReadingPlan(),
+                    onTap: () async {
+                      if (_isNavigating) return;
+                      _isNavigating = true;
+                      await NavigationService.pushNamedImmediate(AppRoutes.readingPlan);
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        if (mounted) setState(() => _isNavigating = false);
+                      });
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
@@ -688,7 +716,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
               ],
-            ).animate().fadeIn(delay: 1100.ms).scale(delay: 1100.ms),
+            ),
           ),
         ],
       ),
