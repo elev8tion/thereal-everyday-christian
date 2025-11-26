@@ -31,6 +31,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey _backgroundKey = GlobalKey();
   bool _showFabTooltip = false;
   bool _isNavigating = false;
+  final AutoSizeGroup _mainFeatureTitlesGroup = AutoSizeGroup();
 
   @override
   void initState() {
@@ -498,6 +499,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(height: AppSpacing.sm),
                         AutoSizeText(
                           l10n.biblicalChat,
+                          group: _mainFeatureTitlesGroup,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16,
                                 minSize: 14, maxSize: 18),
@@ -547,6 +549,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(height: AppSpacing.sm),
                         AutoSizeText(
                           l10n.dailyDevotional,
+                          group: _mainFeatureTitlesGroup,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16,
                                 minSize: 14, maxSize: 18),
@@ -604,6 +607,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(height: AppSpacing.sm),
                         AutoSizeText(
                           l10n.prayerJournal,
+                          group: _mainFeatureTitlesGroup,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16,
                                 minSize: 14, maxSize: 18),
@@ -653,6 +657,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(height: AppSpacing.sm),
                         AutoSizeText(
                           l10n.readingPlans,
+                          group: _mainFeatureTitlesGroup,
                           style: TextStyle(
                             fontSize: ResponsiveUtils.fontSize(context, 16,
                                 minSize: 14, maxSize: 18),

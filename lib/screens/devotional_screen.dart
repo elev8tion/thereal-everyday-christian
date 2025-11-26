@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/clear_glass_card.dart';
@@ -407,16 +408,12 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
   // Title Card
   Widget _buildTitleCard(Devotional devotional) {
-    // Split title into two lines at "a " if it exists
-    final titleParts = _splitTitle(devotional.title);
-
     return Padding(
       padding: AppSpacing.screenPadding,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            titleParts['first']!,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return AutoSizeText(
+            devotional.title,
             style: TextStyle(
               fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
               fontWeight: FontWeight.w800,
@@ -424,67 +421,95 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
               height: 1.2,
             ),
             textAlign: TextAlign.left,
-          ),
-          Text(
-            titleParts['second']!,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
-              fontWeight: FontWeight.w800,
-              color: AppColors.primaryText,
-              height: 1.2,
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ],
+            minFontSize: 16,
+            maxLines: 3,
+          );
+        },
       ),
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.2);
   }
 
   // Helper to split title intelligently
   Map<String, String> _splitTitle(String title) {
+    final words = title.split(' ');
+    if (words.length <= 1) {
+      return {'first': title, 'second': ''};
+    }
+
+    // Try to split at common prepositions for natural phrasing
+    final prepositions = [' in ', ' on ', ' of ', ' to ', ' for ', ' with ', ' from '];
+    for (final prep in prepositions) {
+      final prepIndex = title.toLowerCase().indexOf(prep);
+      if (prepIndex != -1) {
+        final firstPart = title.substring(0, prepIndex).trim();
+        final secondPart = title.substring(prepIndex + 1).trim(); // Skip the space
+
+        // Check if this creates a good split (avoid single long words on second line)
+        final secondWords = secondPart.split(' ');
+        if (secondWords.length > 1 || secondWords[0].length <= 12) {
+          return {
+            'first': firstPart,
+            'second': secondPart,
+          };
+        }
+      }
+    }
+
     // Try to split after "a " or "an " for natural phrasing
     final aIndex = title.toLowerCase().indexOf(' a ');
     final anIndex = title.toLowerCase().indexOf(' an ');
 
     if (aIndex != -1) {
-      final splitPoint = aIndex + 2; // Include "a"
-      return {
-        'first': title.substring(0, splitPoint).trim(),
-        'second': title.substring(splitPoint).trim(),
-      };
+      final firstPart = title.substring(0, aIndex + 2).trim();
+      final secondPart = title.substring(aIndex + 2).trim();
+
+      // Check if second part is a single long word
+      final secondWords = secondPart.split(' ');
+      if (secondWords.length > 1 || secondWords[0].length <= 12) {
+        return {
+          'first': firstPart,
+          'second': secondPart,
+        };
+      }
     } else if (anIndex != -1) {
-      final splitPoint = anIndex + 3; // Include "an"
-      return {
-        'first': title.substring(0, splitPoint).trim(),
-        'second': title.substring(splitPoint).trim(),
-      };
-    } else {
-      // Fallback: split as evenly as possible by character length
-      final words = title.split(' ');
-      if (words.length <= 1) {
-        return {'first': title, 'second': ''};
+      final firstPart = title.substring(0, anIndex + 3).trim();
+      final secondPart = title.substring(anIndex + 3).trim();
+
+      // Check if second part is a single long word
+      final secondWords = secondPart.split(' ');
+      if (secondWords.length > 1 || secondWords[0].length <= 12) {
+        return {
+          'first': firstPart,
+          'second': secondPart,
+        };
       }
-
-      // Find the split point closest to half the character length
-      final halfLength = title.length / 2;
-      int bestSplitIndex = 1;
-      int bestDifference = title.length;
-
-      int currentLength = words[0].length;
-      for (int i = 1; i < words.length; i++) {
-        final difference = (currentLength - halfLength).abs();
-        if (difference < bestDifference) {
-          bestDifference = difference.toInt();
-          bestSplitIndex = i;
-        }
-        currentLength += words[i].length + 1; // +1 for space
-      }
-
-      return {
-        'first': words.sublist(0, bestSplitIndex).join(' '),
-        'second': words.sublist(bestSplitIndex).join(' '),
-      };
     }
+
+    // Fallback: split as evenly as possible, avoiding single long words on second line
+    final halfLength = title.length / 2;
+    int bestSplitIndex = 1;
+    int bestDifference = title.length;
+
+    int currentLength = words[0].length;
+    for (int i = 1; i < words.length; i++) {
+      final secondPart = words.sublist(i).join(' ');
+      final secondWords = secondPart.split(' ');
+
+      // Penalize splits that leave a single long word on the second line
+      final penalty = (secondWords.length == 1 && secondWords[0].length > 12) ? 1000 : 0;
+
+      final difference = (currentLength - halfLength).abs() + penalty;
+      if (difference < bestDifference) {
+        bestDifference = difference.toInt();
+        bestSplitIndex = i;
+      }
+      currentLength += words[i].length + 1; // +1 for space
+    }
+
+    return {
+      'first': words.sublist(0, bestSplitIndex).join(' '),
+      'second': words.sublist(bestSplitIndex).join(' '),
+    };
   }
 
   // 1. Opening Scripture

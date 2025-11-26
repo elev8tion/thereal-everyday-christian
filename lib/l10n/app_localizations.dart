@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// Feature card title
   ///
   /// In en, this message translates to:
-  /// **'Daily Devotional'**
+  /// **'Devotionals'**
   String get dailyDevotional;
 
   /// Feature card description

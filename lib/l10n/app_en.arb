@@ -176,7 +176,7 @@
   "@biblicalChatDesc": {
     "description": "Biblical Chat feature description"
   },
-  "dailyDevotional": "Daily Devotional",
+  "dailyDevotional": "Devotionals",
   "@dailyDevotional": {
     "description": "Feature card title"
   },

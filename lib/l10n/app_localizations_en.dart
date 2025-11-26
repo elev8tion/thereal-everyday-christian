@@ -149,7 +149,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Get biblical wisdom for any situation you\'re facing';
 
   @override
-  String get dailyDevotional => 'Daily Devotional';
+  String get dailyDevotional => 'Devotionals';
 
   @override
   String get dailyDevotionalDesc => 'Grow closer to God with daily reflections';
