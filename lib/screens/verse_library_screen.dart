@@ -704,11 +704,16 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
     showCustomBottomSheet(
       context: context,
       title: l10n.verseLibraryOptions,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.6, // Max 60% of screen
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
             ListTile(
               leading: _buildSheetIcon(Icons.info_outline),
               title: Text(
@@ -803,7 +808,9 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
                 _confirmClearSharedVerses();
               },
             ),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );
