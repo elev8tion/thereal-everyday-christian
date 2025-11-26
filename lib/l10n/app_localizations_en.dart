@@ -189,6 +189,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get savedVerses => 'Saved Verses';
 
   @override
+  String get saved => 'Saved';
+
+  @override
   String get fabTooltipMessage => 'Tap here to navigate ✨';
 
   @override
@@ -1239,6 +1242,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shared => 'Shared';
+
+  @override
+  String get sharedShort => 'Shared';
 
   @override
   String get noSharedVersesYet => 'No shared verses yet';
@@ -3088,4 +3094,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiAssistantLogo => 'AI assistant logo';
+
+  @override
+  String get activeShort => 'Active';
+
+  @override
+  String get answeredShort => 'Answered';
 }

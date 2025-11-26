@@ -318,7 +318,7 @@
   },
   "delete": "Delete",
   "@delete": {
-    "description": "Menu action"
+    "description": "Delete button text"
   },
   "howGodAnswered": "How God Answered:",
   "@howGodAnswered": {
@@ -360,7 +360,7 @@
   },
   "cancel": "Cancel",
   "@cancel": {
-    "description": "Button text"
+    "description": "Cancel button text"
   },
   "addPrayerButton": "Add Prayer",
   "@addPrayerButton": {
@@ -404,7 +404,6 @@
   },
   "general": "General",
   "faith": "Faith",
-  "gratitude": "Gratitude",
   "other": "Other",
   "work": "Work",
   "ministry": "Ministry",
@@ -417,11 +416,11 @@
   },
   "today": "Today",
   "@today": {
-    "description": "Date label"
+    "description": "Date label for today"
   },
   "yesterday": "Yesterday",
   "@yesterday": {
-    "description": "Date label"
+    "description": "Date label for yesterday"
   },
   "daysAgo": "{count} days ago",
   "@daysAgo": {
@@ -685,7 +684,6 @@
   "@all": {
     "description": "Category filter"
   },
-  "faith": "Faith",
   "@faith": {
     "description": "Category"
   },
@@ -1003,7 +1001,7 @@
   },
   "close": "Close",
   "@close": {
-    "description": "Button text"
+    "description": "Close button text"
   },
   "openingEmailClient": "Opening email client...",
   "@openingEmailClient": {
@@ -1411,9 +1409,9 @@
       }
     }
   },
-  "devotionalOptions": "Devotional Options",
+  "devotionalOptions": "Devotional options",
   "@devotionalOptions": {
-    "description": "Devotional options bottom sheet title"
+    "description": "Tooltip for devotional options button"
   },
   "shareDevotional": "Share Devotional",
   "@shareDevotional": {
@@ -1489,7 +1487,7 @@
   },
   "share": "Share",
   "@share": {
-    "description": "Share action label"
+    "description": "Share button text"
   },
   "selectCategory": "Select Category",
   "@selectCategory": {
@@ -1705,7 +1703,6 @@
   "@paywallNoPreviousPurchaseFound": {
     "description": "No previous purchase error message"
   },
-
   "everydayVerses": "Everyday verses",
   "@everydayVerses": {
     "description": "Verse library subtitle"
@@ -1740,7 +1737,7 @@
   },
   "shareText": "Share Text",
   "@shareText": {
-    "description": "Share as text option"
+    "description": "Menu item: share as text"
   },
   "unableToShareVerse": "Unable to share verse: {error}",
   "@unableToShareVerse": {
@@ -1864,7 +1861,6 @@
       }
     }
   },
-
   "welcomeToEverydayChristian": "Welcome to Everyday Christian",
   "@welcomeToEverydayChristian": {
     "description": "Onboarding welcome title"
@@ -2155,7 +2151,6 @@
   "@subscriptionUnableToOpenSettings": {
     "description": "Error message when unable to open subscription settings"
   },
-
   "legalAgreements": "Legal Agreements",
   "@legalAgreements": {
     "description": "Legal agreements screen title"
@@ -2308,7 +2303,6 @@
   "@trialPricingAfterTrial": {
     "description": "Trial pricing information shown in dialog"
   },
-
   "faqSubtitle": "Find answers to common questions",
   "@faqSubtitle": {
     "description": "FAQ dialog subtitle"
@@ -2345,7 +2339,6 @@
   "@faqDataPrivacy": {
     "description": "FAQ section title"
   },
-
   "faqQ1": "How do I get started?",
   "@faqQ1": {
     "description": "FAQ question 1"
@@ -2370,7 +2363,6 @@
   "@faqA3": {
     "description": "FAQ answer 3"
   },
-
   "faqQ4": "Can I read the Bible offline?",
   "@faqQ4": {
     "description": "FAQ question 4"
@@ -2395,7 +2387,6 @@
   "@faqA6": {
     "description": "FAQ answer 6"
   },
-
   "faqQ7": "How do I add a prayer?",
   "@faqQ7": {
     "description": "FAQ question 7"
@@ -2428,7 +2419,6 @@
   "@faqA10": {
     "description": "FAQ answer 10"
   },
-
   "faqQ11": "Where can I find daily devotionals?",
   "@faqQ11": {
     "description": "FAQ question 11"
@@ -2453,7 +2443,6 @@
   "@faqA13": {
     "description": "FAQ answer 13"
   },
-
   "faqQ14": "What can I ask the AI?",
   "@faqQ14": {
     "description": "FAQ question 14"
@@ -2478,7 +2467,6 @@
   "@faqA16": {
     "description": "FAQ answer 16"
   },
-
   "faqQ17": "How do I change notification times?",
   "@faqQ17": {
     "description": "FAQ question 17"
@@ -2503,7 +2491,6 @@
   "@faqA19": {
     "description": "FAQ answer 19"
   },
-
   "faqQ20": "How do I adjust text size?",
   "@faqQ20": {
     "description": "FAQ question 20"
@@ -2528,7 +2515,6 @@
   "@faqA22": {
     "description": "FAQ answer 22"
   },
-
   "faqQ23": "Is my data private and secure?",
   "@faqQ23": {
     "description": "FAQ question 23"
@@ -2601,7 +2587,6 @@
   "@aiPoweredBiblicalGuidance": {
     "description": "Subtitle for chat share images"
   },
-
   "monthlyLimitReached": "Monthly Limit Reached",
   "@monthlyLimitReached": {
     "description": "Monthly message limit dialog title"
@@ -2894,7 +2879,7 @@
   },
   "chatOptions": "Chat Options",
   "@chatOptions": {
-    "description": "Chat options bottom sheet title"
+    "description": "Bottom sheet title for chat options"
   },
   "chatExportConversationDesc": "View and copy conversation text",
   "@chatExportConversationDesc": {
@@ -3632,7 +3617,6 @@
   "@readingPlanChannelDesc": {
     "description": "Reading plan notification channel description"
   },
-
   "languageChangedToEnglish": "Language changed to English",
   "@languageChangedToEnglish": {
     "description": "Language change confirmation for English"
@@ -3810,33 +3794,52 @@
     "description": "Heatmap legend label for more activity"
   },
   "monthJanuary": "January",
-  "@monthJanuary": {"description": "Month name"},
+  "@monthJanuary": {
+    "description": "Month name"
+  },
   "monthFebruary": "February",
-  "@monthFebruary": {"description": "Month name"},
+  "@monthFebruary": {
+    "description": "Month name"
+  },
   "monthMarch": "March",
-  "@monthMarch": {"description": "Month name"},
+  "@monthMarch": {
+    "description": "Month name"
+  },
   "monthApril": "April",
-  "@monthApril": {"description": "Month name"},
+  "@monthApril": {
+    "description": "Month name"
+  },
   "monthMay": "May",
-  "@monthMay": {"description": "Month name"},
+  "@monthMay": {
+    "description": "Month name"
+  },
   "monthJune": "June",
-  "@monthJune": {"description": "Month name"},
+  "@monthJune": {
+    "description": "Month name"
+  },
   "monthJuly": "July",
-  "@monthJuly": {"description": "Month name"},
+  "@monthJuly": {
+    "description": "Month name"
+  },
   "monthAugust": "August",
-  "@monthAugust": {"description": "Month name"},
+  "@monthAugust": {
+    "description": "Month name"
+  },
   "monthSeptember": "September",
-  "@monthSeptember": {"description": "Month name"},
+  "@monthSeptember": {
+    "description": "Month name"
+  },
   "monthOctober": "October",
-  "@monthOctober": {"description": "Month name"},
+  "@monthOctober": {
+    "description": "Month name"
+  },
   "monthNovember": "November",
-  "@monthNovember": {"description": "Month name"},
+  "@monthNovember": {
+    "description": "Month name"
+  },
   "monthDecember": "December",
-  "@monthDecember": {"description": "Month name"}
-,
-  "chatOptions": "Chat Options",
-  "@chatOptions": {
-    "description": "Bottom sheet title for chat options"
+  "@monthDecember": {
+    "description": "Month name"
   },
   "messageOptions": "Message Options",
   "@messageOptions": {
@@ -3853,10 +3856,6 @@
   "exportConversationDesc": "View and copy conversation text",
   "@exportConversationDesc": {
     "description": "Menu item description: export conversation"
-  },
-  "shareText": "Share Text",
-  "@shareText": {
-    "description": "Menu item: share as text"
   },
   "shareTextDesc": "Share as plain text",
   "@shareTextDesc": {
@@ -3980,14 +3979,6 @@
   "@exportConversationTitle": {
     "description": "Export dialog title"
   },
-  "close": "Close",
-  "@close": {
-    "description": "Close button text"
-  },
-  "share": "Share",
-  "@share": {
-    "description": "Share button text"
-  },
   "deleteConversationTitle": "Delete Conversation?",
   "@deleteConversationTitle": {
     "description": "Delete conversation dialog title"
@@ -3995,14 +3986,6 @@
   "deleteConversationMessage": "This will permanently delete this conversation and all its messages.",
   "@deleteConversationMessage": {
     "description": "Delete conversation dialog message"
-  },
-  "cancel": "Cancel",
-  "@cancel": {
-    "description": "Cancel button text"
-  },
-  "delete": "Delete",
-  "@delete": {
-    "description": "Delete button text"
   },
   "startNewConversationTitle": "Start New Conversation?",
   "@startNewConversationTitle": {
@@ -4064,14 +4047,6 @@
   "@conversationDefaultTitle": {
     "description": "Default title for untitled conversations"
   },
-  "today": "Today",
-  "@today": {
-    "description": "Date label for today"
-  },
-  "yesterday": "Yesterday",
-  "@yesterday": {
-    "description": "Date label for yesterday"
-  },
   "discussingVerse": "Discussing {reference}",
   "@discussingVerse": {
     "description": "AppBar title when discussing a specific verse",
@@ -4085,8 +4060,7 @@
   "newConversation": "New Conversation",
   "@newConversation": {
     "description": "AppBar title for new conversation"
-  }
-,
+  },
   "fallbackPrayerResponse": "Prayer is our direct line to God. As it says in Philippians 4:6-7: \"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.\"\n\nWhat specific area would you like prayer for?",
   "@fallbackPrayerResponse": {
     "description": "Fallback response about prayer when AI unavailable"
@@ -4110,13 +4084,11 @@
   "fallbackDefaultResponse": "Thank you for sharing with me. God cares deeply about every aspect of your life, both big and small. As it says in 1 Peter 5:7: \"Cast all your anxiety on him because he cares for you.\"\n\nRemember that you are loved, valued, and never alone. God is always listening and ready to help. Would you like to explore a specific Bible verse or topic related to your question?",
   "@fallbackDefaultResponse": {
     "description": "Default fallback response when AI unavailable"
-  }
-,
+  },
   "aiRegenerateInstruction": "Please provide a different perspective or alternative response to the previous question.",
   "@aiRegenerateInstruction": {
     "description": "AI instruction for regenerating responses"
-  }
-,
+  },
   "securityMessageEmpty": "Message cannot be empty.",
   "@securityMessageEmpty": {
     "description": "Error message when user submits empty message"
@@ -4197,10 +4169,6 @@
   "@removeFromFavorites": {
     "description": "Tooltip for remove from favorites button"
   },
-  "devotionalOptions": "Devotional options",
-  "@devotionalOptions": {
-    "description": "Tooltip for devotional options button"
-  },
   "verseOptions": "Verse options",
   "@verseOptions": {
     "description": "Tooltip for verse options button"
@@ -4216,5 +4184,13 @@
   "aiAssistantLogo": "AI assistant logo",
   "@aiAssistantLogo": {
     "description": "Semantic label for AI assistant logo image"
+  },
+  "activeShort": "Active",
+  "@activeShort": {
+    "description": "Short label for active prayers tab (used at large text sizes)"
+  },
+  "answeredShort": "Answered",
+  "@answeredShort": {
+    "description": "Short label for answered prayers tab (used at large text sizes)"
   }
 }

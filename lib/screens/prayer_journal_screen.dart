@@ -99,6 +99,8 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
 
   Widget _buildTabBar() {
     final l10n = AppLocalizations.of(context);
+    final textSize = ref.watch(textSizeProvider);
+    final useShortLabel = textSize >= 1.3;
 
     return Container(
       margin: AppSpacing.horizontalXl,
@@ -123,8 +125,8 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
           ),
           tabs: [
-            Tab(text: l10n.active),
-            Tab(text: l10n.answered),
+            Tab(text: useShortLabel ? l10n.activeShort : l10n.active),
+            Tab(text: useShortLabel ? l10n.answeredShort : l10n.answered),
           ],
         ),
       ),

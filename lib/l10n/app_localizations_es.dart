@@ -188,6 +188,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get savedVerses => 'Versículos';
 
   @override
+  String get saved => 'Guardados';
+
+  @override
   String get fabTooltipMessage => 'Toca aquí para navegar ✨';
 
   @override
@@ -1249,6 +1252,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get shared => 'Compartidos';
+
+  @override
+  String get sharedShort => 'Compart';
 
   @override
   String get noSharedVersesYet => 'Aún no hay versículos compartidos';
@@ -3129,4 +3135,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get aiAssistantLogo => 'Logotipo del asistente de IA';
+
+  @override
+  String get activeShort => 'Activa';
+
+  @override
+  String get answeredShort => 'Respond';
 }

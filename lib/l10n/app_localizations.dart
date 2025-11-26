@@ -440,6 +440,12 @@ abstract class AppLocalizations {
   /// **'Saved Verses'**
   String get savedVerses;
 
+  /// Short label for saved verses tab (used at large text sizes)
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
   /// Tooltip message for FAB menu
   ///
   /// In en, this message translates to:
@@ -2360,6 +2366,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shared'**
   String get shared;
+
+  /// Short label for shared verses tab (used at large text sizes)
+  ///
+  /// In en, this message translates to:
+  /// **'Shared'**
+  String get sharedShort;
 
   /// Empty shared verses state title
   ///
@@ -5492,6 +5504,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI assistant logo'**
   String get aiAssistantLogo;
+
+  /// Short label for active prayers tab (used at large text sizes)
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get activeShort;
+
+  /// Short label for answered prayers tab (used at large text sizes)
+  ///
+  /// In en, this message translates to:
+  /// **'Answered'**
+  String get answeredShort;
 }
 
 class _AppLocalizationsDelegate

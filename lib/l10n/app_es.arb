@@ -493,7 +493,7 @@
   "retry": "Reintentar",
   "noVersesAvailable": "No hay versículos disponibles",
   "couldNotFindVersesForRange": "No se pudieron encontrar versículos para {book} {startChapter}-{endChapter}",
-  "devotionalOptions": "Opciones de Devocional",
+  "devotionalOptions": "Opciones del devocional",
   "shareDevotional": "Compartir Devocional",
   "devotionalShared": "¡Devocional compartido!",
   "unableToShareDevotional": "No se pudo compartir el devocional: {error}",
@@ -1022,7 +1022,6 @@
   "@removeFromFavorites": {
     "description": "Información sobre herramienta para el botón de quitar de favoritos"
   },
-  "devotionalOptions": "Opciones del devocional",
   "@devotionalOptions": {
     "description": "Información sobre herramienta para el botón de opciones del devocional"
   },
@@ -1041,5 +1040,7 @@
   "aiAssistantLogo": "Logotipo del asistente de IA",
   "@aiAssistantLogo": {
     "description": "Etiqueta semántica para la imagen del logotipo del asistente de IA"
-  }
+  },
+  "activeShort": "Activa",
+  "answeredShort": "Respond"
 }
