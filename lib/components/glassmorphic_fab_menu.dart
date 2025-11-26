@@ -240,12 +240,15 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
         final route = option.route;
         _toggleMenu();
 
-        // Navigate after menu animation (300ms matches AnimatedOpacity duration for smooth blur fade)
-        // Remove overlay just before navigation to prevent orphaning
-        Future.delayed(const Duration(milliseconds: 300), () {
+        // Navigate after menu animation completes (600ms - creates snappy transition with visible animation)
+        // The 700ms animation duration - 100ms allows most animation to play while feeling responsive
+        Future.delayed(const Duration(milliseconds: 600), () {
           if (mounted) {
             // Remove overlay BEFORE navigation to prevent orphaning
             _removeOverlay();
+
+            // Reset debounce flag - animation complete, safe to allow new taps
+            _isNavigating = false;
 
             // If navigating to home, clear stack and make home the root (same as auth)
             if (route == AppRoutes.home) {
@@ -259,10 +262,6 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
               Navigator.pushReplacementNamed(context, route);
             }
           }
-          // Reset debounce flag after navigation completes
-          Future.delayed(const Duration(milliseconds: 300), () {
-            if (mounted) _isNavigating = false;
-          });
         });
       },
       child: ClipRRect(
