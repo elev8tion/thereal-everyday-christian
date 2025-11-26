@@ -9,6 +9,7 @@ import '../components/glass_button.dart';
 import '../components/achievement_badge.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
+import '../core/navigation/app_routes.dart';
 import '../core/providers/app_providers.dart';
 import '../core/services/preferences_service.dart';
 import '../core/services/achievement_service.dart';
@@ -29,6 +30,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController(text: "friend@example.com");
   String userName = '';
+  bool _isNavigating = false;
 
   @override
   void initState() {
@@ -671,7 +673,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               _buildMenuItem(
                 l10n.settings,
                 Icons.settings,
-                () => NavigationService.goToSettings(),
+                () async {
+                  if (_isNavigating) return;
+                  _isNavigating = true;
+                  await NavigationService.pushNamedImmediate(AppRoutes.settings);
+                  Future.delayed(const Duration(milliseconds: 300), () {
+                    if (mounted) setState(() => _isNavigating = false);
+                  });
+                },
               ),
               _buildDivider(),
               _buildMenuItem(
@@ -700,7 +709,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             ],
           ),
-        ).animate().fadeIn(duration: AppAnimations.slow, delay: 300.ms).slideY(begin: 0.2),
+        ),
       ],
     );
   }
