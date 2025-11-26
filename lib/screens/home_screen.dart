@@ -592,7 +592,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ],
             ),
-          ),
+          ).animate().fadeIn(delay: 150.ms).scale(delay: 150.ms),
           const SizedBox(height: AppSpacing.md),
           SizedBox(
             height: cardHeight,
@@ -714,7 +714,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ],
             ),
-          ),
+          ).animate().fadeIn(delay: 250.ms).scale(delay: 250.ms),
         ],
       ),
     );
@@ -745,7 +745,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               shadows: AppTheme.textShadowStrong,
             ),
           ),
-        ).animate().fadeIn(delay: 1200.ms).slideY(begin: 0.3, delay: 1200.ms),
+        ).animate().fadeIn(delay: 350.ms).slideY(begin: 0.3, delay: 350.ms),
         const SizedBox(height: AppSpacing.lg),
         LayoutBuilder(
           builder: (context, constraints) => SizedBox(
@@ -829,7 +829,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
-        ).animate().fadeIn(delay: 1400.ms).slideY(begin: 0.1, delay: 1400.ms),
+        ).animate().fadeIn(delay: 450.ms).slideY(begin: 0.1, delay: 450.ms),
       ],
     );
   }
@@ -1005,7 +1005,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
-        ).animate().fadeIn(delay: 1900.ms).slideY(begin: 0.3, delay: 1900.ms);
+        ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.3, delay: 500.ms);
       },
       loading: () => Padding(
         padding: AppSpacing.horizontalXl,
@@ -1042,6 +1042,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           });
         },
       ),
-    );
+    ).animate().fadeIn(delay: 600.ms).scale(delay: 600.ms);
   }
 }
