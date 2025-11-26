@@ -592,7 +592,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ],
             ),
-          ).animate().fadeIn(delay: 150.ms).scale(delay: 150.ms),
+          ).animate().fadeIn(delay: 1000.ms).slideX(begin: -0.3, delay: 1000.ms),
           const SizedBox(height: AppSpacing.md),
           SizedBox(
             height: cardHeight,
@@ -714,7 +714,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ],
             ),
-          ).animate().fadeIn(delay: 250.ms).scale(delay: 250.ms),
+          ).animate().fadeIn(delay: 1100.ms).slideX(begin: 0.3, delay: 1100.ms),
         ],
       ),
     );
@@ -745,7 +745,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               shadows: AppTheme.textShadowStrong,
             ),
           ),
-        ).animate().fadeIn(delay: 350.ms).slideY(begin: 0.3, delay: 350.ms),
+        ).animate().fadeIn(delay: 1200.ms).slideX(begin: -0.3, delay: 1200.ms),
         const SizedBox(height: AppSpacing.lg),
         LayoutBuilder(
           builder: (context, constraints) => SizedBox(
@@ -829,7 +829,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
-        ).animate().fadeIn(delay: 450.ms).slideY(begin: 0.1, delay: 450.ms),
+        ).animate().fadeIn(delay: 1300.ms).slideX(begin: 0.3, delay: 1300.ms),
       ],
     );
   }
@@ -1005,7 +1005,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
-        ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.3, delay: 500.ms);
+        ).animate().fadeIn(delay: 1400.ms).slideX(begin: -0.3, delay: 1400.ms);
       },
       loading: () => Padding(
         padding: AppSpacing.horizontalXl,
@@ -1042,6 +1042,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           });
         },
       ),
-    ).animate().fadeIn(delay: 600.ms).scale(delay: 600.ms);
+    ).animate().fadeIn(delay: 1500.ms).slideX(begin: 0.3, delay: 1500.ms);
   }
 }
