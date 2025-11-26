@@ -146,10 +146,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             left: AppSpacing.xl,
             child: GlassmorphicFABMenu(
               onMenuOpened: _dismissFabTooltip,
-            )
-                .animate()
-                .fadeIn(duration: AppAnimations.slow)
-                .slideY(begin: -0.3),
+            ),
           ),
           // FAB Tooltip for first-time users
           if (_showFabTooltip)
@@ -1036,8 +1033,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GlassButton(
         text: l10n.startSpiritualConversation,
-        onPressed: () => NavigationService.goToChat(),
-      ).animate().fadeIn(delay: 2000.ms).scale(delay: 2000.ms),
+        onPressed: () async {
+          if (_isNavigating) return;
+          _isNavigating = true;
+          await NavigationService.pushNamedImmediate(AppRoutes.chat);
+          Future.delayed(const Duration(milliseconds: 300), () {
+            if (mounted) setState(() => _isNavigating = false);
+          });
+        },
+      ),
     );
   }
 }
