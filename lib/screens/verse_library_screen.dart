@@ -408,8 +408,6 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
               fontWeight: FontWeight.w500,
               fontStyle: FontStyle.italic,
             ),
-            maxLines: 5,
-            overflow: TextOverflow.ellipsis,
           ),
           if (verse.themes.length > 1) ...[
             const SizedBox(height: AppSpacing.md),
@@ -544,8 +542,6 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
               fontWeight: FontWeight.w500,
               fontStyle: FontStyle.italic,
             ),
-            maxLines: 5,
-            overflow: TextOverflow.ellipsis,
           ),
           if (entry.themes.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.md),
