@@ -120,8 +120,8 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
   Widget _buildTabBar() {
     final l10n = AppLocalizations.of(context);
     final textSize = ref.watch(textSizeProvider);
-    // At 130% and higher (text size >= 20), use shorter label to prevent cutoff
-    final useShortLabel = textSize >= 20;
+    // At 130% and higher (text size >= 1.3), use shorter label to prevent cutoff
+    final useShortLabel = textSize >= 1.3;
 
     return Container(
       margin: AppSpacing.horizontalXl,
