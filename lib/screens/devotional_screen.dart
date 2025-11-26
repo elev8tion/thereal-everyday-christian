@@ -430,29 +430,24 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   // Title Card
   Widget _buildTitleCard(Devotional devotional) {
     return Padding(
-      padding:
-          const EdgeInsets.symmetric(horizontal: 12, vertical: AppSpacing.xl),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return AutoSizeText(
-            devotional.title,
-            style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 24,
-                  minSize: 20, maxSize: 28),
-              fontWeight: FontWeight.w800,
-              color: AppColors.primaryText,
-              height: 1.3, // Slightly increased for better line spacing
-            ),
-            textAlign: TextAlign.left,
-            textDirection: TextDirection.ltr,
-            minFontSize: 16,
-            maxLines: 3,
-            stepGranularity: 0.5,
-            wrapWords: true,
-            softWrap: true,
-            // NO overflow parameter - AutoSizeText will shrink font to fit all text
-          );
-        },
+      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+      child: AutoSizeText(
+        devotional.title,
+        style: TextStyle(
+          fontSize: ResponsiveUtils.fontSize(context, 24,
+              minSize: 20, maxSize: 28),
+          fontWeight: FontWeight.w800,
+          color: AppColors.primaryText,
+          height: 1.3,
+        ),
+        textAlign: TextAlign.left,
+        textDirection: TextDirection.ltr,
+        minFontSize: 16,
+        maxLines: 3,
+        stepGranularity: 0.5,
+        wrapWords: true,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
       ),
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.2);
   }
