@@ -240,9 +240,9 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
         final route = option.route;
         _toggleMenu();
 
-        // Navigate after animation starts (200ms into 700ms animation for smooth visual)
-        // This gives enough time for the blur to start fading while keeping responsiveness
-        Future.delayed(const Duration(milliseconds: 200), () {
+        // Navigate after menu animation (300ms matches AnimatedOpacity duration for smooth blur fade)
+        // Remove overlay just before navigation to prevent orphaning
+        Future.delayed(const Duration(milliseconds: 300), () {
           if (mounted) {
             // Remove overlay BEFORE navigation to prevent orphaning
             _removeOverlay();
