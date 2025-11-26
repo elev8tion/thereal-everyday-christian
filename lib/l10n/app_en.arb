@@ -4200,5 +4200,9 @@
   "addPrayerShort": "Prayer",
   "@addPrayerShort": {
     "description": "Short label for add prayer quick action (used at large text sizes 130%-150%)"
+  },
+  "addPrayerButtonShort": "Prayer",
+  "@addPrayerButtonShort": {
+    "description": "Short label for add prayer dialog button (used at large text sizes 130%-150%)"
   }
 }

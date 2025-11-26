@@ -3106,4 +3106,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addPrayerShort => 'Prayer';
+
+  @override
+  String get addPrayerButtonShort => 'Prayer';
 }

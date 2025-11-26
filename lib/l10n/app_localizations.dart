@@ -5528,6 +5528,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prayer'**
   String get addPrayerShort;
+
+  /// Short label for add prayer dialog button (used at large text sizes 130%-150%)
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer'**
+  String get addPrayerButtonShort;
 }
 
 class _AppLocalizationsDelegate

@@ -729,6 +729,10 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                 selectedCategoryId = categories.first.id;
               }
 
+              // Check text size for short label
+              final textSize = ref.watch(textSizeProvider);
+              final useShortLabel = textSize >= 1.3;
+
               return Dialog(
                 backgroundColor: Colors.transparent,
                 child: GestureDetector(
@@ -853,7 +857,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                                 const SizedBox(width: AppSpacing.md),
                                 Expanded(
                                   child: GlassButton(
-                                    text: l10n.addPrayerButton,
+                                    text: useShortLabel ? l10n.addPrayerButtonShort : l10n.addPrayerButton,
                                     height: 48,
                                     onPressed: () {
                                       if (title.isNotEmpty && description.isNotEmpty && selectedCategoryId != null) {

@@ -3147,4 +3147,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get addPrayerShort => 'Oración';
+
+  @override
+  String get addPrayerButtonShort => 'Oración';
 }

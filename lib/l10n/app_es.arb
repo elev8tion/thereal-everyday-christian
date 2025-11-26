@@ -1044,5 +1044,6 @@
   "activeShort": "Activa",
   "answeredShort": "Resp.",
   "verseLibraryShort": "Vers.",
-  "addPrayerShort": "Oración"
+  "addPrayerShort": "Oración",
+  "addPrayerButtonShort": "Oración"
 }
