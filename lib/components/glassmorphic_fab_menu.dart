@@ -240,9 +240,13 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
         final route = option.route;
         _toggleMenu();
 
-        // Navigate after menu closes (capture context before async gap)
-        Future.delayed(const Duration(milliseconds: 300), () {
+        // Navigate after animation starts (200ms into 700ms animation for smooth visual)
+        // This gives enough time for the blur to start fading while keeping responsiveness
+        Future.delayed(const Duration(milliseconds: 200), () {
           if (mounted) {
+            // Remove overlay BEFORE navigation to prevent orphaning
+            _removeOverlay();
+
             // If navigating to home, clear stack and make home the root (same as auth)
             if (route == AppRoutes.home) {
               Navigator.pushNamedAndRemoveUntil(

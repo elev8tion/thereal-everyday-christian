@@ -692,6 +692,7 @@ class TextSizeNotifier extends StateNotifier<double> {
       final savedSize = prefs.loadTextSize();
       final scaleFactor = _migrateToScaleFactor(savedSize);
       state = scaleFactor;
+      print('🔍 [TextSizeNotifier] Loaded text size: $savedSize → scaleFactor: $scaleFactor (${(scaleFactor * 100).round()}%)');
     });
   }
 
@@ -715,6 +716,7 @@ class TextSizeNotifier extends StateNotifier<double> {
     }
 
     state = size;
+    print('🔍 [TextSizeNotifier] Setting text size to: $size (${(size * 100).round()}%)');
 
     if (_preferences == null) {
       developer.log(
