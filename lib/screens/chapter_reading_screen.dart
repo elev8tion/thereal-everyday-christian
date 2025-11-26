@@ -6,7 +6,6 @@ import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/audio_control_pill.dart';
 import '../components/fab_tooltip.dart';
-import '../components/dancing_logo_loader.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
@@ -1046,7 +1045,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
 
   Widget _buildLoading() {
     return const Center(
-      child: DancingLogoLoader(),
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+        strokeWidth: 3,
+      ),
     );
   }
 

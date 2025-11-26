@@ -7,7 +7,6 @@ import '../components/dark_glass_container.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/category_badge.dart';
-import '../components/dancing_logo_loader.dart';
 import '../components/blur_dropdown.dart';
 import '../components/blur_popup_menu.dart';
 import '../components/category_filter_chip.dart';
@@ -882,7 +881,12 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             },
             loading: () => const Dialog(
               backgroundColor: Colors.transparent,
-              child: Center(child: DancingLogoLoader(size: 120)),
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+                  strokeWidth: 3,
+                ),
+              ),
             ),
             error: (_, __) => Dialog(
               backgroundColor: Colors.transparent,

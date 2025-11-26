@@ -5,7 +5,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/standard_screen_header.dart';
-import '../components/dancing_logo_loader.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/services/book_name_service.dart';
 import '../core/services/bible_config.dart';
@@ -255,7 +254,12 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                         .fadeIn(duration: AppAnimations.normal, delay: 200.ms),
                   Expanded(
                     child: _isLoading
-                        ? const Center(child: DancingLogoLoader())
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+                              strokeWidth: 3,
+                            ),
+                          )
                         : _showSearchOverlay
                             ? _buildSearchOverlay()
                             : TabBarView(
@@ -283,7 +287,10 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const DancingLogoLoader(size: 120),
+                const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+                  strokeWidth: 3,
+                ),
                 const SizedBox(height: 16),
                 Text(
                   l10n.searchingVerses,

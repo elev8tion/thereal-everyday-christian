@@ -6,7 +6,6 @@ import '../components/frosted_glass_card.dart';
 import '../components/dark_glass_container.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
-import '../components/dancing_logo_loader.dart';
 import '../components/standard_screen_header.dart';
 import '../components/calendar_heatmap_widget.dart';
 import '../components/reading_progress_stats_widget.dart';
@@ -126,7 +125,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
     final currentPlanAsync = ref.watch(currentReadingPlanProvider);
 
     return currentPlanAsync.when(
-      loading: () => const Center(child: DancingLogoLoader()),
+      loading: () => const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+          strokeWidth: 3,
+        ),
+      ),
       error: (error, stack) => _buildErrorState(error.toString()),
       data: (currentPlan) {
         if (currentPlan == null) {
@@ -169,7 +173,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
 
               // Statistics
               statsAsync.when(
-                loading: () => const Center(child: DancingLogoLoader()),
+                loading: () => const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+          strokeWidth: 3,
+        ),
+      ),
                 error: (error, stack) => Text(l10n.errorWithMessage(error.toString())),
                 data: (stats) {
                   return estimatedDateAsync.when(
@@ -203,7 +212,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
               ).animate().fadeIn(duration: AppAnimations.slow, delay: 700.ms),
               const SizedBox(height: AppSpacing.lg),
               heatmapAsync.when(
-                loading: () => const Center(child: DancingLogoLoader()),
+                loading: () => const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+          strokeWidth: 3,
+        ),
+      ),
                 error: (error, stack) => Text(l10n.errorWithMessage(error.toString())),
                 data: (heatmapData) {
                   return DarkGlassContainer(
@@ -227,7 +241,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
     final currentPlanAsync = ref.watch(currentReadingPlanProvider);
 
     return currentPlanAsync.when(
-      loading: () => const Center(child: DancingLogoLoader()),
+      loading: () => const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+          strokeWidth: 3,
+        ),
+      ),
       error: (error, stack) => _buildErrorState(error.toString()),
       data: (currentPlan) {
         if (currentPlan == null) {
@@ -244,7 +263,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             ref.watch(todaysReadingsProvider(currentPlan.id));
 
         return todaysReadingsAsync.when(
-          loading: () => const Center(child: DancingLogoLoader()),
+          loading: () => const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+          strokeWidth: 3,
+        ),
+      ),
           error: (error, stack) => _buildErrorState(error.toString()),
           data: (todaysReadings) {
             return SingleChildScrollView(
@@ -287,7 +311,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
     final activePlansAsync = ref.watch(activeReadingPlansProvider);
 
     return activePlansAsync.when(
-      loading: () => const Center(child: DancingLogoLoader()),
+      loading: () => const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+          strokeWidth: 3,
+        ),
+      ),
       error: (error, stack) => _buildErrorState(error.toString()),
       data: (activePlans) {
         if (activePlans.isEmpty) {
@@ -349,7 +378,12 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
     final allPlansAsync = ref.watch(allReadingPlansProvider);
 
     return allPlansAsync.when(
-      loading: () => const Center(child: DancingLogoLoader()),
+      loading: () => const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+          strokeWidth: 3,
+        ),
+      ),
       error: (error, stack) => _buildErrorState(error.toString()),
       data: (allPlans) {
         return ListView.builder(

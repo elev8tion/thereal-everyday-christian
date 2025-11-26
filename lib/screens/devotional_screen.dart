@@ -6,7 +6,6 @@ import '../components/frosted_glass_card.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/glassmorphic_fab_menu.dart';
-import '../components/dancing_logo_loader.dart';
 import '../components/standard_screen_header.dart';
 import '../components/dark_glass_container.dart';
 import '../theme/app_theme.dart';
@@ -264,7 +263,10 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                     _buildHeader(streakAsync, totalCompletedAsync, null),
                     const SizedBox(height: AppSpacing.xxl),
                     const Center(
-                      child: DancingLogoLoader(),
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+                        strokeWidth: 3,
+                      ),
                     ),
                   ],
                 ),

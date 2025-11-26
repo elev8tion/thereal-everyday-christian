@@ -7,7 +7,6 @@ import '../components/frosted_glass_card.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/glass_button.dart';
 import '../components/achievement_badge.dart';
-import '../components/dancing_logo_loader.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
@@ -169,7 +168,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         body: Stack(
           children: [
             GradientBackground(),
-            Center(child: DancingLogoLoader()),
+            Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+                strokeWidth: 3,
+              ),
+            ),
           ],
         ),
       ),

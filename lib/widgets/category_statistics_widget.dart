@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../components/frosted_glass_card.dart';
-import '../components/dancing_logo_loader.dart';
 import '../core/models/prayer_category.dart';
 import '../core/providers/category_providers.dart';
 import '../theme/app_theme.dart';
@@ -59,7 +58,10 @@ class CategoryStatisticsWidget extends ConsumerWidget {
       loading: () => const Center(
         child: Padding(
           padding: EdgeInsets.all(20),
-          child: DancingLogoLoader(size: 100),
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+            strokeWidth: 3,
+          ),
         ),
       ),
       error: (error, stack) => Padding(
