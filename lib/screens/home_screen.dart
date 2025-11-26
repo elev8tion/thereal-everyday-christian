@@ -744,7 +744,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 const SizedBox(width: AppSpacing.lg),
                 _buildQuickActionCard(
-                  label: l10n.addPrayer,
+                  label: useShortLabel ? l10n.addPrayerShort : l10n.addPrayer,
                   icon: Icons.add,
                   color: Colors.green,
                   onTap: () => NavigationService.goToPrayerJournal(),

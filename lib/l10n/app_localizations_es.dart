@@ -3144,4 +3144,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get verseLibraryShort => 'Vers.';
+
+  @override
+  String get addPrayerShort => 'Oración';
 }

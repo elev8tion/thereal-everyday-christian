@@ -3103,4 +3103,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get verseLibraryShort => 'Verse Library';
+
+  @override
+  String get addPrayerShort => 'Prayer';
 }

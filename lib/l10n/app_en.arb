@@ -4196,5 +4196,9 @@
   "verseLibraryShort": "Verse Library",
   "@verseLibraryShort": {
     "description": "Short label for verse library quick action (used at large text sizes)"
+  },
+  "addPrayerShort": "Prayer",
+  "@addPrayerShort": {
+    "description": "Short label for add prayer quick action (used at large text sizes 130%-150%)"
   }
 }

@@ -5522,6 +5522,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Verse Library'**
   String get verseLibraryShort;
+
+  /// Short label for add prayer quick action (used at large text sizes 130%-150%)
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer'**
+  String get addPrayerShort;
 }
 
 class _AppLocalizationsDelegate
