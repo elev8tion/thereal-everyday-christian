@@ -4192,5 +4192,9 @@
   "answeredShort": "Answered",
   "@answeredShort": {
     "description": "Short label for answered prayers tab (used at large text sizes)"
+  },
+  "verseLibraryShort": "Verse Library",
+  "@verseLibraryShort": {
+    "description": "Short label for verse library quick action (used at large text sizes)"
   }
 }

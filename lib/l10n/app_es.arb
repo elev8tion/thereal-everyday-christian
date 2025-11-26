@@ -1042,5 +1042,6 @@
     "description": "Etiqueta semántica para la imagen del logotipo del asistente de IA"
   },
   "activeShort": "Activa",
-  "answeredShort": "Resp."
+  "answeredShort": "Resp.",
+  "verseLibraryShort": "Vers."
 }

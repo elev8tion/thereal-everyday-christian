@@ -5516,6 +5516,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Answered'**
   String get answeredShort;
+
+  /// Short label for verse library quick action (used at large text sizes)
+  ///
+  /// In en, this message translates to:
+  /// **'Verse Library'**
+  String get verseLibraryShort;
 }
 
 class _AppLocalizationsDelegate

@@ -3100,4 +3100,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get answeredShort => 'Answered';
+
+  @override
+  String get verseLibraryShort => 'Verse Library';
 }

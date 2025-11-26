@@ -694,6 +694,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildQuickActions() {
     final l10n = AppLocalizations.of(context);
+    final textSize = ref.watch(textSizeProvider);
+    final useShortLabel = textSize >= 1.3;
     // Scale height based on BOTH screen size AND text scale factor
     final textScaleFactor = MediaQuery.textScalerOf(context).scale(1.0);
     final baseHeight = ResponsiveUtils.scaleSize(context, 110,
@@ -736,7 +738,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 const SizedBox(width: AppSpacing.lg),
                 _buildQuickActionCard(
-                  label: l10n.verseLibrary,
+                  label: useShortLabel ? l10n.verseLibraryShort : l10n.verseLibrary,
                   icon: Icons.search,
                   color: Colors.blue,
                   onTap: () =>
