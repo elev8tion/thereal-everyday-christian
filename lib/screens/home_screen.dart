@@ -464,6 +464,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildMainFeatures() {
     final l10n = AppLocalizations.of(context);
+    final textSize = ref.watch(textSizeProvider); // Watch textSize to force rebuilds
 
     // Calculate dynamic height using unified responsive scale
     final cardHeight = ResponsiveUtils.scaleSize(context, 160, minScale: 0.8, maxScale: 1.5);
@@ -474,6 +475,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           SizedBox(
             height: cardHeight,
+            key: ValueKey('main_features_row1_$textSize'),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -596,6 +598,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           const SizedBox(height: AppSpacing.md),
           SizedBox(
             height: cardHeight,
+            key: ValueKey('main_features_row2_$textSize'),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -735,6 +738,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       children: [
         Padding(
           padding: AppSpacing.horizontalXl,
+          key: ValueKey('quick_actions_header_$textSize'),
           child: Text(
             l10n.quickActions,
             style: TextStyle(
@@ -829,6 +833,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
+          key: ValueKey('quick_actions_row_$textSize'),
         ).animate().fadeIn(delay: 1300.ms).slideX(begin: 0.3, delay: 1300.ms),
       ],
     );
@@ -910,6 +915,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildDailyVerse() {
     final l10n = AppLocalizations.of(context);
     final todaysVerseAsync = ref.watch(todaysVerseProvider);
+    final textSize = ref.watch(textSizeProvider); // Watch textSize to force rebuilds
 
     return todaysVerseAsync.when(
       data: (verseData) {
@@ -922,6 +928,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
         return Padding(
           padding: AppSpacing.horizontalXl,
+          key: ValueKey('daily_verse_$textSize'),
           child: Container(
             padding: AppSpacing.screenPaddingLarge,
             child: Column(
@@ -1029,8 +1036,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildStartChatButton() {
     final l10n = AppLocalizations.of(context);
+    final textSize = ref.watch(textSizeProvider); // Watch textSize to force rebuilds
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
+      key: ValueKey('start_chat_button_$textSize'),
       child: GlassButton(
         text: l10n.startSpiritualConversation,
         onPressed: () async {

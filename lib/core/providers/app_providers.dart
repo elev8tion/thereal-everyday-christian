@@ -338,15 +338,17 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
         debugPrint('⚠️ Auto-cleanup failed: $e');
       }
 
-      // Load Bible on first launch
+      // Load Bible on first launch - check BOTH English and Spanish
       final isWEBLoaded = await bibleLoader.isBibleLoaded('WEB');
-      debugPrint('📖 [AppInit] Checking if WEB Bible loaded: $isWEBLoaded');
-      if (!isWEBLoaded) {
-        debugPrint('📖 [AppInit] WEB not loaded, loading all Bibles...');
+      final isRVR1909Loaded = await bibleLoader.isBibleLoaded('RVR1909');
+      debugPrint('📖 [AppInit] Checking if Bibles loaded: WEB=$isWEBLoaded, RVR1909=$isRVR1909Loaded');
+
+      if (!isWEBLoaded || !isRVR1909Loaded) {
+        debugPrint('📖 [AppInit] Missing Bibles, loading all Bibles...');
         await bibleLoader.loadAllBibles();
         debugPrint('📖 [AppInit] Bible loading complete');
       } else {
-        debugPrint('📖 [AppInit] WEB already loaded, skipping Bible load');
+        debugPrint('📖 [AppInit] All Bibles already loaded, skipping Bible load');
       }
 
       // Load devotional content on first launch (language-specific)
