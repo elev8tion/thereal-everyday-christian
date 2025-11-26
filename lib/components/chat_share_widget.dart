@@ -52,7 +52,7 @@ class ChatShareWidget extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
 
           // Footer with QR code and branding
           _buildFooter(),
