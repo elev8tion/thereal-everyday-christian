@@ -450,7 +450,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
             stepGranularity: 0.5,
             wrapWords: true,
             softWrap: true,
-            overflow: TextOverflow.ellipsis,
+            // NO overflow parameter - AutoSizeText will shrink font to fit all text
           );
         },
       ),
