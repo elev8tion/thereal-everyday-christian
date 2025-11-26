@@ -23,7 +23,7 @@ android {
         applicationId = "com.everydaychristian.app"
         minSdk = 23  // Updated to 23 for modern security features
         targetSdk = 34
-        versionCode = 13  // Synced with pubspec.yaml version 1.0.0+13
+        versionCode = 15  // Synced with pubspec.yaml version 1.0.0+15
         versionName = "1.0.0"
 
         manifestPlaceholders["appName"] = "Everyday Christian"
