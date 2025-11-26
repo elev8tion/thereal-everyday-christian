@@ -30,6 +30,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey _backgroundKey = GlobalKey();
   bool _showFabTooltip = false;
+  bool _isNavigating = false;
 
   @override
   void initState() {
@@ -730,46 +731,75 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   label: l10n.readBible,
                   icon: Icons.menu_book,
                   color: AppTheme.goldColor,
-                  onTap: () => NavigationService.goToBibleBrowser(),
-                  delay: 1400,
+                  onTap: () async {
+                    if (_isNavigating) return;
+                    _isNavigating = true;
+                    await NavigationService.pushNamedImmediate(AppRoutes.bibleBrowser);
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      if (mounted) setState(() => _isNavigating = false);
+                    });
+                  },
                 ),
                 const SizedBox(width: AppSpacing.lg),
                 _buildQuickActionCard(
                   label: useShortLabel ? l10n.verseLibraryShort : l10n.verseLibrary,
                   icon: Icons.search,
                   color: Colors.blue,
-                  onTap: () =>
-                      Navigator.pushNamed(context, AppRoutes.verseLibrary),
-                  delay: 1500,
+                  onTap: () async {
+                    if (_isNavigating) return;
+                    _isNavigating = true;
+                    await NavigationService.pushNamedImmediate(AppRoutes.verseLibrary);
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      if (mounted) setState(() => _isNavigating = false);
+                    });
+                  },
                 ),
                 const SizedBox(width: AppSpacing.lg),
                 _buildQuickActionCard(
                   label: useShortLabel ? l10n.addPrayerShort : l10n.addPrayer,
                   icon: Icons.add,
                   color: Colors.green,
-                  onTap: () => NavigationService.goToPrayerJournal(),
-                  delay: 1600,
+                  onTap: () async {
+                    if (_isNavigating) return;
+                    _isNavigating = true;
+                    await NavigationService.pushNamedImmediate(AppRoutes.prayerJournal);
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      if (mounted) setState(() => _isNavigating = false);
+                    });
+                  },
                 ),
                 const SizedBox(width: AppSpacing.lg),
                 _buildQuickActionCard(
                   label: l10n.settings,
                   icon: Icons.settings,
                   color: Colors.grey[300]!,
-                  onTap: () => NavigationService.goToSettings(),
-                  delay: 1700,
+                  onTap: () async {
+                    if (_isNavigating) return;
+                    _isNavigating = true;
+                    await NavigationService.pushNamedImmediate(AppRoutes.settings);
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      if (mounted) setState(() => _isNavigating = false);
+                    });
+                  },
                 ),
                 const SizedBox(width: AppSpacing.lg),
                 _buildQuickActionCard(
                   label: l10n.profile,
                   icon: Icons.person,
                   color: Colors.purple,
-                  onTap: () => NavigationService.goToProfile(),
-                  delay: 1800,
+                  onTap: () async {
+                    if (_isNavigating) return;
+                    _isNavigating = true;
+                    await NavigationService.pushNamedImmediate(AppRoutes.profile);
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      if (mounted) setState(() => _isNavigating = false);
+                    });
+                  },
                 ),
               ],
             ),
           ),
-        ),
+        ).animate().fadeIn(delay: 1400.ms).slideY(begin: 0.1, delay: 1400.ms),
       ],
     );
   }
@@ -779,7 +809,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     required IconData icon,
     required Color color,
     required VoidCallback onTap,
-    required int delay,
   }) {
     return LayoutBuilder(
       builder: (context, constraints) => GestureDetector(
@@ -845,10 +874,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
-    )
-        .animate()
-        .fadeIn(delay: Duration(milliseconds: delay))
-        .scale(delay: Duration(milliseconds: delay));
+    );
   }
 
   Widget _buildDailyVerse() {

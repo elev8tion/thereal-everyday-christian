@@ -81,6 +81,16 @@ class NavigationService {
     );
   }
 
+  /// Navigate to a route WITHOUT debounce protection
+  /// Use this for home screen quick actions where rapid navigation to different routes is expected
+  static Future<T?> pushNamedImmediate<T extends Object?>(
+    String routeName, {
+    Object? arguments,
+  }) {
+    print('🚀 [NavService] IMMEDIATE pushNamed (bypassing debounce)');
+    return navigator!.pushNamed(routeName, arguments: arguments);
+  }
+
   /// Navigate to a route (with debounce protection)
   static Future<T?> pushNamed<T extends Object?>(
     String routeName, {
