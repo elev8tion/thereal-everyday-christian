@@ -119,6 +119,10 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
 
   Widget _buildTabBar() {
     final l10n = AppLocalizations.of(context);
+    final textSize = ref.watch(textSizeProvider);
+    // At 130% and higher (text size >= 20), use shorter label to prevent cutoff
+    final useShortLabel = textSize >= 20;
+
     return Container(
       margin: AppSpacing.horizontalXl,
       child: FrostedGlassCard(
@@ -143,7 +147,7 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
                 ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
           ),
           tabs: [
-            Tab(text: l10n.savedVerses),
+            Tab(text: useShortLabel ? 'Saved' : l10n.savedVerses),
             Tab(text: l10n.shared),
           ],
         ),
