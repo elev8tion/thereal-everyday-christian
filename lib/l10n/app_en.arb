@@ -12,7 +12,7 @@
   "@tagline": {
     "description": "App tagline on splash screen"
   },
-  "loadingJourney": "Preparing your spiritual journey...",
+  "loadingJourney": "Preparing your spiritual journey",
   "@loadingJourney": {
     "description": "Loading message on splash screen"
   },

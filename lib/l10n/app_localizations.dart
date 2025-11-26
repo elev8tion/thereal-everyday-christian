@@ -119,7 +119,7 @@ abstract class AppLocalizations {
   /// Loading message on splash screen
   ///
   /// In en, this message translates to:
-  /// **'Preparing your spiritual journey...'**
+  /// **'Preparing your spiritual journey'**
   String get loadingJourney;
 
   /// App version number
