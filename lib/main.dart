@@ -20,7 +20,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:upgrader/upgrader.dart';
 import 'l10n/app_localizations.dart';
 
@@ -31,8 +30,14 @@ Future<void> main() async {
   tz.initializeTimeZones();
 
   // Set local timezone to device timezone (critical for notifications to fire at correct time)
-  final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(timeZoneName));
+  // Use UTC as fallback if local timezone detection fails
+  try {
+    final String timeZoneName = DateTime.now().timeZoneName;
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
+  } catch (e) {
+    // Fallback to UTC if timezone detection fails
+    tz.setLocalLocation(tz.UTC);
+  }
 
   // Load environment variables from .env file
   await dotenv.load(fileName: ".env");
