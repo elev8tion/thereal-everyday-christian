@@ -16,6 +16,7 @@ import 'package:everyday_christian/screens/settings_screen.dart';
 import 'package:everyday_christian/screens/splash_screen.dart';
 import 'package:everyday_christian/screens/verse_library_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -25,6 +26,11 @@ import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Enable edge-to-edge mode for Android 15+ (API 35) compatibility
+  // This ensures the app displays correctly with system insets on Android 15
+  // and provides backwards compatibility for earlier Android versions
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
   // Initialize timezone database for scheduled notifications
   tz.initializeTimeZones();
