@@ -33,7 +33,7 @@ android {
     defaultConfig {
         applicationId = "com.everydaychristian.app"
         minSdk = flutter.minSdkVersion  // Updated to 23 for modern security features
-        targetSdk = 34
+        targetSdk = 35  // Updated to API 35 for Play Store requirement
         versionCode = 15  // Synced with pubspec.yaml version 1.0.0+15
         versionName = "1.0.0"
 
