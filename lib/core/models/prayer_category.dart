@@ -24,7 +24,15 @@ class PrayerCategory with _$PrayerCategory {
 
 extension PrayerCategoryExtension on PrayerCategory {
   /// Get icon as IconData
-  IconData get icon => IconData(iconCodePoint, fontFamily: 'MaterialIcons', matchTextDirection: false);
+  IconData get icon {
+    // Find the icon from the presets to ensure it's a constant instance.
+    // This is required for icon tree shaking to work correctly.
+    return CategoryPresets.availableIcons.firstWhere(
+      (i) => i.codePoint == iconCodePoint,
+      // Fallback to a default icon if the code point is not in the list.
+      orElse: () => Icons.more_horiz,
+    );
+  }
 
   /// Get color as Color object
   Color get color => Color(colorValue);
