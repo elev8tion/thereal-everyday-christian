@@ -54,14 +54,17 @@ android {
 
     buildTypes {
         release {
-            // Production release configuration
-            // Temporarily disabled minification due to plugin compatibility issues
-            isMinifyEnabled = false
-            isShrinkResources = false
+            // Production release configuration with R8 optimization enabled
+            // R8 provides code shrinking, obfuscation, and optimization
+            // Expected benefits: 20-30% smaller APK/AAB, faster startup, fewer ANRs
+            isMinifyEnabled = true
+            isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
             // Add signing config for production release
             if (keystoreProperties.containsKey("storeFile")) {
                 signingConfig = signingConfigs.getByName("release")
@@ -70,6 +73,8 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
+            // Keep minification disabled in debug for faster builds and better debugging
+            isMinifyEnabled = false
         }
     }
 }
