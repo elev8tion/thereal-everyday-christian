@@ -66,7 +66,12 @@ class BaseBottomSheet extends StatelessWidget {
                 ),
               ),
             ),
-          Flexible(child: child),
+          Flexible(
+            child: SafeArea(
+              top: false, // Don't add padding at top
+              child: child,
+            ),
+          ),
         ],
       ),
     );

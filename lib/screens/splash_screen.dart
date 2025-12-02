@@ -236,7 +236,7 @@ class SplashScreen extends HookConsumerWidget {
 
             // Bottom branding
             Positioned(
-              bottom: 40,
+              bottom: MediaQuery.of(context).padding.bottom + 40,
               left: 0,
               right: 0,
               child: FadeTransition(

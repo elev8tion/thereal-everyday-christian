@@ -22,8 +22,12 @@ class GlassFab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Add system padding (navigation bar on Android, home indicator on iOS)
+    final systemPadding = MediaQuery.of(context).padding.bottom;
+    final effectiveBottom = (bottom ?? 16) + systemPadding;
+
     return Positioned(
-      bottom: bottom,
+      bottom: effectiveBottom,
       right: right,
       child: Container(
         width: size,
