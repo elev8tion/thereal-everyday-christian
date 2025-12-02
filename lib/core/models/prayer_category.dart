@@ -25,12 +25,12 @@ class PrayerCategory with _$PrayerCategory {
 extension PrayerCategoryExtension on PrayerCategory {
   /// Get icon as IconData
   IconData get icon {
-    // Find the icon from the presets to ensure it's a constant instance.
-    // This is required for icon tree shaking to work correctly.
-    return CategoryPresets.availableIcons.firstWhere(
-      (i) => i.codePoint == iconCodePoint,
-      // Fallback to a default icon if the code point is not in the list.
-      orElse: () => Icons.more_horiz,
+    // Create IconData directly from code point with explicit font family
+    // This ensures icons render correctly on both iOS and Android
+    return IconData(
+      iconCodePoint,
+      fontFamily: 'MaterialIcons',
+      matchTextDirection: false,
     );
   }
 
