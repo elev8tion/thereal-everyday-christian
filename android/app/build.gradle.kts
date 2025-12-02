@@ -34,8 +34,12 @@ android {
         applicationId = "com.everydaychristian.app"
         minSdk = flutter.minSdkVersion  // Updated to 23 for modern security features
         targetSdk = 35  // Updated to API 35 for Play Store requirement
-        versionCode = 20  // Synced with pubspec.yaml version 1.0.0+20
-        versionName = "1.0.0"
+
+        // Android-specific build number (independent from iOS)
+        // Increment this for each Play Store release
+        // Current: 20 (last Play Store submission)
+        versionCode = 20
+        versionName = "1.0.0"  // Must match pubspec.yaml version
 
         manifestPlaceholders["appName"] = "Everyday Christian"
     }
