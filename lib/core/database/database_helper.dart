@@ -111,15 +111,19 @@ class DatabaseHelper {
       await db.execute('CREATE INDEX idx_bible_book_chapter ON bible_verses(book, chapter)');
       await db.execute('CREATE INDEX idx_bible_search ON bible_verses(book, chapter, verse)');
 
-      // Bible verses FTS5
+      // Bible verses FTS - Platform-specific (FTS5 on iOS, FTS4 on Android)
+      // FTS4 is used on Android because FTS5 is not available in system SQLite
+      // Both versions support: MATCH operator, snippet(), rank, and rowid JOIN
+      final ftsVersion = Platform.isIOS ? 'fts5' : 'fts4';
+      final contentRowid = Platform.isIOS ? ',\n          content_rowid=id' : '';
+
       await db.execute('''
-        CREATE VIRTUAL TABLE bible_verses_fts USING fts5(
+        CREATE VIRTUAL TABLE bible_verses_fts USING $ftsVersion(
           book,
           chapter,
           verse,
           text,
-          content=bible_verses,
-          content_rowid=id
+          content=bible_verses$contentRowid
         )
       ''');
 
