@@ -1,0 +1,14 @@
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: false  # Don't modify iOS icons
+
+  # Use the large transparent logo for maximum size
+  image_path: "assets/images/logo_transparent.png"
+
+  # Android adaptive icon configuration
+  # This makes the logo appear bigger by using transparent logo with dark background
+  adaptive_icon_background: "#1A1A2E"
+  adaptive_icon_foreground: "assets/images/logo_transparent.png"
+
+  # min_sdk_android: 21 allows adaptive icons
+  min_sdk_android: 21
