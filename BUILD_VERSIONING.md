@@ -98,8 +98,11 @@ versionName = "1.0.0"  // Must match pubspec.yaml
 - Build 15: Next submission
 
 ### Android (Play Store)
-- Build 20: Last submission (Dec 1, 2025)
-- Build 21: Next submission
+- Build 20: Initial submission (Dec 1, 2025) - Discarded
+- Build 21: Current/Ready for submission (Dec 2, 2025)
+  - Fixed Android 15 deprecated API warnings
+  - Updated flutter_local_notifications to 19.5.0
+  - Updated notification scheduling for Android 15 compatibility
 
 ---
 
