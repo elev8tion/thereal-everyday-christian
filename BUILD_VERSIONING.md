@@ -6,7 +6,7 @@ This project uses **independent build numbers** for iOS and Android (industry st
 ## Current Version
 - **User-facing version:** 1.0.0
 - **iOS build number:** 14 (last TestFlight submission)
-- **Android build number:** 20 (last Play Store submission)
+- **Android build number:** 20 (prepared for Play Store submission)
 
 ## Version Number Locations
 

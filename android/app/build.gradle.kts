@@ -37,8 +37,8 @@ android {
 
         // Android-specific build number (independent from iOS)
         // Increment this for each Play Store release
-        // Current: 20 (last Play Store submission)
-        versionCode = 20
+        // Current: 21 (build 20 was discarded, must use 21+)
+        versionCode = 21
         versionName = "1.0.0"  // Must match pubspec.yaml version
 
         manifestPlaceholders["appName"] = "Everyday Christian"
@@ -88,5 +88,5 @@ flutter {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
