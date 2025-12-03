@@ -53,9 +53,9 @@ versionName = "1.0.0"  // Must match pubspec.yaml
 ### Android Release (Play Store)
 1. Increment Android build number in `build.gradle.kts`:
    ```kotlin
-   versionCode = 21  // Was 20
+   versionCode = 23  // Was 22
    ```
-2. Build: `flutter build appbundle --release`
+2. Build: `flutter build appbundle --release --no-tree-shake-icons`
 3. Upload to Play Console
 
 ### Both Platforms (Version Bump)
@@ -99,10 +99,12 @@ versionName = "1.0.0"  // Must match pubspec.yaml
 
 ### Android (Play Store)
 - Build 20: Initial submission (Dec 1, 2025) - Discarded
-- Build 21: Current/Ready for submission (Dec 2, 2025)
+- Build 21: Replaced with build 22 (Android 15 fixes)
+- Build 22: Current/Ready for submission (Dec 2, 2025)
   - Fixed Android 15 deprecated API warnings
   - Updated flutter_local_notifications to 19.5.0
   - Updated notification scheduling for Android 15 compatibility
+  - AAB size: 64.9MB
 
 ---
 

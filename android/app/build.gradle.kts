@@ -37,8 +37,8 @@ android {
 
         // Android-specific build number (independent from iOS)
         // Increment this for each Play Store release
-        // Current: 21 (build 20 was discarded, must use 21+)
-        versionCode = 21
+        // Current: 22 (build 21 replaced with Android 15 fixes)
+        versionCode = 22
         versionName = "1.0.0"  // Must match pubspec.yaml version
 
         manifestPlaceholders["appName"] = "Everyday Christian"
