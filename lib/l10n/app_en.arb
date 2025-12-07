@@ -2001,7 +2001,7 @@
   "@subscriptionStatusPremiumActive": {
     "description": "Premium subscription active status"
   },
-  "subscriptionStatusPremiumActiveDesc": "Enjoy unlimited AI guidance",
+  "subscriptionStatusPremiumActiveDesc": "150 Messages Monthly",
   "@subscriptionStatusPremiumActiveDesc": {
     "description": "Premium subscription active description"
   },

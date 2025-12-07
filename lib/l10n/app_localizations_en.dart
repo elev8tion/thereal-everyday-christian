@@ -1462,8 +1462,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionStatusPremiumActive => 'Premium Active';
 
   @override
-  String get subscriptionStatusPremiumActiveDesc =>
-      'Enjoy unlimited AI guidance';
+  String get subscriptionStatusPremiumActiveDesc => '150 Messages Monthly';
 
   @override
   String get subscriptionPlanYearly => 'Yearly Plan';
