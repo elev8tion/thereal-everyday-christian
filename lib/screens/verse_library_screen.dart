@@ -951,19 +951,33 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
                   ),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppRadius.md),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red.withValues(alpha: 0.2),
+                        borderRadius: AppRadius.largeCardRadius,
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 2,
                         ),
                       ),
-                      onPressed: () => Navigator.pop(context, true),
-                      child: Text(
-                        l10n.clearAll,
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => Navigator.pop(context, true),
+                          borderRadius: AppRadius.largeCardRadius,
+                          child: Container(
+                            height: 48,
+                            alignment: Alignment.center,
+                            child: Text(
+                              l10n.clearAll,
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -1056,19 +1070,33 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
                   ),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppRadius.md),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red.withValues(alpha: 0.2),
+                        borderRadius: AppRadius.largeCardRadius,
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 2,
                         ),
                       ),
-                      onPressed: () => Navigator.pop(context, true),
-                      child: Text(
-                        l10n.clearAll,
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => Navigator.pop(context, true),
+                          borderRadius: AppRadius.largeCardRadius,
+                          child: Container(
+                            height: 48,
+                            alignment: Alignment.center,
+                            child: Text(
+                              l10n.clearAll,
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
