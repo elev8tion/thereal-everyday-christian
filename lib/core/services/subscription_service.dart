@@ -75,6 +75,7 @@ class SubscriptionService {
   static const String _keyTrialEverUsed = 'trial_ever_used'; // ignore: unused_field
   static const String _keyAutoRenewStatus = 'auto_renew_status';
   static const String _keyAutoSubscribeAttempted = 'auto_subscribe_attempted';
+  static const String _keyPurchasedProductId = 'purchased_product_id'; // Track yearly vs monthly
 
   // Keychain/KeyStore keys (survives app uninstall for trial abuse prevention)
   static const String _keychainTrialEverUsed = 'trial_ever_used_keychain';
@@ -642,6 +643,22 @@ class SubscriptionService {
   /// Get monthly product details
   ProductDetails? get premiumProductMonthly => _premiumProductMonthly;
 
+  /// Get the purchased product ID (yearly vs monthly)
+  /// Returns null if no subscription purchased
+  String? get purchasedProductId => _prefs?.getString(_keyPurchasedProductId);
+
+  /// Check if user has yearly subscription
+  bool get hasYearlySubscription {
+    final productId = purchasedProductId;
+    return productId == premiumYearlyProductId;
+  }
+
+  /// Check if user has monthly subscription
+  bool get hasMonthlySubscription {
+    final productId = purchasedProductId;
+    return productId == premiumMonthlyProductId;
+  }
+
   /// Purchase premium subscription
   /// [productId] - Product ID to purchase (defaults to yearly if not specified)
   Future<void> purchasePremium({String? productId}) async {
@@ -709,6 +726,11 @@ class SubscriptionService {
       final receiptData = purchase.verificationData.serverVerificationData;
       await _prefs?.setString(_keySubscriptionReceipt, receiptData);
 
+      // Store product ID to track yearly vs monthly subscription
+      final productId = purchase.productID;
+      await _prefs?.setString(_keyPurchasedProductId, productId);
+      debugPrint('📊 [SubscriptionService] Purchased product: $productId');
+
       // Try to decode receipt and extract expiry information
       // Note: Receipt format differs by platform (iOS: base64 JSON, Android: JWT)
       try {
@@ -725,12 +747,16 @@ class SubscriptionService {
 
         debugPrint('📊 [SubscriptionService] Receipt data saved (expiry extraction requires platform-specific implementation)');
 
-        // Store placeholder expiry (1 year from now for annual subscription)
-        // This will be replaced with actual expiry once receipt parsing is implemented
-        final expiryDate = DateTime.now().add(const Duration(days: 365));
+        // Calculate expiry based on subscription type (yearly vs monthly)
+        final isYearly = productId == premiumYearlyProductId;
+        final expiryDuration = isYearly ? const Duration(days: 365) : const Duration(days: 30);
+        final expiryDate = DateTime.now().add(expiryDuration);
+
         await _prefs?.setString(_keyPremiumExpiryDate, expiryDate.toIso8601String());
         await _prefs?.setString(_keyPremiumOriginalPurchaseDate, DateTime.now().toIso8601String());
         await _prefs?.setBool(_keyAutoRenewStatus, true); // Assume auto-renew unless receipt says otherwise
+
+        debugPrint('📊 [SubscriptionService] Expiry set to ${isYearly ? "365 days (yearly)" : "30 days (monthly)"}');
 
         // Check if this was a trial purchase
         // This will be extracted from receipt once parsing is implemented
@@ -953,6 +979,9 @@ class SubscriptionService {
       'yearlyProductPrice': _premiumProductYearly?.price,
       'monthlyProductId': _premiumProductMonthly?.id,
       'monthlyProductPrice': _premiumProductMonthly?.price,
+      'purchasedProductId': purchasedProductId,
+      'hasYearlySubscription': hasYearlySubscription,
+      'hasMonthlySubscription': hasMonthlySubscription,
     };
   }
 }
