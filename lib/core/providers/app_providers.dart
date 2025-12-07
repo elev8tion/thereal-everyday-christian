@@ -110,42 +110,10 @@ final unifiedVerseServiceProvider = Provider<UnifiedVerseService>((ref) {
 
 // Verse Library Providers
 
-/// Provider for getting all verses
-final allVersesProvider = FutureProvider.autoDispose<List<BibleVerse>>((ref) async {
-  final service = ref.watch(unifiedVerseServiceProvider);
-  return await service.getAllVerses(limit: 100);
-});
-
 /// Provider for getting favorite verses
 final favoriteVersesProvider = FutureProvider.autoDispose<List<BibleVerse>>((ref) async {
   final service = ref.watch(unifiedVerseServiceProvider);
   return await service.getFavoriteVerses();
-});
-
-/// Provider for searching verses (family provider with query parameter)
-final searchVersesProvider = FutureProvider.autoDispose.family<List<BibleVerse>, String>((ref, query) async {
-  if (query.trim().isEmpty) return [];
-
-  final service = ref.watch(unifiedVerseServiceProvider);
-  return await service.searchVerses(query, limit: 50);
-});
-
-/// Provider for getting verses by theme
-final versesByThemeProvider = FutureProvider.autoDispose.family<List<BibleVerse>, String>((ref, theme) async {
-  final service = ref.watch(unifiedVerseServiceProvider);
-  return await service.searchByTheme(theme, limit: 50);
-});
-
-/// Provider for getting all available themes
-final availableThemesProvider = FutureProvider<List<String>>((ref) async {
-  final service = ref.watch(unifiedVerseServiceProvider);
-  return await service.getAllThemes();
-});
-
-/// Provider for verse statistics
-final verseStatsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
-  final service = ref.watch(unifiedVerseServiceProvider);
-  return await service.getVerseStats();
 });
 
 /// Provider for recently shared verses
@@ -177,16 +145,6 @@ final activePrayersCountProvider = FutureProvider<int>((ref) async {
 final answeredPrayersCountProvider = FutureProvider<int>((ref) async {
   final service = ref.watch(prayerServiceProvider);
   return await service.getAnsweredPrayerCount();
-});
-
-/// Provider for count of shared chats
-/// Used for the Conversation Sharer achievement (10 chat shares)
-final sharedChatsCountProvider = FutureProvider<int>((ref) async {
-  final database = ref.watch(databaseServiceProvider);
-  final db = await database.database;
-
-  final result = await db.rawQuery('SELECT COUNT(*) as count FROM shared_chats');
-  return result.first['count'] as int? ?? 0;
 });
 
 /// Provider for count of ALL shares (chats, verses, devotionals, prayers)
@@ -300,12 +258,6 @@ final prayerStreakServiceProvider = Provider<PrayerStreakService>((ref) {
   return PrayerStreakService(database);
 });
 
-// State Providers
-final connectivityStateProvider = StreamProvider.autoDispose<bool>((ref) {
-  final service = ref.watch(connectivityServiceProvider);
-  return service.connectivityStream;
-});
-
 final appInitializationProvider = FutureProvider<void>((ref) async {
   try {
     // Wrap all initialization in 60-second timeout to prevent infinite loading
@@ -385,18 +337,6 @@ final allDevotionalsProvider = FutureProvider<List<Devotional>>((ref) async {
   return await progressService.getAllDevotionals();
 });
 
-/// Provider for getting today's devotional
-final todaysDevotionalProvider = FutureProvider<Devotional?>((ref) async {
-  final progressService = ref.watch(devotionalProgressServiceProvider);
-  return await progressService.getTodaysDevotional();
-});
-
-/// Provider for getting completion status of a specific devotional
-final devotionalCompletionStatusProvider = FutureProvider.family<bool, String>((ref, devotionalId) async {
-  final progressService = ref.watch(devotionalProgressServiceProvider);
-  return await progressService.getCompletionStatus(devotionalId);
-});
-
 /// Provider for getting the current devotional streak
 final devotionalStreakProvider = FutureProvider<int>((ref) async {
   final progressService = ref.watch(devotionalProgressServiceProvider);
@@ -407,12 +347,6 @@ final devotionalStreakProvider = FutureProvider<int>((ref) async {
 final totalDevotionalsCompletedProvider = FutureProvider<int>((ref) async {
   final progressService = ref.watch(devotionalProgressServiceProvider);
   return await progressService.getTotalCompleted();
-});
-
-/// Provider for getting completion percentage
-final devotionalCompletionPercentageProvider = FutureProvider<double>((ref) async {
-  final progressService = ref.watch(devotionalProgressServiceProvider);
-  return await progressService.getCompletionPercentage();
 });
 
 /// Provider for getting all completed devotionals
@@ -459,18 +393,6 @@ final todaysReadingsProvider = FutureProvider.family<List<DailyReading>, String>
   return await progressService.getTodaysReadings(planId);
 });
 
-/// Provider for getting incomplete readings for a plan
-final incompleteReadingsProvider = FutureProvider.family<List<DailyReading>, String>((ref, planId) async {
-  final progressService = ref.watch(readingPlanProgressServiceProvider);
-  return await progressService.getIncompleteReadings(planId);
-});
-
-/// Provider for getting completed readings for a plan
-final completedReadingsProvider = FutureProvider.family<List<DailyReading>, String>((ref, planId) async {
-  final progressService = ref.watch(readingPlanProgressServiceProvider);
-  return await progressService.getCompletedReadings(planId);
-});
-
 /// Provider for getting reading streak for a plan
 final planStreakProvider = FutureProvider.family<int, String>((ref, planId) async {
   final progressService = ref.watch(readingPlanProgressServiceProvider);
@@ -487,18 +409,6 @@ final planHeatmapDataProvider = FutureProvider.family<Map<DateTime, int>, String
 final planCompletionStatsProvider = FutureProvider.family<Map<String, dynamic>, String>((ref, planId) async {
   final progressService = ref.watch(readingPlanProgressServiceProvider);
   return await progressService.getCompletionStats(planId);
-});
-
-/// Provider for getting missed days for a plan
-final planMissedDaysProvider = FutureProvider.family<List<DateTime>, String>((ref, planId) async {
-  final progressService = ref.watch(readingPlanProgressServiceProvider);
-  return await progressService.getMissedDays(planId);
-});
-
-/// Provider for getting weekly completion rate for a plan
-final planWeeklyCompletionRateProvider = FutureProvider.family<double, String>((ref, planId) async {
-  final progressService = ref.watch(readingPlanProgressServiceProvider);
-  return await progressService.getWeeklyCompletionRate(planId);
 });
 
 /// Provider for getting estimated completion date for a plan
@@ -531,12 +441,6 @@ final prayedTodayProvider = FutureProvider<bool>((ref) async {
 final totalDaysPrayedProvider = FutureProvider<int>((ref) async {
   final streakService = ref.watch(prayerStreakServiceProvider);
   return await streakService.getTotalDaysPrayed();
-});
-
-/// Provider for getting all prayer activity dates
-final prayerActivityDatesProvider = FutureProvider<List<DateTime>>((ref) async {
-  final streakService = ref.watch(prayerStreakServiceProvider);
-  return await streakService.getAllActivityDates();
 });
 
 // Theme Mode Provider
