@@ -38,9 +38,12 @@ class DevotionalShareService {
       final l10n = AppLocalizations.of(context);
 
       // Capture the widget as an image
+      // Reset text scale to 1.0 for consistent screenshots regardless of user's text size preference
       final Uint8List imageBytes = await _screenshotController.captureFromWidget(
         MediaQuery(
-          data: MediaQuery.of(context),
+          data: MediaQuery.of(context).copyWith(
+            textScaler: const TextScaler.linear(1.0), // Always use 1.0 for screenshots
+          ),
           child: DevotionalShareWidget(
             devotional: devotional,
             showFullReflection: showFullReflection,
