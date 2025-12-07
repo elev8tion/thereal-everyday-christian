@@ -12,8 +12,6 @@ import 'screens/devotional_screen.dart';
 import 'screens/reading_plan_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/profile_screen.dart';
-import 'screens/auth_screen.dart';
-import 'screens/onboarding_screen.dart';
 import 'screens/splash_screen.dart';
 
 class DebugScreenGallery extends ConsumerStatefulWidget {
@@ -71,16 +69,6 @@ class _DebugScreenGalleryState extends ConsumerState<DebugScreenGallery> {
       title: 'Profile Screen',
       description: 'lib/screens/profile_screen.dart',
       widget: const ProfileScreen(),
-    ),
-    ScreenInfo(
-      title: 'Auth Screen',
-      description: 'lib/screens/auth_screen.dart',
-      widget: const AuthScreen(),
-    ),
-    ScreenInfo(
-      title: 'Onboarding Screen',
-      description: 'lib/screens/onboarding_screen.dart',
-      widget: const OnboardingScreen(),
     ),
     ScreenInfo(
       title: 'Splash Screen',
