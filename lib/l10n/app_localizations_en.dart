@@ -1000,7 +1000,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get pressHoldVerseForActions => 'Press & hold verse for actions ✨';
+  String get pressHoldVerseForActions => 'Double tap verse for actions ✨';
 
   @override
   String get removedFromVerseLibrary => 'Removed from Verse Library';

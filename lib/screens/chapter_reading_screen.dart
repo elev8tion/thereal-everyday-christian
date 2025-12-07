@@ -61,10 +61,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   // Keys for verse widgets (for auto-scroll)
   final Map<int, GlobalKey> _verseKeys = {};
 
-  // Long-press verse interaction state
+  // Double-tap verse interaction state
   int? _activeVerseIndex;
   late AnimationController _iconAnimationController;
-  Timer? _longPressTimer;
 
   // Verse tutorial tooltip state
   bool _showVerseTutorial = false;
@@ -101,7 +100,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
 
   @override
   void dispose() {
-    _longPressTimer?.cancel();
     _iconAnimationController.dispose();
     _pageController.dispose();
     _scrollController.dispose();
@@ -809,11 +807,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                       ),
                       const SizedBox(width: 12),
 
-                      // Verse text with long-press gesture
+                      // Verse text with double-tap gesture
                       Expanded(
                         child: GestureDetector(
-                          onLongPressStart: (_) => _onVerseLongPressStart(verseIndex),
-                          onLongPressEnd: (_) => _onVerseLongPressEnd(),
+                          onDoubleTap: () => _onVerseDoubleTap(verseIndex),
                           child: Text(
                             verse.text,
                             style: TextStyle(
@@ -989,27 +986,19 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     );
   }
 
-  /// Handle long-press start on verse text
-  void _onVerseLongPressStart(int verseIndex) {
-    _longPressTimer?.cancel();
-    _longPressTimer = Timer(const Duration(milliseconds: 1000), () {
-      if (mounted) {
-        setState(() {
-          _activeVerseIndex = verseIndex;
-        });
-        _iconAnimationController.forward();
+  /// Handle double-tap on verse text
+  void _onVerseDoubleTap(int verseIndex) {
+    if (mounted) {
+      setState(() {
+        _activeVerseIndex = verseIndex;
+      });
+      _iconAnimationController.forward();
 
-        // Dismiss tutorial tooltip when user completes their first long-press
-        if (_showVerseTutorial) {
-          _dismissVerseTutorial();
-        }
+      // Dismiss tutorial tooltip when user completes their first double-tap
+      if (_showVerseTutorial) {
+        _dismissVerseTutorial();
       }
-    });
-  }
-
-  /// Handle long-press end on verse text
-  void _onVerseLongPressEnd() {
-    _longPressTimer?.cancel();
+    }
   }
 
   /// Dismiss active verse icons

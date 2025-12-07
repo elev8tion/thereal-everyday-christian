@@ -1005,7 +1005,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get pressHoldVerseForActions =>
-      'Mantén presionado el versículo para acciones ✨';
+      'Toca dos veces el versículo para acciones ✨';
 
   @override
   String get removedFromVerseLibrary =>

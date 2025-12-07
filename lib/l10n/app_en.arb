@@ -1363,7 +1363,7 @@
       }
     }
   },
-  "pressHoldVerseForActions": "Press & hold verse for actions ✨",
+  "pressHoldVerseForActions": "Double tap verse for actions ✨",
   "@pressHoldVerseForActions": {
     "description": "Verse interaction tutorial tooltip"
   },

@@ -1937,7 +1937,7 @@ abstract class AppLocalizations {
   /// Verse interaction tutorial tooltip
   ///
   /// In en, this message translates to:
-  /// **'Press & hold verse for actions ✨'**
+  /// **'Double tap verse for actions ✨'**
   String get pressHoldVerseForActions;
 
   /// Verse removal confirmation
@@ -2760,7 +2760,7 @@ abstract class AppLocalizations {
   /// Premium subscription active description
   ///
   /// In en, this message translates to:
-  /// **'Enjoy unlimited AI guidance'**
+  /// **'150 Messages Monthly'**
   String get subscriptionStatusPremiumActiveDesc;
 
   /// Yearly subscription plan type

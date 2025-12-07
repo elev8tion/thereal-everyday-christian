@@ -487,7 +487,7 @@
   "chapterOfTotal": "Capítulo {current} de {total}",
   "oneChapter": "1 capítulo",
   "noVersesFoundForBook": "No se encontraron versículos para {book} {chapter}",
-  "pressHoldVerseForActions": "Mantén presionado el versículo para acciones ✨",
+  "pressHoldVerseForActions": "Toca dos veces el versículo para acciones ✨",
   "removedFromVerseLibrary": "Eliminado de la Biblioteca de Versículos",
   "addedToVerseLibrary": "¡Agregado a la Biblioteca de Versículos!",
   "readingCompleted": "✓ Lectura Completada",
