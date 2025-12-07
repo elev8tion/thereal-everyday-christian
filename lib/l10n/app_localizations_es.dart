@@ -1118,6 +1118,10 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get deleteVerseConfirmation =>
+      '¿Estás seguro de que quieres eliminar este versículo de tu biblioteca?';
+
+  @override
   String get prayerDeleted => 'Oración eliminada';
 
   @override

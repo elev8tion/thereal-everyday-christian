@@ -1112,6 +1112,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get deleteVerseConfirmation =>
+      'Are you sure you want to delete this verse from your library?';
+
+  @override
   String get prayerDeleted => 'Prayer deleted';
 
   @override

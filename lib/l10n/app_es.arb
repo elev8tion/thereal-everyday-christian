@@ -809,6 +809,10 @@
   "@currentStreak": {
     "description": "Current streak label in reading progress"
   },
+  "deleteVerseConfirmation": "¿Estás seguro de que quieres eliminar este versículo de tu biblioteca?",
+  "@deleteVerseConfirmation": {
+    "description": "Delete verse confirmation message"
+  },
   "bestStreak": "Mejor Racha",
   "@bestStreak": {
     "description": "Best/longest streak label in reading progress"

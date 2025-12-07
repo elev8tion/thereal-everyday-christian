@@ -842,6 +842,91 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
 
   Future<void> _deleteSharedVerse(String shareId) async {
     final l10n = AppLocalizations.of(context);
+
+    // Show confirmation dialog
+    final confirmed = await showBlurredDialog<bool>(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: FrostedGlassCard(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                size: ResponsiveUtils.iconSize(context, 48),
+                color: Colors.orange,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                l10n.delete,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryText,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                l10n.deleteVerseConfirmation,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  color: AppColors.secondaryText,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+              Row(
+                children: [
+                  Expanded(
+                    child: GlassButton(
+                      text: l10n.cancel,
+                      height: 48,
+                      onPressed: () => Navigator.of(context).pop(false),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red.withValues(alpha: 0.2),
+                        borderRadius: AppRadius.largeCardRadius,
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 2,
+                        ),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => Navigator.of(context).pop(true),
+                          borderRadius: AppRadius.largeCardRadius,
+                          child: Container(
+                            height: 48,
+                            alignment: Alignment.center,
+                            child: Text(
+                              l10n.delete,
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (confirmed != true) return;
+
     try {
       final service = ref.read(unifiedVerseServiceProvider);
       await service.deleteSharedVerse(shareId);
@@ -868,6 +953,90 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
   Future<void> _deleteSavedVerse(BibleVerse verse) async {
     if (verse.id == null) return;
     final l10n = AppLocalizations.of(context);
+
+    // Show confirmation dialog
+    final confirmed = await showBlurredDialog<bool>(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: FrostedGlassCard(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                size: ResponsiveUtils.iconSize(context, 48),
+                color: Colors.orange,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                l10n.delete,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryText,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                l10n.deleteVerseConfirmation,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  color: AppColors.secondaryText,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+              Row(
+                children: [
+                  Expanded(
+                    child: GlassButton(
+                      text: l10n.cancel,
+                      height: 48,
+                      onPressed: () => Navigator.of(context).pop(false),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red.withValues(alpha: 0.2),
+                        borderRadius: AppRadius.largeCardRadius,
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 2,
+                        ),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => Navigator.of(context).pop(true),
+                          borderRadius: AppRadius.largeCardRadius,
+                          child: Container(
+                            height: 48,
+                            alignment: Alignment.center,
+                            child: Text(
+                              l10n.delete,
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (confirmed != true) return;
 
     try {
       final service = ref.read(unifiedVerseServiceProvider);

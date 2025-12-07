@@ -1543,6 +1543,10 @@
       }
     }
   },
+  "deleteVerseConfirmation": "Are you sure you want to delete this verse from your library?",
+  "@deleteVerseConfirmation": {
+    "description": "Delete verse confirmation message"
+  },
   "prayerDeleted": "Prayer deleted",
   "@prayerDeleted": {
     "description": "Prayer deletion success message"

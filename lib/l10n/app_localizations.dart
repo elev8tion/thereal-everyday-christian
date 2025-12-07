@@ -2133,6 +2133,12 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to delete \"{title}\"?'**
   String deletePrayerConfirmation(String title);
 
+  /// Delete verse confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this verse from your library?'**
+  String get deleteVerseConfirmation;
+
   /// Prayer deletion success message
   ///
   /// In en, this message translates to:
