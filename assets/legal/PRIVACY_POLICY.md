@@ -33,7 +33,7 @@ By using Everyday Christian, you agree to the collection and use of information 
 
 2.1 Information Stored Locally on Your Device
 
-All of the following data is stored exclusively on your device using SQLite database technology protected by your device's security and never leaves your device except when using the Premium AI chat feature:
+All of the following data is stored exclusively on your device using SQLite database technology protected by your device's security and never leaves your device except when using the Premium Intelligent Scripture Chat feature:
 
 Prayer Journal Entries: Your personal prayers, prayer requests, prayer categories, and reflections that you choose to save. Includes prayer status (answered, pending, ongoing), timestamps, and optional notes.
 
@@ -45,7 +45,7 @@ Reading Plan Progress: Your progress through selected Bible reading plans, inclu
 
 Verse Bookmarks: Bookmarked verses with personal notes, tags, creation timestamps, and last updated timestamps.
 
-AI Chat History (Premium users only): Conversations with the AI pastoral guidance system, stored locally on your device with session IDs, message timestamps, and conversation metadata.
+Intelligent Scripture Chat History (Premium users only): Conversations with the Intelligent pastoral guidance system, stored locally on your device with session IDs, message timestamps, and conversation metadata.
 
 Daily Verses: Track which daily verses have been delivered to you, whether you've opened them, and whether notifications were sent.
 
@@ -69,12 +69,12 @@ We have intentionally designed Everyday Christian to respect your privacy by NOT
 
 2.3 Third-Party Service: Google Gemini API
 
-Premium AI Chat Feature Only: When you use the Premium AI pastoral guidance feature (150 messages/month, approximately $35.99/year subscription, pricing may vary by region and currency), your chat messages are sent to Google's Gemini 2.0 Flash API to generate biblically-grounded responses.
+Premium Intelligent Scripture Chat Feature Only: When you use the Premium AIntelligent Scripture Chat feature (150 messages/month, approximately $35.99/year or $5.99/month subscription, pricing may vary by region and currency), your chat messages are sent to Google's Gemini 2.0 Flash API to generate biblically-grounded responses.
 
 Important details:
 - Anonymous requests: We do not include your name, email, device ID, or any personal identifiers when sending messages to Google
 - Session-based context: Within a single conversation session, recent message history is included with each request to maintain conversational context (e.g., "you mentioned earlier..."). This allows the AI to provide coherent, contextual guidance.
-- No cross-session tracking: Unlike chat services with user accounts (like ChatGPT), we cannot and do not track your conversations across different sessions. Each new conversation you start on a different day appears as a completely separate, anonymous interaction. Even if you have 100 conversations over a year, there is no technical way for Google or us to link them together or build a long-term profile of you.
+- No cross-session tracking: Unlike chat services with user accounts (like other ai), we cannot and do not track your conversations across different sessions. Each new conversation you start on a different day appears as a completely separate, anonymous interaction. Even if you have 100 conversations over a year, there is no technical way for Google or us to link them together or build a long-term profile of you.
 - Trained AI model: Our system includes pastoral training examples based on authentic biblical counseling to guide appropriate Christian responses
 - Google's data use: Google processes your message text according to their API terms and may use it to improve their services. See Google's Generative AI Prohibited Use Policy: https://policies.google.com/terms/generative-ai/use-policy
 - Content filtering: AI-generated responses are automatically filtered for harmful theology patterns including prosperity gospel, spiritual bypassing, toxic positivity, legalism, hate speech, and inappropriate medical advice. Filtered responses are replaced with safe, scripture-based alternatives.
@@ -89,7 +89,7 @@ Free tier users: If you don't subscribe to Premium, you can use all other app fe
 
 The data stored locally on your device is used to:
 
-Provide Core Features: Display your prayer journal, favorite verses, reading history, AI chat conversations, and audio Bible chapter playback within the app
+Provide Core Features: Display your prayer journal, favorite verses, reading history, Intelligent Scripture Chat conversations, and audio Bible chapter playback within the app
 
 Personalize Your Experience: Remember your settings (including audio playback speed), track reading progress, and suggest relevant reading plans based on your history
 
@@ -101,7 +101,7 @@ No external transmission: This local data is never sent to our servers or any th
 
 3.2 Third-Party Data Processing (Google Gemini API - Premium Only)
 
-When you use the Premium AI chat feature:
+When you use the Premium Intelligent Scripture Chat feature:
 
 Generate Pastoral Responses: Your message text is sent anonymously to Google Gemini API to generate biblically-grounded guidance with scripture references
 
@@ -119,9 +119,6 @@ Subscription Status: Your device communicates with Apple/Google servers to verif
 
 3.4 Security Lockout System
 
-Content Policy Enforcement: If you enter an incorrect pastoral guidance PIN or violate our content policies (hate speech, harassment), the app implements a privacy-first security system:
-
-- 3 incorrect attempts = 30-minute temporary lockout
 - Device authentication bypass: You can immediately bypass the lockout using your device's built-in authentication (PIN, fingerprint, or Face ID)
 - Privacy-preserving: We do not see, store, or have access to your device authentication credentials - this is handled entirely by your device's operating system
 - Local-only data: Only two integers are stored locally (attempt counter and lockout timestamp) - no accounts, usernames, or personal identifiers
@@ -151,7 +148,8 @@ Secure Coding Standards: Development follows OWASP Mobile Security Guidelines to
 
 Device-Level Protection: All app data is protected by your device's built-in security features, available on modern iOS and Android devices
 
-Secure API Communication: When using Premium AI chat, messages are transmitted to Google Gemini API over TLS/SSL encrypted connections
+Secure API Communication: When using Premium AI s
+cripture chat, messages are transmitted to Google Gemini API over TLS/SSL encrypted connections
 
 No User Credentials: Since we don't use accounts, there are no passwords to be compromised
 
@@ -188,14 +186,14 @@ We categorically do not and will never:
 - Use your spiritual content for advertising purposes
 - Monetize your prayers, Bible reading, or chat conversations
 
-We have no business model based on data monetization. Our only revenue comes from optional Premium subscriptions (approximately $35.99/year, pricing may vary by region and currency).
+We have no business model based on data monetization. Our only revenue comes from optional Premium subscriptions (approximately $35.99/year, $5.99/month, pricing may vary by region and currency).
 
 5.2 Third-Party Data Sharing
 
-Google Gemini API (Premium AI Chat Only):
-- What is shared: Your message text only (when you send an AI chat message)
+Google Gemini API (Premium Intelligent Scripture Chat Only):
+- What is shared: Your message text only (when you send an a Scripture message)
 - What is NOT shared: Your name, email, device ID, location, or any identifiers
-- Purpose: To generate AI-powered pastoral guidance responses
+- Purpose: To generate Intelligent Scripture Chat responses
 - Google's use: Google may use message text to improve their AI services per their terms
 - User control: Don't subscribe to Premium if you prefer zero third-party data sharing
 
@@ -235,7 +233,7 @@ If Everyday Christian is acquired, merged, or sells assets:
 
 Since all data is stored locally on your device, we cannot:
 - Provide your prayer journal to third parties
-- Access your AI chat history
+- Access your Intelligent Scripture Chat history
 - See your Bible reading patterns
 - Recover your data if you lose your device
 - Transfer your data to a new device (unless you use device-level backups)
@@ -247,7 +245,7 @@ We recognize that Everyday Christian inherently processes sensitive personal inf
 
 6.1 Types of Sensitive Data
 
-Religious Beliefs: Your use of Bible reading, prayers, and AI pastoral guidance reveals your Christian faith
+Religious Beliefs: Your use of Bible reading, prayers, and Intelligent Scripture Chat reveals your Christian faith
 
 Emotional and Mental Health: Questions about anxiety, depression, grief, anger, or other struggles shared in AI chat
 
@@ -259,7 +257,7 @@ Crisis Content: Messages containing references to suicide, self-harm, abuse, or 
 
 Local Storage: All sensitive data remains on your device, minimizing exposure risk
 
-Anonymous API Calls: When using Premium AI chat, your messages are sent to Google without your identity
+Anonymous API Calls: When using Premium Intelligent Scripture Chat, your messages are sent to Google without your identity
 
 No Profiling: We do not build profiles of your religious practices, mental health patterns, or personal struggles
 
@@ -300,7 +298,7 @@ General Use (Ages 13+): Users 13 and older may use all app features. We recommen
 
 Children Under 13: We do not knowingly collect personal information from children under 13 without verifiable parental consent. Given our privacy-first, local-only architecture:
 - Free features (Bible reading, verses, devotionals): Can be used by children under 13 without data collection concerns since all data stays on the device
-- Premium AI Chat: Should not be used by children under 13 without parental consent due to message transmission to Google Gemini API
+- Premium Intelligent Scripture Chat: Should not be used by children under 13 without parental consent due to message transmission to Google Gemini API
 
 7.2 Parental Controls and Rights
 
@@ -310,7 +308,7 @@ Your Rights Under COPPA:
 - Review data stored locally on your child's device by accessing the app
 - Delete your child's data by clearing app data or uninstalling
 - Refuse further data collection by not subscribing to Premium features
-- Control your child's use of AI chat features
+- Control your child's use of Intelligent Scripture Chat features
 
 How to Exercise Rights:
 1. Since data is local, you can directly access your child's device to review prayer journals, chat history, and reading activity
@@ -336,19 +334,19 @@ Without parental consent (Free users):
 
 7.4 Parental Consent Mechanism
 
-To use Premium AI chat, parents of children under 13 should:
+To use Premium Intelligent Scripture Chat, parents of children under 13 should:
 1. Review this Privacy Policy and our Terms of Service
 2. Discuss appropriate use of AI spiritual guidance with your child
 3. Monitor your child's subscriptions through Family Sharing (Apple) or Family Link (Google)
-4. Supervise your child's use of AI chat features
-5. Understand that AI guidance is not professional counseling
+4. Supervise your child's use of Intelligent Scripture Chat features
+5. Understand that Intelligent Scripture Chat is not professional counseling
 
 We do not independently verify parental consent beyond the parent controlling the device and subscription purchases. Parents are responsible for monitoring their children's app usage.
 
 7.5 Teen Users (Ages 13-17)
 
 Parental Guidance Recommended: While teens may use the app without explicit parental consent, we encourage parents to:
-- Discuss the difference between AI guidance and professional counseling
+- Discuss the difference between Intelligent Scripture Chat and professional counseling
 - Review crisis resources with your teen (988 Suicide & Crisis Lifeline)
 - Monitor for signs of emotional distress
 - Encourage your teen to speak with trusted adults, clergy, or counselors about serious issues
@@ -381,7 +379,7 @@ Right to Withdraw Consent:
 California residents have these specific rights:
 
 Right to Know (CCPA §1798.100):
-- We collect: AI chat messages (Premium only), locally stored prayers, reading history
+- We collect: Intelligent Scripture Chat (Premium only), locally stored prayers, reading history
 - Categories: Religious information, emotional content, personal thoughts
 - Purpose: Provide pastoral guidance and track reading progress
 - Third parties: Google Gemini API (Premium chat only)
@@ -446,7 +444,7 @@ All regions: Our privacy-first architecture means you have direct control over y
 All data stored on your device is retained indefinitely until you choose to delete it:
 
 Prayer Journal: Retained until you delete individual entries or clear all data
-AI Chat History: Retained until you delete conversations or clear all data
+Intelligent Scripture Chat History: Retained until you delete conversations or clear all data
 Favorite Verses: Retained until you unfavorite or clear data
 Reading History: Retained until you clear history or uninstall app
 App Settings: Retained until you reset settings or uninstall app
@@ -456,7 +454,7 @@ Your control: You have complete control over retention through deletion options 
 
 9.2 Third-Party Retention (Google Gemini API)
 
-Premium AI Chat Messages: When you send a message via Premium AI chat:
+Premium Intelligent Scripture Chat: When you send a message via Premium Intelligent Scripture Chat:
 - Processed by Google Gemini API according to Google's data retention policies
 - Google may retain message text to improve AI services per their terms
 - We do not control Google's retention periods
@@ -489,7 +487,7 @@ Local Storage: No international transfers - all data stays on your device in you
 Google Gemini API (Premium only):
 - Messages sent to Google servers, which may be located in the United States or other countries
 - Google complies with GDPR Standard Contractual Clauses for EU data transfers
-- Transfers occur only when you actively send an AI chat message
+- Transfers occur only when you actively send an Intelligent Scripture Chat message
 - Messages are anonymous and not linked to your identity
 
 Apple/Google Payments: Subscription data handled per Apple/Google's international transfer safeguards

@@ -20,7 +20,7 @@ Certain features, promotions, or services offered within the App may be subject 
 
 Users 13 and older may use all App features.
 
-Users under 13 may use free features with parental consent, but Premium AI chat requires verifiable parental consent (see Section 3.2).
+Users under 13 may use free features with parental consent, but Premium Intelligent Scripture Chat requires verifiable parental consent (see Section 3.2).
 
 Parents and guardians are responsible for monitoring their children's use of the App.
 
@@ -38,9 +38,9 @@ Core Features (Free):
 - Verse bookmarking and favorites with personal notes
 - Crisis intervention resources including 988 Suicide & Crisis Lifeline
 
-Premium Features (approximately $35/year subscription):
-- AI-powered pastoral guidance using Custom trained llm
-- 150 AI chat messages per month with biblically-grounded responses
+Premium Features (approximately $35.99/year or $5.99/month subscription):
+- Intelligent Scripture Chat Custom trained 
+- 150 Intelligent Scripture Chat per month with biblically-grounded responses
 - Scripture-based guidance on faith questions, spiritual struggles, and life challenges
 - Conversation history stored locally on your device
 
@@ -74,8 +74,8 @@ Users under 13: To subscribe to Premium features, parental consent is required u
 
 1. Review these Terms and our Privacy Policy
 2. Authorize the subscription purchase through Apple Family Sharing or Google Family Link
-3. Supervise their child's use of AI chat features
-4. Understand that AI guidance is not professional counseling
+3. Supervise their child's use of Intelligent Scripture Chat
+4. Understand that Intelligent Scripture Chat is not professional counseling
 
 We do not independently verify ages beyond the age gates provided by Apple App Store and Google Play Store.
 
@@ -92,9 +92,9 @@ If you enable biometric authentication (Face ID, Touch ID, fingerprint), you are
 4.1 Subscription Plans
 
 Premium Annual Subscription:
-Price: $35.99 USD per year (pricing may vary by region and currency)
-Features: 150 AI chat messages per month, unlimited access to all Premium features
-Billing: Charged annually to your Apple App Store or Google Play Store account
+Price: $35.99/year or $5.99/month USD (pricing may vary by region and currency)
+Features: 150 Intelligent Scripture Chat per month, unlimited access to all Premium features
+Billing: Charged annually/monthly to your Apple App Store or Google Play Store account
 Auto-Renewal: Automatically renews each year unless canceled at least 24 hours before the end of the current period
 
 4.2 Payment and Billing
@@ -118,7 +118,7 @@ To cancel auto-renewal: Follow the steps above and select "Cancel Subscription" 
 
 4.4 Message Usage Limits
 
-Premium subscribers receive 150 AI chat messages per month:
+Premium subscribers receive 150 Intelligent Scripture Chat per month:
 - Message count resets on your subscription renewal date
 - Unused messages do not roll over to the next month
 - If you exceed 150 messages, you must wait until renewal or upgrade (if available)
@@ -129,14 +129,14 @@ Premium subscribers receive 150 AI chat messages per month:
 We offer a 3-day free trial for new users:
 
 Trial Terms:
-- Duration: 3 days from first AI message sent
-- Message Allowance: 15 AI chat messages total (not per day)
+- Duration: 3 days from first Intelligent Scripture Chat sent
+- Message Allowance: 15 Intelligent Scripture Chat messages total (not per day)
 - No daily limits: Use all 15 messages at once or spread over 3 days
 - Trial starts when you send your first AI chat message
 - After 3 days OR 15 messages (whichever comes first), trial ends
 
 Automatic Subscription:
-- If you do NOT cancel within 3 days, you will be automatically charged $35.99/year
+- If you do NOT cancel within 3 days, you will be automatically charged $35.99/year or $5.99/month
 - You must cancel at least 24 hours before trial ends to avoid charges
 - Cancel anytime via: iOS Settings > Subscriptions OR Google Play > Subscriptions
 
@@ -192,7 +192,7 @@ Content That Triggers Warnings:
 
 5.3 Content Policy Enforcement
 
-We reserve the right to suspend access to Premium AI chat features for:
+We reserve the right to suspend access to Intelligent Scripture Chat features for:
 - Repeated violations of prohibited content policies (Section 5.1)
 - Attempts to bypass content filtering or safety mechanisms
 - Prompt injection or jailbreaking attempts
@@ -249,7 +249,7 @@ Prayer Journal Entries, Notes, and Bookmarks:
 - You are solely responsible for backing up your content (via device backups)
 
 AI Chat Messages:
-- Messages sent to AI chat are processed by Google Gemini API (see Privacy Policy)
+- Messages sent to Intelligent Scripture Chat are processed by Google Gemini API (see Privacy Policy)
 - You grant us a limited license to transmit your messages to Google for processing
 - Chat history is stored locally on your device and is not accessible to us
 - We do not claim ownership of your chat conversations
@@ -279,16 +279,30 @@ This license does NOT permit you to:
 - reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code of the App, except to the extent such restriction is prohibited by applicable law; or
 - remove, alter, or obscure any copyright, trademark, or other proprietary rights notices appearing in or on the App.
 
-6.3 Bible Translation License
+6.3 Bible Translation Licenses
 
-The World English Bible (WEB) translation used in Everyday Christian is in the public domain. We include the following attribution:
+6.3.1 World English Bible (WEB)
 
-World English Bible (WEB)
-- Public Domain
-- Updated: 2024
-- Translation: Modern English from Hebrew, Aramaic, and Greek source texts
-- Free for all use, modification, and distribution
-- See ebible.org/web for more information
+  The World English Bible (WEB) translation used in Everyday Christian is in the public domain. We include the following
+  attribution:
+
+  World English Bible (WEB)
+  - Public Domain
+  - Updated: 2024
+  - Translation: Modern English from Hebrew, Aramaic, and Greek source texts
+  - Free for all use, modification, and distribution
+  - See ebible.org/web for more information
+
+6.3.2 Reina-Valera 1909 (RVR1909)
+
+  La traducción de la Biblia Reina-Valera 1909 (RVR1909) utilizada en Everyday Christian es de dominio público. Incluimos la siguiente atribución:
+
+  Reina-Valera 1909 (RVR1909)
+  - Dominio Público
+  - Actualizada: 1909
+  - Traducción: Español del texto bíblico hebreo, arameo y griego
+  - Libre para todo uso, modificación y distribución
+  - Ver ebible.org/rvr1909 para más información
 
 6.4 Third-Party Content
 
@@ -325,9 +339,9 @@ THE APP IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, E
 - Fitness for Purpose: We do not warrant that the App will meet your specific spiritual needs or expectations
 - Third-Party Services: We do not control Google Gemini API and are not responsible for its performance, availability, or content
 
-7.2 AI Guidance Disclaimer
+7.2 AI Intelligent Scripture Chat Disclaimer
 
-EVERYDAY CHRISTIAN'S AI PASTORAL GUIDANCE IS NOT A SUBSTITUTE FOR:
+EVERYDAY CHRISTIAN'S Intelligent Scripture Chat IS NOT A SUBSTITUTE FOR:
 - Professional mental health counseling or therapy
 - Medical advice, diagnosis, or treatment
 - Legal advice
@@ -408,7 +422,7 @@ Your use of Everyday Christian is also governed by our Privacy Policy, which is 
 Key Privacy Highlights:
 - NO user accounts or email addresses required
 - All personal data stored locally on your device
-- Premium AI chat messages sent anonymously to Google Gemini API
+- Premium Intelligent Scripture Chat sent anonymously to Google Gemini API
 - NO analytics, tracking, or advertising networks
 - Complete data deletion available in Settings
 

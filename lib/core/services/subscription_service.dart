@@ -51,6 +51,7 @@ class SubscriptionService {
 
   // Product IDs (must match App Store Connect / Play Console)
   static const String premiumYearlyProductId = 'everyday_christian_premium_yearly';
+  static const String premiumMonthlyProductId = 'everyday_christian_premium_monthly';
 
   // Trial configuration
   static const int trialDurationDays = 3;
@@ -94,7 +95,8 @@ class SubscriptionService {
   );
 
   bool _isInitialized = false;
-  ProductDetails? _premiumProduct;
+  ProductDetails? _premiumProductYearly;
+  ProductDetails? _premiumProductMonthly;
 
   // Purchase update callback
   Function(bool success, String? error)? onPurchaseUpdate;
@@ -215,16 +217,31 @@ class SubscriptionService {
   Future<void> _loadProducts() async {
     try {
       final ProductDetailsResponse response = await _iap.queryProductDetails(
-        {premiumYearlyProductId},
+        {premiumYearlyProductId, premiumMonthlyProductId},
       );
 
       if (response.notFoundIDs.isNotEmpty) {
         debugPrint('📊 [SubscriptionService] Products not found: ${response.notFoundIDs}');
       }
 
-      if (response.productDetails.isNotEmpty) {
-        _premiumProduct = response.productDetails.first;
-        debugPrint('📊 [SubscriptionService] Loaded product: ${_premiumProduct!.id} - ${_premiumProduct!.price}');
+      // Load yearly product
+      _premiumProductYearly = response.productDetails.firstWhere(
+        (product) => product.id == premiumYearlyProductId,
+        orElse: () => response.productDetails.first,
+      );
+
+      // Load monthly product
+      _premiumProductMonthly = response.productDetails.firstWhere(
+        (product) => product.id == premiumMonthlyProductId,
+        orElse: () => response.productDetails.first,
+      );
+
+      if (_premiumProductYearly != null) {
+        debugPrint('📊 [SubscriptionService] Loaded yearly product: ${_premiumProductYearly!.id} - ${_premiumProductYearly!.price}');
+      }
+
+      if (_premiumProductMonthly != null) {
+        debugPrint('📊 [SubscriptionService] Loaded monthly product: ${_premiumProductMonthly!.id} - ${_premiumProductMonthly!.price}');
       }
     } catch (e) {
       debugPrint('📊 [SubscriptionService] Failed to load products: $e');
@@ -616,23 +633,40 @@ class SubscriptionService {
   // PURCHASE FLOW
   // ============================================================================
 
-  /// Get premium product details
-  ProductDetails? get premiumProduct => _premiumProduct;
+  /// Get premium product details (defaults to yearly for backwards compatibility)
+  ProductDetails? get premiumProduct => _premiumProductYearly;
+
+  /// Get yearly product details
+  ProductDetails? get premiumProductYearly => _premiumProductYearly;
+
+  /// Get monthly product details
+  ProductDetails? get premiumProductMonthly => _premiumProductMonthly;
 
   /// Purchase premium subscription
-  Future<void> purchasePremium() async {
-    if (_premiumProduct == null) {
+  /// [productId] - Product ID to purchase (defaults to yearly if not specified)
+  Future<void> purchasePremium({String? productId}) async {
+    // Default to yearly product if not specified (for trial auto-subscribe)
+    final selectedProductId = productId ?? premiumYearlyProductId;
+
+    ProductDetails? productToPurchase;
+    if (selectedProductId == premiumYearlyProductId) {
+      productToPurchase = _premiumProductYearly;
+    } else if (selectedProductId == premiumMonthlyProductId) {
+      productToPurchase = _premiumProductMonthly;
+    }
+
+    if (productToPurchase == null) {
       onPurchaseUpdate?.call(false, 'Product not available');
       return;
     }
 
     try {
       final PurchaseParam purchaseParam = PurchaseParam(
-        productDetails: _premiumProduct!,
+        productDetails: productToPurchase,
       );
 
       await _iap.buyNonConsumable(purchaseParam: purchaseParam);
-      debugPrint('📊 [SubscriptionService] Purchase initiated');
+      debugPrint('📊 [SubscriptionService] Purchase initiated for: ${productToPurchase.id}');
     } catch (e) {
       debugPrint('📊 [SubscriptionService] Purchase failed: $e');
       onPurchaseUpdate?.call(false, e.toString());
@@ -913,9 +947,12 @@ class SubscriptionService {
       'premiumMessagesUsed': premiumMessagesUsed,
       'premiumMessagesRemaining': premiumMessagesRemaining,
       'canSendMessage': canSendMessage,
-      'hasProduct': _premiumProduct != null,
-      'productId': _premiumProduct?.id,
-      'productPrice': _premiumProduct?.price,
+      'hasYearlyProduct': _premiumProductYearly != null,
+      'hasMonthlyProduct': _premiumProductMonthly != null,
+      'yearlyProductId': _premiumProductYearly?.id,
+      'yearlyProductPrice': _premiumProductYearly?.price,
+      'monthlyProductId': _premiumProductMonthly?.id,
+      'monthlyProductPrice': _premiumProductMonthly?.price,
     };
   }
 }

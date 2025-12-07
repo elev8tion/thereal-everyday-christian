@@ -8,6 +8,7 @@
 /// - Upgrade button (if not premium)
 /// - Manage subscription link
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -39,6 +40,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
     final trialDaysRemaining = ref.watch(trialDaysRemainingProvider);
     final subscriptionService = ref.watch(subscriptionServiceProvider);
     final premiumProduct = subscriptionService.premiumProduct;
+    final isTrialBlocked = subscriptionService.isTrialBlocked;
 
     return Scaffold(
       body: Stack(
@@ -88,14 +90,14 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                         // Action Buttons
                         if (!isPremium) ...[
                           GlassButton(
-                            text: hasTrialExpired
+                            text: (hasTrialExpired || isTrialBlocked)
                                 ? l10n.subscriptionSubscribeNowButton(premiumProduct?.price ?? "\$35.99")
                                 : l10n.subscriptionStartFreeTrialButton,
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => PaywallScreen(
-                                    showTrialInfo: !hasTrialExpired,
+                                    showTrialInfo: !(hasTrialExpired || isTrialBlocked),
                                   ),
                                 ),
                               );
@@ -435,9 +437,12 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
     );
   }
 
-  /// Open manage subscription (App Store)
+  /// Open manage subscription (App Store or Play Store based on platform)
   Future<void> _openManageSubscription(BuildContext context, AppLocalizations l10n) async {
-    final Uri url = Uri.parse('https://apps.apple.com/account/subscriptions');
+    // Use platform-specific subscription management URL
+    final Uri url = Platform.isIOS
+        ? Uri.parse('https://apps.apple.com/account/subscriptions')
+        : Uri.parse('https://play.google.com/store/account/subscriptions');
 
     try {
       if (await canLaunchUrl(url)) {
