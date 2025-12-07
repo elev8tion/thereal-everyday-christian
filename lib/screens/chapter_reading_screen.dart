@@ -81,6 +81,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       duration: const Duration(milliseconds: 700),
     );
 
+    // Initialize the Future immediately to ensure FutureBuilder starts in waiting state
+    // We'll load the actual data in didChangeDependencies when language is available
+    _versesFuture = Future.value({});
+
     _checkCompletion();
     _initializeTts();
     _checkShowVerseTutorial();
@@ -93,7 +97,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
     // Load verses after dependencies are available (including AppLocalizations)
     // Guard prevents unnecessary reloads (language doesn't change at runtime)
     if (!_versesLoaded) {
-      _loadVerses();
+      setState(() {
+        _loadVerses();
+      });
       _versesLoaded = true;
     }
   }
