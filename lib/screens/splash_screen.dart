@@ -8,6 +8,7 @@ import '../core/navigation/navigation_service.dart';
 import '../core/navigation/app_routes.dart';
 import '../core/widgets/app_initializer.dart';
 import '../core/services/preferences_service.dart';
+import '../core/providers/app_providers.dart';
 import '../hooks/animation_hooks.dart';
 import '../utils/responsive_utils.dart';
 import '../l10n/app_localizations.dart';
@@ -49,23 +50,21 @@ class SplashScreen extends HookConsumerWidget {
       ),
     );
 
-    // Navigate to next screen after delay and check legal agreements
+    // Watch app initialization and navigate when ready (no more timer!)
+    final initializationAsync = ref.watch(appInitializationProvider);
+
+    // Get current route BEFORE useEffect (outside of initialization)
+    final currentRoute = ModalRoute.of(context)?.settings.name;
+
     useEffect(() {
       // Guard against double navigation
       if (_hasNavigated) return null;
 
-      bool disposed = false;
+      // Only navigate when initialization completes successfully
+      initializationAsync.whenData((_) async {
+        if (_hasNavigated) return;
 
-      Future.delayed(const Duration(seconds: 3), () async {
-        // Double-check before navigation
-        if (_hasNavigated || disposed) {
-          return;
-        }
-
-        // CRITICAL: Check if we're still on splash screen before navigating
-        // This prevents navigation if user has moved to another screen (hot reload, widget rebuild, etc.)
-        // ignore: use_build_context_synchronously
-        final currentRoute = ModalRoute.of(context)?.settings.name;
+        // Check if we're still on splash screen before navigating
         if (currentRoute != AppRoutes.splash && currentRoute != '/') return;
 
         // Check if user has completed onboarding (which now includes legal agreements)
@@ -74,7 +73,7 @@ class SplashScreen extends HookConsumerWidget {
 
         if (!hasCompletedOnboarding) {
           // First time user - show unified interactive onboarding
-          if (_hasNavigated || disposed) return;
+          if (_hasNavigated) return;
           _hasNavigated = true;
           NavigationService.pushReplacementNamed(AppRoutes.onboarding);
           return;
@@ -103,7 +102,7 @@ class SplashScreen extends HookConsumerWidget {
 
               if (!authenticated) {
                 // Authentication failed - exit app or stay on splash
-                if (_hasNavigated || disposed) return;
+                if (_hasNavigated) return;
                 // User can try again by reopening the app
                 return;
               }
@@ -115,16 +114,13 @@ class SplashScreen extends HookConsumerWidget {
         }
 
         // Go directly to home (biometric check passed or not enabled)
-        if (_hasNavigated || disposed) return;
+        if (_hasNavigated) return;
         _hasNavigated = true;
         NavigationService.pushReplacementNamed(AppRoutes.home);
       });
 
-      // Cleanup: Mark as disposed to prevent navigation after widget is disposed
-      return () {
-        disposed = true;
-      };
-    }, []);
+      return null;
+    }, [initializationAsync]);
 
     // Wrap the splash screen UI with AppInitializer
     return AppInitializer(

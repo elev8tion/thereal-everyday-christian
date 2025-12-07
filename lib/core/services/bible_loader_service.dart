@@ -25,6 +25,20 @@ class BibleLoaderService {
     debugPrint('📖 [BibleLoader] ✅ ALL BIBLES LOADED SUCCESSFULLY');
   }
 
+  /// Load only English Bible (WEB)
+  Future<void> loadEnglishBible() async {
+    debugPrint('📖 [BibleLoader] Loading English Bible (WEB)...');
+    await _copyEnglishBible();
+    debugPrint('📖 [BibleLoader] ✅ English Bible loaded');
+  }
+
+  /// Load only Spanish Bible (RVR1909)
+  Future<void> loadSpanishBible() async {
+    debugPrint('📖 [BibleLoader] Loading Spanish Bible (RVR1909)...');
+    await _copySpanishBible();
+    debugPrint('📖 [BibleLoader] ✅ Spanish Bible loaded');
+  }
+
   /// Copy English Bible verses from the pre-populated asset database
   Future<void> _copyEnglishBible() async {
     try {
