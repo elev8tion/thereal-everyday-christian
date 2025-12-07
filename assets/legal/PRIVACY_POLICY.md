@@ -119,7 +119,7 @@ Subscription Status: Your device communicates with Apple/Google servers to verif
 
 3.4 Security Lockout System
 
-Content Policy Enforcement: If you enter an incorrect pastoral guidance PIN or violate our content policies (hate speech, prosperity gospel, harassment), the app implements a privacy-first security system:
+Content Policy Enforcement: If you enter an incorrect pastoral guidance PIN or violate our content policies (hate speech, harassment), the app implements a privacy-first security system:
 
 - 3 incorrect attempts = 30-minute temporary lockout
 - Device authentication bypass: You can immediately bypass the lockout using your device's built-in authentication (PIN, fingerprint, or Face ID)
@@ -149,7 +149,7 @@ We implement industry-standard security practices:
 
 Secure Coding Standards: Development follows OWASP Mobile Security Guidelines to prevent common vulnerabilities
 
-Device-Level Protection: All app data is protected by your device's built-in security features, including full-disk encryption available on modern iOS and Android devices
+Device-Level Protection: All app data is protected by your device's built-in security features, available on modern iOS and Android devices
 
 Secure API Communication: When using Premium AI chat, messages are transmitted to Google Gemini API over TLS/SSL encrypted connections
 

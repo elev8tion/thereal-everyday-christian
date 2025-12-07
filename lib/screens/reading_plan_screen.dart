@@ -1065,7 +1065,9 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
       ref.invalidate(todaysReadingsProvider(reading.planId));
       ref.invalidate(planProgressPercentageProvider(reading.planId));
       ref.invalidate(planStreakProvider(reading.planId));
-      ref.invalidate(planHeatmapDataProvider(reading.planId));
+      // Use refresh() instead of invalidate() to force immediate update
+      // even when Progress tab isn't visible
+      ref.refresh(planHeatmapDataProvider(reading.planId));
       ref.invalidate(planCompletionStatsProvider(reading.planId));
       ref.invalidate(planEstimatedCompletionDateProvider(reading.planId));
       ref.invalidate(activeReadingPlansProvider);
@@ -1292,6 +1294,10 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         ref.invalidate(allReadingPlansProvider);
         ref.invalidate(planProgressPercentageProvider(plan.id));
         ref.invalidate(planStreakProvider(plan.id));
+        // Use refresh() to immediately update heatmap even if Progress tab isn't visible
+        ref.refresh(planHeatmapDataProvider(plan.id));
+        ref.invalidate(planCompletionStatsProvider(plan.id));
+        ref.invalidate(planEstimatedCompletionDateProvider(plan.id));
 
         if (mounted) {
           AppSnackBar.show(
