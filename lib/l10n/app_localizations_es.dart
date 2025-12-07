@@ -1476,6 +1476,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'Disfrute de orientación ilimitada con IA';
 
   @override
+  String get subscriptionPlanYearly => 'Plan Anual';
+
+  @override
+  String get subscriptionPlanMonthly => 'Plan Mensual';
+
+  @override
   String get subscriptionStatusFreeTrial => 'Prueba Gratuita';
 
   @override

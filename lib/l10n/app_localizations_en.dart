@@ -1466,6 +1466,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enjoy unlimited AI guidance';
 
   @override
+  String get subscriptionPlanYearly => 'Yearly Plan';
+
+  @override
+  String get subscriptionPlanMonthly => 'Monthly Plan';
+
+  @override
   String get subscriptionStatusFreeTrial => 'Free Trial';
 
   @override

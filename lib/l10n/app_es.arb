@@ -278,6 +278,8 @@
   "subscriptionSubtitle": "Administre su acceso premium",
   "subscriptionStatusPremiumActive": "Premium Activo",
   "subscriptionStatusPremiumActiveDesc": "Disfrute de orientación ilimitada con IA",
+  "subscriptionPlanYearly": "Plan Anual",
+  "subscriptionPlanMonthly": "Plan Mensual",
   "subscriptionStatusFreeTrial": "Prueba Gratuita",
   "subscriptionStatusTrialDaysRemaining": "{days} días",
   "subscriptionStatusTrialExpired": "Prueba Finalizada",

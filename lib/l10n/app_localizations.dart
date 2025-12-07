@@ -2763,6 +2763,18 @@ abstract class AppLocalizations {
   /// **'Enjoy unlimited AI guidance'**
   String get subscriptionStatusPremiumActiveDesc;
 
+  /// Yearly subscription plan type
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly Plan'**
+  String get subscriptionPlanYearly;
+
+  /// Monthly subscription plan type
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Plan'**
+  String get subscriptionPlanMonthly;
+
   /// Free trial status
   ///
   /// In en, this message translates to:

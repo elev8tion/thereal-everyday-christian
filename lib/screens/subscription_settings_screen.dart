@@ -64,6 +64,7 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
                           isInTrial: isInTrial,
                           hasTrialExpired: hasTrialExpired,
                           trialDaysRemaining: trialDaysRemaining,
+                          subscriptionService: subscriptionService,
                         ),
                         const SizedBox(height: AppSpacing.xxl),
 
@@ -171,12 +172,21 @@ class SubscriptionSettingsScreen extends ConsumerWidget {
     required bool isInTrial,
     required bool hasTrialExpired,
     required int trialDaysRemaining,
+    required dynamic subscriptionService,
   }) {
     String status;
     String subtitle;
     if (isPremium) {
       status = l10n.subscriptionStatusPremiumActive;
-      subtitle = l10n.subscriptionStatusPremiumActiveDesc;
+      // Show plan type (Yearly or Monthly) in subtitle
+      final planType = subscriptionService.hasYearlySubscription
+          ? l10n.subscriptionPlanYearly
+          : (subscriptionService.hasMonthlySubscription
+              ? l10n.subscriptionPlanMonthly
+              : '');
+      subtitle = planType.isNotEmpty
+          ? '${l10n.subscriptionStatusPremiumActiveDesc} • $planType'
+          : l10n.subscriptionStatusPremiumActiveDesc;
     } else if (isInTrial) {
       status = l10n.subscriptionStatusFreeTrial;
       subtitle = l10n.subscriptionStatusTrialDaysRemaining(trialDaysRemaining);

@@ -2005,6 +2005,14 @@
   "@subscriptionStatusPremiumActiveDesc": {
     "description": "Premium subscription active description"
   },
+  "subscriptionPlanYearly": "Yearly Plan",
+  "@subscriptionPlanYearly": {
+    "description": "Yearly subscription plan type"
+  },
+  "subscriptionPlanMonthly": "Monthly Plan",
+  "@subscriptionPlanMonthly": {
+    "description": "Monthly subscription plan type"
+  },
   "subscriptionStatusFreeTrial": "Free Trial",
   "@subscriptionStatusFreeTrial": {
     "description": "Free trial status"
