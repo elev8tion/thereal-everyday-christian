@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_gradients.dart';
-import '../components/frosted_glass_card.dart';
+import '../components/dark_main_feature_card.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/gradient_background.dart';
@@ -480,7 +480,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: FrostedGlassCard(
+                  child: DarkMainFeatureCard(
                     padding: const EdgeInsets.all(14),
                     onTap: () async {
                       if (_isNavigating) return;
@@ -537,7 +537,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
-                  child: FrostedGlassCard(
+                  child: DarkMainFeatureCard(
                     padding: const EdgeInsets.all(14),
                     onTap: () async {
                       if (_isNavigating) return;
@@ -603,7 +603,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: FrostedGlassCard(
+                  child: DarkMainFeatureCard(
                     padding: const EdgeInsets.all(14),
                     onTap: () async {
                       if (_isNavigating) return;
@@ -660,7 +660,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
-                  child: FrostedGlassCard(
+                  child: DarkMainFeatureCard(
                     padding: const EdgeInsets.all(14),
                     onTap: () async {
                       if (_isNavigating) return;
