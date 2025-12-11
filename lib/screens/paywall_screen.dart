@@ -17,6 +17,7 @@ import '../components/glass_section_header.dart';
 import '../components/category_badge.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/standard_screen_header.dart';
+import '../components/glass_card.dart';
 import '../theme/app_theme.dart';
 import '../core/providers/app_providers.dart';
 import '../core/services/subscription_service.dart';
@@ -157,10 +158,16 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                           constraints: const BoxConstraints(maxWidth: 280),
                           child: GestureDetector(
                             onTap: _isProcessing ? null : _handlePurchase,
-                            child: FrostedGlassCard(
+                            child: GlassContainer(
+                              borderRadius: 24,
+                              blurStrength: 15.0,
+                              gradientColors: [
+                                Colors.white.withValues(alpha: 0.05),
+                                Colors.white.withValues(alpha: 0.02),
+                              ],
                               padding: const EdgeInsets.all(AppSpacing.lg),
-                              intensity: GlassIntensity.strong,
-                              borderColor: AppTheme.goldColor.withValues(alpha: 0.8),
+                              enableNoise: true,
+                              enableLightSimulation: true,
                               child: Column(
                                 children: [
                                   // Only show "Less than $3 per month" for yearly plan
