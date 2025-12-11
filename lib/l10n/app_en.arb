@@ -236,9 +236,9 @@
   "@fabTooltipMessage": {
     "description": "Tooltip message for FAB menu"
   },
-  "prayerCardTutorial": "Tap a prayer to view options ✨",
+  "prayerCardTutorial": "Tap + to add a new prayer ✨",
   "@prayerCardTutorial": {
-    "description": "Tutorial message for prayer card interactions"
+    "description": "Tutorial message for adding prayers via FAB button"
   },
   "bibleBrowserTutorial": "Search books or browse by testament ✨",
   "@bibleBrowserTutorial": {

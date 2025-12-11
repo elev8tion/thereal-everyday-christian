@@ -45,29 +45,10 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   bool _isLoading = true;
   bool _isSearchingVerses = false;
   String _searchQuery = '';
-  bool _showBibleBrowserTutorial = false;
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _checkShowBibleBrowserTutorial();
-  }
-
-  Future<void> _checkShowBibleBrowserTutorial() async {
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (!mounted) return;
-
-    final prefs = await PreferencesService.getInstance();
-    if (!prefs.hasBibleBrowserTutorialShown() && mounted) {
-      setState(() => _showBibleBrowserTutorial = true);
-    }
-  }
-
-  Future<void> _dismissBibleBrowserTutorial() async {
-    setState(() => _showBibleBrowserTutorial = false);
-    final prefs = await PreferencesService.getInstance();
-    await prefs.setBibleBrowserTutorialShown();
   }
 
   @override
@@ -437,27 +418,6 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
     );
 
     // Show tutorial on first visit
-    if (_showBibleBrowserTutorial) {
-      return GestureDetector(
-        onTap: _dismissBibleBrowserTutorial,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            searchWidget,
-            Positioned(
-              top: -70,
-              left: 20,
-              right: 20,
-              child: FabTooltip(
-                message: l10n.bibleBrowserTutorial,
-                pointingDown: true,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return searchWidget;
   }
 

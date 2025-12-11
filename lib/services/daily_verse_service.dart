@@ -139,8 +139,9 @@ class DailyVerseService {
   Future<void> _cacheVerse(BibleVerse verse) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      if (verse.id != null) {
-        await prefs.setInt(_currentVerseIdKey, verse.id!);
+      final verseId = verse.id;
+      if (verseId != null) {
+        await prefs.setInt(_currentVerseIdKey, verseId);
       }
       await prefs.setString(_currentVerseTextKey, verse.text);
       await prefs.setString(_currentVerseReferenceKey, verse.reference);

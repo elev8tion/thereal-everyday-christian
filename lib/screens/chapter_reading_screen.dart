@@ -6,7 +6,6 @@ import '../components/frosted_glass_card.dart';
 import '../components/glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/audio_control_pill.dart';
-import '../components/fab_tooltip.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/providers/app_providers.dart';
@@ -66,9 +65,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
   int? _activeVerseIndex;
   late AnimationController _iconAnimationController;
 
-  // Verse tutorial tooltip state
-  bool _showVerseTutorial = false;
-
   // Guard flag to load verses only once (language never changes at runtime)
   bool _versesLoaded = false;
 
@@ -88,7 +84,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
 
     _checkCompletion();
     _initializeTts();
-    _checkShowVerseTutorial();
   }
 
   @override
@@ -266,34 +261,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
       curve: Curves.easeInOut,
       alignment: 0.2, // Keep verse near top of viewport
     );
-  }
-
-  /// Check if verse tutorial should be shown
-  Future<void> _checkShowVerseTutorial() async {
-    final prefsService = await PreferencesService.getInstance();
-
-    // Check if verse tutorial has been shown before
-    if (!prefsService.hasVerseTutorialShown() && mounted) {
-      // Delay showing tooltip to give UI time to settle
-      Future.delayed(const Duration(milliseconds: 800), () {
-        if (mounted) {
-          setState(() {
-            _showVerseTutorial = true;
-          });
-        }
-      });
-    }
-  }
-
-  /// Dismiss the verse tutorial tooltip
-  Future<void> _dismissVerseTutorial() async {
-    setState(() {
-      _showVerseTutorial = false;
-    });
-
-    // Mark as shown so it doesn't appear again
-    final prefsService = await PreferencesService.getInstance();
-    await prefsService.setVerseTutorialShown();
   }
 
   @override
@@ -654,19 +621,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Verse tutorial tooltip
-            if (_showVerseTutorial)
-              GestureDetector(
-                onTap: _dismissVerseTutorial,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: FabTooltip(
-                    message: l10n.pressHoldVerseForActions,
-                    pointingDown: true,
-                  ),
-                ),
-              ),
-
             // Scrollable verses area
             Expanded(
               child: GestureDetector(
@@ -1012,11 +966,6 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
         _activeVerseIndex = verseIndex;
       });
       _iconAnimationController.forward();
-
-      // Dismiss tutorial tooltip when user completes their first double-tap
-      if (_showVerseTutorial) {
-        _dismissVerseTutorial();
-      }
     }
   }
 

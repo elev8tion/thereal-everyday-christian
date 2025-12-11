@@ -452,10 +452,10 @@ abstract class AppLocalizations {
   /// **'Tap here to navigate ✨'**
   String get fabTooltipMessage;
 
-  /// Tutorial message for prayer card interactions
+  /// Tutorial message for adding prayers via FAB button
   ///
   /// In en, this message translates to:
-  /// **'Tap a prayer to view options ✨'**
+  /// **'Tap + to add a new prayer ✨'**
   String get prayerCardTutorial;
 
   /// Tutorial message for Bible browser search

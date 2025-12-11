@@ -195,7 +195,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fabTooltipMessage => 'Tap here to navigate ✨';
 
   @override
-  String get prayerCardTutorial => 'Tap a prayer to view options ✨';
+  String get prayerCardTutorial => 'Tap + to add a new prayer ✨';
 
   @override
   String get bibleBrowserTutorial => 'Search books or browse by testament ✨';

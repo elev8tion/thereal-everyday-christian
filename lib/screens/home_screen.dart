@@ -29,7 +29,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey _backgroundKey = GlobalKey();
-  bool _showFabTooltip = false;
   bool _isNavigating = false;
   final AutoSizeGroup _mainFeatureTitlesGroup = AutoSizeGroup();
 
@@ -37,7 +36,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _checkShowTrialWelcome();
-    _checkShowFabTooltip();
   }
 
   Future<void> _checkShowTrialWelcome() async {
@@ -74,31 +72,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
-  Future<void> _checkShowFabTooltip() async {
-    // Wait longer to ensure trial welcome dialog is shown/dismissed first
-    await Future.delayed(const Duration(milliseconds: 1500));
-
-    if (!mounted) return;
-
-    final prefsService = await PreferencesService.getInstance();
-
-    // Check if FAB tutorial has been shown before
-    if (!prefsService.hasFabTutorialShown() && mounted) {
-      setState(() {
-        _showFabTooltip = true;
-      });
-    }
-  }
-
-  void _dismissFabTooltip() async {
-    setState(() {
-      _showFabTooltip = false;
-    });
-
-    // Mark as shown so it doesn't appear again
-    final prefsService = await PreferencesService.getInstance();
-    await prefsService.setFabTutorialShown();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,21 +117,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Positioned(
             top: MediaQuery.of(context).padding.top + AppSpacing.xl,
             left: AppSpacing.xl,
-            child: GlassmorphicFABMenu(
-              onMenuOpened: _dismissFabTooltip,
-            ),
+            child: const GlassmorphicFABMenu(),
           ),
-          // FAB Tooltip for first-time users
-          if (_showFabTooltip)
-            Positioned(
-              top: MediaQuery.of(context).padding.top +
-                  AppSpacing.xl +
-                  80, // Position below FAB
-              left: AppSpacing.xl,
-              child: FabTooltip(
-                message: l10n.fabTooltipMessage,
-              ),
-            ),
         ],
       ),
     );

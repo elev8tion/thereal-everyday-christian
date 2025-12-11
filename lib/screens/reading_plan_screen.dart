@@ -36,29 +36,10 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   // Optimistic UI state: tracks checkbox toggles before database confirms
   final Map<String, bool> _optimisticCompletions = {};
 
-  bool _showReadingPlanTutorial = false;
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _checkShowReadingPlanTutorial();
-  }
-
-  Future<void> _checkShowReadingPlanTutorial() async {
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (!mounted) return;
-
-    final prefs = await PreferencesService.getInstance();
-    if (!prefs.hasReadingPlanTutorialShown() && mounted) {
-      setState(() => _showReadingPlanTutorial = true);
-    }
-  }
-
-  Future<void> _dismissReadingPlanTutorial() async {
-    setState(() => _showReadingPlanTutorial = false);
-    final prefs = await PreferencesService.getInstance();
-    await prefs.setReadingPlanTutorialShown();
   }
 
   @override
@@ -70,10 +51,13 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const GradientBackground(),
-          SafeArea(
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            const GradientBackground(),
+            SafeArea(
             child: Column(
               children: [
                 _buildHeader(),
@@ -93,6 +77,7 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
             ),
           ),
         ],
+        ),
       ),
     );
   }
@@ -708,28 +693,6 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
         ),
       ),
     );
-
-    // Show tutorial only on first reading card
-    if (index == 0 && _showReadingPlanTutorial) {
-      return GestureDetector(
-        onTap: _dismissReadingPlanTutorial,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            readingCard,
-            Positioned(
-              top: -70,
-              left: 20,
-              right: 20,
-              child: FabTooltip(
-                message: l10n.readingPlanTutorial,
-                pointingDown: true,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
 
     return readingCard;
   }

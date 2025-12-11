@@ -40,29 +40,11 @@ class PrayerJournalScreen extends ConsumerStatefulWidget {
 class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _prayerController = TextEditingController();
-  bool _showPrayerTutorial = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _checkShowPrayerTutorial();
-  }
-
-  Future<void> _checkShowPrayerTutorial() async {
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (!mounted) return;
-
-    final prefs = await PreferencesService.getInstance();
-    if (!prefs.hasPrayerTutorialShown() && mounted) {
-      setState(() => _showPrayerTutorial = true);
-    }
-  }
-
-  Future<void> _dismissPrayerTutorial() async {
-    setState(() => _showPrayerTutorial = false);
-    final prefs = await PreferencesService.getInstance();
-    await prefs.setPrayerTutorialShown();
   }
 
   @override
@@ -732,28 +714,6 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
           ],
         ),
     );
-
-    // Show tutorial only on first prayer card
-    if (index == 0 && _showPrayerTutorial) {
-      return GestureDetector(
-        onTap: _dismissPrayerTutorial,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            cardWidget,
-            Positioned(
-              top: -70,
-              left: 20,
-              right: 20,
-              child: FabTooltip(
-                message: l10n.prayerCardTutorial,
-                pointingDown: true,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
 
     return cardWidget;
   }

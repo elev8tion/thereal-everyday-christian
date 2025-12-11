@@ -73,7 +73,6 @@ class ChatScreen extends HookConsumerWidget {
     final showScrollToBottom = useState(false);
     final hasAddedVerseContext = useState(false); // Track if verse context was prepended to AI
     final regeneratedMessageId = useState<String?>(null); // Track which message was just regenerated for animation
-    final showChatTutorial = useState(false); // Track chat tutorial state
 
     // Listen to text changes to update send button state
     useEffect(() {
@@ -153,21 +152,6 @@ class ChatScreen extends HookConsumerWidget {
     }, []);
 
     // Check if chat tutorial should be shown
-    useEffect(() {
-      Future<void> checkShowChatTutorial() async {
-        // Wait for messages to load and for at least one AI message to exist
-        await Future.delayed(const Duration(milliseconds: 1200));
-
-        final prefs = await PreferencesService.getInstance();
-        if (!prefs.hasChatTutorialShown() && messages.value.any((m) => m.isAI)) {
-          showChatTutorial.value = true;
-        }
-      }
-
-      checkShowChatTutorial();
-      return null;
-    }, [messages.value]);
-
     // Auto-scroll when messages change
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -192,12 +176,6 @@ class ChatScreen extends HookConsumerWidget {
           );
         }
       });
-    }
-
-    Future<void> dismissChatTutorial() async {
-      showChatTutorial.value = false;
-      final prefs = await PreferencesService.getInstance();
-      await prefs.setChatTutorialShown();
     }
 
     Future<void> sendMessage(String text) async {
@@ -1522,8 +1500,6 @@ class ChatScreen extends HookConsumerWidget {
                           shareMessageExchange,
                           regeneratedMessageId.value,
                           l10n,
-                          showChatTutorial,
-                          dismissChatTutorial,
                         ),
                         // Add spacing at bottom to prevent last message from being hidden by floating input
                         const SliverToBoxAdapter(
@@ -1675,8 +1651,6 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> Function(int) onShareExchange,
     String? regeneratedMessageId,
     AppLocalizations l10n,
-    ValueNotifier<bool> showTutorial,
-    Future<void> Function() dismissTutorial,
   ) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -1688,7 +1662,7 @@ class ChatScreen extends HookConsumerWidget {
               return _buildTypingIndicator();
             }
 
-            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId, l10n, showTutorial, dismissTutorial, messages);
+            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId, l10n, messages);
           },
           childCount: messages.length + (isTyping ? 1 : 0),
         ),
@@ -1704,8 +1678,6 @@ class ChatScreen extends HookConsumerWidget {
     Future<void> Function(int) onShareExchange,
     String? regeneratedMessageId,
     AppLocalizations l10n,
-    ValueNotifier<bool> showTutorial,
-    Future<void> Function() dismissTutorial,
     List<ChatMessage> allMessages,
   ) {
     final bool isRegeneratedMessage = regeneratedMessageId != null && message.id == regeneratedMessageId;
@@ -2025,32 +1997,7 @@ class ChatScreen extends HookConsumerWidget {
           );
     }
 
-    // Check if this is the first AI message and tutorial should be shown
-    final aiMessages = allMessages.where((m) => m.isAI).toList();
-    final isFirstAIMessage = message.isAI && aiMessages.isNotEmpty && aiMessages.first.id == message.id;
-
-    if (isFirstAIMessage && showTutorial.value) {
-      return GestureDetector(
-        onTap: dismissTutorial,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            messageWidget,
-            Positioned(
-              top: -70,
-              left: 20,
-              right: 20,
-              child: FabTooltip(
-                message: l10n.chatTutorial,
-                pointingDown: true,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // For all other messages, return without animations (like streaming messages)
+    // For all messages, return without animations (like streaming messages)
     return messageWidget;
   }
 
