@@ -579,24 +579,66 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
           children: [
             Row(
               children: [
-                // Icon with abbreviation
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
-                    borderRadius: AppRadius.mediumRadius,
-                  ),
-                  child: Center(
-                    child: Text(
-                      abbreviation,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white.withValues(alpha: 0.9),
+                // Icon with abbreviation - Enhanced with glass surface
+                ClipRRect(
+                  borderRadius: AppRadius.mediumRadius,
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 40.0, sigmaY: 40.0),
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: AppRadius.mediumRadius,
+                        color: Colors.black.withValues(alpha: 0.1),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.1),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          // Ambient shadow (far, soft)
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.3),
+                            offset: const Offset(0, 4),
+                            blurRadius: 12,
+                            spreadRadius: -2,
+                          ),
+                          // Definition shadow (close, sharp)
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.2),
+                            offset: const Offset(0, 2),
+                            blurRadius: 4,
+                            spreadRadius: -1,
+                          ),
+                        ],
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      foregroundDecoration: BoxDecoration(
+                        borderRadius: AppRadius.mediumRadius,
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          stops: const [0.0, 0.5],
+                          colors: [
+                            Colors.white.withValues(alpha: 0.15),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                      child: StaticNoiseOverlay(
+                        opacity: 0.04,
+                        density: 0.4,
+                        child: Center(
+                          child: Text(
+                            abbreviation,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white.withValues(alpha: 0.9),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
