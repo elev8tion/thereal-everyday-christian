@@ -208,7 +208,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                           ref.read(selectedCategoryFilterProvider.notifier).state = null;
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                           decoration: BoxDecoration(
                             gradient: selectedCategory == null
                                 ? LinearGradient(

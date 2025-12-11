@@ -120,7 +120,7 @@ class _CategoryFilterChipState extends State<CategoryFilterChip>
       child: GestureDetector(
         onTap: _handleTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           decoration: BoxDecoration(
             gradient: widget.isSelected
                 ? LinearGradient(
