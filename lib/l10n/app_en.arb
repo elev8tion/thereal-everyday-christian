@@ -236,6 +236,26 @@
   "@fabTooltipMessage": {
     "description": "Tooltip message for FAB menu"
   },
+  "prayerCardTutorial": "Tap a prayer to view options ✨",
+  "@prayerCardTutorial": {
+    "description": "Tutorial message for prayer card interactions"
+  },
+  "bibleBrowserTutorial": "Search books or browse by testament ✨",
+  "@bibleBrowserTutorial": {
+    "description": "Tutorial message for Bible browser search"
+  },
+  "devotionalVerseTutorial": "Tap verse references to read full passages ✨",
+  "@devotionalVerseTutorial": {
+    "description": "Tutorial message for devotional verse interactions"
+  },
+  "chatTutorial": "Long-press AI messages for options ✨",
+  "@chatTutorial": {
+    "description": "Tutorial message for chat message interactions"
+  },
+  "readingPlanTutorial": "Tap to mark chapters complete ✨",
+  "@readingPlanTutorial": {
+    "description": "Tutorial message for reading plan completion"
+  },
   "shareVerse": "Share Verse",
   "@shareVerse": {
     "description": "Quick action label"
@@ -1961,7 +1981,7 @@
   "@intelligentScriptureChat": {
     "description": "AI chat demo page subtitle"
   },
-  "demoChatUserMessage": "Give me worry related scripture with details.",
+  "demoChatUserMessage": "What are some worry related scripture with details.",
   "@demoChatUserMessage": {
     "description": "Demo chat user message"
   },
