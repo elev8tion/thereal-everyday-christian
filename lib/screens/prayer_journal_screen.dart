@@ -199,6 +199,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  clipBehavior: Clip.none,
                   children: [
                     // "All" filter chip
                     Padding(
