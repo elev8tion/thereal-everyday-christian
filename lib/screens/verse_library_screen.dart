@@ -95,14 +95,19 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
     return StandardScreenHeader(
       title: l10n.verseLibrary,
       subtitle: l10n.everydayVerses,
-      trailingWidget: Container(
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.1),
-          borderRadius: AppRadius.mediumRadius,
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2),
-            width: 1,
-          ),
+      trailingWidget: GlassContainer(
+        borderRadius: AppRadius.md,
+        blurStrength: 15.0,
+        gradientColors: [
+          Colors.white.withValues(alpha: 0.05),
+          Colors.white.withValues(alpha: 0.02),
+        ],
+        padding: EdgeInsets.zero,
+        enableNoise: true,
+        enableLightSimulation: true,
+        border: Border.all(
+          color: AppTheme.goldColor,
+          width: 1.0,
         ),
         child: IconButton(
           icon: Icon(Icons.more_vert,

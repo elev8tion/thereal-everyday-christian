@@ -9,6 +9,7 @@ import '../components/glass_button.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/standard_screen_header.dart';
 import '../components/dark_glass_container.dart';
+import '../components/glass_card.dart';
 import '../theme/app_theme.dart';
 import '../core/providers/app_providers.dart';
 import '../core/models/devotional.dart';
@@ -317,14 +318,19 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
       title: l10n.dailyDevotional,
       subtitle: '', // Not used because we provide customSubtitle
       showFAB: false, // FAB is positioned separately
-      trailingWidget: Container(
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.1),
-          borderRadius: AppRadius.mediumRadius,
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2),
-            width: 1,
-          ),
+      trailingWidget: GlassContainer(
+        borderRadius: AppRadius.md,
+        blurStrength: 15.0,
+        gradientColors: [
+          Colors.white.withValues(alpha: 0.05),
+          Colors.white.withValues(alpha: 0.02),
+        ],
+        padding: EdgeInsets.zero,
+        enableNoise: true,
+        enableLightSimulation: true,
+        border: Border.all(
+          color: AppTheme.goldColor,
+          width: 1.0,
         ),
         child: IconButton(
           icon: Icon(Icons.more_vert,

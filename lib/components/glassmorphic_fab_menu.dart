@@ -381,6 +381,10 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
                   Colors.white.withValues(alpha: 0.05),
                   Colors.white.withValues(alpha: 0.02),
                 ],
+                border: Border.all(
+                  color: AppTheme.goldColor,
+                  width: 1.0,
+                ),
                 child: Center(
                   child: Image.asset(
                     Localizations.localeOf(context).languageCode == 'es'

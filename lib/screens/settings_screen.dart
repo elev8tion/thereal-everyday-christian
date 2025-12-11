@@ -23,6 +23,7 @@ import '../widgets/time_picker/time_range_sheet.dart';
 import '../widgets/time_picker/time_range_sheet_style.dart';
 import '../components/glass_button.dart';
 import '../components/dark_glass_container.dart';
+import '../components/glass_card.dart';
 import 'paywall_screen.dart';
 import '../utils/blur_dialog_utils.dart';
 import '../l10n/app_localizations.dart';
@@ -282,15 +283,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         children: [
           Row(
             children: [
-              Container(
+              GlassContainer(
+                borderRadius: AppRadius.xs + 2,
+                blurStrength: 15.0,
+                gradientColors: [
+                  Colors.white.withValues(alpha: 0.05),
+                  Colors.white.withValues(alpha: 0.02),
+                ],
                 padding: const EdgeInsets.all(AppSpacing.sm),
-                decoration: BoxDecoration(
-                  gradient: AppGradients.customColored(
-                    AppTheme.experimentalNavy,
-                    startAlpha: 0.3,
-                    endAlpha: 0.1,
-                  ),
-                  borderRadius: BorderRadius.circular(AppRadius.xs + 2),
+                enableNoise: true,
+                enableLightSimulation: true,
+                border: Border.all(
+                  color: AppTheme.goldColor,
+                  width: 1.0,
                 ),
                 child: Icon(
                   icon,
@@ -808,13 +813,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
             child: Row(
               children: [
-                Container(
+                GlassContainer(
+                  borderRadius: AppRadius.xs + 2,
+                  blurStrength: 15.0,
+                  gradientColors: [
+                    Colors.white.withValues(alpha: 0.05),
+                    Colors.white.withValues(alpha: 0.02),
+                  ],
                   padding: const EdgeInsets.all(AppSpacing.sm),
-                  decoration: BoxDecoration(
-                    color: isDestructive
-                        ? Colors.red.withValues(alpha: 0.1)
-                        : Colors.white.withValues(alpha: 0.1),
-                    borderRadius: AppRadius.smallRadius,
+                  enableNoise: true,
+                  enableLightSimulation: true,
+                  border: Border.all(
+                    color: isDestructive ? Colors.red : AppTheme.goldColor,
+                    width: 1.0,
                   ),
                   child: Icon(
                     icon,
