@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../widgets/noise_overlay.dart';
 
 class GlassCard extends StatelessWidget {
   final Widget child;
@@ -69,6 +70,8 @@ class GlassContainer extends StatelessWidget {
   final List<Color>? gradientColors;
   final List<double>? gradientStops;
   final Border? border;
+  final bool enableNoise;
+  final bool enableLightSimulation;
 
   const GlassContainer({
     super.key,
@@ -82,6 +85,8 @@ class GlassContainer extends StatelessWidget {
     this.gradientColors,
     this.gradientStops,
     this.border,
+    this.enableNoise = true,
+    this.enableLightSimulation = true,
   });
 
   @override
@@ -90,6 +95,29 @@ class GlassContainer extends StatelessWidget {
       Colors.white.withValues(alpha: 0.15),
       Colors.white.withValues(alpha: 0.05),
     ];
+
+    Widget content = ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: blurStrength, sigmaY: blurStrength),
+        child: Padding(
+          padding: padding ?? EdgeInsets.zero,
+          child: child,
+        ),
+      ),
+    );
+
+    // Add noise overlay if enabled
+    if (enableNoise) {
+      content = ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: StaticNoiseOverlay(
+          opacity: 0.04,
+          density: 0.4,
+          child: content,
+        ),
+      );
+    }
 
     return Container(
       width: width,
@@ -107,24 +135,40 @@ class GlassContainer extends StatelessWidget {
           color: Colors.white.withValues(alpha: 0.2),
           width: 1,
         ),
+        // Enhanced dual shadows for realistic depth
         boxShadow: [
+          // Ambient shadow (far, soft)
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 20,
+            color: Colors.black.withValues(alpha: 0.3),
             offset: const Offset(0, 10),
+            blurRadius: 30,
+            spreadRadius: -5,
+          ),
+          // Definition shadow (close, sharp)
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            offset: const Offset(0, 4),
+            blurRadius: 8,
+            spreadRadius: -2,
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(borderRadius),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: blurStrength, sigmaY: blurStrength),
-          child: Padding(
-            padding: padding ?? EdgeInsets.zero,
-            child: child,
-          ),
-        ),
-      ),
+      // Light simulation via foreground decoration
+      foregroundDecoration: enableLightSimulation
+          ? BoxDecoration(
+              borderRadius: BorderRadius.circular(borderRadius),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.0, 0.5],
+                colors: [
+                  Colors.white.withValues(alpha: 0.15),
+                  Colors.transparent,
+                ],
+              ),
+            )
+          : null,
+      child: content,
     );
   }
 }

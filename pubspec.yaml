@@ -55,6 +55,8 @@ dependencies:
   screenshot: ^3.0.0
   qr_flutter: ^4.1.0
   smooth_page_indicator: ^1.2.0
+  audioplayers: ^6.5.1
+  springster: ^1.0.2
 
   # Additional dependencies for production app
   dio: ^5.3.2
