@@ -1688,7 +1688,7 @@ class ChatScreen extends HookConsumerWidget {
               return _buildTypingIndicator();
             }
 
-            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId, l10n, showChatTutorial, dismissChatTutorial, messages);
+            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId, l10n, showTutorial, dismissTutorial, messages);
           },
           childCount: messages.length + (isTyping ? 1 : 0),
         ),
