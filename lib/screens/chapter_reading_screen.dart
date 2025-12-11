@@ -676,9 +676,9 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
                   controller: _scrollController,
                   padding: const EdgeInsets.only(
                     left: 4.0,
-                    top: 0,
+                    top: 20.0,
                     right: 8.0,
-                    bottom: 0,
+                    bottom: 20.0,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
