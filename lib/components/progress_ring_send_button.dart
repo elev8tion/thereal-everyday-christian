@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'dart:ui';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
 
@@ -50,45 +51,53 @@ class ProgressRingSendButton extends StatelessWidget {
             ),
           ),
         ),
-        // Original send button (slightly smaller to fit inside ring)
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: canSend
-                  ? [
-                      AppTheme.primaryColor,
-                      AppTheme.primaryColor.withValues(alpha: 0.8),
-                    ]
-                  : [
-                      Colors.grey.withValues(alpha: 0.3),
-                      Colors.grey.withValues(alpha: 0.2),
-                    ],
+        // Original send button (slightly smaller to fit inside ring) with glass styling
+        ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: canSend
+                      ? [
+                          Colors.white.withValues(alpha: 0.25),
+                          Colors.white.withValues(alpha: 0.15),
+                        ]
+                      : [
+                          Colors.white.withValues(alpha: 0.1),
+                          Colors.white.withValues(alpha: 0.05),
+                        ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.3),
+                  width: 1.0,
+                ),
+                boxShadow: canSend
+                    ? [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ]
+                    : [],
+              ),
+              child: IconButton(
+                onPressed: canSend ? onPressed : null,
+                icon: Icon(
+                  Icons.send,
+                  color: canSend ? AppColors.primaryText : AppColors.tertiaryText,
+                  size: ResponsiveUtils.iconSize(context, 18),
+                ),
+                padding: EdgeInsets.zero,
+              ),
             ),
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: canSend ? AppTheme.goldColor : Colors.white.withValues(alpha: 0.3),
-              width: 1.0,
-            ),
-            boxShadow: canSend
-                ? [
-                    BoxShadow(
-                      color: AppTheme.goldColor.withValues(alpha: 0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                : [],
-          ),
-          child: IconButton(
-            onPressed: canSend ? onPressed : null,
-            icon: Icon(
-              Icons.send,
-              color: canSend ? AppColors.primaryText : AppColors.tertiaryText,
-              size: ResponsiveUtils.iconSize(context, 18),
-            ),
-            padding: EdgeInsets.zero,
           ),
         ),
         // Message count badge (bottom right)

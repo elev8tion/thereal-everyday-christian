@@ -2035,8 +2035,8 @@ class ChatScreen extends HookConsumerWidget {
                         ),
                         borderRadius: BorderRadius.circular(AppRadius.xl + 1),
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          width: 1.5,
+                          color: AppTheme.goldColor,
+                          width: 1.0,
                         ),
                         boxShadow: [
                           BoxShadow(
