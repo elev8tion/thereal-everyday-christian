@@ -315,16 +315,17 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
             Colors.white.withValues(alpha: 0.02),
           ],
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Text - fades in as container expands
               if (expandProgress > 0.05)
-                Expanded(
+                Flexible(
                   child: Opacity(
                     opacity: expandProgress,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
+                      padding: const EdgeInsets.only(left: 4, right: 4),
                       child: AutoSizeText(
                         option.title,
                         style: TextStyle(
@@ -342,7 +343,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
                     ),
                   ),
                 ),
-              // Icon container - always visible (48x48)
+              // Icon container - always visible
               Container(
                 width: 32,
                 height: 32,
