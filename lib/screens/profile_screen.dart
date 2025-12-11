@@ -203,7 +203,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         padding: const EdgeInsets.only(
                           left: 16,
                           right: 16,
-                          top: 40, // 24 + 16 extra
+                          top: 80, // Account for pinned header height (70px) + spacing
                           bottom: 24,
                         ),
                         child: Column(
@@ -248,83 +248,87 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget _buildHeader() {
     final bool hasCustomName = userName.isNotEmpty;
 
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: AppSpacing.xl,
-          right: AppSpacing.xl,
-          top: AppSpacing.xl, // Top spacing from safe area
-        ),
-        child: Row(
-          children: [
-            const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, top: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    // Show pencil icon if no custom name, otherwise show username card
-                    GestureDetector(
-                      onTap: _showEditProfileDialog,
-                      child: AnimatedSwitcher(
-                        duration: AppAnimations.normal,
-                        switchInCurve: Curves.easeInOut,
-                        switchOutCurve: Curves.easeInOut,
-                        transitionBuilder: (Widget child, Animation<double> animation) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: ScaleTransition(
-                              scale: Tween<double>(begin: 0.8, end: 1.0).animate(
-                                CurvedAnimation(
-                                  parent: animation,
-                                  curve: Curves.easeOutBack,
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: _ProfileHeaderDelegate(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: AppSpacing.xl,
+            right: AppSpacing.xl,
+            top: AppSpacing.xl, // Top spacing from safe area
+          ),
+          child: Row(
+            children: [
+              const SizedBox(width: 56 + AppSpacing.lg), // Space for FAB + gap
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // Show pencil icon if no custom name, otherwise show username card
+                      GestureDetector(
+                        onTap: _showEditProfileDialog,
+                        child: AnimatedSwitcher(
+                          duration: AppAnimations.normal,
+                          switchInCurve: Curves.easeInOut,
+                          switchOutCurve: Curves.easeInOut,
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: ScaleTransition(
+                                scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+                                  CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.easeOutBack,
+                                  ),
                                 ),
+                                child: child,
                               ),
-                              child: child,
-                            ),
-                          );
-                        },
-                        child: hasCustomName
-                            ? FrostedGlassCard(
-                                key: const ValueKey('username_card'),
-                                borderRadius: 20,
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                child: Text(
-                                  userName,
-                                  style: TextStyle(
-                                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
-                                    fontWeight: FontWeight.w600,
+                            );
+                          },
+                          child: hasCustomName
+                              ? FrostedGlassCard(
+                                  key: const ValueKey('username_card'),
+                                  borderRadius: 20,
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  child: Text(
+                                    userName,
+                                    style: TextStyle(
+                                      fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.primaryText,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              : Container(
+                                  key: const ValueKey('pencil_icon'),
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.goldColor.withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: AppTheme.goldColor.withValues(alpha: 0.3),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.edit_outlined,
+                                    size: ResponsiveUtils.iconSize(context, 20),
                                     color: AppColors.primaryText,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              )
-                            : Container(
-                                key: const ValueKey('pencil_icon'),
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.goldColor.withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: AppTheme.goldColor.withValues(alpha: 0.3),
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.edit_outlined,
-                                  size: ResponsiveUtils.iconSize(context, 20),
-                                  color: AppColors.primaryText,
-                                ),
-                              ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -935,4 +939,35 @@ class Achievement {
     this.total,
     this.completionCount,
   });
+}
+
+/// Persistent header delegate for profile username that sticks to the top
+class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  final double height;
+
+  _ProfileHeaderDelegate({
+    required this.child,
+    this.height = 70.0,
+  });
+
+  @override
+  double get minExtent => height;
+
+  @override
+  double get maxExtent => height;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      height: height,
+      alignment: Alignment.topCenter,
+      child: child,
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _ProfileHeaderDelegate oldDelegate) {
+    return oldDelegate.child != child || oldDelegate.height != height;
+  }
 }
