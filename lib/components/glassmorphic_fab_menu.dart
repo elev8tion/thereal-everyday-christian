@@ -263,7 +263,8 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
   Widget _buildMenuItem(MenuOption option, double expandProgress, int index) {
     const double collapsedWidth = 48.0;
     final double expandedWidth = ResponsiveUtils.scaleSize(context, 200, minScale: 0.85, maxScale: 1.2);
-    final double currentWidth = collapsedWidth + (expandedWidth - collapsedWidth) * expandProgress;
+    // Clamp to prevent spring animation overshoot from making width too small
+    final double currentWidth = (collapsedWidth + (expandedWidth - collapsedWidth) * expandProgress).clamp(collapsedWidth, expandedWidth);
 
     return GestureDetector(
       onTap: () {
@@ -319,8 +320,8 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Text - fades in as container expands
-              if (expandProgress > 0.05)
+              // Text - fades in as container expands, hidden earlier to prevent overflow
+              if (expandProgress > 0.15) // Raised threshold from 0.05 to 0.15
                 Flexible(
                   child: Opacity(
                     opacity: expandProgress,
@@ -347,7 +348,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
               Container(
                 width: 32,
                 height: 32,
-                padding: const EdgeInsets.all(6),
+                padding: const EdgeInsets.all(5), // Reduced from 6 to prevent overflow at high text scales
                 decoration: BoxDecoration(
                   color: option.color.withValues(alpha: 0.25),
                   borderRadius: BorderRadius.circular(AppRadius.xs + 2),

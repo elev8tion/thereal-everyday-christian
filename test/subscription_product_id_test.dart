@@ -19,8 +19,9 @@ void main() {
 
     test('Expiry duration calculation - Yearly', () {
       const productId = 'everyday_christian_premium_yearly';
-      final isYearly = productId == 'everyday_christian_premium_yearly';
-      final expiryDuration = isYearly ? const Duration(days: 365) : const Duration(days: 30);
+      const isYearly = productId == 'everyday_christian_premium_yearly';
+      const expiryDuration =
+          isYearly ? Duration(days: 365) : Duration(days: 30);
 
       expect(isYearly, isTrue);
       expect(expiryDuration.inDays, 365);
@@ -28,8 +29,9 @@ void main() {
 
     test('Expiry duration calculation - Monthly', () {
       const productId = 'everyday_christian_premium_monthly';
-      final isYearly = productId == 'everyday_christian_premium_yearly';
-      final expiryDuration = isYearly ? const Duration(days: 365) : const Duration(days: 30);
+      const isYearly = productId == 'everyday_christian_premium_yearly';
+      const expiryDuration =
+          isYearly ? Duration(days: 365) : Duration(days: 30);
 
       expect(isYearly, isFalse);
       expect(expiryDuration.inDays, 30);
@@ -37,8 +39,8 @@ void main() {
 
     test('Subscription type detection - Yearly', () {
       const productId = 'everyday_christian_premium_yearly';
-      final hasYearly = productId == 'everyday_christian_premium_yearly';
-      final hasMonthly = productId == 'everyday_christian_premium_monthly';
+      const hasYearly = productId == 'everyday_christian_premium_yearly';
+      const hasMonthly = productId == 'everyday_christian_premium_monthly';
 
       expect(hasYearly, isTrue);
       expect(hasMonthly, isFalse);
@@ -46,8 +48,8 @@ void main() {
 
     test('Subscription type detection - Monthly', () {
       const productId = 'everyday_christian_premium_monthly';
-      final hasYearly = productId == 'everyday_christian_premium_yearly';
-      final hasMonthly = productId == 'everyday_christian_premium_monthly';
+      const hasYearly = productId == 'everyday_christian_premium_yearly';
+      const hasMonthly = productId == 'everyday_christian_premium_monthly';
 
       expect(hasYearly, isFalse);
       expect(hasMonthly, isTrue);
@@ -55,8 +57,8 @@ void main() {
 
     test('Subscription type detection - No subscription', () {
       const String? productId = null;
-      final hasYearly = productId == 'everyday_christian_premium_yearly';
-      final hasMonthly = productId == 'everyday_christian_premium_monthly';
+      const hasYearly = productId == 'everyday_christian_premium_yearly';
+      const hasMonthly = productId == 'everyday_christian_premium_monthly';
 
       expect(hasYearly, isFalse);
       expect(hasMonthly, isFalse);
@@ -65,7 +67,8 @@ void main() {
     test('Expiry date calculation - Yearly', () {
       final now = DateTime(2025, 1, 15);
       const isYearly = true;
-      final expiryDuration = isYearly ? const Duration(days: 365) : const Duration(days: 30);
+      const expiryDuration =
+          isYearly ? Duration(days: 365) : Duration(days: 30);
       final expiryDate = now.add(expiryDuration);
 
       expect(expiryDate.year, 2026);
@@ -76,7 +79,8 @@ void main() {
     test('Expiry date calculation - Monthly', () {
       final now = DateTime(2025, 1, 15);
       const isYearly = false;
-      final expiryDuration = isYearly ? const Duration(days: 365) : const Duration(days: 30);
+      const expiryDuration =
+          isYearly ? Duration(days: 365) : Duration(days: 30);
       final expiryDate = now.add(expiryDuration);
 
       expect(expiryDate.year, 2025);
