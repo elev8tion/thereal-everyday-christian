@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/physics.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/app_routes.dart';
+import '../core/navigation/navigation_service.dart';
 import '../utils/responsive_utils.dart';
 import '../utils/motion_character.dart';
 import '../utils/ui_audio.dart';
@@ -37,7 +38,6 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
   final _audio = UIAudio();
   bool _isVisible = false;
   OverlayEntry? _overlayEntry;
-  bool _isNavigating = false; // Debounce protection for rapid taps
 
   // Menu items matching your app routes (now a method to access l10n)
   List<MenuOption> _getMenuOptions(BuildContext context) {
@@ -261,17 +261,15 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
   }
 
   Widget _buildMenuItem(MenuOption option, double expandProgress, int index) {
-    const double collapsedWidth = 48.0;
+    const double iconSize = 32.0;
+    const double containerPadding = 16.0; // horizontal: 8 on each side = 16 total
+    const double collapsedWidth = iconSize + containerPadding + 4.0; // 52px (extra 4px for spacing/rounding)
     final double expandedWidth = ResponsiveUtils.scaleSize(context, 200, minScale: 0.85, maxScale: 1.2);
     // Clamp to prevent spring animation overshoot from making width too small
     final double currentWidth = (collapsedWidth + (expandedWidth - collapsedWidth) * expandProgress).clamp(collapsedWidth, expandedWidth);
 
     return GestureDetector(
       onTap: () {
-        // Debounce protection: prevent rapid double-taps
-        if (_isNavigating) return;
-        _isNavigating = true;
-
         HapticFeedback.lightImpact();
         _audio.playTick();
         final route = option.route;
@@ -283,22 +281,14 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
             // Remove overlay BEFORE navigation to prevent orphaning
             _removeOverlay();
 
-            // Reset debounce flag - animation complete, safe to allow new taps
-            _isNavigating = false;
-
             HapticFeedback.mediumImpact();
             _audio.playConfirm();
 
-            // If navigating to home, clear stack and make home the root (same as auth)
+            // Use NavigationService for debounced navigation
             if (route == AppRoutes.home) {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                AppRoutes.home,
-                (route) => false,
-              );
+              NavigationService.pushAndRemoveUntil(AppRoutes.home);
             } else {
-              // For other main screens, replace current screen to avoid stacking
-              Navigator.pushReplacementNamed(context, route);
+              NavigationService.pushReplacementNamed(route);
             }
           }
         });
