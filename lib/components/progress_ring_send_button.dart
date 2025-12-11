@@ -68,13 +68,13 @@ class ProgressRingSendButton extends StatelessWidget {
             ),
             shape: BoxShape.circle,
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.3),
-              width: 1,
+              color: canSend ? AppTheme.goldColor : Colors.white.withValues(alpha: 0.3),
+              width: 1.0,
             ),
             boxShadow: canSend
                 ? [
                     BoxShadow(
-                      color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                      color: AppTheme.goldColor.withValues(alpha: 0.3),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),

@@ -72,8 +72,8 @@ class ChatActionButtons extends StatelessWidget {
                 ),
                 borderRadius: AppRadius.mediumRadius,
                 border: Border.all(
-                  color: AppTheme.goldColor.withValues(alpha: 0.4),
-                  width: 1,
+                  color: AppTheme.goldColor,
+                  width: 1.0,
                 ),
               ),
               child: Material(
@@ -116,8 +116,8 @@ class ChatActionButtons extends StatelessWidget {
               ),
               borderRadius: AppRadius.mediumRadius,
               border: Border.all(
-                color: AppTheme.goldColor.withValues(alpha: 0.4),
-                width: 1,
+                color: AppTheme.goldColor,
+                width: 1.0,
               ),
             ),
             child: IconButton(
@@ -137,8 +137,8 @@ class ChatActionButtons extends StatelessWidget {
               ),
               borderRadius: AppRadius.mediumRadius,
               border: Border.all(
-                color: AppTheme.goldColor.withValues(alpha: 0.4),
-                width: 1,
+                color: AppTheme.goldColor,
+                width: 1.0,
               ),
             ),
             child: IconButton(
@@ -158,8 +158,8 @@ class ChatActionButtons extends StatelessWidget {
               ),
               borderRadius: AppRadius.mediumRadius,
               border: Border.all(
-                color: AppTheme.goldColor.withValues(alpha: 0.4),
-                width: 1,
+                color: AppTheme.goldColor,
+                width: 1.0,
               ),
             ),
             child: IconButton(

@@ -1831,72 +1831,107 @@ class ChatScreen extends HookConsumerWidget {
               const SizedBox(width: AppSpacing.md),
             ],
             Flexible(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: AppSpacing.cardPadding,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: message.isUser
-                        ? [
+              child: message.isUser
+                  ? AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: AppSpacing.cardPadding,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
                             AppTheme.primaryColor.withValues(alpha: 0.8),
                             AppTheme.primaryColor.withValues(alpha: 0.6),
-                          ]
-                        : [
-                            Colors.white.withValues(alpha: 0.2),
-                            Colors.white.withValues(alpha: 0.1),
                           ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(message.isUser ? 20 : 8),
-                    topRight: Radius.circular(message.isUser ? 8 : 20),
-                    bottomLeft: const Radius.circular(AppRadius.lg),
-                    bottomRight: const Radius.circular(AppRadius.lg),
-                  ),
-                  border: Border.all(
-                    color: isRegeneratedMessage
-                        ? AppTheme.goldColor.withValues(alpha: 0.8)
-                        : Colors.white.withValues(alpha: 0.3),
-                    width: isRegeneratedMessage ? 2 : 1,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: isRegeneratedMessage
-                          ? AppTheme.goldColor.withValues(alpha: 0.3)
-                          : Colors.black.withValues(alpha: 0.1),
-                      blurRadius: isRegeneratedMessage ? 12 : 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AutoSizeText(
-                      message.content,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
-                        color: AppColors.primaryText,
-                        height: 1.4,
-                        fontWeight: FontWeight.w500,
-                        shadows: AppTheme.textShadowSubtle,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(8),
+                          bottomLeft: Radius.circular(AppRadius.lg),
+                          bottomRight: Radius.circular(AppRadius.lg),
+                        ),
+                        border: Border.all(
+                          color: AppTheme.goldColor,
+                          width: 1.0,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.goldColor.withValues(alpha: 0.2),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
-                      minFontSize: 12,
-                      maxFontSize: 17,
-                      maxLines: 500,
-                      overflow: TextOverflow.visible,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AutoSizeText(
+                            message.content,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                              color: AppColors.primaryText,
+                              height: 1.4,
+                              fontWeight: FontWeight.w500,
+                              shadows: AppTheme.textShadowSubtle,
+                            ),
+                            minFontSize: 12,
+                            maxFontSize: 17,
+                            maxLines: 500,
+                            overflow: TextOverflow.visible,
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          TimeAndStatus(
+                            timestamp: message.timestamp,
+                            status: message.status,
+                            showTime: true,
+                            showStatus: true,
+                          ),
+                        ],
+                      ),
+                    )
+                  : GlassContainer(
+                      borderRadius: 20,
+                      blurStrength: 15.0,
+                      gradientColors: [
+                        Colors.white.withValues(alpha: 0.05),
+                        Colors.white.withValues(alpha: 0.02),
+                      ],
+                      padding: AppSpacing.cardPadding,
+                      enableNoise: true,
+                      enableLightSimulation: true,
+                      border: Border.all(
+                        color: isRegeneratedMessage
+                            ? AppTheme.goldColor.withValues(alpha: 0.8)
+                            : AppTheme.goldColor,
+                        width: isRegeneratedMessage ? 2.0 : 1.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AutoSizeText(
+                            message.content,
+                            style: TextStyle(
+                              fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                              color: AppColors.primaryText,
+                              height: 1.4,
+                              fontWeight: FontWeight.w500,
+                              shadows: AppTheme.textShadowSubtle,
+                            ),
+                            minFontSize: 12,
+                            maxFontSize: 17,
+                            maxLines: 500,
+                            overflow: TextOverflow.visible,
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          TimeAndStatus(
+                            timestamp: message.timestamp,
+                            status: message.status,
+                            showTime: true,
+                            showStatus: false, // AI messages don't show status
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: AppSpacing.sm),
-                    TimeAndStatus(
-                      timestamp: message.timestamp,
-                      status: message.status,
-                      showTime: true,
-                      showStatus: message.isUser, // Only show status for user messages
-                    ),
-                  ],
-                ),
-              ),
             ),
             if (message.isUser) ...[
               const SizedBox(width: AppSpacing.md),

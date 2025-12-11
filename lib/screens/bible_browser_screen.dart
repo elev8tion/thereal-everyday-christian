@@ -600,8 +600,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                         borderRadius: AppRadius.mediumRadius,
                         color: Colors.black.withValues(alpha: 0.1),
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.1),
-                          width: 1,
+                          color: AppTheme.goldColor,
+                          width: 1.0,
                         ),
                         boxShadow: [
                           // Ambient shadow (far, soft)

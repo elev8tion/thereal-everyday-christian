@@ -647,6 +647,10 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         enableNoise: true,
         enableLightSimulation: true,
+        border: Border.all(
+          color: AppTheme.goldColor,
+          width: 1.0,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
