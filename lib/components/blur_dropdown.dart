@@ -1,6 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/physics.dart';
 import '../theme/app_theme.dart';
+import '../utils/motion_character.dart';
+import '../utils/ui_audio.dart';
 
 class BlurDropdown extends StatefulWidget {
   final String value;
@@ -20,13 +24,48 @@ class BlurDropdown extends StatefulWidget {
   State<BlurDropdown> createState() => _BlurDropdownState();
 }
 
-class _BlurDropdownState extends State<BlurDropdown> {
+class _BlurDropdownState extends State<BlurDropdown>
+    with SingleTickerProviderStateMixin {
   OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
+  late AnimationController _menuController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _opacityAnimation;
+  final _audio = UIAudio();
+
+  @override
+  void initState() {
+    super.initState();
+    _menuController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 0), // Driven by spring physics
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.95,
+      end: 1.0,
+    ).animate(_menuController);
+
+    _opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_menuController);
+  }
+
+  @override
+  void dispose() {
+    _removeDropdown();
+    _menuController.dispose();
+    super.dispose();
+  }
 
   void _showDropdown() {
     // Dismiss keyboard first
     FocusManager.instance.primaryFocus?.unfocus();
+
+    // Haptic & audio feedback
+    HapticFeedback.mediumImpact();
+    _audio.playClick();
 
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
@@ -48,57 +87,79 @@ class _BlurDropdownState extends State<BlurDropdown> {
                   child: Container(color: Colors.transparent),
                 ),
               ),
-              // Dropdown menu
+              // Animated dropdown menu
               Positioned(
                 left: offset.dx,
                 top: offset.dy + size.height + 5,
                 width: size.width,
-                child: Material(
-                  color: Colors.transparent,
-                  child: ClipRRect(
-                    borderRadius: AppRadius.largeCardRadius,
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
-                      child: Container(
-                        constraints: const BoxConstraints(maxHeight: 300),
-                        decoration: BoxDecoration(
-                          borderRadius: AppRadius.largeCardRadius,
-                          color: Colors.black.withValues(alpha: 0.1),
-                          border: Border.all(
-                            color: AppTheme.goldColor,
-                            width: 1,
+                child: AnimatedBuilder(
+                  animation: _menuController,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: _scaleAnimation.value,
+                      alignment: Alignment.topCenter,
+                      child: Opacity(
+                        opacity: _opacityAnimation.value,
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Material(
+                    color: Colors.transparent,
+                    child: ClipRRect(
+                      borderRadius: AppRadius.largeCardRadius,
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+                        child: Container(
+                          constraints: const BoxConstraints(maxHeight: 300),
+                          decoration: BoxDecoration(
+                            borderRadius: AppRadius.largeCardRadius,
+                            color: Colors.black.withValues(alpha: 0.1),
+                            border: Border.all(
+                              color: AppTheme.goldColor,
+                              width: 1,
+                            ),
                           ),
-                        ),
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          shrinkWrap: true,
-                          itemCount: widget.items.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                widget.onChanged(widget.items[index]);
-                                _removeDropdown();
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 12),
-                                child: Text(
-                                  widget.items[index],
-                                  style: TextStyle(
-                                    color: widget.value == widget.items[index]
-                                        ? Colors.white
-                                        : Colors.white.withValues(alpha: 0.7),
-                                    fontSize: 14,
-                                    fontWeight: widget.value == widget.items[index]
-                                        ? FontWeight.w600
-                                        : FontWeight.normal,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            shrinkWrap: true,
+                            itemCount: widget.items.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  // Haptic & audio feedback on selection
+                                  HapticFeedback.lightImpact();
+                                  _audio.playTick();
+
+                                  widget.onChanged(widget.items[index]);
+                                  _removeDropdown();
+                                },
+                                onHover: (hovering) {
+                                  if (hovering) {
+                                    _audio.playTick();
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 12),
+                                  child: Text(
+                                    widget.items[index],
+                                    style: TextStyle(
+                                      color: widget.value == widget.items[index]
+                                          ? Colors.white
+                                          : Colors.white.withValues(alpha: 0.7),
+                                      fontSize: 14,
+                                      fontWeight: widget.value == widget.items[index]
+                                          ? FontWeight.w600
+                                          : FontWeight.normal,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -112,11 +173,31 @@ class _BlurDropdownState extends State<BlurDropdown> {
     );
 
     Overlay.of(context).insert(_overlayEntry!);
+
+    // Spring menu open animation
+    _menuController.animateWith(
+      SpringSimulation(
+        MotionCharacter.playful,
+        _menuController.value,
+        1.0,
+        0,
+      ),
+    );
   }
 
   void _removeDropdown() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
+    // Spring menu close animation
+    _menuController.animateWith(
+      SpringSimulation(
+        MotionCharacter.smooth,
+        _menuController.value,
+        0.0,
+        0,
+      ),
+    ).then((_) {
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    });
   }
 
   @override
@@ -176,11 +257,5 @@ class _BlurDropdownState extends State<BlurDropdown> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _removeDropdown();
-    super.dispose();
   }
 }
