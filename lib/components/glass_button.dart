@@ -1,13 +1,20 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
-import 'glass_card.dart';
+import '../widgets/noise_overlay.dart';
 
-/// Enhanced GlassButton with press animations and haptic feedback
+/// Enhanced GlassButton with realistic glass surface and press animations
 ///
-/// Following Animation Enhancement Rules:
+/// Visual Enhancements (matching DarkGlassContainer):
+/// - BackdropFilter for proper glass blur
+/// - Dual-shadow technique (ambient + definition)
+/// - Static noise overlay for texture authenticity
+/// - Light simulation via foreground gradient
+///
+/// Interactive Features:
 /// - Optional press animation (scale 0.95 default)
 /// - Haptic feedback on press (medium impact default)
 /// - Maintains all existing functionality
@@ -21,11 +28,16 @@ class GlassButton extends StatefulWidget {
   final Widget? loadingWidget;
   final Color? borderColor;
 
-  // ✅ NEW OPTIONAL PARAMETERS (with defaults - no breaking changes)
+  // ✅ ANIMATION PARAMETERS (with defaults - no breaking changes)
   final bool enablePressAnimation;
   final double pressScale;
   final bool enableHaptics;
   final HapticFeedbackType hapticType;
+
+  // ✅ VISUAL ENHANCEMENT PARAMETERS (matching DarkGlassContainer)
+  final double blurStrength;
+  final bool enableNoise;
+  final bool enableLightSimulation;
 
   const GlassButton({
     super.key,
@@ -41,6 +53,10 @@ class GlassButton extends StatefulWidget {
     this.pressScale = 0.95, // Rule: 0.90-0.98
     this.enableHaptics = true,
     this.hapticType = HapticFeedbackType.medium,
+    // ✅ Optional visual enhancement parameters
+    this.blurStrength = 40.0,
+    this.enableNoise = true,
+    this.enableLightSimulation = true,
   });
 
   @override
@@ -134,7 +150,119 @@ class _GlassButtonState extends State<GlassButton>
     );
     final responsiveBorderRadius = ResponsiveUtils.borderRadius(context, 28);
 
-    // ✅ Wrap with ScaleTransition for press animation
+    // ✅ Build button content
+    Widget buttonContent = Center(
+      child: widget.isLoading
+          ? (widget.loadingWidget ?? SizedBox(
+              height: ResponsiveUtils.scaleSize(context, 20, minScale: 0.8, maxScale: 1.5),
+              width: ResponsiveUtils.scaleSize(context, 20, minScale: 0.8, maxScale: 1.5),
+              child: const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                strokeWidth: 2,
+              ),
+            ))
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: AutoSizeText(
+                widget.text,
+                style: TextStyle(
+                  fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 14, maxSize: 27),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+                maxLines: 1,
+                minFontSize: 10,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ),
+    );
+
+    // ✅ Build glass content with BackdropFilter blur
+    Widget glassContent = ClipRRect(
+      borderRadius: BorderRadius.circular(responsiveBorderRadius),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: widget.blurStrength,
+          sigmaY: widget.blurStrength,
+        ),
+        child: Container(
+          height: responsiveHeight,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(responsiveBorderRadius),
+            color: Colors.black.withValues(alpha: 0.1),
+            border: Border.all(
+              color: widget.borderColor ?? AppTheme.primaryColor,
+              width: 2,
+            ),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: null, // Handled by GestureDetector
+              borderRadius: BorderRadius.circular(responsiveBorderRadius),
+              child: buttonContent,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    // ✅ Add noise overlay if enabled
+    if (widget.enableNoise) {
+      glassContent = ClipRRect(
+        borderRadius: BorderRadius.circular(responsiveBorderRadius),
+        child: StaticNoiseOverlay(
+          opacity: 0.04,
+          density: 0.4,
+          child: glassContent,
+        ),
+      );
+    }
+
+    // ✅ Wrap with container for dual shadows and light simulation
+    Widget enhancedGlass = Container(
+      width: widget.width ?? double.infinity,
+      height: responsiveHeight,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(responsiveBorderRadius),
+        // Enhanced dual shadows for realistic depth
+        boxShadow: [
+          // Ambient shadow (far, soft)
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.3),
+            offset: const Offset(0, 10),
+            blurRadius: 30,
+            spreadRadius: -5,
+          ),
+          // Definition shadow (close, sharp)
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            offset: const Offset(0, 4),
+            blurRadius: 8,
+            spreadRadius: -2,
+          ),
+        ],
+      ),
+      // Light simulation via foreground decoration
+      foregroundDecoration: widget.enableLightSimulation
+          ? BoxDecoration(
+              borderRadius: BorderRadius.circular(responsiveBorderRadius),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.0, 0.5],
+                colors: [
+                  Colors.white.withValues(alpha: 0.15),
+                  Colors.transparent,
+                ],
+              ),
+            )
+          : null,
+      child: glassContent,
+    );
+
+    // ✅ Wrap with GestureDetector and ScaleTransition for press animation
     return ScaleTransition(
       scale: _scaleAnimation,
       child: GestureDetector(
@@ -142,51 +270,7 @@ class _GlassButtonState extends State<GlassButton>
         onTapUp: _handleTapUp,
         onTapCancel: _handleTapCancel,
         onTap: widget.isLoading ? null : _handleTap,
-        child: SizedBox(
-          width: widget.width ?? double.infinity,
-          height: responsiveHeight,
-          child: GlassContainer(
-            borderRadius: responsiveBorderRadius,
-            padding: const EdgeInsets.all(0),
-            border: Border.all(
-              color: widget.borderColor ?? AppTheme.primaryColor,
-              width: 2,
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: null, // Handled by GestureDetector now
-                borderRadius: BorderRadius.circular(responsiveBorderRadius),
-                child: Center(
-                  child: widget.isLoading
-                    ? (widget.loadingWidget ?? SizedBox(
-                        height: ResponsiveUtils.scaleSize(context, 20, minScale: 0.8, maxScale: 1.5),
-                        width: ResponsiveUtils.scaleSize(context, 20, minScale: 0.8, maxScale: 1.5),
-                        child: const CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                          strokeWidth: 2,
-                        ),
-                      ))
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: AutoSizeText(
-                          widget.text,
-                          style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 14, maxSize: 27),
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                          maxLines: 1,
-                          minFontSize: 10,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        child: enhancedGlass,
       ),
     );
   }
