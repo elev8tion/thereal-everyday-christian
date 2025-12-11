@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'glass_card.dart';
 
 /// Achievement badge widget that displays an earned achievement icon
 /// with an optional count badge showing how many times it was earned
@@ -117,16 +118,16 @@ class AchievementBadgeRow extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Container(
+    return GlassContainer(
+      borderRadius: 20,
+      blurStrength: 15.0,
+      gradientColors: [
+        Colors.white.withValues(alpha: 0.05),
+        Colors.white.withValues(alpha: 0.02),
+      ],
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
-          width: 1,
-        ),
-      ),
+      enableNoise: true,
+      enableLightSimulation: true,
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
