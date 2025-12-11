@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:intl/intl.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
+import '../components/glass_card.dart';
 import '../components/dark_glass_container.dart';
 import '../components/clear_glass_card.dart';
 import '../components/blur_popup_menu.dart';
@@ -125,8 +126,16 @@ class _VerseLibraryScreenState extends ConsumerState<VerseLibraryScreen>
 
     return Container(
       margin: AppSpacing.horizontalXl,
-      child: FrostedGlassCard(
+      child: GlassContainer(
+        borderRadius: 24,
+        blurStrength: 15.0,
+        gradientColors: [
+          Colors.white.withValues(alpha: 0.05),
+          Colors.white.withValues(alpha: 0.02),
+        ],
         padding: const EdgeInsets.all(4),
+        enableNoise: true,
+        enableLightSimulation: true,
         child: TabBar(
           controller: _tabController,
           indicator: BoxDecoration(

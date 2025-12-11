@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
+import '../components/glass_card.dart';
 import '../components/standard_screen_header.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/services/book_name_service.dart';
@@ -428,8 +429,16 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
     return Container(
       margin: AppSpacing.horizontalXl,
-      child: FrostedGlassCard(
+      child: GlassContainer(
+        borderRadius: 24,
+        blurStrength: 15.0,
+        gradientColors: [
+          Colors.white.withValues(alpha: 0.05),
+          Colors.white.withValues(alpha: 0.02),
+        ],
         padding: const EdgeInsets.all(4),
+        enableNoise: true,
+        enableLightSimulation: true,
         child: needsScrollable
           ? Row(
               children: [

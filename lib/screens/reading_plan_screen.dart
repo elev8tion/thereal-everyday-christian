@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
+import '../components/glass_card.dart';
 import '../components/dark_glass_container.dart';
 import '../components/clear_glass_card.dart';
 import '../components/glass_button.dart';
@@ -87,8 +88,16 @@ class _ReadingPlanScreenState extends ConsumerState<ReadingPlanScreen>
     final l10n = AppLocalizations.of(context);
     return Container(
       margin: AppSpacing.horizontalXl,
-      child: FrostedGlassCard(
+      child: GlassContainer(
+        borderRadius: 24,
+        blurStrength: 15.0,
+        gradientColors: [
+          Colors.white.withValues(alpha: 0.05),
+          Colors.white.withValues(alpha: 0.02),
+        ],
         padding: const EdgeInsets.all(4),
+        enableNoise: true,
+        enableLightSimulation: true,
         child: TabBar(
           controller: _tabController,
           isScrollable: true,
