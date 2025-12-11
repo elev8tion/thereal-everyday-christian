@@ -293,21 +293,19 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
           }
         });
       },
-      child: SizedBox(
-        width: currentWidth,
-        height: 48,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: GlassContainer(
-            // No width/height - constrained by parent SizedBox
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            borderRadius: 24,
-            blurStrength: 15.0,
-            gradientColors: [
-              Colors.white.withValues(alpha: 0.05),
-              Colors.white.withValues(alpha: 0.02),
-            ],
-            child: Row(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: GlassContainer(
+          width: currentWidth,
+          height: 48,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          borderRadius: 24,
+          blurStrength: 15.0,
+          gradientColors: [
+            Colors.white.withValues(alpha: 0.05),
+            Colors.white.withValues(alpha: 0.02),
+          ],
+          child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -359,8 +357,7 @@ class _GlassmorphicFABMenuState extends State<GlassmorphicFABMenu>
           ),
         ),
       ),
-        ),
-      );
+    );
   }
 
   @override
