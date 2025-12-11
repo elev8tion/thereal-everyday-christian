@@ -25,6 +25,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  app_links:
+    dependency: "direct main"
+    description:
+      name: app_links
+      sha256: "5f88447519add627fe1cbcab4fd1da3d4fed15b9baf29f28b22535c95ecee3e8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.4.1"
+  app_links_linux:
+    dependency: transitive
+    description:
+      name: app_links_linux
+      sha256: f5f7173a78609f3dfd4c2ff2c95bd559ab43c80a87dc6a095921d96c05688c81
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
+  app_links_platform_interface:
+    dependency: transitive
+    description:
+      name: app_links_platform_interface
+      sha256: "05f5379577c513b534a29ddea68176a4d4802c46180ee8e2e966257158772a3f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
+  app_links_web:
+    dependency: transitive
+    description:
+      name: app_links_web
+      sha256: af060ed76183f9e2b87510a9480e56a5352b6c249778d07bd2c95fc35632a555
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   archive:
     dependency: transitive
     description:
@@ -430,6 +462,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.2"
+  flutter_app_group_directory:
+    dependency: transitive
+    description:
+      name: flutter_app_group_directory
+      sha256: "680ef9b2dee84c237cd7bb7fc78bc45867b32556a8a5f0de61278078b9fefd05"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -671,6 +711,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  gtk:
+    dependency: transitive
+    description:
+      name: gtk
+      sha256: e8ce9ca4b1df106e4d72dad201d345ea1a036cc12c360f1a7d5a758f78ffa42c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  home_widget:
+    dependency: "direct main"
+    description:
+      name: home_widget
+      sha256: "2a0fdd6267ff975bd07bedf74686bd5577200f504f5de36527ac1b56bdbe68e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
   hooks_riverpod:
     dependency: "direct main"
     description:
@@ -820,6 +876,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  intelligence:
+    dependency: "direct main"
+    description:
+      name: intelligence
+      sha256: "43da4cd47efb183ac259537f290dd1d9bdc19aa9dd7779900de378ebcac4adb5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   intl:
     dependency: "direct main"
     description:
@@ -892,6 +956,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  live_activities:
+    dependency: "direct main"
+    description:
+      name: live_activities
+      sha256: d1bbc466ddb0c9eea11d6e3e34673319b5b46bcad03a4997e55769261f643601
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.2"
   local_auth:
     dependency: "direct main"
     description:

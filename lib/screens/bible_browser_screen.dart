@@ -7,6 +7,8 @@ import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_card.dart';
 import '../components/standard_screen_header.dart';
+import '../components/fab_tooltip.dart';
+import '../core/services/preferences_service.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/services/book_name_service.dart';
 import '../core/services/bible_config.dart';
@@ -43,11 +45,29 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
   bool _isLoading = true;
   bool _isSearchingVerses = false;
   String _searchQuery = '';
+  bool _showBibleBrowserTutorial = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _checkShowBibleBrowserTutorial();
+  }
+
+  Future<void> _checkShowBibleBrowserTutorial() async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (!mounted) return;
+
+    final prefs = await PreferencesService.getInstance();
+    if (!prefs.hasBibleBrowserTutorialShown() && mounted) {
+      setState(() => _showBibleBrowserTutorial = true);
+    }
+  }
+
+  Future<void> _dismissBibleBrowserTutorial() async {
+    setState(() => _showBibleBrowserTutorial = false);
+    final prefs = await PreferencesService.getInstance();
+    await prefs.setBibleBrowserTutorialShown();
   }
 
   @override
@@ -331,7 +351,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
 
   Widget _buildSearchBar() {
     final l10n = AppLocalizations.of(context);
-    return Padding(
+
+    final searchWidget = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
         children: [
@@ -414,6 +435,30 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
         ],
       ),
     );
+
+    // Show tutorial on first visit
+    if (_showBibleBrowserTutorial) {
+      return GestureDetector(
+        onTap: _dismissBibleBrowserTutorial,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            searchWidget,
+            Positioned(
+              top: -70,
+              left: 20,
+              right: 20,
+              child: FabTooltip(
+                message: l10n.bibleBrowserTutorial,
+                pointingDown: true,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return searchWidget;
   }
 
   Widget _buildTabBar() {

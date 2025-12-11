@@ -70,6 +70,12 @@ dependencies:
   flutter_dotenv: ^6.0.0
   flutter_tts: ^4.0.2
 
+  # iOS Extensions
+  home_widget: ^0.6.0
+  live_activities: ^2.0.0
+  intelligence: ^0.2.0
+  app_links: ^6.4.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

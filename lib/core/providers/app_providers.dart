@@ -24,6 +24,7 @@ import '../../models/profile_stats.dart';
 import '../../services/unified_verse_service.dart';
 import '../../models/bible_verse.dart';
 import '../../models/shared_verse_entry.dart';
+import '../../services/daily_verse_service.dart';
 
 // Import and export subscription providers
 import 'subscription_providers.dart';
@@ -300,6 +301,10 @@ final prayerStreakServiceProvider = Provider<PrayerStreakService>((ref) {
   return PrayerStreakService(database);
 });
 
+final dailyVerseServiceProvider = Provider<DailyVerseService>((ref) {
+  return DailyVerseService();
+});
+
 // State Providers
 final connectivityStateProvider = StreamProvider.autoDispose<bool>((ref) {
   final service = ref.watch(connectivityServiceProvider);
@@ -317,6 +322,7 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
       final bibleLoader = ref.read(bibleLoaderServiceProvider);
       final devotionalLoader = ref.read(devotionalContentLoaderProvider);
       final curatedPlanLoader = ref.read(curatedReadingPlanLoaderProvider);
+      final dailyVerseService = ref.read(dailyVerseServiceProvider);
 
       // Wait for preferences to load first (required for language/theme initialization)
       final prefs = await ref.watch(preferencesServiceProvider.future);
@@ -325,6 +331,9 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
       await notifications.initialize();
       await subscription.initialize();
       await suspension.initialize();
+
+      // Initialize daily verse service and widget
+      await dailyVerseService.initialize();
 
       // Automatic cleanup: Remove old chat messages (60+ days OR keep only 100 most recent)
       try {
@@ -380,6 +389,17 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
         debugPrint('❌ ERROR loading reading plans: $e');
         debugPrint('Stack trace: $stackTrace');
         // Don't block app initialization - user can still use other features
+      }
+
+      // Check and update daily verse widget (after Bible is loaded)
+      try {
+        // Get translation code based on language: WEB for English, RVR1909 for Spanish
+        final translationCode = language == 'en' ? 'WEB' : 'RVR1909';
+        await dailyVerseService.checkAndUpdateVerse(translation: translationCode);
+        debugPrint('✅ Daily verse widget updated ($translationCode)');
+      } catch (e) {
+        debugPrint('⚠️ Failed to update daily verse widget: $e');
+        // Don't block app initialization if widget update fails
       }
     }).timeout(
       const Duration(seconds: 60),

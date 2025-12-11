@@ -26,14 +26,28 @@ class FabTooltip extends StatelessWidget {
         children: [
           // Arrow at top if pointing down
           if (pointingDown) ...[
-            // Tooltip content with pulse animation and red border
+            // Tooltip content with pulse animation and gold border
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(
-                  color: Colors.red,
-                  width: 1,
+                  color: AppTheme.goldColor.withValues(alpha: 0.6),
+                  width: 1.5,
                 ),
+                boxShadow: [
+                  // Gold glow effect
+                  BoxShadow(
+                    color: AppTheme.goldColor.withValues(alpha: 0.3),
+                    blurRadius: 16,
+                    spreadRadius: 2,
+                  ),
+                  // Depth shadow
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.2),
+                    offset: const Offset(0, 4),
+                    blurRadius: 8,
+                  ),
+                ],
               ),
               child: DarkGlassContainer(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -101,14 +115,28 @@ class FabTooltip extends StatelessWidget {
 
             const SizedBox(height: 4),
 
-            // Tooltip content with pulse animation and red border
+            // Tooltip content with pulse animation and gold border
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(
-                  color: Colors.red,
-                  width: 1,
+                  color: AppTheme.goldColor.withValues(alpha: 0.6),
+                  width: 1.5,
                 ),
+                boxShadow: [
+                  // Gold glow effect
+                  BoxShadow(
+                    color: AppTheme.goldColor.withValues(alpha: 0.3),
+                    blurRadius: 16,
+                    spreadRadius: 2,
+                  ),
+                  // Depth shadow
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.2),
+                    offset: const Offset(0, 4),
+                    blurRadius: 8,
+                  ),
+                ],
               ),
               child: DarkGlassContainer(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -162,11 +190,11 @@ class _ArrowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.1)
+      ..color = AppTheme.goldColor.withValues(alpha: 0.4)
       ..style = PaintingStyle.fill;
 
     final borderPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.1)
+      ..color = AppTheme.goldColor.withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 

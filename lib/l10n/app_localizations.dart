@@ -452,6 +452,36 @@ abstract class AppLocalizations {
   /// **'Tap here to navigate ✨'**
   String get fabTooltipMessage;
 
+  /// Tutorial message for prayer card interactions
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a prayer to view options ✨'**
+  String get prayerCardTutorial;
+
+  /// Tutorial message for Bible browser search
+  ///
+  /// In en, this message translates to:
+  /// **'Search books or browse by testament ✨'**
+  String get bibleBrowserTutorial;
+
+  /// Tutorial message for devotional verse interactions
+  ///
+  /// In en, this message translates to:
+  /// **'Tap verse references to read full passages ✨'**
+  String get devotionalVerseTutorial;
+
+  /// Tutorial message for chat message interactions
+  ///
+  /// In en, this message translates to:
+  /// **'Long-press AI messages for options ✨'**
+  String get chatTutorial;
+
+  /// Tutorial message for reading plan completion
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to mark chapters complete ✨'**
+  String get readingPlanTutorial;
+
   /// Quick action label
   ///
   /// In en, this message translates to:
@@ -2700,7 +2730,7 @@ abstract class AppLocalizations {
   /// Demo chat user message
   ///
   /// In en, this message translates to:
-  /// **'Give me worry related scripture with details.'**
+  /// **'What are some worry related scripture with details.'**
   String get demoChatUserMessage;
 
   /// Demo chat AI response

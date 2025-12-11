@@ -53,6 +53,11 @@ class PreferencesService {
   static const String _legalAgreementsKey = 'legal_agreements_accepted_v1.0';
   static const String _fabTutorialShownKey = 'fab_tutorial_shown';
   static const String _verseTutorialShownKey = 'verse_tutorial_shown';
+  static const String _prayerTutorialShownKey = 'prayer_tutorial_shown';
+  static const String _bibleBrowserTutorialShownKey = 'bible_browser_tutorial_shown';
+  static const String _devotionalVerseTutorialShownKey = 'devotional_verse_tutorial_shown';
+  static const String _chatTutorialShownKey = 'chat_tutorial_shown';
+  static const String _readingPlanTutorialShownKey = 'reading_plan_tutorial_shown';
   static const String _appLockEnabledKey = 'app_lock_enabled';
   static const String _biometricSetupCompletedKey = 'biometric_setup_completed';
 
@@ -600,6 +605,141 @@ class PreferencesService {
   Future<bool> setVerseTutorialShown() async {
     try {
       final result = await _preferences?.setBool(_verseTutorialShownKey, true);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // PRAYER JOURNAL TUTORIAL METHODS
+  // ============================================================================
+
+  /// Check if prayer journal tutorial has been shown to user
+  ///
+  /// Returns true if tutorial has been shown, false otherwise.
+  bool hasPrayerTutorialShown() {
+    try {
+      return _preferences?.getBool(_prayerTutorialShownKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Mark prayer journal tutorial as shown
+  ///
+  /// Returns true if save was successful, false otherwise.
+  Future<bool> setPrayerTutorialShown() async {
+    try {
+      final result = await _preferences?.setBool(_prayerTutorialShownKey, true);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // BIBLE BROWSER TUTORIAL METHODS
+  // ============================================================================
+
+  /// Check if Bible browser tutorial has been shown to user
+  ///
+  /// Returns true if tutorial has been shown, false otherwise.
+  bool hasBibleBrowserTutorialShown() {
+    try {
+      return _preferences?.getBool(_bibleBrowserTutorialShownKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Mark Bible browser tutorial as shown
+  ///
+  /// Returns true if save was successful, false otherwise.
+  Future<bool> setBibleBrowserTutorialShown() async {
+    try {
+      final result = await _preferences?.setBool(_bibleBrowserTutorialShownKey, true);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // DEVOTIONAL VERSE TUTORIAL METHODS
+  // ============================================================================
+
+  /// Check if devotional verse tutorial has been shown to user
+  ///
+  /// Returns true if tutorial has been shown, false otherwise.
+  bool hasDevotionalVerseTutorialShown() {
+    try {
+      return _preferences?.getBool(_devotionalVerseTutorialShownKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Mark devotional verse tutorial as shown
+  ///
+  /// Returns true if save was successful, false otherwise.
+  Future<bool> setDevotionalVerseTutorialShown() async {
+    try {
+      final result = await _preferences?.setBool(_devotionalVerseTutorialShownKey, true);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // CHAT TUTORIAL METHODS
+  // ============================================================================
+
+  /// Check if chat tutorial has been shown to user
+  ///
+  /// Returns true if tutorial has been shown, false otherwise.
+  bool hasChatTutorialShown() {
+    try {
+      return _preferences?.getBool(_chatTutorialShownKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Mark chat tutorial as shown
+  ///
+  /// Returns true if save was successful, false otherwise.
+  Future<bool> setChatTutorialShown() async {
+    try {
+      final result = await _preferences?.setBool(_chatTutorialShownKey, true);
+      return result ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ============================================================================
+  // READING PLAN TUTORIAL METHODS
+  // ============================================================================
+
+  /// Check if reading plan tutorial has been shown to user
+  ///
+  /// Returns true if tutorial has been shown, false otherwise.
+  bool hasReadingPlanTutorialShown() {
+    try {
+      return _preferences?.getBool(_readingPlanTutorialShownKey) ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Mark reading plan tutorial as shown
+  ///
+  /// Returns true if save was successful, false otherwise.
+  Future<bool> setReadingPlanTutorialShown() async {
+    try {
+      final result = await _preferences?.setBool(_readingPlanTutorialShownKey, true);
       return result ?? false;
     } catch (e) {
       return false;

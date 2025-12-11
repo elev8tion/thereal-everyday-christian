@@ -195,6 +195,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fabTooltipMessage => 'Tap here to navigate ✨';
 
   @override
+  String get prayerCardTutorial => 'Tap a prayer to view options ✨';
+
+  @override
+  String get bibleBrowserTutorial => 'Search books or browse by testament ✨';
+
+  @override
+  String get devotionalVerseTutorial =>
+      'Tap verse references to read full passages ✨';
+
+  @override
+  String get chatTutorial => 'Long-press AI messages for options ✨';
+
+  @override
+  String get readingPlanTutorial => 'Tap to mark chapters complete ✨';
+
+  @override
   String get shareVerse => 'Share Verse';
 
   @override
@@ -1433,7 +1449,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get demoChatUserMessage =>
-      'Give me worry related scripture with details.';
+      'What are some worry related scripture with details.';
 
   @override
   String get demoChatAIResponse =>

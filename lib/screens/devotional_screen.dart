@@ -10,6 +10,8 @@ import '../components/glassmorphic_fab_menu.dart';
 import '../components/standard_screen_header.dart';
 import '../components/dark_glass_container.dart';
 import '../components/glass_card.dart';
+import '../components/fab_tooltip.dart';
+import '../core/services/preferences_service.dart';
 import '../theme/app_theme.dart';
 import '../core/providers/app_providers.dart';
 import '../core/models/devotional.dart';
@@ -34,6 +36,7 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
   int _currentDay = 0;
   bool _isInitialized = false;
   late DevotionalShareService _devotionalShareService;
+  bool _showDevotionalVerseTutorial = false;
 
   @override
   void initState() {
@@ -43,6 +46,23 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
       databaseService: databaseService,
       achievementService: AchievementService(databaseService),
     );
+    _checkShowDevotionalVerseTutorial();
+  }
+
+  Future<void> _checkShowDevotionalVerseTutorial() async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (!mounted) return;
+
+    final prefs = await PreferencesService.getInstance();
+    if (!prefs.hasDevotionalVerseTutorialShown() && mounted) {
+      setState(() => _showDevotionalVerseTutorial = true);
+    }
+  }
+
+  Future<void> _dismissDevotionalVerseTutorial() async {
+    setState(() => _showDevotionalVerseTutorial = false);
+    final prefs = await PreferencesService.getInstance();
+    await prefs.setDevotionalVerseTutorialShown();
   }
 
   void _initializeCurrentDay(List<Devotional> devotionals) {
@@ -907,8 +927,11 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
           ),
           const SizedBox(height: AppSpacing.md),
           Column(
-            children: devotional.goingDeeper.map((reference) {
-              return GestureDetector(
+            children: devotional.goingDeeper.asMap().entries.map((entry) {
+              final index = entry.key;
+              final reference = entry.value;
+
+              final verseCard = GestureDetector(
                 onTap: () => _navigateToVerse(reference),
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 12),
@@ -960,6 +983,30 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
                   ),
                 ),
               );
+
+              // Show tutorial only on first verse card
+              if (index == 0 && _showDevotionalVerseTutorial) {
+                return GestureDetector(
+                  onTap: _dismissDevotionalVerseTutorial,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      verseCard,
+                      Positioned(
+                        top: -70,
+                        left: 20,
+                        right: 20,
+                        child: FabTooltip(
+                          message: l10n.devotionalVerseTutorial,
+                          pointingDown: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return verseCard;
             }).toList(),
           ),
         ],

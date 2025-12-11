@@ -194,6 +194,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get fabTooltipMessage => 'Toca aquí para navegar ✨';
 
   @override
+  String get prayerCardTutorial => 'Toca una oración para ver opciones ✨';
+
+  @override
+  String get bibleBrowserTutorial => 'Busca libros o navega por testamento ✨';
+
+  @override
+  String get devotionalVerseTutorial =>
+      'Toca referencias de versículos para leer pasajes completos ✨';
+
+  @override
+  String get chatTutorial =>
+      'Mantén presionados los mensajes de IA para opciones ✨';
+
+  @override
+  String get readingPlanTutorial =>
+      'Toca para marcar capítulos como completados ✨';
+
+  @override
   String get shareVerse => 'Compartir Versículo';
 
   @override
@@ -1442,7 +1460,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get demoChatUserMessage =>
-      'Dame escrituras relacionadas con la preocupación con detalles.';
+      '¿Cuáles son algunas escrituras relacionadas con la preocupación con detalles?';
 
   @override
   String get demoChatAIResponse =>

@@ -12,8 +12,10 @@ import '../components/blur_dropdown.dart';
 import '../components/blur_popup_menu.dart';
 import '../components/category_filter_chip.dart';
 import '../components/glass_fab.dart';
+import '../components/fab_tooltip.dart';
 import '../components/standard_screen_header.dart';
 import '../core/widgets/app_snackbar.dart';
+import '../core/services/preferences_service.dart';
 import '../utils/responsive_utils.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_gradients.dart';
@@ -38,11 +40,29 @@ class PrayerJournalScreen extends ConsumerStatefulWidget {
 class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _prayerController = TextEditingController();
+  bool _showPrayerTutorial = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _checkShowPrayerTutorial();
+  }
+
+  Future<void> _checkShowPrayerTutorial() async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (!mounted) return;
+
+    final prefs = await PreferencesService.getInstance();
+    if (!prefs.hasPrayerTutorialShown() && mounted) {
+      setState(() => _showPrayerTutorial = true);
+    }
+  }
+
+  Future<void> _dismissPrayerTutorial() async {
+    setState(() => _showPrayerTutorial = false);
+    final prefs = await PreferencesService.getInstance();
+    await prefs.setPrayerTutorialShown();
   }
 
   @override
@@ -468,7 +488,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
     final l10n = AppLocalizations.of(context);
     final categoriesAsync = ref.watch(activeCategoriesProvider);
 
-    return DarkGlassContainer(
+    final cardWidget = DarkGlassContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -712,6 +732,30 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
           ],
         ),
     );
+
+    // Show tutorial only on first prayer card
+    if (index == 0 && _showPrayerTutorial) {
+      return GestureDetector(
+        onTap: _dismissPrayerTutorial,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            cardWidget,
+            Positioned(
+              top: -70,
+              left: 20,
+              right: 20,
+              child: FabTooltip(
+                message: l10n.prayerCardTutorial,
+                pointingDown: true,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return cardWidget;
   }
 
   void _showAddPrayerDialog() {
