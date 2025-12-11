@@ -1961,7 +1961,7 @@
   "@intelligentScriptureChat": {
     "description": "AI chat demo page subtitle"
   },
-  "demoChatUserMessage": "How do I overcome worry?",
+  "demoChatUserMessage": "Give me worry related scripture with details.",
   "@demoChatUserMessage": {
     "description": "Demo chat user message"
   },

@@ -1,11 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/physics.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/gradient_background.dart';
 import '../components/glass_button.dart';
+import '../components/glass_card.dart';
 import '../components/glass/static_liquid_glass_lens.dart';
 import '../components/animations/blur_fade.dart';
 import '../components/dark_glass_container.dart';
@@ -14,6 +16,9 @@ import '../core/navigation/navigation_service.dart';
 import '../core/navigation/app_routes.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive_utils.dart';
+import '../utils/motion_character.dart';
+import '../utils/ui_audio.dart';
+import '../widgets/noise_overlay.dart';
 import '../l10n/app_localizations.dart';
 
 /// Unified interactive onboarding screen combini1ng legal agreements and feature tour
@@ -31,6 +36,8 @@ class _UnifiedInteractiveOnboardingScreenState
   final GlobalKey _backgroundKey = GlobalKey();
   final TextEditingController _nameController = TextEditingController();
   final ScrollController _chatScrollController = ScrollController();
+  final TextEditingController _demoMessageController = TextEditingController();
+  final UIAudio _audio = UIAudio();
 
   // Page 1: Legal agreements
   bool _termsChecked = false;
@@ -49,10 +56,21 @@ class _UnifiedInteractiveOnboardingScreenState
   int _currentPage = 0;
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize demo message controller
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final l10n = AppLocalizations.of(context);
+      _demoMessageController.text = l10n.demoChatUserMessage;
+    });
+  }
+
+  @override
   void dispose() {
     _pageController.dispose();
     _nameController.dispose();
     _chatScrollController.dispose();
+    _demoMessageController.dispose();
     super.dispose();
   }
 
@@ -125,6 +143,7 @@ class _UnifiedInteractiveOnboardingScreenState
     final l10n = AppLocalizations.of(context);
     setState(() {
       _aiResponse = l10n.demoChatAIResponse;
+      _demoMessageController.clear(); // Clear the demo message when sent
     });
 
     // Wait for the frame to build with the new AI response, then scroll
@@ -132,10 +151,11 @@ class _UnifiedInteractiveOnboardingScreenState
       // Add a short delay to ensure animation is smooth
       Future.delayed(const Duration(milliseconds: 300), () {
         if (_chatScrollController.hasClients && mounted) {
-          // Scroll to position that leaves "Siguiente" button prominently visible
-          // From screenshot: button should be visible with some spacing above it
+          // Use viewport-based calculation for responsive scrolling
+          final viewportHeight = _chatScrollController.position.viewportDimension;
+          // Scroll to show button with ~25% of viewport above it
           final targetPosition =
-              _chatScrollController.position.maxScrollExtent - 180;
+              _chatScrollController.position.maxScrollExtent - (viewportHeight * 0.25);
           _chatScrollController.animateTo(
             targetPosition > 0 ? targetPosition : 0,
             duration: const Duration(milliseconds: 600),
@@ -224,21 +244,39 @@ class _UnifiedInteractiveOnboardingScreenState
         children: [
           const SizedBox(height: AppSpacing.xl),
 
-          // Logo with liquid glass lens
-          StaticLiquidGlassLens(
-            backgroundKey: _backgroundKey,
-            width: 150,
-            height: 150,
-            effectSize: 3.0,
-            dispersionStrength: 0.3,
-            blurIntensity: 0.05,
-            child: Image.asset(
-              l10n.localeName == 'es'
-                  ? 'assets/images/logo_spanish.png'
-                  : 'assets/images/logo_transparent.png',
+          // Logo with FAB menu style
+          RepaintBoundary(
+            child: GlassContainer(
               width: 150,
               height: 150,
-              fit: BoxFit.contain,
+              padding: const EdgeInsets.all(12.0),
+              borderRadius: 30,
+              blurStrength: 15.0,
+              gradientColors: [
+                Colors.white.withValues(alpha: 0.05),
+                Colors.white.withValues(alpha: 0.02),
+              ],
+              border: Border.all(
+                color: AppTheme.goldColor,
+                width: 1.5,
+              ),
+              child: Center(
+                child: Image.asset(
+                  l10n.localeName == 'es'
+                      ? 'assets/images/logo_spanish.png'
+                      : 'assets/images/logo_cropped.png',
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(
+                      Icons.church,
+                      color: Colors.white,
+                      size: 80,
+                    );
+                  },
+                ),
+              ),
             ),
           ),
 
@@ -287,7 +325,8 @@ class _UnifiedInteractiveOnboardingScreenState
             value: _termsChecked,
             onChanged: (value) {
               setState(() => _termsChecked = value ?? false);
-              HapticFeedback.lightImpact();
+              HapticFeedback.selectionClick();
+              _audio.playTick();
             },
             label: l10n.acceptTermsOfService,
             onViewTapped: () => _openLegalDoc('terms'),
@@ -310,7 +349,8 @@ class _UnifiedInteractiveOnboardingScreenState
             value: _privacyChecked,
             onChanged: (value) {
               setState(() => _privacyChecked = value ?? false);
-              HapticFeedback.lightImpact();
+              HapticFeedback.selectionClick();
+              _audio.playTick();
             },
             label: l10n.acceptPrivacyPolicy,
             onViewTapped: () => _openLegalDoc('privacy'),
@@ -333,7 +373,8 @@ class _UnifiedInteractiveOnboardingScreenState
             value: _ageChecked,
             onChanged: (value) {
               setState(() => _ageChecked = value ?? false);
-              HapticFeedback.lightImpact();
+              HapticFeedback.selectionClick();
+              _audio.playTick();
             },
             label: l10n.confirmAge13Plus,
           ),
@@ -400,23 +441,9 @@ class _UnifiedInteractiveOnboardingScreenState
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
+        _AnimatedCheckbox(
+          value: value,
           onTap: () => onChanged?.call(!value),
-          child: Container(
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: value ? AppTheme.goldColor : AppColors.primaryBorder,
-                width: 2,
-              ),
-              color: value ? AppTheme.goldColor : Colors.transparent,
-            ),
-            child: value
-                ? const Icon(Icons.check, size: 16, color: Colors.white)
-                : null,
-          ),
         ),
         const SizedBox(width: AppSpacing.md),
         Expanded(
@@ -743,34 +770,35 @@ class _UnifiedInteractiveOnboardingScreenState
                 ],
                 if (_chatDemoSent) ...[
                   // AI message bubble (matching chat_screen.dart lines 2062-2117)
-                  BlurFade(
-                    delay: const Duration(milliseconds: 300),
-                    isVisible: _chatDemoSent,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppTheme.goldColor.withValues(alpha: 0.3),
-                                  AppTheme.goldColor.withValues(alpha: 0.1),
-                                ],
+                  RepaintBoundary(
+                    child: BlurFade(
+                      delay: const Duration(milliseconds: 300),
+                      isVisible: _chatDemoSent,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppTheme.goldColor.withValues(alpha: 0.3),
+                                    AppTheme.goldColor.withValues(alpha: 0.1),
+                                  ],
+                                ),
+                                borderRadius: AppRadius.mediumRadius,
                               ),
-                              borderRadius: AppRadius.mediumRadius,
+                              child: Icon(
+                                Icons.auto_awesome,
+                                color: AppColors.secondaryText,
+                                size: 20,
+                              ),
                             ),
-                            child: Icon(
-                              Icons.auto_awesome,
-                              color: AppColors.secondaryText,
-                              size: 20,
-                            ),
-                          ),
                           const SizedBox(width: AppSpacing.md),
                           Flexible(
                             child: Container(
@@ -816,6 +844,7 @@ class _UnifiedInteractiveOnboardingScreenState
                             ),
                           ),
                         ],
+                        ),
                       ),
                     ),
                   ),
@@ -879,9 +908,7 @@ class _UnifiedInteractiveOnboardingScreenState
                       ),
                       child: TextField(
                         enabled: false, // Disabled for demo
-                        controller: TextEditingController(
-                          text: _chatDemoSent ? '' : l10n.demoChatUserMessage,
-                        ),
+                        controller: _demoMessageController,
                         maxLines: 3,
                         minLines: 1,
                         style: TextStyle(
@@ -910,10 +937,9 @@ class _UnifiedInteractiveOnboardingScreenState
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
-              Padding(
-                padding:
-                    const EdgeInsets.all(8.0), // Extra space for glow overflow
-                child: GestureDetector(
+              RepaintBoundary(
+                child: _AnimatedSendButton(
+                  isSent: _chatDemoSent,
                   onTap: _chatDemoSent
                       ? null
                       : () {
@@ -923,124 +949,6 @@ class _UnifiedInteractiveOnboardingScreenState
                           });
                           HapticFeedback.mediumImpact();
                         },
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    alignment: Alignment.center,
-                    children: [
-                      // Ripple ring effect (outer)
-                      if (!_chatDemoSent)
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppTheme.goldColor.withValues(alpha: 0.6),
-                              width: 2,
-                            ),
-                          ),
-                        )
-                            .animate(
-                              onPlay: (controller) => controller.repeat(),
-                            )
-                            .fadeOut(
-                              duration: const Duration(milliseconds: 1500),
-                              curve: Curves.easeOut,
-                            )
-                            .scale(
-                              duration: const Duration(milliseconds: 1500),
-                              begin: const Offset(1.0, 1.0),
-                              end: const Offset(1.6, 1.6),
-                              curve: Curves.easeOut,
-                            ),
-
-                      // Ripple ring effect (middle)
-                      if (!_chatDemoSent)
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppTheme.goldColor.withValues(alpha: 0.5),
-                              width: 2,
-                            ),
-                          ),
-                        )
-                            .animate(
-                              onPlay: (controller) => controller.repeat(),
-                            )
-                            .fadeOut(
-                              delay: const Duration(milliseconds: 500),
-                              duration: const Duration(milliseconds: 1500),
-                              curve: Curves.easeOut,
-                            )
-                            .scale(
-                              delay: const Duration(milliseconds: 500),
-                              duration: const Duration(milliseconds: 1500),
-                              begin: const Offset(1.0, 1.0),
-                              end: const Offset(1.6, 1.6),
-                              curve: Curves.easeOut,
-                            ),
-
-                      // Main button with breathing glow
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppTheme.goldColor
-                                  .withValues(alpha: _chatDemoSent ? 0.2 : 0.4),
-                              AppTheme.goldColor.withValues(
-                                  alpha: _chatDemoSent ? 0.05 : 0.2),
-                            ],
-                          ),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppTheme.goldColor
-                                .withValues(alpha: _chatDemoSent ? 0.2 : 0.5),
-                            width: 1.5,
-                          ),
-                          boxShadow: _chatDemoSent
-                              ? null
-                              : [
-                                  BoxShadow(
-                                    color: AppTheme.goldColor
-                                        .withValues(alpha: 0.5),
-                                    blurRadius: 16,
-                                    spreadRadius: 3,
-                                  ),
-                                ],
-                        ),
-                        child: Icon(
-                          Icons.send,
-                          color: AppTheme.goldColor
-                              .withValues(alpha: _chatDemoSent ? 0.5 : 1.0),
-                          size: 20,
-                        ),
-                      )
-                          .animate(
-                            onPlay: (controller) => _chatDemoSent
-                                ? null
-                                : controller.repeat(reverse: true),
-                          )
-                          .boxShadow(
-                            duration: const Duration(milliseconds: 1200),
-                            begin: BoxShadow(
-                              color: AppTheme.goldColor.withValues(alpha: 0.5),
-                              blurRadius: 16,
-                              spreadRadius: 3,
-                            ),
-                            end: BoxShadow(
-                              color: AppTheme.goldColor.withValues(alpha: 0.8),
-                              blurRadius: 24,
-                              spreadRadius: 5,
-                            ),
-                            curve: Curves.easeInOut,
-                          ),
-                    ],
-                  ),
                 ),
               ),
             ],
@@ -1058,21 +966,40 @@ class _UnifiedInteractiveOnboardingScreenState
         children: [
           const SizedBox(height: AppSpacing.xxl),
 
-          // Logo again
-          StaticLiquidGlassLens(
-            backgroundKey: _backgroundKey,
-            width: 150,
-            height: 150,
-            effectSize: 3.0,
-            dispersionStrength: 0.3,
-            blurIntensity: 0.05,
-            child: Image.asset(
-              l10n.localeName == 'es'
-                  ? 'assets/images/logo_spanish.png'
-                  : 'assets/images/logo_transparent.png',
+          // Logo with FAB menu style
+          RepaintBoundary(
+            child: GlassContainer(
               width: 150,
               height: 150,
-              fit: BoxFit.contain,
+              padding: const EdgeInsets.all(12.0),
+              borderRadius: 30,
+              blurStrength: 15.0,
+              gradientColors: [
+                Colors.white.withValues(alpha: 0.05),
+                Colors.white.withValues(alpha: 0.02),
+              ],
+              border: Border.all(
+                color: AppTheme.goldColor,
+                width: 1.5,
+              ),
+              child: Center(
+                child: Image.asset(
+                  l10n.localeName == 'es'
+                      ? 'assets/images/logo_spanish.png'
+                      : 'assets/images/logo_cropped.png',
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Fallback to icon if logo fails to load
+                    return const Icon(
+                      Icons.church,
+                      color: Colors.white,
+                      size: 80,
+                    );
+                  },
+                ),
+              ),
             ),
           ),
 
@@ -1180,6 +1107,308 @@ class _UnifiedInteractiveOnboardingScreenState
 
           const SizedBox(height: AppSpacing.xl),
         ],
+      ),
+    );
+  }
+}
+
+/// Animated checkbox with spring physics for playful interaction
+class _AnimatedCheckbox extends StatefulWidget {
+  final bool value;
+  final VoidCallback onTap;
+
+  const _AnimatedCheckbox({
+    required this.value,
+    required this.onTap,
+  });
+
+  @override
+  State<_AnimatedCheckbox> createState() => _AnimatedCheckboxState();
+}
+
+class _AnimatedCheckboxState extends State<_AnimatedCheckbox>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _scaleController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 0), // Driven by spring physics
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.1,
+    ).animate(_scaleController);
+  }
+
+  @override
+  void dispose() {
+    _scaleController.dispose();
+    super.dispose();
+  }
+
+  void _handleTap() {
+    // Spring pop animation
+    _scaleController.animateWith(
+      SpringSimulation(
+        MotionCharacter.playful,
+        _scaleController.value,
+        1.1,
+        0,
+      ),
+    ).then((_) {
+      // Spring back
+      _scaleController.animateWith(
+        SpringSimulation(
+          MotionCharacter.playful,
+          _scaleController.value,
+          1.0,
+          0,
+        ),
+      );
+    });
+
+    widget.onTap();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: GestureDetector(
+        onTap: _handleTap,
+        // Expand hit area to 48x48 for better accessibility
+        child: Container(
+          width: 48,
+          height: 48,
+          alignment: Alignment.center,
+          child: Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: widget.value ? AppTheme.goldColor : AppColors.primaryBorder,
+                width: 2,
+              ),
+              color: widget.value ? AppTheme.goldColor : Colors.transparent,
+            ),
+            child: widget.value
+                ? const Icon(Icons.check, size: 16, color: Colors.white)
+                : null,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Animated send button with ripple effects and proper controller management
+class _AnimatedSendButton extends StatefulWidget {
+  final bool isSent;
+  final VoidCallback? onTap;
+
+  const _AnimatedSendButton({
+    required this.isSent,
+    this.onTap,
+  });
+
+  @override
+  State<_AnimatedSendButton> createState() => _AnimatedSendButtonState();
+}
+
+class _AnimatedSendButtonState extends State<_AnimatedSendButton>
+    with TickerProviderStateMixin {
+  late AnimationController _glowController;
+  late AnimationController _rippleController1;
+  late AnimationController _rippleController2;
+  late Animation<double> _scaleAnimation1;
+  late Animation<double> _scaleAnimation2;
+  late Animation<double> _fadeAnimation1;
+  late Animation<double> _fadeAnimation2;
+  late Animation<double> _glowAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Glow animation controller
+    _glowController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+
+    _glowAnimation = Tween<double>(begin: 0.5, end: 0.8).animate(
+      CurvedAnimation(parent: _glowController, curve: Curves.easeInOut),
+    );
+
+    // Ripple controllers
+    _rippleController1 = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+
+    _rippleController2 = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+
+    _scaleAnimation1 = Tween<double>(begin: 1.0, end: 1.6).animate(
+      CurvedAnimation(parent: _rippleController1, curve: Curves.easeOut),
+    );
+
+    _scaleAnimation2 = Tween<double>(begin: 1.0, end: 1.6).animate(
+      CurvedAnimation(parent: _rippleController2, curve: Curves.easeOut),
+    );
+
+    _fadeAnimation1 = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: _rippleController1, curve: Curves.easeOut),
+    );
+
+    _fadeAnimation2 = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: _rippleController2, curve: Curves.easeOut),
+    );
+
+    // Start animations if not sent
+    if (!widget.isSent) {
+      _startAnimations();
+    }
+  }
+
+  void _startAnimations() {
+    _glowController.repeat(reverse: true);
+    _rippleController1.repeat();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted && !widget.isSent) {
+        _rippleController2.repeat();
+      }
+    });
+  }
+
+  void _stopAnimations() {
+    _glowController.stop();
+    _rippleController1.stop();
+    _rippleController2.stop();
+  }
+
+  @override
+  void didUpdateWidget(_AnimatedSendButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isSent != oldWidget.isSent) {
+      if (widget.isSent) {
+        _stopAnimations();
+      } else {
+        _startAnimations();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _glowController.dispose();
+    _rippleController1.dispose();
+    _rippleController2.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0), // Extra space for glow overflow
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            // Ripple ring effect (outer)
+            if (!widget.isSent)
+              FadeTransition(
+                opacity: _fadeAnimation1,
+                child: ScaleTransition(
+                  scale: _scaleAnimation1,
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppTheme.goldColor.withValues(alpha: 0.6),
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+            // Ripple ring effect (middle)
+            if (!widget.isSent)
+              FadeTransition(
+                opacity: _fadeAnimation2,
+                child: ScaleTransition(
+                  scale: _scaleAnimation2,
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppTheme.goldColor.withValues(alpha: 0.5),
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+            // Main button with animated glow
+            AnimatedBuilder(
+              animation: _glowAnimation,
+              builder: (context, child) {
+                return Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppTheme.goldColor
+                            .withValues(alpha: widget.isSent ? 0.2 : 0.4),
+                        AppTheme.goldColor
+                            .withValues(alpha: widget.isSent ? 0.05 : 0.2),
+                      ],
+                    ),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppTheme.goldColor
+                          .withValues(alpha: widget.isSent ? 0.2 : 0.5),
+                      width: 1.5,
+                    ),
+                    boxShadow: widget.isSent
+                        ? null
+                        : [
+                            BoxShadow(
+                              color: AppTheme.goldColor
+                                  .withValues(alpha: _glowAnimation.value),
+                              blurRadius: 16 + (_glowAnimation.value * 8),
+                              spreadRadius: 3 + (_glowAnimation.value * 2),
+                            ),
+                          ],
+                  ),
+                  child: Icon(
+                    Icons.send,
+                    color: AppTheme.goldColor
+                        .withValues(alpha: widget.isSent ? 0.5 : 1.0),
+                    size: 20,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

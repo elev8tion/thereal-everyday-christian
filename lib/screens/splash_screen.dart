@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
 import '../theme/app_theme.dart';
 import '../components/gradient_background.dart';
+import '../components/glass_card.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/navigation/app_routes.dart';
 import '../core/widgets/app_initializer.dart';
@@ -138,40 +139,41 @@ class SplashScreen extends HookConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Logo (appropriately sized)
+                        // Logo with FAB menu style
                         Semantics(
                           label: l10n.appLogo,
                           image: true,
-                          child: Image.asset(
-                            Localizations.localeOf(context).languageCode == 'es'
-                                ? 'assets/images/logo_spanish.png'
-                                : 'assets/images/logo_transparent.png',
+                          child: GlassContainer(
                             width: 200,
                             height: 200,
-                            fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) {
-                            // Fallback icon if logo not found
-                            return Container(
-                              width: 200,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppTheme.goldColor.withValues(alpha: 0.3),
-                                    AppTheme.goldColor.withValues(alpha: 0.1),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
+                            padding: const EdgeInsets.all(16.0),
+                            borderRadius: 40,
+                            blurStrength: 15.0,
+                            gradientColors: [
+                              Colors.white.withValues(alpha: 0.05),
+                              Colors.white.withValues(alpha: 0.02),
+                            ],
+                            border: Border.all(
+                              color: AppTheme.goldColor,
+                              width: 2.0,
+                            ),
+                            child: Center(
+                              child: Image.asset(
+                                Localizations.localeOf(context).languageCode == 'es'
+                                    ? 'assets/images/logo_spanish.png'
+                                    : 'assets/images/logo_cropped.png',
+                                width: 160,
+                                height: 160,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(
+                                    Icons.church,
+                                    color: Colors.white,
+                                    size: 100,
+                                  );
+                                },
                               ),
-                              child: Icon(
-                                Icons.auto_stories,
-                                size: ResponsiveUtils.iconSize(context, 60),
-                                color: AppTheme.goldColor,
-                              ),
-                            );
-                          },
+                            ),
                           ),
                         ),
 

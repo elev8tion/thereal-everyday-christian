@@ -5,6 +5,7 @@ import '../error/app_error.dart';
 import '../services/preferences_service.dart';
 import '../../components/gradient_background.dart';
 import '../../components/dancing_logo_loader.dart';
+import '../../components/glass_card.dart';
 import '../../theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -51,37 +52,38 @@ class _LoadingScreen extends StatelessWidget {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Logo (clean, minimal)
-                      // Normalized container for both English and Spanish logos
-                      Image.asset(
-                        languageCode == 'es'
-                            ? 'assets/images/logo_spanish.png'
-                            : 'assets/images/logo_transparent.png',
+                      // Logo with FAB menu style
+                      GlassContainer(
                         width: 200,
                         height: 200,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            width: 200,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppTheme.goldColor.withValues(alpha: 0.3),
-                                  AppTheme.goldColor.withValues(alpha: 0.1),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.auto_stories,
-                              size: 60,
-                              color: AppTheme.goldColor,
-                            ),
-                          );
-                        },
+                        padding: const EdgeInsets.all(16.0),
+                        borderRadius: 40,
+                        blurStrength: 15.0,
+                        gradientColors: [
+                          Colors.white.withValues(alpha: 0.05),
+                          Colors.white.withValues(alpha: 0.02),
+                        ],
+                        border: Border.all(
+                          color: AppTheme.goldColor,
+                          width: 2.0,
+                        ),
+                        child: Center(
+                          child: Image.asset(
+                            languageCode == 'es'
+                                ? 'assets/images/logo_spanish.png'
+                                : 'assets/images/logo_cropped.png',
+                            width: 160,
+                            height: 160,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.church,
+                                color: Colors.white,
+                                size: 100,
+                              );
+                            },
+                          ),
+                        ),
                       ),
 
                   const SizedBox(height: 32),

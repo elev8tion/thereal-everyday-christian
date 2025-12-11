@@ -1441,7 +1441,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get intelligentScriptureChat => 'Chat Bíblico 24/7';
 
   @override
-  String get demoChatUserMessage => '¿Cómo puedo superar la preocupación?';
+  String get demoChatUserMessage =>
+      'Dame escrituras relacionadas con la preocupación con detalles.';
 
   @override
   String get demoChatAIResponse =>

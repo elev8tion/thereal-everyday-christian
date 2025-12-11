@@ -2700,7 +2700,7 @@ abstract class AppLocalizations {
   /// Demo chat user message
   ///
   /// In en, this message translates to:
-  /// **'How do I overcome worry?'**
+  /// **'Give me worry related scripture with details.'**
   String get demoChatUserMessage;
 
   /// Demo chat AI response
