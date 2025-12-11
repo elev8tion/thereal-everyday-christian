@@ -36,18 +36,21 @@ class NavigationService {
     print('✅ [NavService] Debounce check passed, proceeding...');
     setActive(true);
     print('🔒 [NavService] Set navigation flag to true');
+
+    // Schedule reset before executing action to ensure it always happens
+    Future.delayed(_debounceDuration, () {
+      setActive(false);
+      print('🔒 [NavService] Navigation flag reset to false');
+    });
+
     try {
       print('🔒 [NavService] Executing navigation action...');
       final result = await action();
       print('🔒 [NavService] Navigation action completed with result: $result');
       return result;
-    } finally {
-      // Reset after a short delay to allow animation to complete
-      print('🔒 [NavService] Scheduling flag reset in ${_debounceDuration.inMilliseconds}ms');
-      Future.delayed(_debounceDuration, () {
-        setActive(false);
-        print('🔒 [NavService] Navigation flag reset to false');
-      });
+    } catch (e) {
+      print('❌ [NavService] Navigation action failed: $e');
+      rethrow;
     }
   }
 
