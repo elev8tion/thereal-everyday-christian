@@ -1,157 +1,212 @@
 import WidgetKit
 import SwiftUI
 
-// MARK: - Widget Timeline Entry
+// MARK: - Verse Model
 struct VerseEntry: TimelineEntry {
     let date: Date
-    let verseText: String
-    let verseReference: String
-    let verseTranslation: String
+    let verse: String
+    let reference: String
+    let spanish: String
+    let spanishReference: String
 }
 
 // MARK: - Timeline Provider
 struct VerseProvider: TimelineProvider {
-    // App Groups identifier (must match Flutter configuration)
-    let appGroupId = "group.com.edcfaith.shared"
-
-    // Placeholder (shown in widget gallery)
     func placeholder(in context: Context) -> VerseEntry {
         VerseEntry(
             date: Date(),
-            verseText: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
-            verseReference: "John 3:16",
-            verseTranslation: "KJV"
+            verse: "For God so loved the world that he gave his one and only Son...",
+            reference: "John 3:16",
+            spanish: "Porque de tal manera amó Dios al mundo...",
+            spanishReference: "Juan 3:16"
         )
     }
 
-    // Snapshot (shown when adding widget to home screen)
     func getSnapshot(in context: Context, completion: @escaping (VerseEntry) -> ()) {
-        let entry = loadVerseFromUserDefaults() ?? placeholder(in: context)
+        let entry = loadVerse()
         completion(entry)
     }
 
-    // Timeline (determines when widget updates)
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        // Load verse from shared UserDefaults
-        let entry = loadVerseFromUserDefaults() ?? placeholder(in: context)
+    func getTimeline(in context: Context, completion: @escaping (Timeline<VerseEntry>) -> ()) {
+        let entry = loadVerse()
 
-        // Calculate next midnight for update
-        let calendar = Calendar.current
-        let tomorrow = calendar.date(byAdding: .day, value: 1, to: Date())!
-        let nextMidnight = calendar.startOfDay(for: tomorrow)
+        // Update at midnight tomorrow
+        let midnight = Calendar.current.startOfDay(for: Date().addingTimeInterval(86400))
+        let timeline = Timeline(entries: [entry], policy: .after(midnight))
 
-        // Create timeline with single entry, updating at next midnight
-        let timeline = Timeline(entries: [entry], policy: .after(nextMidnight))
         completion(timeline)
     }
 
-    // Helper: Load verse from App Groups shared UserDefaults
-    private func loadVerseFromUserDefaults() -> VerseEntry? {
-        guard let userDefaults = UserDefaults(suiteName: appGroupId) else {
-            print("[VerseWidget] ❌ Failed to access App Groups UserDefaults")
-            return nil
-        }
+    private func loadVerse() -> VerseEntry {
+        // Load from UserDefaults shared with main app
+        let sharedDefaults = UserDefaults(suiteName: "group.com.edcfaith.shared")
 
-        guard let verseText = userDefaults.string(forKey: "verseText"),
-              let verseReference = userDefaults.string(forKey: "verseReference") else {
-            print("[VerseWidget] ⚠️ Verse data not found in UserDefaults")
-            return nil
-        }
-
-        let verseTranslation = userDefaults.string(forKey: "verseTranslation") ?? "KJV"
-
-        print("[VerseWidget] ✅ Loaded verse: \(verseReference)")
+        let verse = sharedDefaults?.string(forKey: "daily_verse_text") ?? "Trust in the LORD with all your heart and lean not on your own understanding."
+        let reference = sharedDefaults?.string(forKey: "daily_verse_reference") ?? "Proverbs 3:5"
+        let spanish = sharedDefaults?.string(forKey: "daily_verse_spanish_text") ?? "Confía en el SEÑOR con todo tu corazón y no te apoyes en tu propio entendimiento."
+        let spanishReference = sharedDefaults?.string(forKey: "daily_verse_spanish_reference") ?? "Proverbios 3:5"
 
         return VerseEntry(
             date: Date(),
-            verseText: verseText,
-            verseReference: verseReference,
-            verseTranslation: verseTranslation
+            verse: verse,
+            reference: reference,
+            spanish: spanish,
+            spanishReference: spanishReference
         )
     }
 }
 
-// MARK: - Widget View
+// MARK: - Widget View with Glassmorphic Design
 struct VerseWidgetView: View {
     var entry: VerseProvider.Entry
-    @Environment(\.widgetFamily) var widgetFamily
+    @Environment(\.widgetFamily) var family
 
     var body: some View {
         ZStack {
-            // Purple gradient background matching app theme
+            // Background gradient (matches your app theme)
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 0.4, green: 0.2, blue: 0.6), // Deep purple
-                    Color(red: 0.3, green: 0.1, blue: 0.5)  // Darker purple
+                    Color(red: 0.05, green: 0.05, blue: 0.15),
+                    Color(red: 0.1, green: 0.1, blue: 0.2)
                 ]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
 
-            // Widget content
-            VStack(alignment: .leading, spacing: 0) {
-                // Header with app logo (glassmorphic container matching FAB menu style)
-                HStack {
-                    // App logo in glassmorphic container (matching FAB menu design)
+            // Glassmorphic container
+            VStack(spacing: 0) {
+                // Header with logo and title
+                HStack(spacing: 8) {
+                    // Gold-bordered logo (glassmorphic FAB style)
                     ZStack {
                         // Glass background
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white.opacity(0.05))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color(red: 0.83, green: 0.69, blue: 0.22), lineWidth: 1) // Gold border
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.white.opacity(0.1))
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(.ultraThinMaterial)
                             )
 
-                        // Logo (language-aware: Spanish or English)
+                        // Gold border
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder(
+                                LinearGradient(
+                                    colors: [
+                                        Color(red: 0.85, green: 0.65, blue: 0.13),
+                                        Color(red: 1.0, green: 0.84, blue: 0.0)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 2
+                            )
+
+                        // Logo
                         Image("AppLogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .padding(4)
+                            .frame(width: 24, height: 24)
                     }
-                    .frame(width: 40, height: 40)
+                    .frame(width: 32, height: 32)
+
+                    Text("Verse of the Day")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.9))
 
                     Spacer()
-
-                    // Translation badge (small, subtle)
-                    Text(entry.verseTranslation)
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundColor(Color(red: 0.83, green: 0.69, blue: 0.22)) // Gold
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(Color.white.opacity(0.1))
-                        )
                 }
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
                 .padding(.bottom, 12)
 
-                // Verse text (main content)
-                Text(entry.verseText)
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundColor(.white)
-                    .lineLimit(5)
-                    .minimumScaleFactor(0.8)
-                    .multilineTextAlignment(.leading)
-
-                Spacer()
-
-                // Reference (bottom-right, gold color)
-                HStack {
-                    Spacer()
-                    Text(entry.verseReference)
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(Color(red: 0.83, green: 0.69, blue: 0.22)) // Gold
+                // Main content
+                if family == .systemSmall {
+                    smallWidgetContent
+                } else {
+                    mediumWidgetContent
                 }
-                .padding(.top, 8)
             }
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color.white.opacity(0.05))
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(.ultraThinMaterial)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .strokeBorder(Color.white.opacity(0.2), lineWidth: 1)
+                    )
+            )
             .padding(16)
         }
-        // Deep link: Opens app to Verse Library
-        .widgetURL(URL(string: "edcfaith://verse/daily")!)
+        .widgetURL(URL(string: "edcfaith://verse-of-day"))
+    }
+
+    // Small widget layout
+    var smallWidgetContent: some View {
+        VStack(spacing: 8) {
+            // Verse text (English only for space)
+            Text(entry.verse)
+                .font(.system(size: 13, weight: .regular))
+                .foregroundColor(.white)
+                .lineLimit(4)
+                .minimumScaleFactor(0.8)
+
+            Spacer()
+
+            // Reference
+            Text(entry.reference)
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundColor(Color(red: 0.85, green: 0.65, blue: 0.13))
+        }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 16)
+    }
+
+    // Medium widget layout
+    var mediumWidgetContent: some View {
+        VStack(spacing: 12) {
+            // English verse
+            VStack(alignment: .leading, spacing: 4) {
+                Text(entry.verse)
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundColor(.white)
+                    .lineLimit(3)
+                    .minimumScaleFactor(0.8)
+
+                Text(entry.reference)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(Color(red: 0.85, green: 0.65, blue: 0.13))
+            }
+
+            // Divider
+            Rectangle()
+                .fill(Color.white.opacity(0.2))
+                .frame(height: 1)
+
+            // Spanish verse
+            VStack(alignment: .leading, spacing: 4) {
+                Text(entry.spanish)
+                    .font(.system(size: 13, weight: .regular))
+                    .foregroundColor(.white.opacity(0.8))
+                    .lineLimit(3)
+                    .minimumScaleFactor(0.8)
+
+                Text(entry.spanishReference)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(Color(red: 0.85, green: 0.65, blue: 0.13).opacity(0.8))
+            }
+
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 16)
     }
 }
 
 // MARK: - Widget Configuration
+@main
 struct VerseWidget: Widget {
     let kind: String = "VerseWidget"
 
@@ -159,22 +214,33 @@ struct VerseWidget: Widget {
         StaticConfiguration(kind: kind, provider: VerseProvider()) { entry in
             VerseWidgetView(entry: entry)
         }
-        // Localized widget name and description
-        .configurationDisplayName(NSLocalizedString("verseOfTheDay", comment: "Verse of the Day widget title"))
-        .description(NSLocalizedString("widgetDescription", comment: "Daily inspirational Bible verse on your home screen."))
-        .supportedFamilies([.systemMedium]) // 4x2 size only
+        .configurationDisplayName("Verse of the Day")
+        .description("Daily scripture to inspire your faith journey")
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
 
 // MARK: - Preview
 struct VerseWidget_Previews: PreviewProvider {
     static var previews: some View {
-        VerseWidgetView(entry: VerseEntry(
-            date: Date(),
-            verseText: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
-            verseReference: "John 3:16",
-            verseTranslation: "KJV"
-        ))
-        .previewContext(WidgetPreviewContext(family: .systemMedium))
+        Group {
+            VerseWidgetView(entry: VerseEntry(
+                date: Date(),
+                verse: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
+                reference: "John 3:16",
+                spanish: "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna.",
+                spanishReference: "Juan 3:16"
+            ))
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
+
+            VerseWidgetView(entry: VerseEntry(
+                date: Date(),
+                verse: "Trust in the LORD with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.",
+                reference: "Proverbs 3:5-6",
+                spanish: "Confía en el SEÑOR con todo tu corazón y no te apoyes en tu propio entendimiento. Reconócelo en todos tus caminos, y él enderezará tus sendas.",
+                spanishReference: "Proverbios 3:5-6"
+            ))
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
+        }
     }
 }

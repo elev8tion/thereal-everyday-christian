@@ -72,5 +72,18 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>com.edcfaith.EverydayChristian</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>edcfaith</string>
+				</array>
+			</dict>
+		</array>
 	</dict>
 </plist>
