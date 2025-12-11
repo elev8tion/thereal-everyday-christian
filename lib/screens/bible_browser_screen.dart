@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,7 @@ import '../utils/responsive_utils.dart';
 import '../utils/bible_reference_parser.dart';
 import '../utils/blur_dialog_utils.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/noise_overlay.dart';
 
 /// Free Bible Browser - allows users to browse and read any Bible chapter
 class BibleBrowserScreen extends ConsumerStatefulWidget {
@@ -688,19 +690,11 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
         initialChildSize: 0.6,
         minChildSize: 0.4,
         maxChildSize: 0.9,
-        builder: (context, scrollController) => Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                const Color(0xFF1E293B).withValues(alpha: 0.95), // Standard slate-800
-                const Color(0xFF0F172A).withValues(alpha: 0.98), // Standard slate-900
-              ],
-            ),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xxl)),
-          ),
-          child: Column(
+        builder: (context, scrollController) {
+          const borderRadius = BorderRadius.vertical(top: Radius.circular(AppRadius.xxl));
+
+          // ✅ Build sheet content
+          Widget sheetContent = Column(
             children: [
               const SizedBox(height: 8),
               Container(
@@ -778,8 +772,82 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                 ),
               ),
             ],
-          ),
-        ),
+          );
+
+          // ✅ Build glass content with BackdropFilter blur
+          Widget glassContent = ClipRRect(
+            borderRadius: borderRadius,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 40.0, sigmaY: 40.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      const Color(0xFF1E293B).withValues(alpha: 0.95),
+                      const Color(0xFF0F172A).withValues(alpha: 0.98),
+                    ],
+                  ),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.1),
+                    width: 1,
+                  ),
+                ),
+                child: sheetContent,
+              ),
+            ),
+          );
+
+          // ✅ Add noise overlay
+          glassContent = ClipRRect(
+            borderRadius: borderRadius,
+            child: StaticNoiseOverlay(
+              opacity: 0.04,
+              density: 0.4,
+              child: glassContent,
+            ),
+          );
+
+          // ✅ Wrap with container for dual shadows and light simulation
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: borderRadius,
+              // Enhanced dual shadows for realistic depth
+              boxShadow: [
+                // Ambient shadow (far, soft)
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.3),
+                  offset: const Offset(0, -10),
+                  blurRadius: 30,
+                  spreadRadius: -5,
+                ),
+                // Definition shadow (close, sharp)
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  offset: const Offset(0, -4),
+                  blurRadius: 8,
+                  spreadRadius: -2,
+                ),
+              ],
+            ),
+            // Light simulation via foreground decoration
+            foregroundDecoration: BoxDecoration(
+              borderRadius: borderRadius,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.0, 0.5],
+                colors: [
+                  Colors.white.withValues(alpha: 0.15),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+            child: glassContent,
+          );
+        },
       ),
     );
   }
