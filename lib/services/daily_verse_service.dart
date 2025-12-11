@@ -17,7 +17,7 @@ class DailyVerseService {
   DailyVerseService._internal();
 
   final WidgetService _widgetService = WidgetService();
-  final DatabaseHelper _db = DatabaseHelper();
+  final DatabaseHelper _db = DatabaseHelper.instance;
 
   // Shared preferences keys
   static const String _currentVerseIdKey = 'daily_verse_id';
@@ -62,11 +62,18 @@ class DailyVerseService {
           final verseId = prefs.getInt(_currentVerseIdKey);
 
           if (verseText != null && verseReference != null) {
-            _cachedVerse = BibleVerse(
-              id: verseId ?? 0,
-              text: verseText,
-              reference: verseReference,
-            );
+            // Create minimal BibleVerse from cache using fromMap
+            _cachedVerse = BibleVerse.fromMap({
+              'id': verseId,
+              'text': verseText,
+              'reference': verseReference,
+              'book': '',
+              'chapter': 0,
+              'verse_number': 0,
+              'translation': 'WEB',
+              'themes': '[]',
+              'category': 'general',
+            });
             developer.log('[DailyVerseService] 📖 Loaded verse from cache: ${_cachedVerse!.reference}', name: 'DailyVerseService');
             return _cachedVerse;
           }
@@ -82,12 +89,8 @@ class DailyVerseService {
         return null;
       }
 
-      // Convert to BibleVerse model
-      final verse = BibleVerse(
-        id: verseData['id'] as int? ?? 0,
-        text: verseData['text'] as String? ?? '',
-        reference: verseData['reference'] as String? ?? '',
-      );
+      // Convert to BibleVerse model using fromMap factory
+      final verse = BibleVerse.fromMap(verseData);
 
       // Cache the verse
       await _cacheVerse(verse);
@@ -136,7 +139,9 @@ class DailyVerseService {
   Future<void> _cacheVerse(BibleVerse verse) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt(_currentVerseIdKey, verse.id);
+      if (verse.id != null) {
+        await prefs.setInt(_currentVerseIdKey, verse.id!);
+      }
       await prefs.setString(_currentVerseTextKey, verse.text);
       await prefs.setString(_currentVerseReferenceKey, verse.reference);
       await prefs.setString(_lastUpdateDateKey, DateTime.now().toIso8601String());
