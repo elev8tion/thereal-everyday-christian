@@ -92,8 +92,8 @@ class GlassContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultGradientColors = [
-      Colors.white.withValues(alpha: 0.15),
-      Colors.white.withValues(alpha: 0.05),
+      Colors.white.withValues(alpha: 0.18), // Increased from 0.15 for dramatic lightening
+      Colors.white.withValues(alpha: 0.12), // Increased from 0.05 for dramatic lightening
     ];
 
     Widget content = ClipRRect(
@@ -132,21 +132,21 @@ class GlassContainer extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(borderRadius),
         border: border ?? Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
+          color: Colors.white.withValues(alpha: 0.4), // Increased from 0.2 for dramatic lightening
           width: 1,
         ),
         // Enhanced dual shadows for realistic depth
         boxShadow: [
-          // Ambient shadow (far, soft)
+          // Ambient shadow (far, soft) - reduced for dramatic lightening
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.3),
+            color: Colors.black.withValues(alpha: 0.1), // Reduced from 0.3
             offset: const Offset(0, 10),
             blurRadius: 30,
             spreadRadius: -5,
           ),
-          // Definition shadow (close, sharp)
+          // Definition shadow (close, sharp) - reduced for dramatic lightening
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withValues(alpha: 0.05), // Reduced from 0.2
             offset: const Offset(0, 4),
             blurRadius: 8,
             spreadRadius: -2,
@@ -162,7 +162,7 @@ class GlassContainer extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 stops: const [0.0, 0.5],
                 colors: [
-                  Colors.white.withValues(alpha: 0.15),
+                  Colors.white.withValues(alpha: 0.3), // Increased to 0.3 for dramatic lightening
                   Colors.transparent,
                 ],
               ),
