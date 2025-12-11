@@ -801,7 +801,7 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                           ),
                           borderRadius: AppRadius.mediumRadius,
                           border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.3),
+                            color: AppTheme.goldColor,
                             width: 1.5,
                           ),
                         ),
