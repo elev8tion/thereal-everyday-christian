@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
+import '../components/glass_card.dart';
 import '../components/glass_button.dart';
 import '../components/audio_control_pill.dart';
 import '../components/fab_tooltip.dart';
@@ -636,8 +637,16 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: FrostedGlassCard(
+      child: GlassContainer(
+        borderRadius: 24,
+        blurStrength: 15.0,
+        gradientColors: [
+          Colors.white.withValues(alpha: 0.05),
+          Colors.white.withValues(alpha: 0.02),
+        ],
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        enableNoise: true,
+        enableLightSimulation: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
