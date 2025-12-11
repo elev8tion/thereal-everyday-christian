@@ -151,7 +151,6 @@ class ChatScreen extends HookConsumerWidget {
       return null;
     }, []);
 
-    // Check if chat tutorial should be shown
     // Auto-scroll when messages change
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {

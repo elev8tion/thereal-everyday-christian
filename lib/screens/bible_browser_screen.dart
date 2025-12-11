@@ -417,7 +417,6 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
       ),
     );
 
-    // Show tutorial on first visit
     return searchWidget;
   }
 
