@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +12,7 @@ import '../providers/app_providers.dart';
 import 'app_snackbar.dart';
 import '../../models/bible_verse.dart' as app_models;
 import '../../utils/blur_dialog_utils.dart';
+import '../../widgets/noise_overlay.dart';
 
 /// Model for parsed verse reference
 class VerseReference {
@@ -91,38 +93,90 @@ class VerseBottomSheet extends ConsumerWidget {
     // Load verse + context
     final versesAsync = ref.watch(verseContextProvider(parsed));
 
-    return Container(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.75,
+    const borderRadius = BorderRadius.vertical(top: Radius.circular(AppRadius.xxl));
+
+    // ✅ Build main content
+    Widget sheetContent = versesAsync.when(
+      loading: () => _buildLoading(),
+      error: (error, _) => _buildErrorSheet(context, error.toString()),
+      data: (verses) => _buildContent(context, ref, verses, parsed),
+    );
+
+    // ✅ Build glass content with BackdropFilter blur
+    Widget glassContent = ClipRRect(
+      borderRadius: borderRadius,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 40.0, sigmaY: 40.0),
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.75,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: borderRadius,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                const Color(0xFF1E293B).withValues(alpha: 0.95),
+                const Color(0xFF0F172A).withValues(alpha: 0.98),
+              ],
+            ),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.1),
+              width: 1,
+            ),
+          ),
+          child: sheetContent,
+        ),
       ),
+    );
+
+    // ✅ Add noise overlay
+    glassContent = ClipRRect(
+      borderRadius: borderRadius,
+      child: StaticNoiseOverlay(
+        opacity: 0.04,
+        density: 0.4,
+        child: glassContent,
+      ),
+    );
+
+    // ✅ Wrap with container for dual shadows and light simulation
+    return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            const Color(0xFF1E293B).withValues(alpha: 0.95),
-            const Color(0xFF0F172A).withValues(alpha: 0.98),
-          ],
-        ),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xxl)),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
-          width: 1,
-        ),
+        borderRadius: borderRadius,
+        // Enhanced dual shadows for realistic depth
         boxShadow: [
+          // Ambient shadow (far, soft)
           BoxShadow(
-            color: AppTheme.primaryColor.withValues(alpha: 0.2),
-            blurRadius: 24,
-            spreadRadius: 0,
+            color: Colors.black.withValues(alpha: 0.3),
+            offset: const Offset(0, -10),
+            blurRadius: 30,
+            spreadRadius: -5,
+          ),
+          // Definition shadow (close, sharp)
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
             offset: const Offset(0, -4),
+            blurRadius: 8,
+            spreadRadius: -2,
           ),
         ],
       ),
-      child: versesAsync.when(
-        loading: () => _buildLoading(),
-        error: (error, _) => _buildErrorSheet(context, error.toString()),
-        data: (verses) => _buildContent(context, ref, verses, parsed),
+      // Light simulation via foreground decoration
+      foregroundDecoration: BoxDecoration(
+        borderRadius: borderRadius,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: const [0.0, 0.5],
+          colors: [
+            Colors.white.withValues(alpha: 0.15),
+            Colors.transparent,
+          ],
+        ),
       ),
+      child: glassContent,
     );
   }
 
