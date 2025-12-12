@@ -6,7 +6,7 @@ This project uses **independent build numbers** for iOS and Android (industry st
 ## Current Version
 - **User-facing version:** 1.0.0
 - **iOS build number:** 14 (last TestFlight submission)
-- **Android build number:** 20 (prepared for Play Store submission)
+- **Android build number:** 23 (in production on Play Store since Dec 6, 2024)
 
 ## Version Number Locations
 
@@ -32,10 +32,10 @@ Location: CURRENT_PROJECT_VERSION = 14;
 ### 3. Android Build Number (Gradle)
 ```kotlin
 // android/app/build.gradle.kts
-versionCode = 20
+versionCode = 23
 versionName = "1.0.0"  // Must match pubspec.yaml
 ```
-- **Current:** 20
+- **Current:** 23
 - Increment for each Play Store submission
 - Must always increase (Play Store rejects duplicate builds)
 
@@ -53,7 +53,7 @@ versionName = "1.0.0"  // Must match pubspec.yaml
 ### Android Release (Play Store)
 1. Increment Android build number in `build.gradle.kts`:
    ```kotlin
-   versionCode = 23  // Was 22
+   versionCode = 24  // Was 23
    ```
 2. Build: `flutter build appbundle --release --no-tree-shake-icons`
 3. Upload to Play Console
@@ -73,9 +73,9 @@ versionName = "1.0.0"  // Must match pubspec.yaml
 
 | Action | iOS | Android |
 |--------|-----|---------|
-| **Hotfix (same features)** | Build 15 | Build 21 |
-| **New feature (1.1.0)** | Build 15, Version 1.1.0 | Build 21, Version 1.1.0 |
-| **Major update (2.0.0)** | Build 15, Version 2.0.0 | Build 21, Version 2.0.0 |
+| **Hotfix (same features)** | Build 15 | Build 24 |
+| **New feature (1.1.0)** | Build 15, Version 1.1.0 | Build 24, Version 1.1.0 |
+| **Major update (2.0.0)** | Build 15, Version 2.0.0 | Build 24, Version 2.0.0 |
 
 ## Why Independent Build Numbers?
 
@@ -98,14 +98,18 @@ versionName = "1.0.0"  // Must match pubspec.yaml
 - Build 15: Next submission
 
 ### Android (Play Store)
-- Build 20: Initial submission (Dec 1, 2025) - Discarded
+- Build 20: Initial submission (Dec 1, 2024) - Discarded
 - Build 21: Replaced with build 22 (Android 15 fixes)
-- Build 22: Current/Ready for submission (Dec 2, 2025)
+- Build 22: (Dec 2, 2024)
   - Fixed Android 15 deprecated API warnings
   - Updated flutter_local_notifications to 19.5.0
   - Updated notification scheduling for Android 15 compatibility
   - AAB size: 64.9MB
+- Build 23: Current production release (Dec 6, 2024)
+  - In production on Google Play Store
+  - Version 1.0.0
+- Build 24: Next submission (pending)
 
 ---
 
-**Last Updated:** December 2, 2025
+**Last Updated:** December 12, 2024
