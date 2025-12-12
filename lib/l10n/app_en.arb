@@ -1709,7 +1709,11 @@
   },
   "paywallSubscriptionTerms": "Payment will be charged to your App Store account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in your App Store account settings.",
   "@paywallSubscriptionTerms": {
-    "description": "Subscription terms and conditions"
+    "description": "Subscription terms and conditions for iOS"
+  },
+  "paywallSubscriptionTermsAndroid": "Payment will be charged to your Google Play account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in Google Play Store app under Payments & subscriptions.",
+  "@paywallSubscriptionTermsAndroid": {
+    "description": "Subscription terms and conditions for Android"
   },
   "paywallPremiumActivatedSuccess": "Premium activated! 150 Messages Monthly.",
   "@paywallPremiumActivatedSuccess": {

@@ -2361,11 +2361,17 @@ abstract class AppLocalizations {
   /// **'Restore Previous Purchase'**
   String get paywallRestorePurchase;
 
-  /// Subscription terms and conditions
+  /// Subscription terms and conditions for iOS
   ///
   /// In en, this message translates to:
   /// **'Payment will be charged to your App Store account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in your App Store account settings.'**
   String get paywallSubscriptionTerms;
+
+  /// Subscription terms and conditions for Android
+  ///
+  /// In en, this message translates to:
+  /// **'Payment will be charged to your Google Play account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in Google Play Store app under Payments & subscriptions.'**
+  String get paywallSubscriptionTermsAndroid;
 
   /// Premium activation success message
   ///

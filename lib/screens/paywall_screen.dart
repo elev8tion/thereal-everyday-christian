@@ -7,6 +7,7 @@
 /// - Pricing ($35.99/year, 150 messages/month)
 /// - Purchase and restore buttons
 
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -195,7 +196,40 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ),
                       const SizedBox(height: AppSpacing.xxl),
 
-                      // Features Section
+                      // Purchase Button - generic text that works for both monthly and yearly
+                      GlassButton(
+                        text: _isProcessing
+                            ? l10n.paywallProcessing
+                            : (hasTrialExpired || isTrialBlocked || remainingMessages == 0 || widget.showMessageStats)
+                                ? l10n.subscribeNow  // Generic "Subscribe Now" for all post-trial cases
+                                : l10n.paywallStartPremiumButton,  // "Start Free Trial" for new users
+                        onPressed: _isProcessing ? null : _handlePurchase,
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+
+                      // Restore Button
+                      GestureDetector(
+                        onTap: _isProcessing ? null : _handleRestore,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.md,
+                          ),
+                          child: Center(
+                            child: Text(
+                              l10n.paywallRestorePurchase,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.goldColor,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.xxl),
+
+                      // Features Section (moved below Subscribe button)
                       GlassSectionHeader(
                         title: l10n.paywallWhatsIncluded,
                         icon: Icons.check_circle_outline,
@@ -237,39 +271,6 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                         title: l10n.paywallFeatureFullBibleAccess,
                         subtitle: l10n.paywallFeatureFullBibleAccessDesc,
                       ),
-                      const SizedBox(height: AppSpacing.xxl),
-
-                      // Purchase Button - generic text that works for both monthly and yearly
-                      GlassButton(
-                        text: _isProcessing
-                            ? l10n.paywallProcessing
-                            : (hasTrialExpired || isTrialBlocked || remainingMessages == 0 || widget.showMessageStats)
-                                ? l10n.subscribeNow  // Generic "Subscribe Now" for all post-trial cases
-                                : l10n.paywallStartPremiumButton,  // "Start Free Trial" for new users
-                        onPressed: _isProcessing ? null : _handlePurchase,
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
-
-                      // Restore Button
-                      GestureDetector(
-                        onTap: _isProcessing ? null : _handleRestore,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: AppSpacing.md,
-                          ),
-                          child: Center(
-                            child: Text(
-                              l10n.paywallRestorePurchase,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: AppTheme.goldColor,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: AppSpacing.lg),
 
                       // Terms
@@ -285,7 +286,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                             ),
                             const SizedBox(height: AppSpacing.sm),
                             Text(
-                              l10n.paywallSubscriptionTerms,
+                              Platform.isIOS
+                                  ? l10n.paywallSubscriptionTerms  // iOS: App Store
+                                  : l10n.paywallSubscriptionTermsAndroid,  // Android: Google Play
                               style: TextStyle(
                                 fontSize: 12,
                                 color: AppColors.secondaryText,

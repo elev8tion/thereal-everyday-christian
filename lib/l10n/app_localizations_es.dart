@@ -1254,6 +1254,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'El pago se cargará a su cuenta de App Store. La suscripción se renueva automáticamente a menos que la renovación automática se desactive al menos 24 horas antes del final del período actual. Puede cancelar en cualquier momento en la configuración de su cuenta de App Store.';
 
   @override
+  String get paywallSubscriptionTermsAndroid =>
+      'El pago se cargará a su cuenta de Google Play. La suscripción se renueva automáticamente a menos que la renovación automática se desactive al menos 24 horas antes del final del período actual. Puede cancelar en cualquier momento en la aplicación Google Play Store en Pagos y suscripciones.';
+
+  @override
   String get paywallPremiumActivatedSuccess =>
       '¡Premium activado! 150 Mensajes Mensuales.';
 

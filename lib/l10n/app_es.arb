@@ -270,6 +270,7 @@
   "paywallStartPremiumButton": "Iniciar Prueba Gratuita",
   "paywallRestorePurchase": "Restaurar Compra Anterior",
   "paywallSubscriptionTerms": "El pago se cargará a su cuenta de App Store. La suscripción se renueva automáticamente a menos que la renovación automática se desactive al menos 24 horas antes del final del período actual. Puede cancelar en cualquier momento en la configuración de su cuenta de App Store.",
+  "paywallSubscriptionTermsAndroid": "El pago se cargará a su cuenta de Google Play. La suscripción se renueva automáticamente a menos que la renovación automática se desactive al menos 24 horas antes del final del período actual. Puede cancelar en cualquier momento en la aplicación Google Play Store en Pagos y suscripciones.",
   "paywallPremiumActivatedSuccess": "¡Premium activado! 150 Mensajes Mensuales.",
   "paywallPurchaseFailed": "La compra falló. Por favor, intente nuevamente.",
   "paywallPurchaseRestoredSuccess": "¡Compra restaurada exitosamente!",

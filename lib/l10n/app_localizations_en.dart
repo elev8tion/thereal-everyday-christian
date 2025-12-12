@@ -1244,6 +1244,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Payment will be charged to your App Store account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in your App Store account settings.';
 
   @override
+  String get paywallSubscriptionTermsAndroid =>
+      'Payment will be charged to your Google Play account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in Google Play Store app under Payments & subscriptions.';
+
+  @override
   String get paywallPremiumActivatedSuccess =>
       'Premium activated! 150 Messages Monthly.';
 
