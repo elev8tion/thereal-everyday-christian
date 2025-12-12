@@ -7,8 +7,6 @@ import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_card.dart';
 import '../components/standard_screen_header.dart';
-import '../components/fab_tooltip.dart';
-import '../core/services/preferences_service.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/services/book_name_service.dart';
 import '../core/services/bible_config.dart';
@@ -31,7 +29,8 @@ class BibleBrowserScreen extends ConsumerStatefulWidget {
   ConsumerState<BibleBrowserScreen> createState() => _BibleBrowserScreenState();
 }
 
-class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with TickerProviderStateMixin {
+class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen>
+    with TickerProviderStateMixin {
   final BibleChapterService _bibleService = BibleChapterService();
   final BibleBookService _bookService = BibleBookService.instance;
   final TextEditingController _searchController = TextEditingController();
@@ -153,14 +152,14 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
       // Step 2: Filter books - check both English and translated names
       final language = Localizations.localeOf(context).languageCode;
 
-      _filteredBooks = _allBooks
-          .where((book) {
-            final englishName = book.toLowerCase();
-            final translatedName = BookNameService.getBookName(book, language).toLowerCase();
-            final searchLower = query.toLowerCase();
-            return englishName.contains(searchLower) || translatedName.contains(searchLower);
-          })
-          .toList();
+      _filteredBooks = _allBooks.where((book) {
+        final englishName = book.toLowerCase();
+        final translatedName =
+            BookNameService.getBookName(book, language).toLowerCase();
+        final searchLower = query.toLowerCase();
+        return englishName.contains(searchLower) ||
+            translatedName.contains(searchLower);
+      }).toList();
 
       // Step 3: If no books match, fall back to FTS5 verse search
       if (_filteredBooks.isEmpty) {
@@ -260,7 +259,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                     child: _isLoading
                         ? const Center(
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppTheme.goldColor),
                               strokeWidth: 3,
                             ),
                           )
@@ -273,11 +273,11 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                                   _buildTestamentView(_getNewTestamentBooks()),
                                 ],
                               ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
         ),
       ),
     );
@@ -299,7 +299,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                 Text(
                   l10n.searchingVerses,
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    fontSize: ResponsiveUtils.fontSize(context, 14,
+                        minSize: 12, maxSize: 16),
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                   maxLines: 1,
@@ -318,7 +319,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       itemCount: _filteredBooks.length,
-      itemBuilder: (context, index) => _buildBookListItem(_filteredBooks[index]),
+      itemBuilder: (context, index) =>
+          _buildBookListItem(_filteredBooks[index]),
     );
   }
 
@@ -359,13 +361,15 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                 autocorrect: false,
                 style: TextStyle(
                   color: AppColors.primaryText,
-                  fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                  fontSize: ResponsiveUtils.fontSize(context, 15,
+                      minSize: 13, maxSize: 17),
                 ),
                 decoration: InputDecoration(
                   hintText: l10n.searchBooks,
                   hintStyle: TextStyle(
                     color: AppColors.tertiaryText,
-                    fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                    fontSize: ResponsiveUtils.fontSize(context, 15,
+                        minSize: 13, maxSize: 17),
                   ),
                   border: InputBorder.none,
                   filled: true,
@@ -444,69 +448,71 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
         enableNoise: true,
         enableLightSimulation: true,
         child: needsScrollable
-          ? Row(
-              children: [
-                Expanded(
-                  child: TabBar(
-                    controller: _tabController,
-                    isScrollable: false,
-                    indicator: BoxDecoration(
-                      color: AppTheme.primaryColor.withValues(alpha: 0.3),
-                      borderRadius: AppRadius.mediumRadius,
-                      border: Border.all(
-                        color: AppTheme.primaryColor,
-                        width: 1,
-                      ),
-                    ),
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    dividerColor: Colors.transparent,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.white.withValues(alpha: 0.6),
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
-                    ),
-                    tabs: [
-                      Tab(
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(oldTestamentText),
+            ? Row(
+                children: [
+                  Expanded(
+                    child: TabBar(
+                      controller: _tabController,
+                      isScrollable: false,
+                      indicator: BoxDecoration(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                        borderRadius: AppRadius.mediumRadius,
+                        border: Border.all(
+                          color: AppTheme.primaryColor,
+                          width: 1,
                         ),
                       ),
-                      Tab(
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(newTestamentText),
-                        ),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      dividerColor: Colors.transparent,
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Colors.white.withValues(alpha: 0.6),
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: ResponsiveUtils.fontSize(context, 13,
+                            minSize: 11, maxSize: 15),
                       ),
-                    ],
+                      tabs: [
+                        Tab(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(oldTestamentText),
+                          ),
+                        ),
+                        Tab(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(newTestamentText),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            : TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                  borderRadius: AppRadius.mediumRadius,
+                  border: Border.all(
+                    color: AppTheme.primaryColor,
+                    width: 1,
                   ),
                 ),
-              ],
-            )
-          : TabBar(
-              controller: _tabController,
-              indicator: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.3),
-                borderRadius: AppRadius.mediumRadius,
-                border: Border.all(
-                  color: AppTheme.primaryColor,
-                  width: 1,
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: Colors.transparent,
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.white.withValues(alpha: 0.6),
+                labelStyle: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: ResponsiveUtils.fontSize(context, 14,
+                      minSize: 12, maxSize: 16),
                 ),
+                tabs: [
+                  Tab(text: oldTestamentText),
+                  Tab(text: newTestamentText),
+                ],
               ),
-              indicatorSize: TabBarIndicatorSize.tab,
-              dividerColor: Colors.transparent,
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white.withValues(alpha: 0.6),
-              labelStyle: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-              ),
-              tabs: [
-                Tab(text: oldTestamentText),
-                Tab(text: newTestamentText),
-              ],
-            ),
       ),
     );
   }
@@ -529,7 +535,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               Text(
                 l10n.noBooksFound,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+                  fontSize: ResponsiveUtils.fontSize(context, 18,
+                      minSize: 16, maxSize: 20),
                   fontWeight: FontWeight.w600,
                   color: Colors.white.withValues(alpha: 0.9),
                 ),
@@ -540,7 +547,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               Text(
                 l10n.tryDifferentSearchTerm,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  fontSize: ResponsiveUtils.fontSize(context, 14,
+                      minSize: 12, maxSize: 16),
                   color: Colors.white.withValues(alpha: 0.7),
                 ),
                 maxLines: 2,
@@ -643,7 +651,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                           child: Text(
                             abbreviation,
                             style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                              fontSize: ResponsiveUtils.fontSize(context, 14,
+                                  minSize: 12, maxSize: 16),
                               fontWeight: FontWeight.w700,
                               color: Colors.white.withValues(alpha: 0.9),
                             ),
@@ -666,7 +675,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                       Text(
                         displayName,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontSize: ResponsiveUtils.fontSize(context, 16,
+                              minSize: 14, maxSize: 18),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
@@ -675,9 +685,12 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        chapterCount == 1 ? l10n.chapterCount(chapterCount) : l10n.chaptersCount(chapterCount),
+                        chapterCount == 1
+                            ? l10n.chapterCount(chapterCount)
+                            : l10n.chaptersCount(chapterCount),
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                          fontSize: ResponsiveUtils.fontSize(context, 12,
+                              minSize: 10, maxSize: 14),
                           color: Colors.white.withValues(alpha: 0.7),
                         ),
                         maxLines: 1,
@@ -746,7 +759,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
         minChildSize: 0.4,
         maxChildSize: 0.9,
         builder: (context, scrollController) {
-          const borderRadius = BorderRadius.vertical(top: Radius.circular(AppRadius.xxl));
+          const borderRadius =
+              BorderRadius.vertical(top: Radius.circular(AppRadius.xxl));
 
           // ✅ Build sheet content
           Widget sheetContent = Column(
@@ -765,7 +779,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                 child: Text(
                   l10n.selectChapterBook(localizedBookName),
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                    fontSize: ResponsiveUtils.fontSize(context, 20,
+                        minSize: 18, maxSize: 24),
                     fontWeight: FontWeight.w700,
                     color: AppColors.primaryText,
                   ),
@@ -813,7 +828,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                           child: Text(
                             '$chapterNum',
                             style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                              fontSize: ResponsiveUtils.fontSize(context, 16,
+                                  minSize: 14, maxSize: 18),
                               fontWeight: FontWeight.w600,
                               color: AppColors.primaryText,
                             ),
@@ -925,7 +941,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               Text(
                 l10n.noVersesFound,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+                  fontSize: ResponsiveUtils.fontSize(context, 18,
+                      minSize: 16, maxSize: 20),
                   fontWeight: FontWeight.w600,
                   color: Colors.white.withValues(alpha: 0.9),
                 ),
@@ -936,7 +953,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               Text(
                 l10n.tryDifferentSearchTerm,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  fontSize: ResponsiveUtils.fontSize(context, 14,
+                      minSize: 12, maxSize: 16),
                   color: Colors.white.withValues(alpha: 0.7),
                 ),
                 textAlign: TextAlign.center,
@@ -955,7 +973,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
           child: Text(
             l10n.versesFoundCount(_verseSearchResults.length),
             style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+              fontSize: ResponsiveUtils.fontSize(context, 14,
+                  minSize: 12, maxSize: 16),
               fontWeight: FontWeight.w600,
               color: Colors.white.withValues(alpha: 0.7),
             ),
@@ -967,7 +986,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: _verseSearchResults.length,
-            itemBuilder: (context, index) => _buildVerseCard(_verseSearchResults[index]),
+            itemBuilder: (context, index) =>
+                _buildVerseCard(_verseSearchResults[index]),
           ),
         ),
       ],
@@ -994,7 +1014,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -1011,7 +1032,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
                     child: Text(
                       reference,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                        fontSize: ResponsiveUtils.fontSize(context, 12,
+                            minSize: 10, maxSize: 14),
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
@@ -1031,7 +1053,8 @@ class _BibleBrowserScreenState extends ConsumerState<BibleBrowserScreen> with Ti
               Text(
                 verse.text,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                  fontSize: ResponsiveUtils.fontSize(context, 15,
+                      minSize: 13, maxSize: 17),
                   color: AppColors.primaryText,
                   height: 1.5,
                   fontWeight: FontWeight.w500,

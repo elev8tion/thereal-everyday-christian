@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:home_widget/home_widget.dart';
 import '../models/bible_verse.dart';
@@ -31,15 +30,18 @@ class WidgetService {
     if (_isInitialized) return;
 
     try {
-      developer.log('[WidgetService] Initializing with App Group: $_appGroupId', name: 'WidgetService');
+      developer.log('[WidgetService] Initializing with App Group: $_appGroupId',
+          name: 'WidgetService');
 
       // Note: home_widget package automatically handles App Groups setup
       // The native iOS code will need the App Group configured in Xcode
 
       _isInitialized = true;
-      developer.log('[WidgetService] ✅ Widget service initialized', name: 'WidgetService');
+      developer.log('[WidgetService] ✅ Widget service initialized',
+          name: 'WidgetService');
     } catch (e) {
-      developer.log('[WidgetService] ❌ Initialization failed: $e', name: 'WidgetService');
+      developer.log('[WidgetService] ❌ Initialization failed: $e',
+          name: 'WidgetService');
       rethrow;
     }
   }
@@ -50,15 +52,21 @@ class WidgetService {
   /// 1. Serializes verse data
   /// 2. Writes to App Groups shared UserDefaults
   /// 3. Triggers widget timeline reload
-  Future<void> updateDailyVerse(BibleVerse verse, {String translation = 'KJV'}) async {
+  Future<void> updateDailyVerse(BibleVerse verse,
+      {String translation = 'KJV'}) async {
     try {
-      developer.log('[WidgetService] 📝 Updating widget with verse: ${verse.reference}', name: 'WidgetService');
+      developer.log(
+          '[WidgetService] 📝 Updating widget with verse: ${verse.reference}',
+          name: 'WidgetService');
 
       // Save verse data to shared UserDefaults
       await HomeWidget.saveWidgetData<String>(_verseTextKey, verse.text);
-      await HomeWidget.saveWidgetData<String>(_verseReferenceKey, verse.reference);
-      await HomeWidget.saveWidgetData<String>(_verseTranslationKey, translation);
-      await HomeWidget.saveWidgetData<String>(_lastUpdateKey, DateTime.now().toIso8601String());
+      await HomeWidget.saveWidgetData<String>(
+          _verseReferenceKey, verse.reference);
+      await HomeWidget.saveWidgetData<String>(
+          _verseTranslationKey, translation);
+      await HomeWidget.saveWidgetData<String>(
+          _lastUpdateKey, DateTime.now().toIso8601String());
 
       // Trigger widget reload
       await HomeWidget.updateWidget(
@@ -66,9 +74,11 @@ class WidgetService {
         androidName: 'VerseWidget', // Not used, but required by package
       );
 
-      developer.log('[WidgetService] ✅ Widget updated successfully', name: 'WidgetService');
+      developer.log('[WidgetService] ✅ Widget updated successfully',
+          name: 'WidgetService');
     } catch (e) {
-      developer.log('[WidgetService] ❌ Failed to update widget: $e', name: 'WidgetService');
+      developer.log('[WidgetService] ❌ Failed to update widget: $e',
+          name: 'WidgetService');
       // Don't throw - widget update failure shouldn't crash the app
     }
   }
@@ -86,9 +96,11 @@ class WidgetService {
         androidName: 'VerseWidget',
       );
 
-      developer.log('[WidgetService] 🗑️ Widget data cleared', name: 'WidgetService');
+      developer.log('[WidgetService] 🗑️ Widget data cleared',
+          name: 'WidgetService');
     } catch (e) {
-      developer.log('[WidgetService] ❌ Failed to clear widget data: $e', name: 'WidgetService');
+      developer.log('[WidgetService] ❌ Failed to clear widget data: $e',
+          name: 'WidgetService');
     }
   }
 
@@ -96,7 +108,8 @@ class WidgetService {
   void registerCallback(Function(Uri?) callback) {
     HomeWidget.widgetClicked.listen((uri) {
       if (uri != null) {
-        developer.log('[WidgetService] 🔗 Widget tapped with URI: $uri', name: 'WidgetService');
+        developer.log('[WidgetService] 🔗 Widget tapped with URI: $uri',
+            name: 'WidgetService');
         callback(uri);
       }
     });
@@ -110,7 +123,8 @@ class WidgetService {
         return DateTime.parse(lastUpdate);
       }
     } catch (e) {
-      developer.log('[WidgetService] ⚠️ Failed to get last update: $e', name: 'WidgetService');
+      developer.log('[WidgetService] ⚠️ Failed to get last update: $e',
+          name: 'WidgetService');
     }
     return null;
   }

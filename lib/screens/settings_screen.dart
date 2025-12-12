@@ -11,7 +11,6 @@ import '../core/services/preferences_service.dart';
 import '../core/services/bible_config.dart';
 import '../services/conversation_service.dart';
 import '../theme/app_theme.dart';
-import '../theme/app_gradients.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glassmorphic_fab_menu.dart';
@@ -68,7 +67,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             Positioned(
               top: MediaQuery.of(context).padding.top + AppSpacing.xl,
               left: AppSpacing.xl,
-              child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+              child: const GlassmorphicFABMenu()
+                  .animate()
+                  .fadeIn(duration: AppAnimations.slow)
+                  .slideY(begin: -0.3),
             ),
           ],
         ),
@@ -84,7 +86,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       showFAB: false, // FAB is positioned separately
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3);
   }
-
 
   Widget _buildSettingsContent() {
     final l10n = AppLocalizations.of(context);
@@ -111,8 +112,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 subtitle: l10n.dailyDevotionalNotificationDesc,
                 isEnabled: ref.watch(dailyNotificationsProvider),
                 currentTime: ref.watch(devotionalTimeProvider),
-                onToggle: (value) => ref.read(dailyNotificationsProvider.notifier).toggle(value),
-                onTimeChange: (time) => ref.read(devotionalTimeProvider.notifier).setTime(time),
+                onToggle: (value) =>
+                    ref.read(dailyNotificationsProvider.notifier).toggle(value),
+                onTimeChange: (time) =>
+                    ref.read(devotionalTimeProvider.notifier).setTime(time),
               ),
               _buildNotificationTile(
                 context: context,
@@ -121,8 +124,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 subtitle: l10n.prayerRemindersNotificationDesc,
                 isEnabled: ref.watch(prayerRemindersProvider),
                 currentTime: ref.watch(prayerTimeProvider),
-                onToggle: (value) => ref.read(prayerRemindersProvider.notifier).toggle(value),
-                onTimeChange: (time) => ref.read(prayerTimeProvider.notifier).setTime(time),
+                onToggle: (value) =>
+                    ref.read(prayerRemindersProvider.notifier).toggle(value),
+                onTimeChange: (time) =>
+                    ref.read(prayerTimeProvider.notifier).setTime(time),
               ),
               _buildNotificationTile(
                 context: context,
@@ -131,8 +136,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 subtitle: l10n.verseOfTheDayNotificationDesc,
                 isEnabled: ref.watch(verseOfTheDayProvider),
                 currentTime: ref.watch(verseTimeProvider),
-                onToggle: (value) => ref.read(verseOfTheDayProvider.notifier).toggle(value),
-                onTimeChange: (time) => ref.read(verseTimeProvider.notifier).setTime(time),
+                onToggle: (value) =>
+                    ref.read(verseOfTheDayProvider.notifier).toggle(value),
+                onTimeChange: (time) =>
+                    ref.read(verseTimeProvider.notifier).setTime(time),
               ),
               _buildNotificationTile(
                 context: context,
@@ -141,8 +148,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 subtitle: l10n.readingPlanNotificationDesc,
                 isEnabled: ref.watch(readingPlanRemindersProvider),
                 currentTime: ref.watch(readingPlanTimeProvider),
-                onToggle: (value) => ref.read(readingPlanRemindersProvider.notifier).toggle(value),
-                onTimeChange: (time) => ref.read(readingPlanTimeProvider.notifier).setTime(time),
+                onToggle: (value) => ref
+                    .read(readingPlanRemindersProvider.notifier)
+                    .toggle(value),
+                onTimeChange: (time) =>
+                    ref.read(readingPlanTimeProvider.notifier).setTime(time),
               ),
             ],
           ),
@@ -174,7 +184,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             [
               _buildInfoTile(
                 l10n.bibleVersion,
-                BibleConfig.getVersion(Localizations.localeOf(context).languageCode),
+                BibleConfig.getVersion(
+                    Localizations.localeOf(context).languageCode),
               ),
             ],
           ),
@@ -189,7 +200,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ref.watch(textSizeProvider),
                 0.8,
                 1.5,
-                (value) => ref.read(textSizeProvider.notifier).setTextSize(value),
+                (value) =>
+                    ref.read(textSizeProvider.notifier).setTextSize(value),
               ),
             ],
           ),
@@ -271,7 +283,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  Widget _buildSettingsSection(String title, IconData icon, List<Widget> children) {
+  Widget _buildSettingsSection(
+      String title, IconData icon, List<Widget> children) {
     return Container(
       padding: AppSpacing.screenPadding,
       margin: const EdgeInsets.only(bottom: 16),
@@ -308,7 +321,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 child: Text(
                   title,
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+                    fontSize: ResponsiveUtils.fontSize(context, 18,
+                        minSize: 16, maxSize: 20),
                     fontWeight: FontWeight.w700,
                     color: AppColors.primaryText,
                     shadows: AppTheme.textShadowSubtle,
@@ -325,8 +339,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     ).animate().fadeIn(duration: AppAnimations.slow).slideY(begin: 0.3);
   }
 
-
-  Widget _buildSliderTile(String title, String subtitle, double value, double min, double max, Function(double) onChanged) {
+  Widget _buildSliderTile(String title, String subtitle, double value,
+      double min, double max, Function(double) onChanged) {
     return DarkGlassContainer(
       margin: const EdgeInsets.only(bottom: 12),
       borderRadius: AppRadius.md,
@@ -343,7 +357,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       title,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                        fontSize: ResponsiveUtils.fontSize(context, 16,
+                            minSize: 14, maxSize: 18),
                         fontWeight: FontWeight.w600,
                         color: AppColors.primaryText,
                       ),
@@ -352,7 +367,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                        fontSize: ResponsiveUtils.fontSize(context, 13,
+                            minSize: 11, maxSize: 15),
                         color: Colors.white.withValues(alpha: 0.7),
                       ),
                     ),
@@ -362,7 +378,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Text(
                 '${(value * 100).round()}%',
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  fontSize: ResponsiveUtils.fontSize(context, 14,
+                      minSize: 12, maxSize: 16),
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryText,
                 ),
@@ -438,7 +455,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       title,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                        fontSize: ResponsiveUtils.fontSize(context, 16,
+                            minSize: 14, maxSize: 18),
                         fontWeight: FontWeight.w600,
                         color: AppColors.primaryText,
                       ),
@@ -447,7 +465,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                        fontSize: ResponsiveUtils.fontSize(context, 13,
+                            minSize: 11, maxSize: 15),
                         color: AppColors.tertiaryText,
                       ),
                     ),
@@ -503,7 +522,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     children: [
                       Icon(
                         Icons.access_time_rounded,
-                        color: AppTheme.toggleActiveColor.withValues(alpha: 0.8),
+                        color:
+                            AppTheme.toggleActiveColor.withValues(alpha: 0.8),
                         size: ResponsiveUtils.iconSize(context, 18),
                       ),
                       const SizedBox(width: AppSpacing.sm),
@@ -511,7 +531,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         child: Text(
                           l10n.notificationTime,
                           style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                            fontSize: ResponsiveUtils.fontSize(context, 14,
+                                minSize: 12, maxSize: 16),
                             color: Colors.white.withValues(alpha: 0.7),
                           ),
                         ),
@@ -520,7 +541,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       Text(
                         _formatTimeTo12Hour(currentTime),
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                          fontSize: ResponsiveUtils.fontSize(context, 15,
+                              minSize: 13, maxSize: 17),
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
@@ -578,7 +600,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Text(
                   l10n.appLock,
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                    fontSize: ResponsiveUtils.fontSize(context, 16,
+                        minSize: 14, maxSize: 18),
                     fontWeight: FontWeight.w600,
                     color: AppColors.primaryText,
                   ),
@@ -587,7 +610,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Text(
                   l10n.appLockDesc,
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                    fontSize: ResponsiveUtils.fontSize(context, 13,
+                        minSize: 11, maxSize: 15),
                     color: AppColors.tertiaryText,
                   ),
                 ),
@@ -695,7 +719,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return '$hour12:$minuteStr $period';
   }
 
-  Future<void> _showTimePicker(String currentTime, Function(String) onChanged) async {
+  Future<void> _showTimePicker(
+      String currentTime, Function(String) onChanged) async {
     final l10n = AppLocalizations.of(context);
     final parts = currentTime.split(':');
     final initialTime = TimeOfDay(
@@ -713,7 +738,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       sheetBackgroundColor: Colors.transparent,
 
       // Button styling matching GlassButton component
-      buttonColor: Colors.transparent, // GlassButton uses gradient, not solid color
+      buttonColor:
+          Colors.transparent, // GlassButton uses gradient, not solid color
       cancelButtonColor: Colors.transparent,
       buttonTextColor: Colors.white,
       cancelButtonTextColor: Colors.white.withValues(alpha: 0.7),
@@ -730,7 +756,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
       // Sheet dimensions - dynamically scaled for text size and bottom safe area
       // Increased height to accommodate 1.5x text scale + extra bottom padding
-      sheetHeight: 500 + (textScaleFactor > 1.0 ? (textScaleFactor - 1.0) * 100 : 0) + safeBottomPadding,
+      sheetHeight: 500 +
+          (textScaleFactor > 1.0 ? (textScaleFactor - 1.0) * 100 : 0) +
+          safeBottomPadding,
       // Scale picker item height with text scale factor for proper spacing at 150%
       pickerItemHeight: (45 * textScaleFactor).clamp(45, 70),
       buttonHeight: 56, // Match GlassButton height
@@ -741,7 +769,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         left: AppSpacing.lg,
         right: AppSpacing.lg,
         top: AppSpacing.lg,
-        bottom: AppSpacing.lg + 50 + safeBottomPadding, // Extra 50px + safe area
+        bottom:
+            AppSpacing.lg + 50 + safeBottomPadding, // Extra 50px + safe area
       ),
       buttonPadding: const EdgeInsets.all(AppSpacing.md),
 
@@ -772,11 +801,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     }
   }
 
-  Widget _buildActionTile(String title, String subtitle, IconData icon, VoidCallback onTap, {bool isDestructive = false}) {
+  Widget _buildActionTile(
+      String title, String subtitle, IconData icon, VoidCallback onTap,
+      {bool isDestructive = false}) {
     const textColor = AppColors.primaryText;
     final subtitleColor = Colors.white.withValues(alpha: 0.7);
     final iconColor = isDestructive ? Colors.red : AppColors.primaryText;
-    final borderColor = isDestructive ? Colors.red.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.2);
+    final borderColor = isDestructive
+        ? Colors.red.withValues(alpha: 0.5)
+        : Colors.white.withValues(alpha: 0.2);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -841,7 +874,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       Text(
                         title,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontSize: ResponsiveUtils.fontSize(context, 16,
+                              minSize: 14, maxSize: 18),
                           fontWeight: FontWeight.w600,
                           color: textColor,
                         ),
@@ -850,7 +884,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       Text(
                         subtitle,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                          fontSize: ResponsiveUtils.fontSize(context, 13,
+                              minSize: 11, maxSize: 15),
                           color: subtitleColor,
                         ),
                       ),
@@ -898,7 +933,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                fontSize: ResponsiveUtils.fontSize(context, 16,
+                    minSize: 14, maxSize: 18),
                 fontWeight: FontWeight.w600,
                 color: AppColors.primaryText,
               ),
@@ -909,7 +945,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Text(
             value,
             style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+              fontSize: ResponsiveUtils.fontSize(context, 15,
+                  minSize: 13, maxSize: 17),
               color: AppColors.secondaryText,
               fontWeight: FontWeight.w500,
             ),
@@ -919,7 +956,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       ),
     );
   }
-
 
   void _showClearCacheDialog() {
     final l10n = AppLocalizations.of(context);
@@ -962,7 +998,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       child: Text(
                         l10n.clearCacheDialogTitle,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontSize: ResponsiveUtils.fontSize(context, 20,
+                              minSize: 18, maxSize: 24),
                           fontWeight: FontWeight.w700,
                           color: AppColors.primaryText,
                         ),
@@ -975,7 +1012,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Text(
                   l10n.clearCacheDialogMessage,
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                    fontSize: ResponsiveUtils.fontSize(context, 13,
+                        minSize: 11, maxSize: 15),
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                 ),
@@ -1067,7 +1105,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
       // Export AI Chat Conversations
       final conversationService = ConversationService();
-      final sessions = await conversationService.getSessions(includeArchived: true);
+      final sessions =
+          await conversationService.getSessions(includeArchived: true);
 
       if (sessions.isNotEmpty) {
         buffer.writeln('💬 AI CHAT CONVERSATIONS');
@@ -1080,7 +1119,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           final title = session['title'] as String;
           final isArchived = session['is_archived'] == 1;
 
-          final conversationExport = await conversationService.exportConversation(sessionId);
+          final conversationExport =
+              await conversationService.exportConversation(sessionId);
 
           if (conversationExport.isNotEmpty) {
             buffer.writeln('-' * 60);
@@ -1157,7 +1197,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       child: Text(
                         l10n.deleteAllData,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontSize: ResponsiveUtils.fontSize(context, 20,
+                              minSize: 18, maxSize: 24),
                           fontWeight: FontWeight.w700,
                           color: AppColors.primaryText,
                         ),
@@ -1172,7 +1213,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Text(
                   '⚠️ THIS ACTION CANNOT BE UNDONE ⚠️',
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    fontSize: ResponsiveUtils.fontSize(context, 14,
+                        minSize: 12, maxSize: 16),
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
@@ -1188,7 +1230,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         Text(
                           l10n.thisWillPermanentlyDelete,
                           style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                            fontSize: ResponsiveUtils.fontSize(context, 14,
+                                minSize: 12, maxSize: 16),
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
@@ -1208,7 +1251,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           decoration: BoxDecoration(
                             color: Colors.red.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(AppRadius.sm),
-                            border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                            border: Border.all(
+                                color: Colors.red.withValues(alpha: 0.3)),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1216,7 +1260,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                               Text(
                                 l10n.deleteLocalDataWarning,
                                 style: TextStyle(
-                                  fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                                  fontSize: ResponsiveUtils.fontSize(
+                                      context, 13,
+                                      minSize: 11, maxSize: 15),
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red,
                                 ),
@@ -1225,7 +1271,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                               Text(
                                 l10n.deleteDataBulletList,
                                 style: TextStyle(
-                                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                                  fontSize: ResponsiveUtils.fontSize(
+                                      context, 12,
+                                      minSize: 10, maxSize: 14),
                                   color: Colors.white.withValues(alpha: 0.9),
                                   height: 1.4,
                                 ),
@@ -1235,8 +1283,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                                 padding: const EdgeInsets.all(AppSpacing.sm),
                                 decoration: BoxDecoration(
                                   color: Colors.blue.withValues(alpha: 0.15),
-                                  borderRadius: BorderRadius.circular(AppRadius.xs),
-                                  border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
+                                  borderRadius:
+                                      BorderRadius.circular(AppRadius.xs),
+                                  border: Border.all(
+                                      color:
+                                          Colors.blue.withValues(alpha: 0.3)),
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1251,8 +1302,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                                       child: Text(
                                         l10n.subscriptionWillRestore,
                                         style: TextStyle(
-                                          fontSize: ResponsiveUtils.fontSize(context, 11, minSize: 9, maxSize: 13),
-                                          color: Colors.white.withValues(alpha: 0.9),
+                                          fontSize: ResponsiveUtils.fontSize(
+                                              context, 11,
+                                              minSize: 9, maxSize: 13),
+                                          color: Colors.white
+                                              .withValues(alpha: 0.9),
                                           height: 1.3,
                                         ),
                                       ),
@@ -1267,7 +1321,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         Text(
                           l10n.typeDeleteToConfirm,
                           style: TextStyle(
-                            fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                            fontSize: ResponsiveUtils.fontSize(context, 13,
+                                minSize: 11, maxSize: 15),
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
@@ -1277,20 +1332,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           controller: confirmController,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                            fontSize: ResponsiveUtils.fontSize(context, 14,
+                                minSize: 12, maxSize: 16),
                           ),
                           decoration: InputDecoration(
                             hintText: l10n.typeDeletePlaceholder,
                             hintStyle: TextStyle(
                               color: Colors.white.withValues(alpha: 0.3),
-                              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                              fontSize: ResponsiveUtils.fontSize(context, 14,
+                                  minSize: 12, maxSize: 16),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+                              borderSide: BorderSide(
+                                  color: Colors.white.withValues(alpha: 0.3)),
                               borderRadius: BorderRadius.circular(AppRadius.sm),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.red, width: 2),
+                              borderSide:
+                                  const BorderSide(color: Colors.red, width: 2),
                               borderRadius: BorderRadius.circular(AppRadius.sm),
                             ),
                             contentPadding: const EdgeInsets.all(AppSpacing.md),
@@ -1380,14 +1439,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
                   ),
                   const SizedBox(width: AppSpacing.lg),
                   Text(
                     l10n.deletingAllData,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                      fontSize: ResponsiveUtils.fontSize(context, 14,
+                          minSize: 12, maxSize: 16),
                     ),
                   ),
                 ],
@@ -1489,7 +1550,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       child: Text(
                         l10n.helpFAQ,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                          fontSize: ResponsiveUtils.fontSize(context, 20,
+                              minSize: 18, maxSize: 24),
                           fontWeight: FontWeight.w700,
                           color: AppColors.primaryText,
                         ),
@@ -1502,7 +1564,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Text(
                   l10n.faqSubtitle,
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                    fontSize: ResponsiveUtils.fontSize(context, 13,
+                        minSize: 11, maxSize: 15),
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                 ),
@@ -1519,14 +1582,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           _FAQItem(question: l10n.faqQ3, answer: l10n.faqA3),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
-
                         _buildFAQSection(l10n.faqBibleReading, [
                           _FAQItem(question: l10n.faqQ4, answer: l10n.faqA4),
                           _FAQItem(question: l10n.faqQ5, answer: l10n.faqA5),
                           _FAQItem(question: l10n.faqQ6, answer: l10n.faqA6),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
-
                         _buildFAQSection(l10n.faqPrayerJournal, [
                           _FAQItem(question: l10n.faqQ7, answer: l10n.faqA7),
                           _FAQItem(question: l10n.faqQ8, answer: l10n.faqA8),
@@ -1534,35 +1595,30 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           _FAQItem(question: l10n.faqQ10, answer: l10n.faqA10),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
-
                         _buildFAQSection(l10n.faqDevotionalsPlans, [
                           _FAQItem(question: l10n.faqQ11, answer: l10n.faqA11),
                           _FAQItem(question: l10n.faqQ12, answer: l10n.faqA12),
                           _FAQItem(question: l10n.faqQ13, answer: l10n.faqA13),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
-
                         _buildFAQSection(l10n.faqAIChatSupport, [
                           _FAQItem(question: l10n.faqQ14, answer: l10n.faqA14),
                           _FAQItem(question: l10n.faqQ15, answer: l10n.faqA15),
                           _FAQItem(question: l10n.faqQ16, answer: l10n.faqA16),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
-
                         _buildFAQSection(l10n.faqNotifications, [
                           _FAQItem(question: l10n.faqQ17, answer: l10n.faqA17),
                           _FAQItem(question: l10n.faqQ18, answer: l10n.faqA18),
                           _FAQItem(question: l10n.faqQ19, answer: l10n.faqA19),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
-
                         _buildFAQSection(l10n.faqSettingsCustomization, [
                           _FAQItem(question: l10n.faqQ20, answer: l10n.faqA20),
                           _FAQItem(question: l10n.faqQ21, answer: l10n.faqA21),
                           _FAQItem(question: l10n.faqQ22, answer: l10n.faqA22),
                         ]),
                         const SizedBox(height: AppSpacing.lg),
-
                         _buildFAQSection(l10n.faqDataPrivacy, [
                           _FAQItem(question: l10n.faqQ23, answer: l10n.faqA23),
                           _FAQItem(question: l10n.faqQ24, answer: l10n.faqA24),
@@ -1600,7 +1656,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           child: Text(
             title,
             style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+              fontSize: ResponsiveUtils.fontSize(context, 16,
+                  minSize: 14, maxSize: 18),
               fontWeight: FontWeight.w700,
               color: AppTheme.goldColor,
             ),
@@ -1636,7 +1693,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           title: Text(
             question,
             style: TextStyle(
-              fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+              fontSize: ResponsiveUtils.fontSize(context, 14,
+                  minSize: 12, maxSize: 16),
               fontWeight: FontWeight.w600,
               color: AppColors.primaryText,
             ),
@@ -1649,7 +1707,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             Text(
               answer,
               style: TextStyle(
-                fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 15),
+                fontSize: ResponsiveUtils.fontSize(context, 13,
+                    minSize: 11, maxSize: 15),
                 color: Colors.white.withValues(alpha: 0.8),
                 height: 1.5,
               ),

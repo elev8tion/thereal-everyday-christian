@@ -157,8 +157,10 @@ class _UnifiedInteractiveOnboardingScreenState
 
     // Navigate to home using IMMEDIATE navigation (bypasses debounce)
     if (mounted) {
-      print('🎯 [Onboarding] Widget is mounted, attempting IMMEDIATE navigation...');
-      print('🎯 [Onboarding] Calling NavigationService.pushAndRemoveUntilImmediate...');
+      print(
+          '🎯 [Onboarding] Widget is mounted, attempting IMMEDIATE navigation...');
+      print(
+          '🎯 [Onboarding] Calling NavigationService.pushAndRemoveUntilImmediate...');
       try {
         await NavigationService.pushAndRemoveUntilImmediate(AppRoutes.home);
         print('✅ [Onboarding] Navigation completed successfully!');
@@ -600,7 +602,7 @@ class _UnifiedInteractiveOnboardingScreenState
                       width: 1,
                     ),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.lock,
                     color: AppTheme.goldColor,
                     size: 20,
@@ -645,7 +647,8 @@ class _UnifiedInteractiveOnboardingScreenState
                     },
                   ),
                   inactiveTrackColor: Colors.white.withValues(alpha: 0.2),
-                  trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+                  trackOutlineColor:
+                      WidgetStateProperty.all(Colors.transparent),
                 ),
               ],
             ),
@@ -707,14 +710,16 @@ class _AnimatedCheckboxState extends State<_AnimatedCheckbox>
 
   void _handleTap() {
     // Spring pop animation
-    _scaleController.animateWith(
+    _scaleController
+        .animateWith(
       SpringSimulation(
         MotionCharacter.playful,
         _scaleController.value,
         1.1,
         0,
       ),
-    ).then((_) {
+    )
+        .then((_) {
       // Spring back
       _scaleController.animateWith(
         SpringSimulation(
@@ -746,7 +751,8 @@ class _AnimatedCheckboxState extends State<_AnimatedCheckbox>
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: widget.value ? AppTheme.goldColor : AppColors.primaryBorder,
+                color:
+                    widget.value ? AppTheme.goldColor : AppColors.primaryBorder,
                 width: 2,
               ),
               color: widget.value ? AppTheme.goldColor : Colors.transparent,

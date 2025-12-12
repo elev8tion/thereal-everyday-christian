@@ -1,4 +1,3 @@
-import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,8 +10,6 @@ import '../components/glassmorphic_fab_menu.dart';
 import '../components/standard_screen_header.dart';
 import '../components/dark_glass_container.dart';
 import '../components/glass_card.dart';
-import '../components/fab_tooltip.dart';
-import '../core/services/preferences_service.dart';
 import '../theme/app_theme.dart';
 import '../core/providers/app_providers.dart';
 import '../core/models/devotional.dart';
@@ -168,9 +165,9 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
 
     return Scaffold(
       body: Stack(
-          children: [
-            const GradientBackground(),
-            SafeArea(
+        children: [
+          const GradientBackground(),
+          SafeArea(
             child: devotionalsAsync.when(
               data: (devotionals) {
                 if (devotionals.isEmpty) {
@@ -443,8 +440,8 @@ class _DevotionalScreenState extends ConsumerState<DevotionalScreen> {
       child: AutoSizeText(
         devotional.title,
         style: TextStyle(
-          fontSize: ResponsiveUtils.fontSize(context, 24,
-              minSize: 20, maxSize: 28),
+          fontSize:
+              ResponsiveUtils.fontSize(context, 24, minSize: 20, maxSize: 28),
           fontWeight: FontWeight.w800,
           color: AppColors.primaryText,
           height: 1.3,
