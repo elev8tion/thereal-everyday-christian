@@ -146,8 +146,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                         const SizedBox(height: AppSpacing.xxl),
                       ],
 
-                      // Plan Selector (only show if trial expired/blocked - post-trial users)
-                      if (hasTrialExpired || isTrialBlocked) ...[
+                      // Plan Selector (show when trial expired/blocked OR when out of messages)
+                      if (hasTrialExpired || isTrialBlocked || remainingMessages == 0 || widget.showMessageStats) ...[
                         _buildPlanSelector(context, l10n, subscriptionService),
                         const SizedBox(height: AppSpacing.xl),
                       ],
@@ -308,7 +308,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       GlassButton(
                         text: _isProcessing
                             ? l10n.paywallProcessing
-                            : (hasTrialExpired || isTrialBlocked)
+                            : (hasTrialExpired || isTrialBlocked || remainingMessages == 0 || widget.showMessageStats)
                                 ? _selectedPlanIsYearly
                                     ? 'Subscribe to Premium - ${subscriptionService.premiumProductYearly?.price ?? "\$35.99"}/year'
                                     : 'Subscribe to Premium - ${subscriptionService.premiumProductMonthly?.price ?? "\$5.99"}/month'
