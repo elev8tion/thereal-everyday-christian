@@ -152,110 +152,45 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                         const SizedBox(height: AppSpacing.xl),
                       ],
 
-                      // Pricing Card (Tappable) - dynamically shows selected plan
+                      // 150 Scripture Chats badge (centered under plan selectors)
                       Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 280),
-                          child: GestureDetector(
-                            onTap: _isProcessing ? null : _handlePurchase,
-                            child: GlassContainer(
-                              borderRadius: 24,
-                              blurStrength: 15.0,
-                              gradientColors: [
-                                Colors.white.withValues(alpha: 0.05),
-                                Colors.white.withValues(alpha: 0.02),
-                              ],
-                              padding: const EdgeInsets.all(AppSpacing.lg),
-                              enableNoise: true,
-                              enableLightSimulation: true,
-                              child: Column(
-                                children: [
-                                  // Only show "Less than $3 per month" for yearly plan
-                                  if (_selectedPlanIsYearly) ...[
-                                    Text(
-                                      l10n.paywallLessThan3PerMonth,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: AppColors.secondaryText,
-                                      ),
-                                    ),
-                                    const SizedBox(height: AppSpacing.sm),
-                                  ],
-                                  // Price - dynamically shows selected plan
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        '\$',
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppTheme.goldColor,
-                                          height: 1.5,
-                                        ),
-                                      ),
-                                      Text(
-                                        _selectedPlanIsYearly
-                                            ? (subscriptionService.premiumProductYearly?.price ?? '35.99')
-                                            : (subscriptionService.premiumProductMonthly?.price ?? '5.99'),
-                                        style: const TextStyle(
-                                          fontSize: 40,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppTheme.goldColor,
-                                          height: 1,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  // "per year" or "per month" based on selection
-                                  Text(
-                                    _selectedPlanIsYearly ? l10n.paywallPerYear : 'per month',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.secondaryText,
-                                    ),
-                                  ),
-                                  const SizedBox(height: AppSpacing.lg),
-                                  // 150 AI messages badge
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: AppSpacing.lg,
-                                      vertical: AppSpacing.sm,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.goldColor.withValues(alpha: 0.2),
-                                      borderRadius: AppRadius.cardRadius,
-                                      border: Border.all(
-                                        color: AppTheme.goldColor.withValues(alpha: 0.4),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      l10n.paywall150MessagesPerMonth,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.primaryText,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  const SizedBox(height: AppSpacing.md),
-                                  // Pricing disclaimer at bottom, centered
-                                  Text(
-                                    l10n.paywallPricingDisclaimer,
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: AppColors.secondaryText.withValues(alpha: 0.7),
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.xl,
+                                vertical: AppSpacing.md,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(30),
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: 0.2),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                l10n.paywall150MessagesPerMonth,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primaryText,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
-                          ),
+                            const SizedBox(height: AppSpacing.sm),
+                            // Pricing disclaimer below badge
+                            Text(
+                              l10n.paywallPricingDisclaimer,
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: AppColors.secondaryText.withValues(alpha: 0.7),
+                                fontStyle: FontStyle.italic,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: AppSpacing.xxl),
