@@ -5,6 +5,7 @@ import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_card.dart';
 import '../components/glass_button.dart';
+import '../components/dark_glass_container.dart';
 import '../components/audio_control_pill.dart';
 import '../theme/app_theme.dart';
 import '../core/navigation/navigation_service.dart';
@@ -97,7 +98,110 @@ class _ChapterReadingScreenState extends ConsumerState<ChapterReadingScreen>
         _loadVerses();
       });
       _versesLoaded = true;
+
+      // Show tutorial after verses load
+      _showBibleTutorialIfNeeded();
     }
+  }
+
+  Future<void> _showBibleTutorialIfNeeded() async {
+    final prefsService = await PreferencesService.getInstance();
+
+    // Check if tutorial already shown
+    if (prefsService.hasBibleBrowserTutorialShown()) {
+      return;
+    }
+
+    // Wait for verses to load and UI to settle
+    await Future.delayed(const Duration(milliseconds: 800));
+
+    if (!mounted) return;
+
+    final l10n = AppLocalizations.of(context);
+
+    // Show informational dialog about Bible features
+    await showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: DarkGlassContainer(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.tutorialBibleTapTitle,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.tutorialBibleTapDescription,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white70,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                l10n.tutorialBibleBookmarkTitle,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.tutorialBibleBookmarkDescription,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white70,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                l10n.tutorialBibleChatTitle,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.tutorialBibleChatDescription,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white70,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Align(
+                alignment: Alignment.centerRight,
+                child: GlassButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    prefsService.setBibleBrowserTutorialShown();
+                  },
+                  text: l10n.tutorialFinish,
+                  width: 100,
+                  height: 40,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    // Mark as shown even if dismissed
+    prefsService.setBibleBrowserTutorialShown();
   }
 
   @override

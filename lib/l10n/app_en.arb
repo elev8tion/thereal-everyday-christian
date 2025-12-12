@@ -4236,5 +4236,61 @@
   "addPrayerButtonShort": "Prayer",
   "@addPrayerButtonShort": {
     "description": "Short label for add prayer dialog button (used at large text sizes 130%-150%)"
+  },
+  "tutorialSkip": "Skip",
+  "@tutorialSkip": {
+    "description": "Skip button text for tutorials"
+  },
+  "tutorialNext": "Next",
+  "@tutorialNext": {
+    "description": "Next button text for tutorials"
+  },
+  "tutorialPrevious": "Previous",
+  "@tutorialPrevious": {
+    "description": "Previous button text for tutorials"
+  },
+  "tutorialFinish": "Finish",
+  "@tutorialFinish": {
+    "description": "Finish button text for tutorials"
+  },
+  "tutorialHomeTitle": "Navigation Menu",
+  "@tutorialHomeTitle": {
+    "description": "Title for home screen FAB menu tutorial"
+  },
+  "tutorialHomeDescription": "Tap this menu to navigate between different sections of the app - Bible, Chat, Prayers, Devotionals, and more!",
+  "@tutorialHomeDescription": {
+    "description": "Description for home screen FAB menu tutorial"
+  },
+  "tutorialBibleTapTitle": "Tap to Select Verses",
+  "@tutorialBibleTapTitle": {
+    "description": "Title for Bible tap-to-select tutorial"
+  },
+  "tutorialBibleTapDescription": "Tap any verse to select it. Long press to view options like bookmarking and sharing.",
+  "@tutorialBibleTapDescription": {
+    "description": "Description for Bible tap-to-select tutorial"
+  },
+  "tutorialBibleBookmarkTitle": "Bookmark Your Favorites",
+  "@tutorialBibleBookmarkTitle": {
+    "description": "Title for Bible bookmark tutorial"
+  },
+  "tutorialBibleBookmarkDescription": "Tap the bookmark icon to save verses for quick access later.",
+  "@tutorialBibleBookmarkDescription": {
+    "description": "Description for Bible bookmark tutorial"
+  },
+  "tutorialBibleChatTitle": "Intelligent Verse Chat",
+  "@tutorialBibleChatTitle": {
+    "description": "Title for Bible verse chat tutorial"
+  },
+  "tutorialBibleChatDescription": "Ask questions about any verse and get biblical insights and explanations.",
+  "@tutorialBibleChatDescription": {
+    "description": "Description for Bible verse chat tutorial"
+  },
+  "tutorialPrayerTitle": "Add Your Prayers",
+  "@tutorialPrayerTitle": {
+    "description": "Title for prayer screen add button tutorial"
+  },
+  "tutorialPrayerDescription": "Tap here to add a new prayer request. Track your prayers and mark them as answered!",
+  "@tutorialPrayerDescription": {
+    "description": "Description for prayer screen add button tutorial"
   }
 }

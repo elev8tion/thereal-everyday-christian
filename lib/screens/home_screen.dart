@@ -10,7 +10,6 @@ import '../components/glass_button.dart';
 import '../components/gradient_background.dart';
 import '../components/glassmorphic_fab_menu.dart';
 import '../components/dark_glass_container.dart';
-import '../components/fab_tooltip.dart';
 import '../core/navigation/app_routes.dart';
 import '../core/providers/app_providers.dart';
 import '../core/navigation/navigation_service.dart';
@@ -19,6 +18,7 @@ import '../core/services/subscription_service.dart';
 import '../components/trial_welcome_dialog.dart';
 import '../utils/responsive_utils.dart';
 import '../l10n/app_localizations.dart';
+import '../core/utils/simple_coach_mark.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -29,6 +29,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey _backgroundKey = GlobalKey();
+  final GlobalKey _fabMenuKey = GlobalKey();
   bool _isNavigating = false;
   final AutoSizeGroup _mainFeatureTitlesGroup = AutoSizeGroup();
 
@@ -68,15 +69,69 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         if (result == true && mounted) {
           Navigator.of(context).pushNamed(AppRoutes.chat);
         }
+
+        // After dialog closes, show FAB tutorial if first time
+        if (mounted) {
+          _showFabTutorialIfNeeded();
+        }
+      } else {
+        // If trial dialog already shown, check for tutorial
+        _showFabTutorialIfNeeded();
       }
+    } else {
+      // Premium user or trial started, still show tutorial if needed
+      _showFabTutorialIfNeeded();
     }
+  }
+
+  Future<void> _showFabTutorialIfNeeded() async {
+    final prefsService = await PreferencesService.getInstance();
+
+    // Check if tutorial already shown
+    if (prefsService.hasFabTutorialShown()) {
+      return;
+    }
+
+    // Wait a bit for UI to settle
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    if (!mounted) return;
+
+    final l10n = AppLocalizations.of(context);
+
+    // Show tutorial
+    SimpleCoachMark(
+      targets: [
+        CoachTarget(
+          key: _fabMenuKey,
+          title: l10n.tutorialHomeTitle,
+          description: l10n.tutorialHomeDescription,
+          contentPosition: ContentPosition.bottom,
+          shape: HighlightShape.rectangle,
+          borderRadius: 20,
+          padding: 8,
+          semanticLabel: l10n.tutorialHomeTitle,
+        ),
+      ],
+      config: CoachMarkConfig(
+        skipText: l10n.tutorialSkip,
+        nextText: l10n.tutorialNext,
+        previousText: l10n.tutorialPrevious,
+      ),
+      onFinish: () {
+        // Mark tutorial as shown
+        prefsService.setFabTutorialShown();
+      },
+      onSkip: () {
+        // Mark tutorial as shown even if skipped
+        prefsService.setFabTutorialShown();
+      },
+    ).show(context);
   }
 
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
     return Scaffold(
       body: Stack(
         children: [
@@ -117,7 +172,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Positioned(
             top: MediaQuery.of(context).padding.top + AppSpacing.xl,
             left: AppSpacing.xl,
-            child: const GlassmorphicFABMenu(),
+            child: GlassmorphicFABMenu(key: _fabMenuKey),
           ),
         ],
       ),

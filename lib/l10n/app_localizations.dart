@@ -5582,6 +5582,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prayer'**
   String get addPrayerButtonShort;
+
+  /// Skip button text for tutorials
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get tutorialSkip;
+
+  /// Next button text for tutorials
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get tutorialNext;
+
+  /// Previous button text for tutorials
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get tutorialPrevious;
+
+  /// Finish button text for tutorials
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get tutorialFinish;
+
+  /// Title for home screen FAB menu tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation Menu'**
+  String get tutorialHomeTitle;
+
+  /// Description for home screen FAB menu tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Tap this menu to navigate between different sections of the app - Bible, Chat, Prayers, Devotionals, and more!'**
+  String get tutorialHomeDescription;
+
+  /// Title for Bible tap-to-select tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to Select Verses'**
+  String get tutorialBibleTapTitle;
+
+  /// Description for Bible tap-to-select tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Tap any verse to select it. Long press to view options like bookmarking and sharing.'**
+  String get tutorialBibleTapDescription;
+
+  /// Title for Bible bookmark tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark Your Favorites'**
+  String get tutorialBibleBookmarkTitle;
+
+  /// Description for Bible bookmark tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the bookmark icon to save verses for quick access later.'**
+  String get tutorialBibleBookmarkDescription;
+
+  /// Title for Bible verse chat tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Intelligent Verse Chat'**
+  String get tutorialBibleChatTitle;
+
+  /// Description for Bible verse chat tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Ask questions about any verse and get biblical insights and explanations.'**
+  String get tutorialBibleChatDescription;
+
+  /// Title for prayer screen add button tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Add Your Prayers'**
+  String get tutorialPrayerTitle;
+
+  /// Description for prayer screen add button tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Tap here to add a new prayer request. Track your prayers and mark them as answered!'**
+  String get tutorialPrayerDescription;
 }
 
 class _AppLocalizationsDelegate

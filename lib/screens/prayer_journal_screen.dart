@@ -12,7 +12,6 @@ import '../components/blur_dropdown.dart';
 import '../components/blur_popup_menu.dart';
 import '../components/category_filter_chip.dart';
 import '../components/glass_fab.dart';
-import '../components/fab_tooltip.dart';
 import '../components/standard_screen_header.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../core/services/preferences_service.dart';
@@ -29,6 +28,7 @@ import '../core/widgets/skeleton_loader.dart';
 import '../utils/blur_dialog_utils.dart';
 import '../services/prayer_share_service.dart';
 import '../l10n/app_localizations.dart';
+import '../core/utils/simple_coach_mark.dart';
 
 class PrayerJournalScreen extends ConsumerStatefulWidget {
   const PrayerJournalScreen({super.key});
@@ -40,11 +40,55 @@ class PrayerJournalScreen extends ConsumerStatefulWidget {
 class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _prayerController = TextEditingController();
+  final GlobalKey _addPrayerFabKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _showPrayerTutorialIfNeeded();
+  }
+
+  Future<void> _showPrayerTutorialIfNeeded() async {
+    final prefsService = await PreferencesService.getInstance();
+
+    // Check if tutorial already shown
+    if (prefsService.hasPrayerTutorialShown()) {
+      return;
+    }
+
+    // Wait for UI to build and settle
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (!mounted) return;
+
+    final l10n = AppLocalizations.of(context);
+
+    // Show tutorial
+    SimpleCoachMark(
+      targets: [
+        CoachTarget(
+          key: _addPrayerFabKey,
+          title: l10n.tutorialPrayerTitle,
+          description: l10n.tutorialPrayerDescription,
+          contentPosition: ContentPosition.top,
+          shape: HighlightShape.circle,
+          padding: 8,
+          semanticLabel: l10n.tutorialPrayerTitle,
+        ),
+      ],
+      config: CoachMarkConfig(
+        skipText: l10n.tutorialSkip,
+        nextText: l10n.tutorialNext,
+        previousText: l10n.tutorialPrevious,
+      ),
+      onFinish: () {
+        prefsService.setPrayerTutorialShown();
+      },
+      onSkip: () {
+        prefsService.setPrayerTutorialShown();
+      },
+    ).show(context);
   }
 
   @override
@@ -82,6 +126,7 @@ class _PrayerJournalScreenState extends ConsumerState<PrayerJournalScreen> with 
             ),
           ),
           GlassFab(
+            key: _addPrayerFabKey,
             onPressed: _showAddPrayerDialog,
             icon: Icons.add,
           ),

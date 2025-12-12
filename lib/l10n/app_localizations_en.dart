@@ -3135,4 +3135,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addPrayerButtonShort => 'Prayer';
+
+  @override
+  String get tutorialSkip => 'Skip';
+
+  @override
+  String get tutorialNext => 'Next';
+
+  @override
+  String get tutorialPrevious => 'Previous';
+
+  @override
+  String get tutorialFinish => 'Finish';
+
+  @override
+  String get tutorialHomeTitle => 'Navigation Menu';
+
+  @override
+  String get tutorialHomeDescription =>
+      'Tap this menu to navigate between different sections of the app - Bible, Chat, Prayers, Devotionals, and more!';
+
+  @override
+  String get tutorialBibleTapTitle => 'Tap to Select Verses';
+
+  @override
+  String get tutorialBibleTapDescription =>
+      'Tap any verse to select it. Long press to view options like bookmarking and sharing.';
+
+  @override
+  String get tutorialBibleBookmarkTitle => 'Bookmark Your Favorites';
+
+  @override
+  String get tutorialBibleBookmarkDescription =>
+      'Tap the bookmark icon to save verses for quick access later.';
+
+  @override
+  String get tutorialBibleChatTitle => 'Intelligent Verse Chat';
+
+  @override
+  String get tutorialBibleChatDescription =>
+      'Ask questions about any verse and get biblical insights and explanations.';
+
+  @override
+  String get tutorialPrayerTitle => 'Add Your Prayers';
+
+  @override
+  String get tutorialPrayerDescription =>
+      'Tap here to add a new prayer request. Track your prayers and mark them as answered!';
 }

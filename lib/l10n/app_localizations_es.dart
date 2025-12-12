@@ -3178,4 +3178,51 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get addPrayerButtonShort => 'Oración';
+
+  @override
+  String get tutorialSkip => 'Omitir';
+
+  @override
+  String get tutorialNext => 'Siguiente';
+
+  @override
+  String get tutorialPrevious => 'Anterior';
+
+  @override
+  String get tutorialFinish => 'Finalizar';
+
+  @override
+  String get tutorialHomeTitle => 'Menú de Navegación';
+
+  @override
+  String get tutorialHomeDescription =>
+      'Toca este menú para navegar entre las diferentes secciones de la aplicación: Biblia, Chat, Oraciones, Devocionales y más!';
+
+  @override
+  String get tutorialBibleTapTitle => 'Toca para Seleccionar Versículos';
+
+  @override
+  String get tutorialBibleTapDescription =>
+      'Toca cualquier versículo para seleccionarlo. Mantén presionado para ver opciones como guardar y compartir.';
+
+  @override
+  String get tutorialBibleBookmarkTitle => 'Guarda tus Favoritos';
+
+  @override
+  String get tutorialBibleBookmarkDescription =>
+      'Toca el ícono de marcador para guardar versículos para acceso rápido más tarde.';
+
+  @override
+  String get tutorialBibleChatTitle => 'Chat Inteligente de Versículos';
+
+  @override
+  String get tutorialBibleChatDescription =>
+      'Haz preguntas sobre cualquier versículo y obtén perspectivas y explicaciones bíblicas.';
+
+  @override
+  String get tutorialPrayerTitle => 'Añade tus Oraciones';
+
+  @override
+  String get tutorialPrayerDescription =>
+      'Toca aquí para añadir una nueva petición de oración. Sigue tus oraciones y márcalas como respondidas!';
 }
