@@ -28,7 +28,8 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   // User data controllers
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController(text: "friend@example.com");
+  final TextEditingController _emailController =
+      TextEditingController(text: "friend@example.com");
   String userName = '';
   bool _isNavigating = false;
 
@@ -93,7 +94,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   // Build achievements list based on real stats
-  List<Achievement> _buildAchievements(BuildContext context, int prayerStreak, int savedVerses, int devotionalsCompleted, int readingPlansActive, int devotionalStreak, int totalPrayers, int sharedChats, int discipleCompletionCount) {
+  List<Achievement> _buildAchievements(
+      BuildContext context,
+      int prayerStreak,
+      int savedVerses,
+      int devotionalsCompleted,
+      int readingPlansActive,
+      int devotionalStreak,
+      int totalPrayers,
+      int sharedChats,
+      int discipleCompletionCount) {
     final l10n = AppLocalizations.of(context);
     return [
       Achievement(
@@ -102,7 +112,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.local_fire_department,
         color: Colors.orange,
         isUnlocked: prayerStreak >= 7,
-        progress: prayerStreak >= 7 ? (prayerStreak % 7 == 0 ? 0 : prayerStreak % 7) : prayerStreak,
+        progress: prayerStreak >= 7
+            ? (prayerStreak % 7 == 0 ? 0 : prayerStreak % 7)
+            : prayerStreak,
         total: 7,
         completionCount: prayerStreak >= 7 ? (prayerStreak ~/ 7) : null,
       ),
@@ -112,7 +124,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.favorite,
         color: Colors.pink,
         isUnlocked: totalPrayers >= 50,
-        progress: totalPrayers >= 50 ? (totalPrayers % 50 == 0 ? 0 : totalPrayers % 50) : totalPrayers,
+        progress: totalPrayers >= 50
+            ? (totalPrayers % 50 == 0 ? 0 : totalPrayers % 50)
+            : totalPrayers,
         total: 50,
         completionCount: totalPrayers >= 50 ? (totalPrayers ~/ 50) : null,
       ),
@@ -122,19 +136,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.book,
         color: Colors.blue,
         isUnlocked: savedVerses >= 100,
-        progress: savedVerses >= 100 ? (savedVerses % 100 == 0 ? 0 : savedVerses % 100) : savedVerses,
+        progress: savedVerses >= 100
+            ? (savedVerses % 100 == 0 ? 0 : savedVerses % 100)
+            : savedVerses,
         total: 100,
         completionCount: savedVerses >= 100 ? (savedVerses ~/ 100) : null,
       ),
       Achievement(
         title: l10n.achievementDailyBread,
-        description: l10n.achievementDailyBreadDesc + (devotionalStreak > 0 ? ' • 🔥 $devotionalStreak day${devotionalStreak > 1 ? 's' : ''} streak' : ''),
+        description: l10n.achievementDailyBreadDesc +
+            (devotionalStreak > 0
+                ? ' • 🔥 $devotionalStreak day${devotionalStreak > 1 ? 's' : ''} streak'
+                : ''),
         icon: Icons.auto_stories,
         color: Colors.purple,
         isUnlocked: devotionalsCompleted >= 30,
-        progress: devotionalsCompleted >= 30 ? (devotionalsCompleted % 30 == 0 ? 0 : devotionalsCompleted % 30) : devotionalsCompleted,
+        progress: devotionalsCompleted >= 30
+            ? (devotionalsCompleted % 30 == 0 ? 0 : devotionalsCompleted % 30)
+            : devotionalsCompleted,
         total: 30,
-        completionCount: devotionalsCompleted >= 30 ? (devotionalsCompleted ~/ 30) : null,
+        completionCount:
+            devotionalsCompleted >= 30 ? (devotionalsCompleted ~/ 30) : null,
       ),
       Achievement(
         title: l10n.achievementDeepDiver,
@@ -142,9 +164,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.stars,
         color: AppTheme.goldColor,
         isUnlocked: readingPlansActive >= 5,
-        progress: readingPlansActive >= 5 ? (readingPlansActive % 5 == 0 ? 0 : readingPlansActive % 5) : readingPlansActive,
+        progress: readingPlansActive >= 5
+            ? (readingPlansActive % 5 == 0 ? 0 : readingPlansActive % 5)
+            : readingPlansActive,
         total: 5,
-        completionCount: readingPlansActive >= 5 ? (readingPlansActive ~/ 5) : null,
+        completionCount:
+            readingPlansActive >= 5 ? (readingPlansActive ~/ 5) : null,
       ),
       Achievement(
         title: l10n.achievementDisciple,
@@ -152,7 +177,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         icon: Icons.share,
         color: Colors.teal,
         isUnlocked: sharedChats >= 10,
-        progress: sharedChats >= 10 ? (sharedChats % 10 == 0 ? 0 : sharedChats % 10) : sharedChats,
+        progress: sharedChats >= 10
+            ? (sharedChats % 10 == 0 ? 0 : sharedChats % 10)
+            : sharedChats,
         total: 10,
         completionCount: sharedChats >= 10 ? (sharedChats ~/ 10) : null,
       ),
@@ -183,64 +210,72 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         body: Center(child: Text(l10n.errorLoadingProfile(error.toString()))),
       ),
       data: (profileStats) => Scaffold(
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Stack(
-          children: [
-            const GradientBackground(),
-            SafeArea(
-              child: CustomScrollView(
-              slivers: [
-                _buildHeader(),
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: ResponsiveUtils.maxContentWidth(context),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16,
-                          right: 16,
-                          top: 80, // Account for pinned header height (70px) + spacing
-                          bottom: 24,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: AppSpacing.xl),
-                            _buildAchievementsSection(
-                              prayerStreak: profileStats.prayerStreak,
-                              savedVerses: profileStats.savedVerses,
-                              devotionalsCompleted: profileStats.devotionalsCompleted,
-                              readingPlansActive: profileStats.readingPlansActive,
-                              devotionalStreak: profileStats.devotionalStreak,
-                              totalPrayers: profileStats.totalPrayers,
-                              sharedChats: profileStats.sharedChats,
-                              discipleCompletionCount: profileStats.discipleCompletionCount,
+        body: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Stack(
+            children: [
+              const GradientBackground(),
+              SafeArea(
+                child: CustomScrollView(
+                  slivers: [
+                    _buildHeader(),
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: ResponsiveUtils.maxContentWidth(context),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 16,
+                              right: 16,
+                              top:
+                                  80, // Account for pinned header height (70px) + spacing
+                              bottom: 24,
                             ),
-                            const SizedBox(height: AppSpacing.xxl),
-                            _buildMenuSection(),
-                            const SizedBox(height: AppSpacing.xxl),
-                          ],
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: AppSpacing.xl),
+                                _buildAchievementsSection(
+                                  prayerStreak: profileStats.prayerStreak,
+                                  savedVerses: profileStats.savedVerses,
+                                  devotionalsCompleted:
+                                      profileStats.devotionalsCompleted,
+                                  readingPlansActive:
+                                      profileStats.readingPlansActive,
+                                  devotionalStreak:
+                                      profileStats.devotionalStreak,
+                                  totalPrayers: profileStats.totalPrayers,
+                                  sharedChats: profileStats.sharedChats,
+                                  discipleCompletionCount:
+                                      profileStats.discipleCompletionCount,
+                                ),
+                                const SizedBox(height: AppSpacing.xxl),
+                                _buildMenuSection(),
+                                const SizedBox(height: AppSpacing.xxl),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              // Pinned FAB
+              Positioned(
+                top: MediaQuery.of(context).padding.top + AppSpacing.xl,
+                left: AppSpacing.xl,
+                child: const GlassmorphicFABMenu()
+                    .animate()
+                    .fadeIn(duration: AppAnimations.slow)
+                    .slideY(begin: -0.3),
+              ),
+            ],
           ),
-            // Pinned FAB
-            Positioned(
-              top: MediaQuery.of(context).padding.top + AppSpacing.xl,
-              left: AppSpacing.xl,
-              child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
-            ),
-        ],
         ),
-      ),
       ),
     );
   }
@@ -251,6 +286,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return SliverPersistentHeader(
       pinned: true,
       delegate: _ProfileHeaderDelegate(
+        height: 80.0,
         child: Padding(
           padding: const EdgeInsets.only(
             left: AppSpacing.xl,
@@ -274,11 +310,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           duration: AppAnimations.normal,
                           switchInCurve: Curves.easeInOut,
                           switchOutCurve: Curves.easeInOut,
-                          transitionBuilder: (Widget child, Animation<double> animation) {
+                          transitionBuilder:
+                              (Widget child, Animation<double> animation) {
                             return FadeTransition(
                               opacity: animation,
                               child: ScaleTransition(
-                                scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+                                scale:
+                                    Tween<double>(begin: 0.8, end: 1.0).animate(
                                   CurvedAnimation(
                                     parent: animation,
                                     curve: Curves.easeOutBack,
@@ -292,11 +330,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               ? FrostedGlassCard(
                                   key: const ValueKey('username_card'),
                                   borderRadius: 20,
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
                                   child: Text(
                                     userName,
                                     style: TextStyle(
-                                      fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                                      fontSize: ResponsiveUtils.fontSize(
+                                          context, 16,
+                                          minSize: 14, maxSize: 18),
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.primaryText,
                                     ),
@@ -308,10 +349,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                   key: const ValueKey('pencil_icon'),
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: AppTheme.goldColor.withValues(alpha: 0.2),
+                                    color: AppTheme.goldColor
+                                        .withValues(alpha: 0.2),
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
-                                      color: AppTheme.goldColor.withValues(alpha: 0.3),
+                                      color: AppTheme.goldColor
+                                          .withValues(alpha: 0.3),
                                       width: 1,
                                     ),
                                   ),
@@ -354,7 +397,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   /// Fetch all achievements and their completion counts from AchievementService
   /// Shows ALL badges (colored if earned, grayed out if not)
   /// Optimized: Fetches all counts in parallel for better performance
-  Future<List<AchievementBadgeData>> _getEarnedBadges(AchievementService service) async {
+  Future<List<AchievementBadgeData>> _getEarnedBadges(
+      AchievementService service) async {
     final l10n = AppLocalizations.of(context);
     // Fetch all counts in parallel instead of sequentially
     final results = await Future.wait([
@@ -376,37 +420,49 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return [
       AchievementBadgeData(
         icon: Icons.local_fire_department,
-        color: unbrokenCount > 0 ? Colors.orange : Colors.white.withValues(alpha: 0.3),
+        color: unbrokenCount > 0
+            ? Colors.orange
+            : Colors.white.withValues(alpha: 0.3),
         completionCount: unbrokenCount,
         title: l10n.achievementUnbroken,
       ),
       AchievementBadgeData(
         icon: Icons.favorite,
-        color: relentlessCount > 0 ? Colors.pink : Colors.white.withValues(alpha: 0.3),
+        color: relentlessCount > 0
+            ? Colors.pink
+            : Colors.white.withValues(alpha: 0.3),
         completionCount: relentlessCount,
         title: l10n.achievementRelentless,
       ),
       AchievementBadgeData(
         icon: Icons.book,
-        color: curatorCount > 0 ? Colors.blue : Colors.white.withValues(alpha: 0.3),
+        color: curatorCount > 0
+            ? Colors.blue
+            : Colors.white.withValues(alpha: 0.3),
         completionCount: curatorCount,
         title: l10n.achievementCurator,
       ),
       AchievementBadgeData(
         icon: Icons.auto_stories,
-        color: dailyBreadCount > 0 ? Colors.purple : Colors.white.withValues(alpha: 0.3),
+        color: dailyBreadCount > 0
+            ? Colors.purple
+            : Colors.white.withValues(alpha: 0.3),
         completionCount: dailyBreadCount,
         title: l10n.achievementDailyBread,
       ),
       AchievementBadgeData(
         icon: Icons.stars,
-        color: deepDiverCount > 0 ? AppTheme.goldColor : Colors.white.withValues(alpha: 0.3),
+        color: deepDiverCount > 0
+            ? AppTheme.goldColor
+            : Colors.white.withValues(alpha: 0.3),
         completionCount: deepDiverCount,
         title: l10n.achievementDeepDiver,
       ),
       AchievementBadgeData(
         icon: Icons.share,
-        color: discipleCount > 0 ? Colors.teal : Colors.white.withValues(alpha: 0.3),
+        color: discipleCount > 0
+            ? Colors.teal
+            : Colors.white.withValues(alpha: 0.3),
         completionCount: discipleCount,
         title: l10n.achievementDisciple,
       ),
@@ -479,7 +535,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         Text(
           l10n.achievements,
           style: TextStyle(
-            fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+            fontSize:
+                ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
             fontWeight: FontWeight.w700,
             color: AppColors.primaryText,
           ),
@@ -502,7 +559,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             final achievement = achievements[index];
             return _buildAchievementCard(achievement, index)
                 .animate()
-                .fadeIn(duration: AppAnimations.slow, delay: (300 + index * 50).ms)
+                .fadeIn(
+                    duration: AppAnimations.slow, delay: (300 + index * 50).ms)
                 .slideX(begin: 0.2);
           },
         ),
@@ -560,7 +618,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       child: Text(
                         achievement.title,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontSize: ResponsiveUtils.fontSize(context, 16,
+                              minSize: 14, maxSize: 18),
                           fontWeight: FontWeight.w700,
                           color: achievement.isUnlocked
                               ? Colors.white
@@ -580,13 +639,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 Text(
                   achievement.description,
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                    fontSize: ResponsiveUtils.fontSize(context, 12,
+                        minSize: 10, maxSize: 14),
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                 ),
                 // Show progress bar for both unlocked and not-yet-unlocked achievements
                 // This allows tracking progress toward next badge level
-                if (achievement.progress != null && achievement.total != null) ...[
+                if (achievement.progress != null &&
+                    achievement.total != null) ...[
                   const SizedBox(height: AppSpacing.sm),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(AppRadius.xs / 2),
@@ -608,14 +669,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           child: Text(
                             '${achievement.progress}/${achievement.total}',
                             style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
+                              fontSize: ResponsiveUtils.fontSize(context, 10,
+                                  minSize: 9, maxSize: 12),
                               color: AppColors.tertiaryText,
                             ),
                           ),
                         ),
                       ),
                       // Show which level we're working toward if already unlocked
-                      if (achievement.completionCount != null && achievement.completionCount! > 0)
+                      if (achievement.completionCount != null &&
+                          achievement.completionCount! > 0)
                         Expanded(
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
@@ -623,7 +686,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             child: Text(
                               'Level ${achievement.completionCount! + 1}',
                               style: TextStyle(
-                                fontSize: ResponsiveUtils.fontSize(context, 10, minSize: 9, maxSize: 12),
+                                fontSize: ResponsiveUtils.fontSize(context, 10,
+                                    minSize: 9, maxSize: 12),
                                 color: achievement.color.withValues(alpha: 0.7),
                                 fontWeight: FontWeight.w600,
                               ),
@@ -642,9 +706,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
     // Add subtle pulse animation for unlocked achievements
     if (achievement.isUnlocked) {
-      return card
-          .animate(onPlay: (controller) => controller.repeat())
-          .shimmer(
+      return card.animate(onPlay: (controller) => controller.repeat()).shimmer(
             duration: const Duration(milliseconds: 2000),
             color: achievement.color.withValues(alpha: 0.3),
             angle: 0,
@@ -662,14 +724,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         Text(
           l10n.account,
           style: TextStyle(
-            fontSize: ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
+            fontSize:
+                ResponsiveUtils.fontSize(context, 18, minSize: 16, maxSize: 20),
             fontWeight: FontWeight.w700,
             color: AppColors.primaryText,
           ),
         ).animate().fadeIn(duration: AppAnimations.slow, delay: 400.ms),
-
         const SizedBox(height: AppSpacing.lg),
-
         FrostedGlassCard(
           padding: const EdgeInsets.all(AppSpacing.sm),
           child: Column(
@@ -680,7 +741,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 () async {
                   if (_isNavigating) return;
                   _isNavigating = true;
-                  await NavigationService.pushNamedImmediate(AppRoutes.settings);
+                  await NavigationService.pushNamedImmediate(
+                      AppRoutes.settings);
                   Future.delayed(const Duration(milliseconds: 300), () {
                     if (mounted) setState(() => _isNavigating = false);
                   });
@@ -718,7 +780,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Widget _buildMenuItem(String title, IconData icon, VoidCallback onTap, {bool isDestructive = false}) {
+  Widget _buildMenuItem(String title, IconData icon, VoidCallback onTap,
+      {bool isDestructive = false}) {
     return ListTile(
       leading: Icon(
         icon,
@@ -730,12 +793,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         style: TextStyle(
           color: isDestructive ? Colors.red : Colors.white,
           fontWeight: FontWeight.w500,
-          fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+          fontSize:
+              ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
         ),
       ),
       trailing: Icon(
         Icons.chevron_right,
-        color: isDestructive ? Colors.red.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.5),
+        color: isDestructive
+            ? Colors.red.withValues(alpha: 0.5)
+            : Colors.white.withValues(alpha: 0.5),
         size: ResponsiveUtils.iconSize(context, 20),
       ),
       onTap: onTap,
@@ -768,17 +834,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 Text(
                   l10n.editProfile,
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                    fontSize: ResponsiveUtils.fontSize(context, 20,
+                        minSize: 18, maxSize: 24),
                     fontWeight: FontWeight.w700,
                     color: AppColors.primaryText,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xl),
-
                 Text(
                   l10n.name,
                   style: TextStyle(
-                    fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                    fontSize: ResponsiveUtils.fontSize(context, 14,
+                        minSize: 12, maxSize: 16),
                     fontWeight: FontWeight.w600,
                     color: AppColors.primaryText,
                   ),
@@ -789,7 +856,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: l10n.enterYourName,
-                    hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+                    hintStyle:
+                        TextStyle(color: Colors.white.withValues(alpha: 0.5)),
                     filled: true,
                     fillColor: Colors.white.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
@@ -798,9 +866,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: AppSpacing.xxl),
-
                 Row(
                   children: [
                     Expanded(
@@ -815,7 +881,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       child: GlassButton(
                         text: hasExistingName ? l10n.delete : l10n.save,
                         height: 48,
-                        borderColor: hasExistingName ? Colors.red.withValues(alpha: 0.8) : null,
+                        borderColor: hasExistingName
+                            ? Colors.red.withValues(alpha: 0.8)
+                            : null,
                         onPressed: () async {
                           // If deleting, clear the text field first
                           if (hasExistingName) {
@@ -855,7 +923,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Text(
                 l10n.signOutQuestion,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                  fontSize: ResponsiveUtils.fontSize(context, 20,
+                      minSize: 18, maxSize: 24),
                   fontWeight: FontWeight.w700,
                   color: AppColors.primaryText,
                 ),
@@ -864,7 +933,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Text(
                 l10n.signOutConfirmation,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  fontSize: ResponsiveUtils.fontSize(context, 14,
+                      minSize: 12, maxSize: 16),
                   color: AppColors.secondaryText,
                 ),
                 textAlign: TextAlign.center,
@@ -913,10 +983,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
-
-
-
-
 }
 
 class Achievement {
@@ -927,7 +993,8 @@ class Achievement {
   final bool isUnlocked;
   final int? progress;
   final int? total;
-  final int? completionCount;  // How many times achievement earned (for multiplier display)
+  final int?
+      completionCount; // How many times achievement earned (for multiplier display)
 
   Achievement({
     required this.title,
@@ -948,7 +1015,7 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   _ProfileHeaderDelegate({
     required this.child,
-    this.height = 70.0,
+    required this.height,
   });
 
   @override
@@ -958,7 +1025,8 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => height;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       height: height,
       alignment: Alignment.topCenter,

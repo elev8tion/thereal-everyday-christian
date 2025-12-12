@@ -35,15 +35,14 @@ import '../components/floating_message_badge.dart';
 import '../core/services/subscription_service.dart';
 import '../components/chat_action_buttons_header.dart';
 import '../components/verse_context_message.dart';
-import '../models/verse_context.dart';
 import '../core/widgets/app_snackbar.dart';
 import '../services/chat_share_service.dart';
 import '../l10n/app_localizations.dart';
-import '../components/fab_tooltip.dart';
-import '../core/services/preferences_service.dart';
+import '../models/verse_context.dart';
 
 class ChatScreen extends HookConsumerWidget {
-  final VerseContext? verseContext; // Optional verse context for verse discussion
+  final VerseContext?
+      verseContext; // Optional verse context for verse discussion
 
   const ChatScreen({
     super.key,
@@ -71,14 +70,17 @@ class ChatScreen extends HookConsumerWidget {
     final conversationService = useMemoized(() => ConversationService());
     final canSend = useState(false);
     final showScrollToBottom = useState(false);
-    final hasAddedVerseContext = useState(false); // Track if verse context was prepended to AI
-    final regeneratedMessageId = useState<String?>(null); // Track which message was just regenerated for animation
+    final hasAddedVerseContext =
+        useState(false); // Track if verse context was prepended to AI
+    final regeneratedMessageId = useState<String?>(
+        null); // Track which message was just regenerated for animation
 
     // Listen to text changes to update send button state
     useEffect(() {
       void listener() {
         canSend.value = messageController.text.trim().isNotEmpty;
       }
+
       messageController.addListener(listener);
       return () => messageController.removeListener(listener);
     }, [messageController]);
@@ -93,6 +95,7 @@ class ChatScreen extends HookConsumerWidget {
           showScrollToBottom.value = (maxScroll - currentScroll) > 200;
         }
       }
+
       scrollController.addListener(listener);
       return () => scrollController.removeListener(listener);
     }, [scrollController]);
@@ -113,8 +116,8 @@ class ChatScreen extends HookConsumerWidget {
           debugPrint('🆕 Creating fresh session');
           final newSessionId = await conversationService.createSession(
             title: verseContext != null
-              ? l10n.discussingVerse(verseContext!.reference)
-              : l10n.newConversation,
+                ? l10n.discussingVerse(verseContext!.reference)
+                : l10n.newConversation,
           );
           sessionId.value = newSessionId;
           debugPrint('✅ Created new session: $newSessionId');
@@ -131,7 +134,8 @@ class ChatScreen extends HookConsumerWidget {
           } else {
             // For verse discussions, start with empty messages (verse context shows separately)
             messages.value = [];
-            debugPrint('✅ New verse discussion session initialized: ${verseContext!.reference}');
+            debugPrint(
+                '✅ New verse discussion session initialized: ${verseContext!.reference}');
           }
         } catch (e, stackTrace) {
           debugPrint('❌ Failed to initialize session: $e');
@@ -230,7 +234,8 @@ class ChatScreen extends HookConsumerWidget {
       final subscriptionService = ref.read(subscriptionServiceProvider);
       final subscriptionStatus = subscriptionService.getSubscriptionStatus();
 
-      debugPrint('🔍 Subscription check: status=$subscriptionStatus, kDebugMode=$kDebugMode');
+      debugPrint(
+          '🔍 Subscription check: status=$subscriptionStatus, kDebugMode=$kDebugMode');
 
       // 1. Check if user is locked out (trial expired or premium expired)
       if (subscriptionStatus == SubscriptionStatus.trialExpired ||
@@ -281,7 +286,8 @@ class ChatScreen extends HookConsumerWidget {
               context,
               MaterialPageRoute(
                 builder: (_) => PaywallScreen(
-                  showTrialInfo: subscriptionStatus == SubscriptionStatus.inTrial,
+                  showTrialInfo:
+                      subscriptionStatus == SubscriptionStatus.inTrial,
                   showMessageStats: true,
                 ),
               ),
@@ -379,12 +385,16 @@ class ChatScreen extends HookConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.info_outline, color: Colors.orange.shade300, size: 20),
+                      Icon(Icons.info_outline,
+                          color: Colors.orange.shade300, size: 20),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           l10n.crisisResourcesAvailable,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white),
                         ),
                       ),
                     ],
@@ -399,7 +409,10 @@ class ChatScreen extends HookConsumerWidget {
                   const SizedBox(height: 8),
                   Text(
                     l10n.crisisResourcesTapToView,
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.orange.shade300),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.orange.shade300),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -434,7 +447,7 @@ class ChatScreen extends HookConsumerWidget {
 
       // Create AI message placeholder IMMEDIATELY (before streaming)
       final aiMessage = ChatMessage.ai(
-        content: '',  // Start with empty content
+        content: '', // Start with empty content
         sessionId: sessionId.value,
       );
 
@@ -477,9 +490,12 @@ class ChatScreen extends HookConsumerWidget {
         String aiInput = text.trim();
         if (verseContext != null && !hasAddedVerseContext.value) {
           // Only on first user message in verse discussion
-          aiInput = "Regarding ${verseContext!.fullReference}: '${verseContext!.verseText}'\n\n$aiInput";
-          hasAddedVerseContext.value = true; // Mark as added so we don't prepend again
-          debugPrint('📖 Prepended verse context to AI input (not visible to user)');
+          aiInput =
+              "Regarding ${verseContext!.fullReference}: '${verseContext!.verseText}'\n\n$aiInput";
+          hasAddedVerseContext.value =
+              true; // Mark as added so we don't prepend again
+          debugPrint(
+              '📖 Prepended verse context to AI input (not visible to user)');
         }
 
         // Accumulate full response
@@ -488,7 +504,8 @@ class ChatScreen extends HookConsumerWidget {
         // Start streaming
         final stream = aiService.generateResponseStream(
           userInput: aiInput, // Send modified input to AI
-          conversationHistory: messages.value.sublist(0, messages.value.length - 1), // Exclude the placeholder
+          conversationHistory: messages.value
+              .sublist(0, messages.value.length - 1), // Exclude the placeholder
           language: language,
         );
 
@@ -508,16 +525,19 @@ class ChatScreen extends HookConsumerWidget {
           scrollToBottom();
         }
 
-        debugPrint('✅ Streaming complete, full response length: ${fullResponse.length}');
+        debugPrint(
+            '✅ Streaming complete, full response length: ${fullResponse.length}');
 
         // Filter AI response for harmful content
         final contentFilterService = ContentFilterService();
-        final filterResult = contentFilterService.filterResponse(fullResponse.toString());
+        final filterResult =
+            contentFilterService.filterResponse(fullResponse.toString());
 
         String finalContent;
         if (filterResult.isRejected) {
           // Log the filtering event
-          contentFilterService.logFilteredResponse(filterResult, fullResponse.toString());
+          contentFilterService.logFilteredResponse(
+              filterResult, fullResponse.toString());
 
           // Use fallback response instead
           finalContent = contentFilterService.getFallbackResponse('default');
@@ -549,21 +569,25 @@ class ChatScreen extends HookConsumerWidget {
           debugPrint('💾 Saved AI message to session ${sessionId.value}');
 
           // Auto-generate conversation title after first exchange
-          final conversationMessages = messages.value.where((m) =>
-            m.type == MessageType.user || m.type == MessageType.ai
-          ).toList();
+          final conversationMessages = messages.value
+              .where(
+                  (m) => m.type == MessageType.user || m.type == MessageType.ai)
+              .toList();
 
-          debugPrint('🔍 Conversation has ${conversationMessages.length} messages (excluding system)');
+          debugPrint(
+              '🔍 Conversation has ${conversationMessages.length} messages (excluding system)');
 
           if (conversationMessages.length == 2) {
             try {
               debugPrint('🎯 Triggering title generation...');
               final userMsg = conversationMessages.first.content;
-              final title = await GeminiAIService.instance.generateConversationTitle(
+              final title =
+                  await GeminiAIService.instance.generateConversationTitle(
                 userMessage: userMsg,
                 aiResponse: fullResponse.toString(),
               );
-              await conversationService.updateSessionTitle(sessionId.value!, title);
+              await conversationService.updateSessionTitle(
+                  sessionId.value!, title);
               debugPrint('✅ Auto-generated title: "$title"');
             } catch (e) {
               debugPrint('⚠️ Failed to generate title: $e');
@@ -578,7 +602,8 @@ class ChatScreen extends HookConsumerWidget {
         // Fallback to contextual response if AI service fails
         debugPrint('❌ AI Service error: $e');
         debugPrint('❌ Stack trace: ${StackTrace.current}');
-        final response = _getContextualResponse(text.trim().toLowerCase(), l10n);
+        final response =
+            _getContextualResponse(text.trim().toLowerCase(), l10n);
         final aiMessage = ChatMessage.ai(
           content: response,
           sessionId: sessionId.value,
@@ -592,7 +617,8 @@ class ChatScreen extends HookConsumerWidget {
         // Save fallback AI message to database
         if (sessionId.value != null) {
           await conversationService.saveMessage(aiMessage);
-          debugPrint('💾 Saved fallback AI message to session ${sessionId.value}');
+          debugPrint(
+              '💾 Saved fallback AI message to session ${sessionId.value}');
         } else {
           debugPrint('⚠️ Cannot save fallback message - no active session');
         }
@@ -770,7 +796,8 @@ class ChatScreen extends HookConsumerWidget {
         debugPrint('🔄 Invalidated subscriptionSnapshotProvider to refresh UI');
       }
 
-      debugPrint('🔄 Regenerating response for user input: "$userInput" (message consumed)');
+      debugPrint(
+          '🔄 Regenerating response for user input: "$userInput" (message consumed)');
       isTyping.value = true;
 
       try {
@@ -800,13 +827,16 @@ class ChatScreen extends HookConsumerWidget {
 
         // Filter regenerated response for harmful content
         final contentFilterService = ContentFilterService();
-        final filterResult = contentFilterService.filterResponse(response.content);
+        final filterResult =
+            contentFilterService.filterResponse(response.content);
 
         String finalContent;
         if (filterResult.isRejected) {
-          contentFilterService.logFilteredResponse(filterResult, response.content);
+          contentFilterService.logFilteredResponse(
+              filterResult, response.content);
           finalContent = contentFilterService.getFallbackResponse('default');
-          debugPrint('⚠️ Regenerated content filtered: ${filterResult.rejectionReason}');
+          debugPrint(
+              '⚠️ Regenerated content filtered: ${filterResult.rejectionReason}');
         } else {
           finalContent = response.content;
         }
@@ -829,14 +859,16 @@ class ChatScreen extends HookConsumerWidget {
           // Delete and re-save with same ID (preserves message identity)
           await conversationService.deleteMessage(aiMessage.id);
           await conversationService.saveMessage(newAiMessage);
-          debugPrint('💾 Updated message in database (ID preserved: ${aiMessage.id})');
+          debugPrint(
+              '💾 Updated message in database (ID preserved: ${aiMessage.id})');
         }
 
         isTyping.value = false;
 
         // Set regenerated message ID for shimmer animation
         regeneratedMessageId.value = newAiMessage.id;
-        debugPrint('✨ Triggering shimmer animation for message ${newAiMessage.id}');
+        debugPrint(
+            '✨ Triggering shimmer animation for message ${newAiMessage.id}');
 
         // Clear animation flag after 3 seconds
         Future.delayed(const Duration(seconds: 3), () {
@@ -971,7 +1003,8 @@ class ChatScreen extends HookConsumerWidget {
 
       try {
         debugPrint('📤 Exporting conversation: ${sessionId.value}');
-        final exportText = await conversationService.exportConversation(sessionId.value!);
+        final exportText =
+            await conversationService.exportConversation(sessionId.value!);
 
         if (exportText.isEmpty) {
           if (context.mounted) {
@@ -1001,7 +1034,8 @@ class ChatScreen extends HookConsumerWidget {
                           style: TextStyle(
                             color: AppColors.primaryText,
                             fontWeight: FontWeight.w700,
-                            fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                            fontSize: ResponsiveUtils.fontSize(context, 20,
+                                minSize: 18, maxSize: 24),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -1026,7 +1060,8 @@ class ChatScreen extends HookConsumerWidget {
                         style: TextStyle(
                           color: AppColors.primaryText,
                           fontFamily: 'monospace',
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                          fontSize: ResponsiveUtils.fontSize(context, 12,
+                              minSize: 10, maxSize: 14),
                           height: 1.4,
                         ),
                       ),
@@ -1095,7 +1130,8 @@ class ChatScreen extends HookConsumerWidget {
       try {
         final l10n = AppLocalizations.of(context);
         debugPrint('📤 Sharing conversation: ${sessionId.value}');
-        final exportText = await conversationService.exportConversation(sessionId.value!);
+        final exportText =
+            await conversationService.exportConversation(sessionId.value!);
 
         if (exportText.isEmpty) {
           if (context.mounted) {
@@ -1155,7 +1191,8 @@ class ChatScreen extends HookConsumerWidget {
         );
 
         // Filter out system messages
-        final shareableMessages = messages.value.where((m) => m.type != MessageType.system).toList();
+        final shareableMessages =
+            messages.value.where((m) => m.type != MessageType.system).toList();
 
         if (shareableMessages.isEmpty) {
           if (context.mounted) {
@@ -1169,7 +1206,8 @@ class ChatScreen extends HookConsumerWidget {
         }
 
         // Create shareable widgets
-        final messageWidgets = chatShareService.createShareableMessageWidgets(shareableMessages);
+        final messageWidgets =
+            chatShareService.createShareableMessageWidgets(shareableMessages);
 
         // Share the entire conversation
         await chatShareService.shareChat(
@@ -1233,7 +1271,8 @@ class ChatScreen extends HookConsumerWidget {
         final exchangeMessages = [userMessage, aiMessage];
 
         // Create shareable widgets
-        final messageWidgets = chatShareService.createShareableMessageWidgets(exchangeMessages);
+        final messageWidgets =
+            chatShareService.createShareableMessageWidgets(exchangeMessages);
 
         // Share the exchange
         await chatShareService.shareChat(
@@ -1295,7 +1334,8 @@ class ChatScreen extends HookConsumerWidget {
               subtitle: Text(
                 l10n.exportConversationDesc,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                  fontSize: ResponsiveUtils.fontSize(context, 12,
+                      minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
                 ),
               ),
@@ -1317,7 +1357,8 @@ class ChatScreen extends HookConsumerWidget {
                   ),
                   borderRadius: AppRadius.mediumRadius,
                 ),
-                child: const Icon(Icons.text_snippet, color: AppTheme.accentColor),
+                child:
+                    const Icon(Icons.text_snippet, color: AppTheme.accentColor),
               ),
               title: Text(
                 l10n.shareText,
@@ -1329,7 +1370,8 @@ class ChatScreen extends HookConsumerWidget {
               subtitle: Text(
                 l10n.shareTextDesc,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                  fontSize: ResponsiveUtils.fontSize(context, 12,
+                      minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
                 ),
               ),
@@ -1363,7 +1405,8 @@ class ChatScreen extends HookConsumerWidget {
               subtitle: Text(
                 l10n.shareAsImageDesc,
                 style: TextStyle(
-                  fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                  fontSize: ResponsiveUtils.fontSize(context, 12,
+                      minSize: 10, maxSize: 14),
                   color: AppColors.secondaryText,
                 ),
               ),
@@ -1395,7 +1438,8 @@ class ChatScreen extends HookConsumerWidget {
       final suspensionMessageAsync = ref.watch(suspensionMessageProvider);
 
       final remainingTime = remainingTimeAsync.whenOrNull(data: (time) => time);
-      final suspensionMessage = suspensionMessageAsync.whenOrNull(data: (msg) => msg);
+      final suspensionMessage =
+          suspensionMessageAsync.whenOrNull(data: (msg) => msg);
 
       return Scaffold(
         body: Stack(
@@ -1426,9 +1470,10 @@ class ChatScreen extends HookConsumerWidget {
     // If trial expired or premium expired, show lockout overlay
     if (subscriptionStatus == SubscriptionStatus.trialExpired ||
         subscriptionStatus == SubscriptionStatus.premiumExpired) {
-      final lockoutReason = subscriptionStatus == SubscriptionStatus.trialExpired
-          ? LockoutReason.trialExpired
-          : LockoutReason.premiumExpired;
+      final lockoutReason =
+          subscriptionStatus == SubscriptionStatus.trialExpired
+              ? LockoutReason.trialExpired
+              : LockoutReason.premiumExpired;
 
       return Scaffold(
         body: Stack(
@@ -1473,19 +1518,33 @@ class ChatScreen extends HookConsumerWidget {
                         SliverPersistentHeader(
                           pinned: true,
                           delegate: ChatActionButtonsDelegate(
-                            height: 120.0, // Increased to accommodate full FAB menu (80px) + padding (20px top + 20px bottom)
+                            height:
+                                120.0, // Increased to accommodate full FAB menu (80px) + padding (20px top + 20px bottom)
                             child: ChatActionButtons(
                               onMorePressed: showChatOptions,
-                              onHistoryPressed: () => _showConversationHistory(context, messages, sessionId, conversationService, l10n),
-                              onNewPressed: () => _startNewConversation(context, messages, sessionId, conversationService, l10n),
-                              onReturnToReadingPressed: verseContext != null ? () => _returnToReading(context) : null,
+                              onHistoryPressed: () => _showConversationHistory(
+                                  context,
+                                  messages,
+                                  sessionId,
+                                  conversationService,
+                                  l10n),
+                              onNewPressed: () => _startNewConversation(
+                                  context,
+                                  messages,
+                                  sessionId,
+                                  conversationService,
+                                  l10n),
+                              onReturnToReadingPressed: verseContext != null
+                                  ? () => _returnToReading(context)
+                                  : null,
                             ),
                           ),
                         ),
                         // Verse context message (only shows if navigated from verse)
                         if (verseContext != null)
                           SliverToBoxAdapter(
-                            child: VerseContextMessage(verseContext: verseContext!),
+                            child: VerseContextMessage(
+                                verseContext: verseContext!),
                           ),
                         // Messages list
                         _buildMessagesSliver(
@@ -1502,7 +1561,8 @@ class ChatScreen extends HookConsumerWidget {
                         ),
                         // Add spacing at bottom to prevent last message from being hidden by floating input
                         const SliverToBoxAdapter(
-                          child: SizedBox(height: 80), // Space for floating input field
+                          child: SizedBox(
+                              height: 80), // Space for floating input field
                         ),
                       ],
                     ),
@@ -1515,7 +1575,8 @@ class ChatScreen extends HookConsumerWidget {
               bottom: 0,
               left: 0,
               right: 0,
-              child: _buildMessageInput(context, messageController, canSend.value, sendMessage),
+              child: _buildMessageInput(
+                  context, messageController, canSend.value, sendMessage),
             ),
             // Scroll to bottom button
             ScrollToBottom(
@@ -1549,7 +1610,8 @@ class ChatScreen extends HookConsumerWidget {
               height: 16,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white.withValues(alpha: 0.9)),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.white.withValues(alpha: 0.9)),
               ),
             ),
             const SizedBox(width: 12),
@@ -1584,7 +1646,8 @@ class ChatScreen extends HookConsumerWidget {
         ),
         child: Row(
           children: [
-            Icon(Icons.warning_amber, color: Colors.white.withValues(alpha: 0.9), size: 16),
+            Icon(Icons.warning_amber,
+                color: Colors.white.withValues(alpha: 0.9), size: 16),
             const SizedBox(width: 12),
             Expanded(
               child: AutoSizeText(
@@ -1616,7 +1679,8 @@ class ChatScreen extends HookConsumerWidget {
         ),
         child: Row(
           children: [
-            Icon(Icons.error_outline, color: Colors.white.withValues(alpha: 0.9), size: 16),
+            Icon(Icons.error_outline,
+                color: Colors.white.withValues(alpha: 0.9), size: 16),
             const SizedBox(width: 12),
             Expanded(
               child: AutoSizeText(
@@ -1661,7 +1725,15 @@ class ChatScreen extends HookConsumerWidget {
               return _buildTypingIndicator();
             }
 
-            return _buildMessageBubble(context, messages[index], index, onRegenerateResponse, onShareExchange, regeneratedMessageId, l10n, messages);
+            return _buildMessageBubble(
+                context,
+                messages[index],
+                index,
+                onRegenerateResponse,
+                onShareExchange,
+                regeneratedMessageId,
+                l10n,
+                messages);
           },
           childCount: messages.length + (isTyping ? 1 : 0),
         ),
@@ -1679,7 +1751,8 @@ class ChatScreen extends HookConsumerWidget {
     AppLocalizations l10n,
     List<ChatMessage> allMessages,
   ) {
-    final bool isRegeneratedMessage = regeneratedMessageId != null && message.id == regeneratedMessageId;
+    final bool isRegeneratedMessage =
+        regeneratedMessageId != null && message.id == regeneratedMessageId;
 
     final messageWidget = GestureDetector(
       onLongPress: message.isAI
@@ -1703,7 +1776,8 @@ class ChatScreen extends HookConsumerWidget {
                           ),
                           borderRadius: AppRadius.mediumRadius,
                         ),
-                        child: const Icon(Icons.copy, color: AppTheme.primaryColor),
+                        child: const Icon(Icons.copy,
+                            color: AppTheme.primaryColor),
                       ),
                       title: Text(
                         l10n.copyMessage,
@@ -1715,13 +1789,15 @@ class ChatScreen extends HookConsumerWidget {
                       subtitle: Text(
                         l10n.copyMessageDesc,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                          fontSize: ResponsiveUtils.fontSize(context, 12,
+                              minSize: 10, maxSize: 14),
                           color: AppColors.secondaryText,
                         ),
                       ),
                       onTap: () async {
                         Navigator.pop(context);
-                        await Clipboard.setData(ClipboardData(text: message.content));
+                        await Clipboard.setData(
+                            ClipboardData(text: message.content));
                         if (context.mounted) {
                           AppSnackBar.show(
                             context,
@@ -1745,7 +1821,8 @@ class ChatScreen extends HookConsumerWidget {
                           ),
                           borderRadius: AppRadius.mediumRadius,
                         ),
-                        child: const Icon(Icons.refresh, color: AppTheme.primaryColor),
+                        child: const Icon(Icons.refresh,
+                            color: AppTheme.primaryColor),
                       ),
                       title: Text(
                         l10n.regenerateResponse,
@@ -1757,7 +1834,8 @@ class ChatScreen extends HookConsumerWidget {
                       subtitle: Text(
                         l10n.regenerateResponseDesc,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                          fontSize: ResponsiveUtils.fontSize(context, 12,
+                              minSize: 10, maxSize: 14),
                           color: AppColors.secondaryText,
                         ),
                       ),
@@ -1779,7 +1857,8 @@ class ChatScreen extends HookConsumerWidget {
                           ),
                           borderRadius: AppRadius.mediumRadius,
                         ),
-                        child: const Icon(Icons.share, color: AppTheme.goldColor),
+                        child:
+                            const Icon(Icons.share, color: AppTheme.goldColor),
                       ),
                       title: Text(
                         l10n.shareExchange,
@@ -1791,7 +1870,8 @@ class ChatScreen extends HookConsumerWidget {
                       subtitle: Text(
                         l10n.shareExchangeDesc,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 14),
+                          fontSize: ResponsiveUtils.fontSize(context, 12,
+                              minSize: 10, maxSize: 14),
                           color: AppColors.secondaryText,
                         ),
                       ),
@@ -1815,7 +1895,9 @@ class ChatScreen extends HookConsumerWidget {
           children: [
             if (!message.isUser) ...[
               Container(
-                padding: EdgeInsets.all(ResponsiveUtils.scaleSize(context, AppSpacing.sm, minScale: 0.9, maxScale: 1.1)),
+                padding: EdgeInsets.all(ResponsiveUtils.scaleSize(
+                    context, AppSpacing.sm,
+                    minScale: 0.9, maxScale: 1.1)),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -1871,7 +1953,8 @@ class ChatScreen extends HookConsumerWidget {
                           AutoSizeText(
                             message.content,
                             style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                              fontSize: ResponsiveUtils.fontSize(context, 15,
+                                  minSize: 13, maxSize: 17),
                               color: AppColors.primaryText,
                               height: 1.4,
                               fontWeight: FontWeight.w500,
@@ -1914,7 +1997,8 @@ class ChatScreen extends HookConsumerWidget {
                           AutoSizeText(
                             message.content,
                             style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                              fontSize: ResponsiveUtils.fontSize(context, 15,
+                                  minSize: 13, maxSize: 17),
                               color: AppColors.primaryText,
                               height: 1.4,
                               fontWeight: FontWeight.w500,
@@ -1939,9 +2023,12 @@ class ChatScreen extends HookConsumerWidget {
             if (message.isUser) ...[
               const SizedBox(width: AppSpacing.md),
               Container(
-                width: ResponsiveUtils.scaleSize(context, 40, minScale: 0.9, maxScale: 1.1),
-                height: ResponsiveUtils.scaleSize(context, 40, minScale: 0.9, maxScale: 1.1),
-                padding: EdgeInsets.all(ResponsiveUtils.scaleSize(context, 6, minScale: 0.9, maxScale: 1.1)),
+                width: ResponsiveUtils.scaleSize(context, 40,
+                    minScale: 0.9, maxScale: 1.1),
+                height: ResponsiveUtils.scaleSize(context, 40,
+                    minScale: 0.9, maxScale: 1.1),
+                padding: EdgeInsets.all(ResponsiveUtils.scaleSize(context, 6,
+                    minScale: 0.9, maxScale: 1.1)),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -2004,7 +2091,11 @@ class ChatScreen extends HookConsumerWidget {
     return const GlassTypingIndicator();
   }
 
-  Widget _buildMessageInput(BuildContext context, TextEditingController messageController, bool canSend, void Function(String) sendMessage) {
+  Widget _buildMessageInput(
+      BuildContext context,
+      TextEditingController messageController,
+      bool canSend,
+      void Function(String) sendMessage) {
     final l10n = AppLocalizations.of(context);
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
@@ -2019,7 +2110,9 @@ class ChatScreen extends HookConsumerWidget {
             left: AppSpacing.md,
             right: AppSpacing.md,
             top: AppSpacing.md,
-            bottom: bottomPadding > 0 ? bottomPadding + AppSpacing.sm : AppSpacing.md,
+            bottom: bottomPadding > 0
+                ? bottomPadding + AppSpacing.sm
+                : AppSpacing.md,
           ),
           child: Row(
             children: [
@@ -2053,13 +2146,15 @@ class ChatScreen extends HookConsumerWidget {
                         controller: messageController,
                         style: TextStyle(
                           color: AppColors.primaryText,
-                          fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                          fontSize: ResponsiveUtils.fontSize(context, 15,
+                              minSize: 13, maxSize: 17),
                         ),
                         decoration: InputDecoration(
                           hintText: l10n.scriptureChatHint,
                           hintStyle: TextStyle(
                             color: AppColors.tertiaryText,
-                            fontSize: ResponsiveUtils.fontSize(context, 15, minSize: 13, maxSize: 17),
+                            fontSize: ResponsiveUtils.fontSize(context, 15,
+                                minSize: 13, maxSize: 17),
                           ),
                           border: InputBorder.none,
                           filled: true,
@@ -2087,7 +2182,10 @@ class ChatScreen extends HookConsumerWidget {
                 isPremium: isPremium,
               ),
             ],
-          ).animate().fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast).slideY(begin: 0.3),
+          )
+              .animate()
+              .fadeIn(duration: AppAnimations.slow, delay: AppAnimations.fast)
+              .slideY(begin: 0.3),
         );
       },
     );
@@ -2096,7 +2194,9 @@ class ChatScreen extends HookConsumerWidget {
   String _getContextualResponse(String message, AppLocalizations l10n) {
     if (message.contains('prayer') || message.contains('pray')) {
       return l10n.fallbackPrayerResponse;
-    } else if (message.contains('fear') || message.contains('afraid') || message.contains('worry')) {
+    } else if (message.contains('fear') ||
+        message.contains('afraid') ||
+        message.contains('worry')) {
       return l10n.fallbackFearResponse;
     } else if (message.contains('love') || message.contains('relationship')) {
       return l10n.fallbackLoveResponse;
@@ -2125,11 +2225,14 @@ class ChatScreen extends HookConsumerWidget {
 
       // Filter out empty conversations or those with only the welcome message
       if (messageCount == 0) return false;
-      if (messageCount == 1 && preview.startsWith('Peace be with you')) return false;
+      if (messageCount == 1 && preview.startsWith('Peace be with you')) {
+        return false;
+      }
 
       return true;
     }).toList();
-    debugPrint('📜 Found ${sessions.length} non-empty sessions in history (${allSessions.length} total)');
+    debugPrint(
+        '📜 Found ${sessions.length} non-empty sessions in history (${allSessions.length} total)');
 
     if (!context.mounted) return;
 
@@ -2151,7 +2254,8 @@ class ChatScreen extends HookConsumerWidget {
                   AutoSizeText(
                     l10n.noConversationHistory,
                     style: TextStyle(
-                      fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                      fontSize: ResponsiveUtils.fontSize(context, 16,
+                          minSize: 14, maxSize: 18),
                       color: AppColors.secondaryText,
                       fontWeight: FontWeight.w500,
                     ),
@@ -2176,7 +2280,8 @@ class ChatScreen extends HookConsumerWidget {
                     : DateTime.fromMillisecondsSinceEpoch(updatedAtRaw * 1000);
                 final messageCount = session['message_count'] as int? ?? 0;
                 final sessionIdStr = session['id'] as String;
-                final lastMessagePreview = session['last_message_preview'] as String?;
+                final lastMessagePreview =
+                    session['last_message_preview'] as String?;
 
                 return Dismissible(
                   key: Key(sessionIdStr),
@@ -2184,63 +2289,70 @@ class ChatScreen extends HookConsumerWidget {
                   confirmDismiss: (direction) async {
                     // Show confirmation dialog
                     return await showGlassDialog<bool>(
-                      context: context,
-                      child: GlassContainer(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.delete_outline,
-                              color: Colors.red.shade400,
-                              size: ResponsiveUtils.iconSize(context, 48),
-                            ),
-                            const SizedBox(height: 16),
-                            AutoSizeText(
-                              'Delete Conversation?',
-                              style: TextStyle(
-                                color: AppColors.primaryText,
-                                fontWeight: FontWeight.w700,
-                                fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
-                              ),
-                              maxLines: 1,
-                              minFontSize: 16,
-                              maxFontSize: 24,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 12),
-                            AutoSizeText(
-                              l10n.deleteConversationMessage,
-                              style: TextStyle(
-                                color: AppColors.secondaryText,
-                                fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
-                                fontWeight: FontWeight.w500,
-                                height: 1.5,
-                              ),
-                              textAlign: TextAlign.center,
-                              maxLines: 3,
-                              minFontSize: 11,
-                              maxFontSize: 16,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 24),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          context: context,
+                          child: GlassContainer(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                GlassDialogButton(
-                                  text: l10n.cancel,
-                                  onTap: () => Navigator.pop(context, false),
+                                Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.red.shade400,
+                                  size: ResponsiveUtils.iconSize(context, 48),
                                 ),
-                                GlassDialogButton(
-                                  text: l10n.delete,
-                                  isPrimary: true,
-                                  onTap: () => Navigator.pop(context, true),
+                                const SizedBox(height: 16),
+                                AutoSizeText(
+                                  'Delete Conversation?',
+                                  style: TextStyle(
+                                    color: AppColors.primaryText,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: ResponsiveUtils.fontSize(
+                                        context, 20,
+                                        minSize: 18, maxSize: 24),
+                                  ),
+                                  maxLines: 1,
+                                  minFontSize: 16,
+                                  maxFontSize: 24,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 12),
+                                AutoSizeText(
+                                  l10n.deleteConversationMessage,
+                                  style: TextStyle(
+                                    color: AppColors.secondaryText,
+                                    fontSize: ResponsiveUtils.fontSize(
+                                        context, 14,
+                                        minSize: 12, maxSize: 16),
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.5,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 3,
+                                  minFontSize: 11,
+                                  maxFontSize: 16,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 24),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    GlassDialogButton(
+                                      text: l10n.cancel,
+                                      onTap: () =>
+                                          Navigator.pop(context, false),
+                                    ),
+                                    GlassDialogButton(
+                                      text: l10n.delete,
+                                      isPrimary: true,
+                                      onTap: () => Navigator.pop(context, true),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ) ?? false;
+                          ),
+                        ) ??
+                        false;
                   },
                   onDismissed: (direction) async {
                     // Delete the session
@@ -2269,7 +2381,8 @@ class ChatScreen extends HookConsumerWidget {
                               ),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: AppTheme.goldColor.withValues(alpha: 0.3),
+                                color:
+                                    AppTheme.goldColor.withValues(alpha: 0.3),
                                 width: 1,
                               ),
                             ),
@@ -2286,7 +2399,8 @@ class ChatScreen extends HookConsumerWidget {
                                     l10n.conversationDeleted,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: ResponsiveUtils.fontSize(context, 14),
+                                      fontSize:
+                                          ResponsiveUtils.fontSize(context, 14),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -2356,9 +2470,11 @@ class ChatScreen extends HookConsumerWidget {
                         ),
                       ),
                       title: AutoSizeText(
-                        session['title'] as String? ?? l10n.conversationDefaultTitle,
+                        session['title'] as String? ??
+                            l10n.conversationDefaultTitle,
                         style: TextStyle(
-                          fontSize: ResponsiveUtils.fontSize(context, 16, minSize: 14, maxSize: 18),
+                          fontSize: ResponsiveUtils.fontSize(context, 16,
+                              minSize: 14, maxSize: 18),
                           fontWeight: FontWeight.w600,
                           color: AppColors.primaryText,
                         ),
@@ -2371,11 +2487,13 @@ class ChatScreen extends HookConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          if (lastMessagePreview != null && lastMessagePreview.isNotEmpty) ...[
+                          if (lastMessagePreview != null &&
+                              lastMessagePreview.isNotEmpty) ...[
                             AutoSizeText(
                               lastMessagePreview,
                               style: TextStyle(
-                                fontSize: ResponsiveUtils.fontSize(context, 13, minSize: 11, maxSize: 14),
+                                fontSize: ResponsiveUtils.fontSize(context, 13,
+                                    minSize: 11, maxSize: 14),
                                 color: AppColors.tertiaryText,
                                 fontStyle: FontStyle.italic,
                                 height: 1.3,
@@ -2390,7 +2508,8 @@ class ChatScreen extends HookConsumerWidget {
                           AutoSizeText(
                             '${_formatDate(updatedAt, l10n)} • $messageCount messages',
                             style: TextStyle(
-                              fontSize: ResponsiveUtils.fontSize(context, 12, minSize: 10, maxSize: 13),
+                              fontSize: ResponsiveUtils.fontSize(context, 12,
+                                  minSize: 10, maxSize: 13),
                               color: AppColors.secondaryText,
                               fontWeight: FontWeight.w500,
                             ),
@@ -2417,7 +2536,10 @@ class ChatScreen extends HookConsumerWidget {
                         );
                       },
                     ),
-                  ).animate().fadeIn(duration: AppAnimations.fast).slideX(begin: 0.2),
+                  )
+                      .animate()
+                      .fadeIn(duration: AppAnimations.fast)
+                      .slideX(begin: 0.2),
                 );
               },
             ),
@@ -2434,11 +2556,12 @@ class ChatScreen extends HookConsumerWidget {
     debugPrint('🆕 New conversation button clicked');
 
     // Get current message count (excluding system welcome message)
-    final conversationMessages = messages.value.where((m) =>
-      m.type == MessageType.user || m.type == MessageType.ai
-    ).toList();
+    final conversationMessages = messages.value
+        .where((m) => m.type == MessageType.user || m.type == MessageType.ai)
+        .toList();
 
-    debugPrint('🔍 Current conversation has ${conversationMessages.length} messages (excluding system)');
+    debugPrint(
+        '🔍 Current conversation has ${conversationMessages.length} messages (excluding system)');
 
     // Only show confirmation if there's actual conversation content
     if (conversationMessages.isEmpty) {
@@ -2450,7 +2573,8 @@ class ChatScreen extends HookConsumerWidget {
       sessionId.value = newSessionId;
 
       final welcomeMessage = ChatMessage.system(
-        content: 'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+        content:
+            'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
         sessionId: newSessionId,
       );
       await conversationService.saveMessage(welcomeMessage);
@@ -2526,7 +2650,8 @@ class ChatScreen extends HookConsumerWidget {
                 style: TextStyle(
                   color: AppColors.primaryText,
                   fontWeight: FontWeight.w700,
-                  fontSize: ResponsiveUtils.fontSize(context, 20, minSize: 18, maxSize: 24),
+                  fontSize: ResponsiveUtils.fontSize(context, 20,
+                      minSize: 18, maxSize: 24),
                 ),
                 maxLines: 1,
                 minFontSize: 16,
@@ -2538,7 +2663,8 @@ class ChatScreen extends HookConsumerWidget {
                 l10n.startNewConversationMessage,
                 style: TextStyle(
                   color: AppColors.secondaryText,
-                  fontSize: ResponsiveUtils.fontSize(context, 14, minSize: 12, maxSize: 16),
+                  fontSize: ResponsiveUtils.fontSize(context, 14,
+                      minSize: 12, maxSize: 16),
                   fontWeight: FontWeight.w500,
                   height: 1.5,
                 ),
@@ -2564,83 +2690,88 @@ class ChatScreen extends HookConsumerWidget {
                       text: l10n.newChat,
                       height: 48,
                       onPressed: () async {
-                    debugPrint('✅ User confirmed new conversation');
-                    Navigator.pop(context);
+                        debugPrint('✅ User confirmed new conversation');
+                        Navigator.pop(context);
 
-                    // Ensure current session is finalized
-                    if (sessionId.value != null) {
-                      debugPrint('💾 Finalizing current session: ${sessionId.value}');
-                      // Session is already auto-updated via _updateSessionLastMessage
-                    }
+                        // Ensure current session is finalized
+                        if (sessionId.value != null) {
+                          debugPrint(
+                              '💾 Finalizing current session: ${sessionId.value}');
+                          // Session is already auto-updated via _updateSessionLastMessage
+                        }
 
-                    // Create new session
-                    debugPrint('🆕 Creating new session...');
-                    final newSessionId = await conversationService.createSession(
-                      title: l10n.newConversation,
-                    );
-                    sessionId.value = newSessionId;
+                        // Create new session
+                        debugPrint('🆕 Creating new session...');
+                        final newSessionId =
+                            await conversationService.createSession(
+                          title: l10n.newConversation,
+                        );
+                        sessionId.value = newSessionId;
 
-                    // Reset messages with welcome message (with sessionId)
-                    final welcomeMessage = ChatMessage.system(
-                      content: 'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
-                      sessionId: newSessionId,
-                    );
-                    await conversationService.saveMessage(welcomeMessage);
-                    messages.value = [welcomeMessage];
+                        // Reset messages with welcome message (with sessionId)
+                        final welcomeMessage = ChatMessage.system(
+                          content:
+                              'Peace be with you! 🙏\n\nI\'m here to provide intelligent scripture support directly from the word itself, for everyday Christian questions. Feel free to ask me about:\n\n• Scripture interpretation\n• Prayer requests\n• Life challenges\n• Faith questions\n• Daily encouragement\n\nHow can I help you today?',
+                          sessionId: newSessionId,
+                        );
+                        await conversationService.saveMessage(welcomeMessage);
+                        messages.value = [welcomeMessage];
 
-                    // Show success feedback
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                          behavior: SnackBarBehavior.floating,
-                          duration: const Duration(seconds: 3),
-                          margin: const EdgeInsets.all(16),
-                          padding: EdgeInsets.zero,
-                          content: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Color(0xFF1E293B), // slate-800
-                                  Color(0xFF0F172A), // slate-900
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: AppTheme.goldColor.withValues(alpha: 0.3),
-                                width: 1,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.check_circle,
-                                  color: AppTheme.goldColor,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    '✨ New conversation started! Previous chat saved to history.',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: ResponsiveUtils.fontSize(context, 14),
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                        // Show success feedback
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                              behavior: SnackBarBehavior.floating,
+                              duration: const Duration(seconds: 3),
+                              margin: const EdgeInsets.all(16),
+                              padding: EdgeInsets.zero,
+                              content: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFF1E293B), // slate-800
+                                      Color(0xFF0F172A), // slate-900
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: AppTheme.goldColor
+                                        .withValues(alpha: 0.3),
+                                    width: 1,
                                   ),
                                 ),
-                              ],
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.check_circle,
+                                      color: AppTheme.goldColor,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        '✨ New conversation started! Previous chat saved to history.',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: ResponsiveUtils.fontSize(
+                                              context, 14),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    }
+                          );
+                        }
 
-                    debugPrint('✅ Started new conversation: $newSessionId');
+                        debugPrint('✅ Started new conversation: $newSessionId');
                       },
                     ),
                   ),
@@ -2663,8 +2794,10 @@ class ChatScreen extends HookConsumerWidget {
       debugPrint('📂 Loading conversation: $conversationSessionId');
 
       // Load messages from database
-      final loadedMessages = await conversationService.getMessages(conversationSessionId);
-      debugPrint('📨 Retrieved ${loadedMessages.length} messages from database');
+      final loadedMessages =
+          await conversationService.getMessages(conversationSessionId);
+      debugPrint(
+          '📨 Retrieved ${loadedMessages.length} messages from database');
 
       // Update session ID
       sessionId.value = conversationSessionId;
@@ -2672,7 +2805,8 @@ class ChatScreen extends HookConsumerWidget {
       // Update messages list
       messages.value = loadedMessages;
 
-      debugPrint('✅ Loaded conversation: $conversationSessionId with ${loadedMessages.length} messages');
+      debugPrint(
+          '✅ Loaded conversation: $conversationSessionId with ${loadedMessages.length} messages');
     } catch (e, stackTrace) {
       debugPrint('❌ Failed to load conversation: $e');
       debugPrint('❌ Stack trace: $stackTrace');
@@ -2706,7 +2840,8 @@ class ChatScreen extends HookConsumerWidget {
     }
   }
 
-  Widget _buildConnectivityBanner(BuildContext context, AsyncValue<bool> connectivityStatus, AppLocalizations l10n) {
+  Widget _buildConnectivityBanner(BuildContext context,
+      AsyncValue<bool> connectivityStatus, AppLocalizations l10n) {
     return connectivityStatus.when(
       data: (isConnected) {
         if (isConnected) {
@@ -2767,5 +2902,4 @@ class ChatScreen extends HookConsumerWidget {
       error: (_, __) => const SizedBox.shrink(),
     );
   }
-
 }
