@@ -304,15 +304,13 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ),
                       const SizedBox(height: AppSpacing.xxl),
 
-                      // Purchase Button - dynamically shows selected plan
+                      // Purchase Button - generic text that works for both monthly and yearly
                       GlassButton(
                         text: _isProcessing
                             ? l10n.paywallProcessing
                             : (hasTrialExpired || isTrialBlocked || remainingMessages == 0 || widget.showMessageStats)
-                                ? _selectedPlanIsYearly
-                                    ? 'Subscribe to Premium - ${subscriptionService.premiumProductYearly?.price ?? "\$35.99"}/year'
-                                    : 'Subscribe to Premium - ${subscriptionService.premiumProductMonthly?.price ?? "\$5.99"}/month'
-                                : l10n.paywallStartPremiumButton,
+                                ? l10n.subscribeNow  // Generic "Subscribe Now" for all post-trial cases
+                                : l10n.paywallStartPremiumButton,  // "Start Free Trial" for new users
                         onPressed: _isProcessing ? null : _handlePurchase,
                       ),
                       const SizedBox(height: AppSpacing.lg),
@@ -767,27 +765,45 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       children: [
         // Yearly Plan (Recommended)
         Expanded(
-          child: GestureDetector(
-            onTap: () => setState(() => _selectedPlanIsYearly = true),
-            child: FrostedGlassCard(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              intensity: _selectedPlanIsYearly ? GlassIntensity.strong : GlassIntensity.medium,
-              borderColor: _selectedPlanIsYearly
-                  ? AppTheme.goldColor.withValues(alpha: 0.8)
-                  : Colors.white.withValues(alpha: 0.2),
-              child: Column(
-                children: [
-                  // "BEST VALUE" badge
-                  if (_selectedPlanIsYearly)
+          child: Semantics(
+            label: '${l10n.paywallPlanYearly} ${yearlyProduct?.price ?? '\$35.99'} ${l10n.paywallPerYear}. ${l10n.paywallBestValue}. ${l10n.paywallSavePercent(savings)}',
+            selected: _selectedPlanIsYearly,
+            button: true,
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedPlanIsYearly = true),
+              child: GlassContainer(
+                borderRadius: 20,
+                blurStrength: 15.0,
+                gradientColors: _selectedPlanIsYearly
+                    ? [
+                        AppTheme.goldColor.withValues(alpha: 0.1),
+                        AppTheme.goldColor.withValues(alpha: 0.05),
+                      ]
+                    : [
+                        Colors.white.withValues(alpha: 0.05),
+                        Colors.white.withValues(alpha: 0.02),
+                      ],
+                border: Border.all(
+                  color: _selectedPlanIsYearly
+                      ? AppTheme.goldColor.withValues(alpha: 0.6)
+                      : Colors.white.withValues(alpha: 0.2),
+                  width: _selectedPlanIsYearly ? 2 : 1,
+                ),
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                enableNoise: true,
+                enableLightSimulation: true,
+                child: Column(
+                  children: [
+                    // "BEST VALUE" badge
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: AppTheme.goldColor,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: const Text(
-                        'BEST VALUE',
-                        style: TextStyle(
+                      child: Text(
+                        l10n.paywallBestValue,
+                        style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -795,46 +811,47 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                         ),
                       ),
                     ),
-                  const SizedBox(height: 8),
-                  // Plan name
-                  Text(
-                    'Yearly',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: _selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                    const SizedBox(height: 8),
+                    // Plan name
+                    Text(
+                      l10n.paywallPlanYearly,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: _selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  // Price
-                  Text(
-                    yearlyProduct?.price ?? '\$35.99',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: _selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                    const SizedBox(height: 4),
+                    // Price
+                    Text(
+                      yearlyProduct?.price ?? '\$35.99',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: _selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  // Per period
-                  Text(
-                    '/year',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.secondaryText,
+                    const SizedBox(height: 2),
+                    // Per period
+                    Text(
+                      l10n.paywallPerYear,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.secondaryText,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  // Savings
-                  Text(
-                    'Save $savings%',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: _selectedPlanIsYearly ? AppTheme.goldColor : Colors.green,
+                    const SizedBox(height: 4),
+                    // Savings
+                    Text(
+                      l10n.paywallSavePercent(savings),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.goldColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -842,75 +859,77 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         const SizedBox(width: AppSpacing.md),
         // Monthly Plan
         Expanded(
-          child: GestureDetector(
-            onTap: () => setState(() => _selectedPlanIsYearly = false),
-            child: FrostedGlassCard(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              intensity: !_selectedPlanIsYearly ? GlassIntensity.strong : GlassIntensity.medium,
-              borderColor: !_selectedPlanIsYearly
-                  ? AppTheme.goldColor.withValues(alpha: 0.8)
-                  : Colors.white.withValues(alpha: 0.2),
-              child: Column(
-                children: [
-                  // Spacer to match yearly badge height
-                  if (!_selectedPlanIsYearly)
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppTheme.goldColor,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: const Text(
-                        'FLEXIBLE',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    )
-                  else
+          child: Semantics(
+            label: '${l10n.paywallPlanMonthly} ${monthlyProduct?.price ?? '\$5.99'} ${l10n.paywallPerMonth}. ${l10n.paywallBilledMonthly}',
+            selected: !_selectedPlanIsYearly,
+            button: true,
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedPlanIsYearly = false),
+              child: GlassContainer(
+                borderRadius: 20,
+                blurStrength: 15.0,
+                gradientColors: !_selectedPlanIsYearly
+                    ? [
+                        AppTheme.goldColor.withValues(alpha: 0.1),
+                        AppTheme.goldColor.withValues(alpha: 0.05),
+                      ]
+                    : [
+                        Colors.white.withValues(alpha: 0.05),
+                        Colors.white.withValues(alpha: 0.02),
+                      ],
+                border: Border.all(
+                  color: !_selectedPlanIsYearly
+                      ? AppTheme.goldColor.withValues(alpha: 0.6)
+                      : Colors.white.withValues(alpha: 0.2),
+                  width: !_selectedPlanIsYearly ? 2 : 1,
+                ),
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                enableNoise: true,
+                enableLightSimulation: true,
+                child: Column(
+                  children: [
+                    // Spacer to match yearly badge height
                     const SizedBox(height: 18),
-                  const SizedBox(height: 8),
-                  // Plan name
-                  Text(
-                    'Monthly',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: !_selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                    const SizedBox(height: 8),
+                    // Plan name
+                    Text(
+                      l10n.paywallPlanMonthly,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: !_selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  // Price
-                  Text(
-                    monthlyProduct?.price ?? '\$5.99',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: !_selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                    const SizedBox(height: 4),
+                    // Price
+                    Text(
+                      monthlyProduct?.price ?? '\$5.99',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: !_selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  // Per period
-                  Text(
-                    '/month',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.secondaryText,
+                    const SizedBox(height: 2),
+                    // Per period
+                    Text(
+                      l10n.paywallPerMonth,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.secondaryText,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  // Billed info
-                  Text(
-                    'Billed monthly',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.secondaryText,
+                    const SizedBox(height: 4),
+                    // Billed info
+                    Text(
+                      l10n.paywallBilledMonthly,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.secondaryText,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

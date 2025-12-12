@@ -2037,6 +2037,40 @@
   "@subscriptionPlanMonthly": {
     "description": "Monthly subscription plan type"
   },
+  "paywallPlanYearly": "Yearly",
+  "@paywallPlanYearly": {
+    "description": "Yearly plan label"
+  },
+  "paywallPlanMonthly": "Monthly",
+  "@paywallPlanMonthly": {
+    "description": "Monthly plan label"
+  },
+  "paywallBestValue": "BEST VALUE",
+  "@paywallBestValue": {
+    "description": "Best value badge"
+  },
+  "paywallFlexible": "FLEXIBLE",
+  "@paywallFlexible": {
+    "description": "Flexible badge for monthly plan"
+  },
+  "paywallPerMonth": "/month",
+  "@paywallPerMonth": {
+    "description": "Per month suffix"
+  },
+  "paywallBilledMonthly": "Billed monthly",
+  "@paywallBilledMonthly": {
+    "description": "Billed monthly text"
+  },
+  "paywallSavePercent": "Save {percent}%",
+  "@paywallSavePercent": {
+    "description": "Save percentage text",
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "50"
+      }
+    }
+  },
   "subscriptionStatusFreeTrial": "Free Trial",
   "@subscriptionStatusFreeTrial": {
     "description": "Free trial status"

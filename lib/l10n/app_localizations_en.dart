@@ -1492,6 +1492,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionPlanMonthly => 'Monthly Plan';
 
   @override
+  String get paywallPlanYearly => 'Yearly';
+
+  @override
+  String get paywallPlanMonthly => 'Monthly';
+
+  @override
+  String get paywallBestValue => 'BEST VALUE';
+
+  @override
+  String get paywallFlexible => 'FLEXIBLE';
+
+  @override
+  String get paywallPerMonth => '/month';
+
+  @override
+  String get paywallBilledMonthly => 'Billed monthly';
+
+  @override
+  String paywallSavePercent(int percent) {
+    return 'Save $percent%';
+  }
+
+  @override
   String get subscriptionStatusFreeTrial => 'Free Trial';
 
   @override

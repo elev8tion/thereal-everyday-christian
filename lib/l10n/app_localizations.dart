@@ -2811,6 +2811,48 @@ abstract class AppLocalizations {
   /// **'Monthly Plan'**
   String get subscriptionPlanMonthly;
 
+  /// Yearly plan label
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get paywallPlanYearly;
+
+  /// Monthly plan label
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get paywallPlanMonthly;
+
+  /// Best value badge
+  ///
+  /// In en, this message translates to:
+  /// **'BEST VALUE'**
+  String get paywallBestValue;
+
+  /// Flexible badge for monthly plan
+  ///
+  /// In en, this message translates to:
+  /// **'FLEXIBLE'**
+  String get paywallFlexible;
+
+  /// Per month suffix
+  ///
+  /// In en, this message translates to:
+  /// **'/month'**
+  String get paywallPerMonth;
+
+  /// Billed monthly text
+  ///
+  /// In en, this message translates to:
+  /// **'Billed monthly'**
+  String get paywallBilledMonthly;
+
+  /// Save percentage text
+  ///
+  /// In en, this message translates to:
+  /// **'Save {percent}%'**
+  String paywallSavePercent(int percent);
+
   /// Free trial status
   ///
   /// In en, this message translates to:
