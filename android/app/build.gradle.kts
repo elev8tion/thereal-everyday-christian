@@ -37,8 +37,8 @@ android {
 
         // Android-specific build number (independent from iOS)
         // Increment this for each Play Store release
-        // Current: 23 (in production since Dec 6, 2024)
-        versionCode = 23
+        // Current: 24 (includes icon updates, tutorials, and improvements)
+        versionCode = 24
         versionName = "1.0.0"  // Must match pubspec.yaml version
 
         manifestPlaceholders["appName"] = "Everyday Christian"
