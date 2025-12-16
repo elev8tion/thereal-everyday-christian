@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.everydaychristian.app"
+    namespace = "com.everydaychristian.app.free"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -31,14 +31,13 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.everydaychristian.app"
+        applicationId = "com.everydaychristian.app.free"
         minSdk = flutter.minSdkVersion  // Updated to 23 for modern security features
         targetSdk = 35  // Updated to API 35 for Play Store requirement
 
         // Android-specific build number (independent from iOS)
-        // Increment this for each Play Store release
-        // Current: 24 (includes icon updates, tutorials, and improvements)
-        versionCode = 24
+        // New free app - starting fresh at version 1
+        versionCode = 1
         versionName = "1.0.0"  // Must match pubspec.yaml version
 
         manifestPlaceholders["appName"] = "Everyday Christian"

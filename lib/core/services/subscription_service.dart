@@ -50,8 +50,9 @@ class SubscriptionService {
   // ============================================================================
 
   // Product IDs (must match App Store Connect / Play Console)
-  static const String premiumYearlyProductId = 'everyday_christian_premium_yearly';
-  static const String premiumMonthlyProductId = 'everyday_christian_premium_monthly';
+  // NOTE: Updated for new free app to avoid conflicts with old paid app
+  static const String premiumYearlyProductId = 'everyday_christian_free_premium_yearly';
+  static const String premiumMonthlyProductId = 'everyday_christian_free_premium_monthly';
 
   // Trial configuration
   static const int trialDurationDays = 3;

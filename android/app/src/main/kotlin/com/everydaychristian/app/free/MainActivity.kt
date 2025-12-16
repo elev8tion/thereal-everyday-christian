@@ -1,4 +1,4 @@
-package com.everydaychristian.app
+package com.everydaychristian.app.free
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
