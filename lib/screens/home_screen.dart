@@ -174,18 +174,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             left: AppSpacing.xl,
             child: GlassmorphicFABMenu(key: _fabMenuKey),
           ),
-          // TEMPORARY: Test App Lock Screen
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.appLock);
-              },
-              label: const Text('🔒 Test Lock'),
-              backgroundColor: Colors.purple.withValues(alpha: 0.9),
-            ),
-          ),
         ],
       ),
     );
