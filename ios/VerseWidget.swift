@@ -63,11 +63,11 @@ struct VerseWidgetView: View {
 
     var body: some View {
         ZStack {
-            // Background gradient (matches your app theme)
+            // Background gradient (matches app #121212)
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 0.05, green: 0.05, blue: 0.15),
-                    Color(red: 0.1, green: 0.1, blue: 0.2)
+                    Color(red: 0.07, green: 0.07, blue: 0.07),
+                    Color(red: 0.09, green: 0.09, blue: 0.09)
                 ]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -81,24 +81,24 @@ struct VerseWidgetView: View {
                     ZStack {
                         // Glass background
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white.opacity(0.1))
+                            .fill(Color.white.opacity(0.15))
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
                                     .fill(.ultraThinMaterial)
                             )
 
-                        // Gold border
+                        // Gold border (matches AppTheme.goldColor #FFD4AF37)
                         RoundedRectangle(cornerRadius: 12)
                             .strokeBorder(
                                 LinearGradient(
                                     colors: [
-                                        Color(red: 0.85, green: 0.65, blue: 0.13),
+                                        Color(red: 0.83, green: 0.69, blue: 0.22),
                                         Color(red: 1.0, green: 0.84, blue: 0.0)
                                     ],
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 ),
-                                lineWidth: 2
+                                lineWidth: 0.5
                             )
 
                         // Logo
@@ -128,14 +128,14 @@ struct VerseWidgetView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.white.opacity(0.05))
+                    .fill(Color.white.opacity(0.15))
                     .background(
                         RoundedRectangle(cornerRadius: 20)
                             .fill(.ultraThinMaterial)
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
-                            .strokeBorder(Color.white.opacity(0.2), lineWidth: 1)
+                            .strokeBorder(Color.white.opacity(0.4), lineWidth: 0.5)
                     )
             )
             .padding(16)
@@ -155,10 +155,10 @@ struct VerseWidgetView: View {
 
             Spacer()
 
-            // Reference
+            // Reference (AppTheme.goldColor #FFD4AF37)
             Text(entry.reference)
                 .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(Color(red: 0.85, green: 0.65, blue: 0.13))
+                .foregroundColor(Color(red: 0.83, green: 0.69, blue: 0.22))
         }
         .padding(.horizontal, 16)
         .padding(.bottom, 16)
@@ -177,7 +177,7 @@ struct VerseWidgetView: View {
 
                 Text(entry.reference)
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(Color(red: 0.85, green: 0.65, blue: 0.13))
+                    .foregroundColor(Color(red: 0.83, green: 0.69, blue: 0.22))
             }
 
             // Divider
@@ -195,7 +195,7 @@ struct VerseWidgetView: View {
 
                 Text(entry.spanishReference)
                     .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(Color(red: 0.85, green: 0.65, blue: 0.13).opacity(0.8))
+                    .foregroundColor(Color(red: 0.83, green: 0.69, blue: 0.22).opacity(0.8))
             }
 
             Spacer()

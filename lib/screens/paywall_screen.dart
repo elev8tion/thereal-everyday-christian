@@ -72,7 +72,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Header with StandardScreenHeader
-                  _buildAppBar(isInTrial, trialDaysRemaining, subscriptionService),
+                  _buildAppBar(
+                      isInTrial, trialDaysRemaining, subscriptionService),
                   const SizedBox(height: AppSpacing.xl),
 
                   // Subtitle - Trial or Expired (centered below header)
@@ -114,191 +115,207 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
                   // Message Stats (if enabled)
                   if (widget.showMessageStats) ...[
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildStatCard(
-                                icon: Icons.chat_bubble_outline,
-                                value: '$remainingMessages',
-                                label: l10n.paywallMessagesLeft,
-                                color: Colors.purple,
-                              ),
-                            ),
-                            const SizedBox(width: AppSpacing.md),
-                            Expanded(
-                              child: _buildStatCard(
-                                icon: Icons.check_circle_outline,
-                                value: '$messagesUsed',
-                                label: isPremium ? l10n.paywallUsedThisMonth : l10n.paywallUsedInTrial,
-                                color: Colors.green,
-                              ),
-                            ),
-                            const SizedBox(width: AppSpacing.md),
-                            Expanded(
-                              child: _buildStatCard(
-                                icon: isPremium ? Icons.all_inclusive : Icons.schedule,
-                                value: isPremium ? '150' : '$trialDaysRemaining',
-                                label: isPremium ? l10n.paywallMonthlyLimit : l10n.paywallTrialDaysLeft2,
-                                color: isPremium ? AppTheme.goldColor : Colors.blue,
-                              ),
-                            ),
-                          ],
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildStatCard(
+                            icon: Icons.chat_bubble_outline,
+                            value: '$remainingMessages',
+                            label: l10n.paywallMessagesLeft,
+                            color: Colors.purple,
+                          ),
                         ),
-                        const SizedBox(height: AppSpacing.xxl),
-                      ],
-
-                      // Plan Selector (show when trial expired/blocked OR when out of messages)
-                      if (hasTrialExpired || isTrialBlocked || remainingMessages == 0 || widget.showMessageStats) ...[
-                        _buildPlanSelector(context, l10n, subscriptionService),
-                        const SizedBox(height: AppSpacing.xl),
-                      ],
-
-                      // 150 Scripture Chats badge (centered under plan selectors)
-                      Center(
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.xl,
-                                vertical: AppSpacing.md,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.08),
-                                borderRadius: BorderRadius.circular(30),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.2),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Text(
-                                l10n.paywall150MessagesPerMonth,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primaryText,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.sm),
-                            // Pricing disclaimer below badge
-                            Text(
-                              l10n.paywallPricingDisclaimer,
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: AppColors.secondaryText.withValues(alpha: 0.7),
-                                fontStyle: FontStyle.italic,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                        const SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: _buildStatCard(
+                            icon: Icons.check_circle_outline,
+                            value: '$messagesUsed',
+                            label: isPremium
+                                ? l10n.paywallUsedThisMonth
+                                : l10n.paywallUsedInTrial,
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.xxl),
+                        const SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: _buildStatCard(
+                            icon: isPremium
+                                ? Icons.all_inclusive
+                                : Icons.schedule,
+                            value: isPremium ? '150' : '$trialDaysRemaining',
+                            label: isPremium
+                                ? l10n.paywallMonthlyLimit
+                                : l10n.paywallTrialDaysLeft2,
+                            color: isPremium ? AppTheme.goldColor : Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.xxl),
+                  ],
 
-                      // Purchase Button - generic text that works for both monthly and yearly
-                      GlassButton(
-                        text: _isProcessing
-                            ? l10n.paywallProcessing
-                            : (hasTrialExpired || isTrialBlocked || remainingMessages == 0 || widget.showMessageStats)
-                                ? l10n.subscribeNow  // Generic "Subscribe Now" for all post-trial cases
-                                : l10n.paywallStartPremiumButton,  // "Start Free Trial" for new users
-                        onPressed: _isProcessing ? null : _handlePurchase,
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
+                  // Plan Selector (show when trial expired/blocked OR when out of messages)
+                  if (hasTrialExpired ||
+                      isTrialBlocked ||
+                      remainingMessages == 0 ||
+                      widget.showMessageStats) ...[
+                    _buildPlanSelector(context, l10n, subscriptionService),
+                    const SizedBox(height: AppSpacing.xl),
+                  ],
 
-                      // Restore Button
-                      GestureDetector(
-                        onTap: _isProcessing ? null : _handleRestore,
-                        child: Container(
+                  // 150 Scripture Chats badge (centered under plan selectors)
+                  Center(
+                    child: Column(
+                      children: [
+                        Container(
                           padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.xl,
                             vertical: AppSpacing.md,
                           ),
-                          child: Center(
-                            child: Text(
-                              l10n.paywallRestorePurchase,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: AppTheme.goldColor,
-                                decoration: TextDecoration.underline,
-                              ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.2),
+                              width: 1,
                             ),
+                          ),
+                          child: Text(
+                            l10n.paywall150MessagesPerMonth,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primaryText,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        // Pricing disclaimer below badge
+                        Text(
+                          l10n.paywallPricingDisclaimer,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color:
+                                AppColors.secondaryText.withValues(alpha: 0.7),
+                            fontStyle: FontStyle.italic,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xxl),
+
+                  // Purchase Button - generic text that works for both monthly and yearly
+                  GlassButton(
+                    text: _isProcessing
+                        ? l10n.paywallProcessing
+                        : (hasTrialExpired ||
+                                isTrialBlocked ||
+                                remainingMessages == 0 ||
+                                widget.showMessageStats)
+                            ? l10n
+                                .subscribeNow // Generic "Subscribe Now" for all post-trial cases
+                            : l10n
+                                .paywallStartPremiumButton, // "Start Free Trial" for new users
+                    onPressed: _isProcessing ? null : _handlePurchase,
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  // Restore Button
+                  GestureDetector(
+                    onTap: _isProcessing ? null : _handleRestore,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.md,
+                      ),
+                      child: Center(
+                        child: Text(
+                          l10n.paywallRestorePurchase,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.goldColor,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.xxl),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xxl),
 
-                      // Features Section (moved below Subscribe button)
-                      GlassSectionHeader(
-                        title: l10n.paywallWhatsIncluded,
-                        icon: Icons.check_circle_outline,
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
+                  // Features Section (moved below Subscribe button)
+                  GlassSectionHeader(
+                    title: l10n.paywallWhatsIncluded,
+                    icon: Icons.check_circle_outline,
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
 
-                      // Feature List
-                      _buildFeatureItem(
-                        context: context,
-                        icon: Icons.chat_bubble_outline,
-                        title: l10n.paywallFeatureIntelligentChat,
-                        subtitle: l10n.paywallFeatureIntelligentChatDesc,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      _buildFeatureItem(
-                        context: context,
-                        icon: Icons.all_inclusive,
-                        title: l10n.paywallFeature150Messages,
-                        subtitle: l10n.paywallFeature150MessagesDesc,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      _buildFeatureItem(
-                        context: context,
-                        icon: Icons.psychology,
-                        title: l10n.paywallFeatureContextAware,
-                        subtitle: l10n.paywallFeatureContextAwareDesc,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      _buildFeatureItem(
-                        context: context,
-                        icon: Icons.shield_outlined,
-                        title: l10n.paywallFeatureCrisisDetection,
-                        subtitle: l10n.paywallFeatureCrisisDetectionDesc,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      _buildFeatureItem(
-                        context: context,
-                        icon: Icons.book_outlined,
-                        title: l10n.paywallFeatureFullBibleAccess,
-                        subtitle: l10n.paywallFeatureFullBibleAccessDesc,
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
+                  // Feature List
+                  _buildFeatureItem(
+                    context: context,
+                    icon: Icons.chat_bubble_outline,
+                    title: l10n.paywallFeatureIntelligentChat,
+                    subtitle: l10n.paywallFeatureIntelligentChatDesc,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  _buildFeatureItem(
+                    context: context,
+                    icon: Icons.all_inclusive,
+                    title: l10n.paywallFeature150Messages,
+                    subtitle: l10n.paywallFeature150MessagesDesc,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  _buildFeatureItem(
+                    context: context,
+                    icon: Icons.psychology,
+                    title: l10n.paywallFeatureContextAware,
+                    subtitle: l10n.paywallFeatureContextAwareDesc,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  _buildFeatureItem(
+                    context: context,
+                    icon: Icons.shield_outlined,
+                    title: l10n.paywallFeatureCrisisDetection,
+                    subtitle: l10n.paywallFeatureCrisisDetectionDesc,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  _buildFeatureItem(
+                    context: context,
+                    icon: Icons.book_outlined,
+                    title: l10n.paywallFeatureFullBibleAccess,
+                    subtitle: l10n.paywallFeatureFullBibleAccessDesc,
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
 
-                      // Terms
-                      FrostedGlassCard(
-                        padding: const EdgeInsets.all(AppSpacing.lg),
-                        intensity: GlassIntensity.light,
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.info_outline,
-                              color: AppColors.secondaryText,
-                              size: 20,
-                            ),
-                            const SizedBox(height: AppSpacing.sm),
-                            Text(
-                              Platform.isIOS
-                                  ? l10n.paywallSubscriptionTerms  // iOS: App Store
-                                  : l10n.paywallSubscriptionTermsAndroid,  // Android: Google Play
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.secondaryText,
-                                height: 1.4,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                  // Terms
+                  FrostedGlassCard(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    intensity: GlassIntensity.light,
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.info_outline,
+                          color: AppColors.secondaryText,
+                          size: 20,
                         ),
-                      ),
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          Platform.isIOS
+                              ? l10n.paywallSubscriptionTerms // iOS: App Store
+                              : l10n
+                                  .paywallSubscriptionTermsAndroid, // Android: Google Play
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.secondaryText,
+                            height: 1.4,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: AppSpacing.xxl),
                 ],
               ),
@@ -308,7 +325,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           Positioned(
             top: MediaQuery.of(context).padding.top + AppSpacing.xl,
             left: AppSpacing.xl,
-            child: const GlassmorphicFABMenu().animate().fadeIn(duration: AppAnimations.slow).slideY(begin: -0.3),
+            child: const GlassmorphicFABMenu()
+                .animate()
+                .fadeIn(duration: AppAnimations.slow)
+                .slideY(begin: -0.3),
           ),
         ],
       ),
@@ -316,7 +336,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   }
 
   /// Build header using StandardScreenHeader
-  Widget _buildAppBar(bool isInTrial, int trialDaysRemaining, dynamic subscriptionService) {
+  Widget _buildAppBar(
+      bool isInTrial, int trialDaysRemaining, dynamic subscriptionService) {
     final l10n = AppLocalizations.of(context);
     return StandardScreenHeader(
       title: l10n.paywallTitle,
@@ -559,8 +580,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     // Initiate purchase with selected product (yearly or monthly)
     await subscriptionService.purchasePremium(
       productId: _selectedPlanIsYearly
-        ? SubscriptionService.premiumYearlyProductId
-        : SubscriptionService.premiumMonthlyProductId,
+          ? SubscriptionService.premiumYearlyProductId
+          : SubscriptionService.premiumMonthlyProductId,
     );
   }
 
@@ -689,13 +710,20 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   }
 
   /// Build plan selector (yearly vs monthly)
-  Widget _buildPlanSelector(BuildContext context, AppLocalizations l10n, dynamic subscriptionService) {
+  Widget _buildPlanSelector(BuildContext context, AppLocalizations l10n,
+      dynamic subscriptionService) {
     final yearlyProduct = subscriptionService.premiumProductYearly;
     final monthlyProduct = subscriptionService.premiumProductMonthly;
 
     // Calculate savings
-    final yearlyPrice = double.tryParse(yearlyProduct?.price.replaceAll(RegExp(r'[^\d.]'), '') ?? '35.99') ?? 35.99;
-    final monthlyPrice = double.tryParse(monthlyProduct?.price.replaceAll(RegExp(r'[^\d.]'), '') ?? '5.99') ?? 5.99;
+    final yearlyPrice = double.tryParse(
+            yearlyProduct?.price.replaceAll(RegExp(r'[^\d.]'), '') ??
+                '35.99') ??
+        35.99;
+    final monthlyPrice = double.tryParse(
+            monthlyProduct?.price.replaceAll(RegExp(r'[^\d.]'), '') ??
+                '5.99') ??
+        5.99;
     final yearlyTotal = monthlyPrice * 12;
     final savings = ((yearlyTotal - yearlyPrice) / yearlyTotal * 100).round();
 
@@ -704,7 +732,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         // Yearly Plan (Recommended)
         Expanded(
           child: Semantics(
-            label: '${l10n.paywallPlanYearly} ${yearlyProduct?.price ?? '\$35.99'} ${l10n.paywallPerYear}. ${l10n.paywallBestValue}. ${l10n.paywallSavePercent(savings)}',
+            label:
+                '${l10n.paywallPlanYearly} ${yearlyProduct?.price ?? '\$35.99'} ${l10n.paywallPerYear}. ${l10n.paywallBestValue}. ${l10n.paywallSavePercent(savings)}',
             selected: _selectedPlanIsYearly,
             button: true,
             child: GestureDetector(
@@ -734,7 +763,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   children: [
                     // "BEST VALUE" badge
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: AppTheme.goldColor,
                         borderRadius: BorderRadius.circular(4),
@@ -756,7 +786,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: _selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                        color: _selectedPlanIsYearly
+                            ? AppTheme.goldColor
+                            : AppColors.primaryText,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -766,7 +798,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: _selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                        color: _selectedPlanIsYearly
+                            ? AppTheme.goldColor
+                            : AppColors.primaryText,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -782,7 +816,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                     // Savings
                     Text(
                       l10n.paywallSavePercent(savings),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.goldColor,
@@ -798,7 +832,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         // Monthly Plan
         Expanded(
           child: Semantics(
-            label: '${l10n.paywallPlanMonthly} ${monthlyProduct?.price ?? '\$5.99'} ${l10n.paywallPerMonth}. ${l10n.paywallBilledMonthly}',
+            label:
+                '${l10n.paywallPlanMonthly} ${monthlyProduct?.price ?? '\$5.99'} ${l10n.paywallPerMonth}. ${l10n.paywallBilledMonthly}',
             selected: !_selectedPlanIsYearly,
             button: true,
             child: GestureDetector(
@@ -835,7 +870,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: !_selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                        color: !_selectedPlanIsYearly
+                            ? AppTheme.goldColor
+                            : AppColors.primaryText,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -845,7 +882,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: !_selectedPlanIsYearly ? AppTheme.goldColor : AppColors.primaryText,
+                        color: !_selectedPlanIsYearly
+                            ? AppTheme.goldColor
+                            : AppColors.primaryText,
                       ),
                     ),
                     const SizedBox(height: 2),
