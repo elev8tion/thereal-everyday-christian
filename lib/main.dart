@@ -15,6 +15,7 @@ import 'package:everyday_christian/screens/reading_plan_screen.dart';
 import 'package:everyday_christian/screens/settings_screen.dart';
 import 'package:everyday_christian/screens/splash_screen.dart';
 import 'package:everyday_christian/screens/verse_library_screen.dart';
+import 'package:everyday_christian/screens/app_lock_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -112,6 +113,8 @@ class MyApp extends ConsumerWidget {
             return MaterialPageRoute(builder: (_) => const SplashScreen());
           case AppRoutes.onboarding:
             return MaterialPageRoute(builder: (_) => const UnifiedInteractiveOnboardingScreen());
+          case AppRoutes.appLock:
+            return MaterialPageRoute(builder: (_) => const AppLockScreen());
           case AppRoutes.home:
             return MaterialPageRoute(builder: (_) => const HomeScreen());
           case AppRoutes.chat:
