@@ -227,16 +227,24 @@ class SubscriptionService {
       }
 
       // Load yearly product
-      _premiumProductYearly = response.productDetails.firstWhere(
-        (product) => product.id == premiumYearlyProductId,
-        orElse: () => response.productDetails.first,
-      );
+      try {
+        _premiumProductYearly = response.productDetails.firstWhere(
+          (product) => product.id == premiumYearlyProductId,
+        );
+      } catch (e) {
+        debugPrint('📊 [SubscriptionService] Yearly product not found, will remain null');
+        _premiumProductYearly = null;
+      }
 
       // Load monthly product
-      _premiumProductMonthly = response.productDetails.firstWhere(
-        (product) => product.id == premiumMonthlyProductId,
-        orElse: () => response.productDetails.first,
-      );
+      try {
+        _premiumProductMonthly = response.productDetails.firstWhere(
+          (product) => product.id == premiumMonthlyProductId,
+        );
+      } catch (e) {
+        debugPrint('📊 [SubscriptionService] Monthly product not found, will remain null');
+        _premiumProductMonthly = null;
+      }
 
       if (_premiumProductYearly != null) {
         debugPrint('📊 [SubscriptionService] Loaded yearly product: ${_premiumProductYearly!.id} - ${_premiumProductYearly!.price}');
