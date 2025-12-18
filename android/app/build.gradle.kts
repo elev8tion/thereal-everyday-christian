@@ -43,6 +43,12 @@ android {
         manifestPlaceholders["appName"] = "Everyday Christian"
     }
 
+    // Prevent compression of database files
+    // Android compresses assets >1MB by default, but SQLite databases cannot be read when compressed
+    androidResources {
+        noCompress += listOf("db")
+    }
+
     // Signing configurations (must be defined before buildTypes)
     signingConfigs {
         create("release") {

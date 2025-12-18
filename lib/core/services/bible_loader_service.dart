@@ -46,14 +46,67 @@ class BibleLoaderService {
       final databasesPath = await getDatabasesPath();
       final assetDbPath = join(databasesPath, 'asset_bible_en.db');
 
-      // Copy asset database to app directory
-      final data = await rootBundle.load('assets/bible.db');
+      debugPrint('📖 [BibleLoader] Database path: $databasesPath');
+      debugPrint('📖 [BibleLoader] Asset DB path: $assetDbPath');
+
+      // Delete existing file if it exists (cleanup from previous failed attempts)
+      final assetDbFile = File(assetDbPath);
+      if (await assetDbFile.exists()) {
+        debugPrint('📖 [BibleLoader] Deleting existing asset DB file');
+        await assetDbFile.delete();
+      }
+
+      // Copy asset database to app directory with better error handling
+      debugPrint('📖 [BibleLoader] Loading asset: assets/bible.db');
+      ByteData? data;
+      try {
+        data = await rootBundle.load('assets/bible.db');
+      } catch (e) {
+        debugPrint('❌ [BibleLoader] Failed to load asset: $e');
+        throw Exception('Bible database asset not found. Please ensure assets/bible.db is included in the build.');
+      }
+
       final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      await File(assetDbPath).writeAsBytes(bytes, flush: true);
+      debugPrint('📖 [BibleLoader] Asset loaded: ${bytes.length} bytes');
 
+      // Write with Android-specific handling
+      try {
+        await assetDbFile.writeAsBytes(bytes, flush: true);
+        debugPrint('📖 [BibleLoader] Asset DB written successfully');
+      } catch (e) {
+        debugPrint('❌ [BibleLoader] Failed to write asset DB: $e');
+        // Try alternative approach for Android
+        if (Platform.isAndroid) {
+          debugPrint('📖 [BibleLoader] Trying Android-specific approach...');
+          final tempDir = await Directory.systemTemp.createTemp('bible_');
+          final tempPath = join(tempDir.path, 'asset_bible_en.db');
+          final tempFile = File(tempPath);
+          await tempFile.writeAsBytes(bytes, flush: true);
+          // Copy from temp to target
+          await tempFile.copy(assetDbPath);
+          await tempDir.delete(recursive: true);
+          debugPrint('📖 [BibleLoader] Android workaround successful');
+        } else {
+          rethrow;
+        }
+      }
 
-      // Attach the asset database
-      await db.execute("ATTACH DATABASE '$assetDbPath' AS asset_db_en");
+      // Verify file exists and is readable
+      if (!await assetDbFile.exists()) {
+        throw Exception('Asset database file was not created successfully');
+      }
+
+      final fileSize = await assetDbFile.length();
+      debugPrint('📖 [BibleLoader] Asset DB file size: $fileSize bytes');
+
+      // Attach the asset database with error handling
+      try {
+        await db.execute("ATTACH DATABASE '$assetDbPath' AS asset_db_en");
+        debugPrint('📖 [BibleLoader] Database attached successfully');
+      } catch (e) {
+        debugPrint('❌ [BibleLoader] Failed to attach database: $e');
+        throw Exception('Failed to attach Bible database. Error: $e');
+      }
 
       // Copy verses from asset_db_en.verses to main db.bible_verses
       // Map columns: translation->version, verse_number->verse, add language='en'
@@ -108,13 +161,67 @@ class BibleLoaderService {
       final databasesPath = await getDatabasesPath();
       final assetDbPath = join(databasesPath, 'asset_bible_es.db');
 
-      // Copy asset database to app directory
-      final data = await rootBundle.load('assets/spanish_bible_rvr1909.db');
-      final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      await File(assetDbPath).writeAsBytes(bytes, flush: true);
+      debugPrint('📖 [BibleLoader] Database path: $databasesPath');
+      debugPrint('📖 [BibleLoader] Asset DB path: $assetDbPath');
 
-      // Attach the asset database
-      await db.execute("ATTACH DATABASE '$assetDbPath' AS asset_db_es");
+      // Delete existing file if it exists (cleanup from previous failed attempts)
+      final assetDbFile = File(assetDbPath);
+      if (await assetDbFile.exists()) {
+        debugPrint('📖 [BibleLoader] Deleting existing asset DB file');
+        await assetDbFile.delete();
+      }
+
+      // Copy asset database to app directory with better error handling
+      debugPrint('📖 [BibleLoader] Loading asset: assets/spanish_bible_rvr1909.db');
+      ByteData? data;
+      try {
+        data = await rootBundle.load('assets/spanish_bible_rvr1909.db');
+      } catch (e) {
+        debugPrint('❌ [BibleLoader] Failed to load Spanish asset: $e');
+        throw Exception('Spanish Bible database asset not found. Please ensure assets/spanish_bible_rvr1909.db is included in the build.');
+      }
+
+      final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      debugPrint('📖 [BibleLoader] Spanish asset loaded: ${bytes.length} bytes');
+
+      // Write with Android-specific handling
+      try {
+        await assetDbFile.writeAsBytes(bytes, flush: true);
+        debugPrint('📖 [BibleLoader] Spanish asset DB written successfully');
+      } catch (e) {
+        debugPrint('❌ [BibleLoader] Failed to write Spanish asset DB: $e');
+        // Try alternative approach for Android
+        if (Platform.isAndroid) {
+          debugPrint('📖 [BibleLoader] Trying Android-specific approach for Spanish...');
+          final tempDir = await Directory.systemTemp.createTemp('bible_es_');
+          final tempPath = join(tempDir.path, 'asset_bible_es.db');
+          final tempFile = File(tempPath);
+          await tempFile.writeAsBytes(bytes, flush: true);
+          // Copy from temp to target
+          await tempFile.copy(assetDbPath);
+          await tempDir.delete(recursive: true);
+          debugPrint('📖 [BibleLoader] Android workaround successful for Spanish');
+        } else {
+          rethrow;
+        }
+      }
+
+      // Verify file exists and is readable
+      if (!await assetDbFile.exists()) {
+        throw Exception('Spanish asset database file was not created successfully');
+      }
+
+      final fileSize = await assetDbFile.length();
+      debugPrint('📖 [BibleLoader] Spanish asset DB file size: $fileSize bytes');
+
+      // Attach the asset database with error handling
+      try {
+        await db.execute("ATTACH DATABASE '$assetDbPath' AS asset_db_es");
+        debugPrint('📖 [BibleLoader] Spanish database attached successfully');
+      } catch (e) {
+        debugPrint('❌ [BibleLoader] Failed to attach Spanish database: $e');
+        throw Exception('Failed to attach Spanish Bible database. Error: $e');
+      }
 
       // Copy verses from asset_db_es.verses to main db.bible_verses
       // Map columns: text (contains Spanish RVR1909), verse_number->verse, add language='es'

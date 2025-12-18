@@ -9,6 +9,7 @@
 
 import 'dart:async';
 import 'dart:developer' as developer;
+import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,9 +51,24 @@ class SubscriptionService {
   // ============================================================================
 
   // Product IDs (must match App Store Connect / Play Console)
-  // NOTE: Updated for new free app to avoid conflicts with old paid app
-  static const String premiumYearlyProductId = 'everyday_christian_free_premium_yearly';
-  static const String premiumMonthlyProductId = 'everyday_christian_free_premium_monthly';
+  // PLATFORM-SPECIFIC: iOS uses different IDs because original IDs were deleted in App Store Connect
+  // Android continues using original IDs (already live in Play Store)
+
+  // iOS Product IDs (App Store Connect) - UPDATED 2025-12-18
+  // NOTE: Use these in the SUBSCRIPTIONS section, NOT In-App Purchases section!
+  static const String _iosYearlyProductId = 'everyday_christian_ios_yearly_sub';
+  static const String _iosMonthlyProductId = 'everyday_christian_ios_monthly_sub';
+
+  // Android Product IDs (Google Play Console) - Original IDs
+  static const String _androidYearlyProductId = 'everyday_christian_free_premium_yearly';
+  static const String _androidMonthlyProductId = 'everyday_christian_free_premium_monthly';
+
+  // Platform-aware getters (use these throughout the code)
+  static String get premiumYearlyProductId =>
+      Platform.isIOS ? _iosYearlyProductId : _androidYearlyProductId;
+
+  static String get premiumMonthlyProductId =>
+      Platform.isIOS ? _iosMonthlyProductId : _androidMonthlyProductId;
 
   // Trial configuration
   static const int trialDurationDays = 3;
