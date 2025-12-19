@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_darwin/local_auth_darwin.dart';
 
 class BiometricService {
@@ -63,17 +62,6 @@ class BiometricService {
       return await _localAuth.authenticate(
         localizedReason: reason,
         authMessages: <AuthMessages>[
-          AndroidAuthMessages(
-            signInTitle: 'Unlock Everyday Christian',
-            biometricHint: 'Verify your identity',
-            biometricNotRecognized: 'Not recognized. Try again.',
-            biometricSuccess: 'Success',
-            cancelButton: 'Cancel',
-            deviceCredentialsRequiredTitle: 'Device credentials required',
-            deviceCredentialsSetupDescription: 'Please set up device credentials',
-            goToSettingsButton: 'Go to settings',
-            goToSettingsDescription: 'Biometric authentication is not set up on your device.',
-          ),
           IOSAuthMessages(
             cancelButton: 'Cancel',
             goToSettingsButton: 'Go to settings',

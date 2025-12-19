@@ -67,7 +67,6 @@ dependencies:
   uuid: ^4.1.0
   cached_network_image: ^3.3.0
   local_auth: ^2.3.0
-  local_auth_android: ^1.0.45
   local_auth_darwin: ^1.4.1
   timezone: ^0.10.1
   flutter_dotenv: ^6.0.0
