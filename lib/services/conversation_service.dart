@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import '../core/database/database_helper.dart';
@@ -185,10 +186,27 @@ class ConversationService {
   /// Get all chat sessions
   Future<List<Map<String, dynamic>>> getSessions({bool includeArchived = false}) async {
     try {
+      // Log platform for debugging Android issue
+      debugPrint('🔍 [getSessions] Running on: ${Platform.isAndroid ? "Android" : "iOS"}');
+
       // Verify schema first
       await _verifyChatSessionsSchema();
 
       final db = await _dbHelper.database;
+
+      // Log database path for debugging
+      debugPrint('🔍 [getSessions] Database path: ${db.path}');
+
+      // First, let's check if the table exists and has any data
+      final tableCheck = await db.rawQuery('SELECT COUNT(*) as count FROM sqlite_master WHERE type="table" AND name="chat_sessions"');
+      debugPrint('🔍 [getSessions] Table exists check: $tableCheck');
+
+      // Check total row count
+      final rowCount = await db.rawQuery('SELECT COUNT(*) as count FROM chat_sessions');
+      debugPrint('🔍 [getSessions] Total sessions in database: ${rowCount.first['count']}');
+
+      // Log the query being executed
+      debugPrint('🔍 [getSessions] Query: includeArchived=$includeArchived');
 
       final List<Map<String, dynamic>> maps = await db.query(
         'chat_sessions',
@@ -198,10 +216,17 @@ class ConversationService {
       );
 
       debugPrint('✅ Retrieved ${maps.length} chat sessions');
+
+      // Log details of each session for debugging
+      for (var i = 0; i < maps.length && i < 3; i++) {
+        final session = maps[i];
+        debugPrint('🔍 [getSessions] Session ${i + 1}: id=${session['id']}, title=${session['title']}, message_count=${session['message_count']}, is_archived=${session['is_archived']}');
+      }
+
       return maps;
-    } catch (e) {
+    } catch (e, stackTrace) {
       debugPrint('❌ Failed to get sessions: $e');
-      debugPrint('❌ Stack trace: ${StackTrace.current}');
+      debugPrint('❌ Stack trace: $stackTrace');
       return [];
     }
   }

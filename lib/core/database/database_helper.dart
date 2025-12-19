@@ -56,8 +56,10 @@ class DatabaseHelper {
       if (_testDatabasePath != null) {
         path = _testDatabasePath!;
       } else {
-        Directory documentsDirectory = await getApplicationDocumentsDirectory();
-        path = join(documentsDirectory.path, _databaseName);
+        // Use getDatabasesPath() for proper database location on Android
+        // This ensures the database is in the correct directory for SQLite
+        final String databasesPath = await getDatabasesPath();
+        path = join(databasesPath, _databaseName);
       }
 
       _logger.info('Initializing database at: $path', context: 'DatabaseHelper');
@@ -1452,8 +1454,8 @@ class DatabaseHelper {
 
   /// Delete database
   Future<void> deleteDatabase() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, _databaseName);
+    final String databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, _databaseName);
     if (await File(path).exists()) {
       await File(path).delete();
     }
@@ -1747,8 +1749,8 @@ class DatabaseHelper {
   }
 
   Future<int> getDatabaseSize() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, _databaseName);
+    final String databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, _databaseName);
     File file = File(path);
 
     if (await file.exists()) {
@@ -1758,8 +1760,10 @@ class DatabaseHelper {
   }
 
   Future<String> exportDatabase() async {
+    final String databasesPath = await getDatabasesPath();
+    String sourcePath = join(databasesPath, _databaseName);
+    // Keep backup in documents directory for easy access
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String sourcePath = join(documentsDirectory.path, _databaseName);
     String backupPath = join(documentsDirectory.path, 'backup_$_databaseName');
 
     await File(sourcePath).copy(backupPath);
