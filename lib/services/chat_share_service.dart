@@ -55,13 +55,9 @@ class ChatShareService {
         delay: const Duration(milliseconds: 100),
       );
 
-      // Save to temporary file in share_plus subdirectory for Android compatibility
+      // Save to temporary file
       final directory = await getTemporaryDirectory();
-      final shareDir = Directory('${directory.path}/share_plus');
-      if (!await shareDir.exists()) {
-        await shareDir.create(recursive: true);
-      }
-      final imagePath = '${shareDir.path}/edc_chat_share_${DateTime.now().millisecondsSinceEpoch}.png';
+      final imagePath = '${directory.path}/edc_chat_share_${DateTime.now().millisecondsSinceEpoch}.png';
       final imageFile = File(imagePath);
       await imageFile.writeAsBytes(imageBytes);
 
