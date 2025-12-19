@@ -8,6 +8,7 @@
 /// Uses in_app_purchase for App Store/Play Store subscriptions
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
@@ -756,39 +757,59 @@ class SubscriptionService {
       await _prefs?.setString(_keyPurchasedProductId, productId);
       debugPrint('📊 [SubscriptionService] Purchased product: $productId');
 
-      // Try to decode receipt and extract expiry information
-      // Note: Receipt format differs by platform (iOS: base64 JSON, Android: JWT)
+      // Parse receipt data to extract expiry information
       try {
-        // For iOS: Receipt is base64-encoded JSON
-        // For Android: Receipt is a JWT token
-        // This is a simplified implementation - production should use platform-specific decoding
+        Map<String, dynamic>? parsedReceipt;
 
-        // For now, we'll extract basic info if available
+        // Platform-specific receipt parsing
+        if (Platform.isAndroid) {
+          parsedReceipt = _parseAndroidReceipt(receiptData);
+        } else if (Platform.isIOS) {
+          // iOS receipt parsing not implemented yet (base64 + JSON parsing required)
+          // For now, use simple time-based calculation
+          debugPrint('📊 [SubscriptionService] iOS receipt parsing not yet implemented');
+        }
 
-        // Placeholder for receipt parsing
-        // In production, use:
-        // - iOS: Decode base64, parse JSON, extract fields from receipt.in_app array
-        // - Android: Decode JWT, parse claims
+        if (parsedReceipt != null) {
+          // Extract parsed data
+          final expiryDate = DateTime.fromMillisecondsSinceEpoch(
+            parsedReceipt['expiryDate'] as int,
+          );
+          final autoRenewing = parsedReceipt['autoRenewing'] as bool;
+          final purchaseTime = DateTime.fromMillisecondsSinceEpoch(
+            parsedReceipt['purchaseTime'] as int,
+          );
 
-        debugPrint('📊 [SubscriptionService] Receipt data saved (expiry extraction requires platform-specific implementation)');
+          // Save to preferences
+          await _prefs?.setString(_keyPremiumExpiryDate, expiryDate.toIso8601String());
+          await _prefs?.setString(_keyPremiumOriginalPurchaseDate, purchaseTime.toIso8601String());
+          await _prefs?.setBool(_keyAutoRenewStatus, autoRenewing);
 
-        // Calculate expiry based on subscription type (yearly vs monthly)
+          debugPrint('📊 [SubscriptionService] Receipt parsed successfully');
+          debugPrint('📊 [SubscriptionService] Expiry: $expiryDate');
+          debugPrint('📊 [SubscriptionService] Auto-renewing: $autoRenewing');
+        } else {
+          // Fallback: Calculate expiry based on subscription type
+          final isYearly = productId == premiumYearlyProductId;
+          final expiryDuration = isYearly ? const Duration(days: 365) : const Duration(days: 30);
+          final expiryDate = DateTime.now().add(expiryDuration);
+
+          await _prefs?.setString(_keyPremiumExpiryDate, expiryDate.toIso8601String());
+          await _prefs?.setString(_keyPremiumOriginalPurchaseDate, DateTime.now().toIso8601String());
+          await _prefs?.setBool(_keyAutoRenewStatus, true);
+
+          debugPrint('📊 [SubscriptionService] Using fallback expiry calculation: ${isYearly ? "365 days (yearly)" : "30 days (monthly)"}');
+        }
+      } catch (receiptError) {
+        debugPrint('📊 [SubscriptionService] Receipt parsing failed: $receiptError');
+        // Fallback to time-based calculation
         final isYearly = productId == premiumYearlyProductId;
         final expiryDuration = isYearly ? const Duration(days: 365) : const Duration(days: 30);
         final expiryDate = DateTime.now().add(expiryDuration);
 
         await _prefs?.setString(_keyPremiumExpiryDate, expiryDate.toIso8601String());
         await _prefs?.setString(_keyPremiumOriginalPurchaseDate, DateTime.now().toIso8601String());
-        await _prefs?.setBool(_keyAutoRenewStatus, true); // Assume auto-renew unless receipt says otherwise
-
-        debugPrint('📊 [SubscriptionService] Expiry set to ${isYearly ? "365 days (yearly)" : "30 days (monthly)"}');
-
-        // Check if this was a trial purchase
-        // This will be extracted from receipt once parsing is implemented
-        // await _prefs?.setBool(_keyTrialEverUsed, wasTrialPurchase);
-
-      } catch (receiptError) {
-        debugPrint('📊 [SubscriptionService] Receipt parsing skipped (will implement platform-specific logic): $receiptError');
+        await _prefs?.setBool(_keyAutoRenewStatus, true);
       }
 
       // Activate premium
@@ -801,6 +822,57 @@ class SubscriptionService {
     } catch (e) {
       debugPrint('📊 [SubscriptionService] Failed to activate purchase: $e');
       onPurchaseUpdate?.call(false, e.toString());
+    }
+  }
+
+  /// Parse Android receipt (JSON format)
+  ///
+  /// Android receipts are JSON with the following structure:
+  /// {
+  ///   "purchaseToken": "string",
+  ///   "purchaseTime": 1234567890000,
+  ///   "autoRenewing": true,
+  ///   "productId": "product_id"
+  /// }
+  Map<String, dynamic>? _parseAndroidReceipt(String receipt) {
+    try {
+      // Android receipts are JSON with purchase data
+      final Map<String, dynamic> receiptData = jsonDecode(receipt);
+
+      // Extract purchase information
+      final String? purchaseToken = receiptData['purchaseToken'];
+      final int? purchaseTime = receiptData['purchaseTime'];
+      final bool? autoRenewing = receiptData['autoRenewing'];
+      final String? productId = receiptData['productId'];
+
+      if (purchaseToken == null || purchaseTime == null) {
+        debugPrint('📊 [SubscriptionService] Invalid Android receipt: missing purchaseToken or purchaseTime');
+        return null;
+      }
+
+      // Calculate expiry based on product type
+      DateTime expiryDate;
+      if (productId?.contains('yearly') == true) {
+        expiryDate = DateTime.fromMillisecondsSinceEpoch(purchaseTime).add(
+          const Duration(days: 365),
+        );
+      } else {
+        // Monthly
+        expiryDate = DateTime.fromMillisecondsSinceEpoch(purchaseTime).add(
+          const Duration(days: 30),
+        );
+      }
+
+      return {
+        'purchaseToken': purchaseToken,
+        'purchaseTime': purchaseTime,
+        'expiryDate': expiryDate.millisecondsSinceEpoch,
+        'autoRenewing': autoRenewing ?? false,
+        'productId': productId,
+      };
+    } catch (e) {
+      debugPrint('❌ [SubscriptionService] Error parsing Android receipt: $e');
+      return null;
     }
   }
 

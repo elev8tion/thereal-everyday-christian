@@ -1,6 +1,9 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:everyday_christian/core/services/devotional_progress_service.dart';
 import 'package:everyday_christian/services/unified_verse_service.dart';
 import 'package:everyday_christian/core/services/prayer_service.dart';
@@ -47,7 +50,34 @@ class NotificationService {
   }
 
   Future<void> _requestPermissions() async {
-    await Permission.notification.request();
+    try {
+      if (Platform.isAndroid) {
+        // Android 13+ (API 33) requires runtime permission for notifications
+        final deviceInfo = DeviceInfoPlugin();
+        final androidInfo = await deviceInfo.androidInfo;
+
+        if (androidInfo.version.sdkInt >= 33) {
+          // Android 13+ - request notification permission
+          final status = await Permission.notification.request();
+
+          if (status.isDenied) {
+            debugPrint('📊 [NotificationService] Notification permission denied');
+          } else if (status.isPermanentlyDenied) {
+            debugPrint('📊 [NotificationService] Notification permission permanently denied');
+          } else if (status.isGranted) {
+            debugPrint('📊 [NotificationService] Notification permission granted');
+          }
+        } else {
+          // Android 12 and below - permissions granted at install time
+          debugPrint('📊 [NotificationService] Android ${androidInfo.version.sdkInt} - no runtime permission needed');
+        }
+      } else if (Platform.isIOS) {
+        // iOS always requires runtime permission request
+        await Permission.notification.request();
+      }
+    } catch (e) {
+      debugPrint('❌ [NotificationService] Error requesting notification permission: $e');
+    }
   }
 
   void _onNotificationTapped(NotificationResponse response) {
