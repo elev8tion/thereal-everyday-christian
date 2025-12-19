@@ -67,14 +67,29 @@ class SplashScreen extends HookConsumerWidget {
         // Check if we're still on splash screen before navigating
         if (currentRoute != AppRoutes.splash && currentRoute != '/') return;
 
-        // Check if user has completed onboarding (which now includes legal agreements)
+        // Get preferences service
         final prefsService = await PreferencesService.getInstance();
+
+        // STEP 1: Check if user has accepted legal agreements FIRST
+        final hasAcceptedLegal = prefsService.hasAcceptedLegalAgreements();
+
+        if (!hasAcceptedLegal) {
+          // First time user - show legal agreements first
+          if (_hasNavigated) return;
+          _hasNavigated = true;
+          debugPrint('🔒 [SplashScreen] Navigating to legal agreements (first-time user)');
+          NavigationService.pushReplacementNamed(AppRoutes.legalAgreements);
+          return;
+        }
+
+        // STEP 2: Check if user has completed onboarding
         final hasCompletedOnboarding = prefsService.hasCompletedOnboarding();
 
         if (!hasCompletedOnboarding) {
-          // First time user - show unified interactive onboarding
+          // Accepted legal but not finished onboarding
           if (_hasNavigated) return;
           _hasNavigated = true;
+          debugPrint('📱 [SplashScreen] Navigating to onboarding (legal accepted, onboarding pending)');
           NavigationService.pushReplacementNamed(AppRoutes.onboarding);
           return;
         }

@@ -526,8 +526,18 @@ class _LegalAgreementsScreenState extends State<LegalAgreementsScreen> {
       final success = await prefsService.saveLegalAgreementAcceptance(true);
 
       if (success && mounted) {
-        // Navigate to onboarding screen
-        Navigator.of(context).pushReplacementNamed(AppRoutes.onboarding);
+        // Check if onboarding is also needed
+        final hasCompletedOnboarding = prefsService.hasCompletedOnboarding();
+
+        if (!hasCompletedOnboarding) {
+          // Go to onboarding next
+          debugPrint('📱 [LegalAgreements] Legal accepted, navigating to onboarding');
+          Navigator.of(context).pushReplacementNamed(AppRoutes.onboarding);
+        } else {
+          // Rare case: legal reset but onboarding done - go home
+          debugPrint('🏠 [LegalAgreements] Legal accepted, onboarding already complete, going to home');
+          Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+        }
       } else {
         _showSnackBar(l10n.failedToSaveAcceptance);
         setState(() {

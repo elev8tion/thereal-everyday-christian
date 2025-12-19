@@ -65,7 +65,9 @@ dependencies:
   json_annotation: ^4.9.0
   uuid: ^4.1.0
   cached_network_image: ^3.3.0
-  local_auth: ^2.1.6
+  local_auth: ^2.3.0
+  local_auth_android: ^1.0.45
+  local_auth_darwin: ^1.4.1
   timezone: ^0.10.1
   flutter_dotenv: ^6.0.0
   flutter_tts: ^4.0.2
