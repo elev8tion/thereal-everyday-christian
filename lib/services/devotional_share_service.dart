@@ -55,9 +55,13 @@ class DevotionalShareService {
         delay: const Duration(milliseconds: 100),
       );
 
-      // Save to temporary file
+      // Save to temporary file in share_plus subdirectory for Android compatibility
       final directory = await getTemporaryDirectory();
-      final imagePath = '${directory.path}/edc_devotional_share_${DateTime.now().millisecondsSinceEpoch}.png';
+      final shareDir = Directory('${directory.path}/share_plus');
+      if (!await shareDir.exists()) {
+        await shareDir.create(recursive: true);
+      }
+      final imagePath = '${shareDir.path}/edc_devotional_share_${DateTime.now().millisecondsSinceEpoch}.png';
       final imageFile = File(imagePath);
       await imageFile.writeAsBytes(imageBytes);
 
