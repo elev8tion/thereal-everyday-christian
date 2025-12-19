@@ -14,8 +14,6 @@ import '../core/navigation/app_routes.dart';
 import '../core/providers/app_providers.dart';
 import '../core/navigation/navigation_service.dart';
 import '../core/services/preferences_service.dart';
-import '../core/services/subscription_service.dart';
-import '../components/trial_welcome_dialog.dart';
 import '../utils/responsive_utils.dart';
 import '../l10n/app_localizations.dart';
 import '../core/utils/simple_coach_mark.dart';
@@ -36,52 +34,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _checkShowTrialWelcome();
-  }
-
-  Future<void> _checkShowTrialWelcome() async {
-    // Wait for widget to build
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    if (!mounted) return;
-
-    final subscriptionService = SubscriptionService.instance;
-
-    // Show dialog if:
-    // 1. User hasn't started trial yet
-    // 2. User isn't premium
-    // 3. Haven't shown dialog before
-    if (!subscriptionService.hasStartedTrial &&
-        !subscriptionService.isPremium) {
-      final prefsService = await PreferencesService.getInstance();
-      final sharedPrefs = prefsService.prefs;
-      final shownBefore = sharedPrefs?.getBool('trial_welcome_shown') ?? false;
-
-      if (!shownBefore && mounted) {
-        // Mark as shown
-        await sharedPrefs?.setBool('trial_welcome_shown', true);
-
-        // Show dialog
-        // ignore: use_build_context_synchronously
-        final result = await TrialWelcomeDialog.show(context);
-
-        // If user clicked "Start Free Trial", navigate to chat
-        if (result == true && mounted) {
-          Navigator.of(context).pushNamed(AppRoutes.chat);
-        }
-
-        // After dialog closes, show FAB tutorial if first time
-        if (mounted) {
-          _showFabTutorialIfNeeded();
-        }
-      } else {
-        // If trial dialog already shown, check for tutorial
-        _showFabTutorialIfNeeded();
-      }
-    } else {
-      // Premium user or trial started, still show tutorial if needed
-      _showFabTutorialIfNeeded();
-    }
+    _showFabTutorialIfNeeded();
   }
 
   Future<void> _showFabTutorialIfNeeded() async {
