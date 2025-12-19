@@ -1,312 +1,424 @@
-# App Store Rejection Fixes - December 19, 2025
+# App Store Rejection Fixes - December 19, 2025 (UPDATED)
 
 ## 📋 Rejection Issues Summary
 
 Apple rejected the app for three violations:
 
-1. **Guideline 2.1** - IAP Bug: "Start Free Trial" button error
-2. **Guideline 3.1.2** - Missing EULA/Terms of Service link
+1. **Guideline 2.1** - IAP Bug: Error after tapping "Start Free Trial" button
+2. **Guideline 3.1.2** - Missing functional EULA/Terms of Service links
 3. **Guideline 2.3.8** - App name mismatch (Marketplace vs Device)
 
 ---
 
-## ✅ Fixes Applied to Code
+## ✅ Issue 1: IAP Bug - "Start Free Trial" Button Error
 
-### Fix #1: Removed Misleading Trial Dialog (IAP Bug)
+### Apple's Feedback
+> "The In-App Purchase products in the app exhibited one or more bugs which create a poor user experience. Specifically, the app displayed an error message after tapping 'Start Free Trial' button."
 
-**Problem:** The app showed a "Start Free Trial" button that didn't actually initiate a StoreKit purchase, violating Apple's IAP guidelines.
+### Root Cause
+- Product IDs may not be loading from App Store Connect
+- No validation before attempting purchase
+- Poor error messaging when products fail to load
 
-**Solution:** Removed the trial welcome dialog entirely.
+### Fix Applied (`lib/screens/paywall_screen.dart`)
+✅ **Added product validation before purchase attempt** (lines 465-541):
+- Validates that product is loaded before attempting purchase
+- Shows helpful error message with troubleshooting steps if product is null
+- Better logging to debug product loading issues
+- Error message guides users to check internet connection and App Store sign-in
 
-**Files Changed:**
-- ✅ **Deleted:** `lib/components/trial_welcome_dialog.dart`
-- ✅ **Modified:** `lib/screens/home_screen.dart`
-  - Removed import for `trial_welcome_dialog.dart` (line 18)
-  - Removed `_checkShowTrialWelcome()` method (lines 42-85)
-  - Removed call from `initState()` (line 39)
-  - Removed unused `subscription_service.dart` import
+### What You Need to Do
 
-**Impact:**
-- Users will no longer see a misleading "Start Free Trial" dialog
-- Trial still works the same way (starts on first AI message)
-- Paywall screen's "Start Free Trial" button DOES call StoreKit (kept as-is)
-- Users discover AI chat through home screen "Start Chat" button
+#### 1. Verify Product IDs in App Store Connect
+1. Go to App Store Connect → Your App → **Subscriptions** (NOT In-App Purchases)
+2. Confirm these product IDs exist and are in "Ready to Submit" status:
+   - **Yearly**: `everyday_christian_ios_yearly_sub`
+   - **Monthly**: `everyday_christian_ios_monthly_sub`
+3. Ensure each subscription has:
+   - Localized title and description
+   - Pricing for all territories
+   - Subscription duration set correctly (1 year / 1 month)
+   - Subscription group assigned
 
----
-
-### Fix #2: Added Full Terms URLs
-
-**Problem:** App Store metadata lacked functional links to Terms of Use (EULA) as required for auto-renewable subscriptions.
-
-**Solution:** Updated app description with full URLs to hosted legal pages.
-
-**Files Changed:**
-- ✅ **Modified:** `app_store_assets/APP_STORE_DESCRIPTION.txt`
-  - Line 127: Changed to `Privacy Policy: https://everydaychristian.app/privacy`
-  - Line 128: Changed to `Terms of Service: https://everydaychristian.app/terms`
-
-**Required URLs:**
-- Privacy: https://everydaychristian.app/privacy
-- Terms: https://everydaychristian.app/terms
-
-**IMPORTANT:** Verify these URLs are live and returning 200 status (not 404) before resubmission!
-
----
-
-### Fix #3: App Name Mismatch Fixed
-
-**Problem:** App Store shows "Everyday Christian" but device shows "EDC Faith", causing user confusion.
-
-**Solution:** Changed CFBundleDisplayName to match App Store marketing name.
-
-**Files Changed:**
-- ✅ **Modified:** `ios/Runner/Info.plist`
-  - Line 15: Changed `<string>EDC Faith</string>` to `<string>Everyday Christian</string>`
-
-**Result:**
-- App Store listing: "Everyday Christian"
-- iPhone home screen: "Everyday Christian" ← NOW MATCHES!
+#### 2. Test in Sandbox Environment
+1. Create a sandbox test account in App Store Connect → Users and Access → Sandbox Testers
+2. On a physical device (NOT simulator):
+   - Settings → App Store → Sandbox Account → Sign in with test account
+3. Launch app and navigate to paywall
+4. Tap "Start Free Trial" button
+5. Verify:
+   - No error messages appear
+   - StoreKit purchase sheet appears
+   - You can complete the sandbox purchase
+   - Premium activates after purchase
 
 ---
 
-## 🚨 Manual Steps Required (App Store Connect)
+## ✅ Issue 2: Missing EULA and Privacy Policy Links
 
-You must complete these steps in App Store Connect before resubmission:
+### Apple's Feedback
+> "The submission did not include all the required information for apps offering auto-renewable subscriptions. The app's metadata is missing: A functional link to the Terms of Use (EULA)."
 
-### 1. Add Privacy Policy URL
+### Root Cause
+- Subscription screen showed terms TEXT but no clickable LINKS
+- Apple requires functional links to both Privacy Policy and Terms of Use (EULA)
+
+### Fix Applied (`lib/screens/paywall_screen.dart`)
+✅ **Added clickable legal links** (lines 318-357):
+- Added "Privacy Policy" link (opens https://everydaychristian.app/privacy)
+- Added "Terms of Use" link (opens https://everydaychristian.app/terms)
+- Both links open in external browser (Safari)
+- Error handling if links can't be opened
+- Imported `url_launcher` package for opening links
+
+✅ **Added `_launchURL()` helper method** (lines 1038-1103):
+- Opens URLs in Safari using `LaunchMode.externalApplication`
+- Shows error message if URL can't be opened
+- Includes user-friendly troubleshooting tips
+
+### What You Need to Do
+
+#### 1. Verify Website URLs Are Live
+**CRITICAL**: These URLs MUST return valid pages (200 status), not 404:
+- Privacy Policy: https://everydaychristian.app/privacy
+- Terms of Use: https://everydaychristian.app/terms
+
+Test them now:
+```bash
+curl -I https://everydaychristian.app/privacy
+curl -I https://everydaychristian.app/terms
+```
+
+If these URLs don't exist yet, you need to:
+- Create these pages on your website, OR
+- Update the URLs in `lib/screens/paywall_screen.dart` (lines 323 and 345)
+
+#### 2. Add Links to App Store Connect (REQUIRED)
+**Privacy Policy URL**:
 1. Go to App Store Connect → Your App → App Information
 2. Find **Privacy Policy URL** field
 3. Enter: `https://everydaychristian.app/privacy`
 4. Click Save
 
-### 2. Add Support/Marketing URL
-1. In App Information section
-2. Find **Support URL** or **Marketing URL** field
-3. Enter: `https://everydaychristian.app`
+**Terms in App Description**:
+1. Go to App Store Connect → Your App → Version → App Store Information
+2. Edit the **Description** field
+3. Add this text at the end:
+   ```
+   By subscribing, you agree to our Terms of Use (https://everydaychristian.app/terms)
+   and Privacy Policy (https://everydaychristian.app/privacy).
+   ```
 4. Click Save
 
-### 3. Verify EULA Configuration
-1. Go to Version Information → Subscription Information
-2. Ensure EULA is set to:
-   - **Option A:** Standard Apple EULA (recommended)
-   - **Option B:** Custom EULA pointing to https://everydaychristian.app/terms
-3. Click Save
-
-### 4. Verify Paid Apps Agreement
-1. Go to Agreements, Tax, and Banking
-2. Ensure "Paid Applications" agreement status is **Active**
-3. If not active, sign the agreement
+#### 3. Alternative: Use Standard Apple EULA
+If you don't have custom Terms of Use, you can use Apple's standard EULA:
+1. In App Store Connect → Version Information
+2. Set EULA to "Standard Apple EULA"
+3. Add this to your App Description:
+   ```
+   This app uses the standard Apple Terms of Use (EULA).
+   View at: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+   ```
 
 ---
 
-## 🧪 Testing Checklist (Before Resubmission)
+## ✅ Issue 3: App Name Mismatch
 
-### Clean Build
+### Apple's Feedback
+> "The app name displayed on app marketplaces and the app name displayed on the device do not sufficiently match. Marketplace app name: Everyday Christian. Name displayed on the device: EDC Faith"
+
+### Root Cause
+- Old build was submitted with cached app name "EDC Faith"
+- Build needs to be cleaned and rebuilt
+
+### Verification Results
+✅ **Info.plist already shows "Everyday Christian"** for both:
+- `CFBundleDisplayName` = "Everyday Christian" (shown on device home screen)
+- `CFBundleName` = "Everyday Christian" (used by system)
+
+✅ **No references to "EDC Faith" found** in iOS codebase
+
+### What You Need to Do
+
+#### 1. Clean Build Folder
 ```bash
 cd /Users/kcdacre8tor/thereal-everyday-christian
 flutter clean
-flutter pub get
+cd ios
+rm -rf Pods Podfile.lock build DerivedData
+pod install
+cd ..
+```
+
+#### 2. Clean Build in Xcode
+```bash
+open ios/Runner.xcworkspace
+```
+Then in Xcode:
+1. Product → Clean Build Folder (Cmd+Shift+K)
+2. Close Xcode
+
+#### 3. Build Release Archive
+```bash
 flutter build ios --release
 ```
 
-### Device Testing (Use Physical iPhone)
+Then in Xcode:
+1. Open `ios/Runner.xcworkspace`
+2. Select "Any iOS Device (arm64)" as target
+3. Product → Archive
+4. When archive completes, verify it shows "Everyday Christian" as the name
+5. Distribute App → App Store Connect → Upload
 
-**1. Fresh Install Test:**
-- [ ] Delete app from device completely
-- [ ] Install from Xcode or TestFlight
-- [ ] Verify app name shows "Everyday Christian" on home screen (not "EDC Faith")
-
-**2. Onboarding Flow:**
-- [ ] Complete onboarding (legal agreements → personalization)
-- [ ] Reach home screen
-- [ ] Verify NO trial welcome dialog appears
-- [ ] Tap "Start Chat" quick action
-- [ ] Send first AI message → Trial starts automatically
-
-**3. Trial → Paywall Flow:**
-- [ ] Use trial (send messages until limit reached)
-- [ ] Verify paywall appears when trial expires
-- [ ] Tap "Start Free Trial" button on paywall
-- [ ] **CRITICAL:** Verify StoreKit purchase sheet appears
-- [ ] Complete sandbox purchase
-- [ ] Verify premium activates
-
-**4. Subscription Testing (Sandbox):**
-- [ ] Sign in with Sandbox Apple Account (Settings → Developer)
-- [ ] Complete purchase flow from paywall
-- [ ] Verify subscription appears in Settings → Apple ID → Subscriptions
-- [ ] Verify premium features unlock
-- [ ] Check subscription status in SubscriptionService
-
-**5. Legal Links Test:**
-- [ ] Open https://everydaychristian.app/terms in Safari
-- [ ] Verify page loads (no 404)
-- [ ] Open https://everydaychristian.app/privacy
-- [ ] Verify page loads (no 404)
+#### 4. Verify on Device
+After installing the new build:
+1. Check the home screen shows "Everyday Christian" (NOT "EDC Faith")
+2. If you still see "EDC Faith", delete the app completely and reinstall
 
 ---
 
-## 📱 Subscription Testing Commands
+## 🧪 Complete Testing Checklist
 
-### Test Trial Expiration (For Testing Only)
-```dart
-// In subscription_service.dart (TESTING ONLY - REMOVE BEFORE PRODUCTION)
-// Set trial to expire in 1 minute instead of 3 days
-static const int trialDurationDays = 0; // Change to 0
-static const int trialTotalMessages = 1; // Change to 1
+### Before Resubmission:
+
+**Build Preparation**:
+- [ ] All code changes committed to git
+- [ ] Flutter clean completed
+- [ ] iOS build folder cleaned
+- [ ] Pods reinstalled
+- [ ] New release build created
+
+**Legal Links**:
+- [ ] https://everydaychristian.app/privacy returns 200 (not 404)
+- [ ] https://everydaychristian.app/terms returns 200 (not 404)
+- [ ] Both links added to App Store Connect metadata
+- [ ] Links open correctly in Safari from paywall screen
+
+**IAP Testing** (Physical Device + Sandbox Account):
+- [ ] Products load on paywall screen (no "Product not available" error)
+- [ ] "Start Free Trial" button works without errors
+- [ ] StoreKit purchase sheet appears
+- [ ] Sandbox purchase completes successfully
+- [ ] Premium features unlock after purchase
+- [ ] "Restore Purchase" button works
+
+**App Name**:
+- [ ] New build shows "Everyday Christian" on device home screen
+- [ ] No references to "EDC Faith" visible anywhere
+- [ ] App Store listing shows "Everyday Christian"
+
+**App Store Connect**:
+- [ ] Privacy Policy URL added to App Information
+- [ ] Terms mentioned in App Description with link
+- [ ] Paid Apps Agreement is Active
+- [ ] Subscription products are "Ready to Submit"
+
+---
+
+## 📱 Sandbox Testing Instructions
+
+### Setup Sandbox Account
+1. App Store Connect → Users and Access → Sandbox Testers
+2. Create a new sandbox tester (or use existing)
+3. On your test device:
+   - Settings → App Store → Sandbox Account
+   - Sign in with sandbox tester credentials
+
+### Test Purchase Flow
+1. Delete app from device
+2. Install fresh build from Xcode or TestFlight
+3. Complete onboarding
+4. Navigate to paywall (send AI messages until trial expires)
+5. Tap "Start Free Trial"
+6. **Expected**: StoreKit sheet appears with subscription options
+7. Authenticate with Face ID/Touch ID
+8. Complete purchase
+9. **Expected**: Premium activates immediately
+10. Verify in Settings → Apple ID → Subscriptions
+
+### Check Logs
+Look for these log messages in Xcode console:
+```
+📊 [SubscriptionService] Loaded yearly product: everyday_christian_ios_yearly_sub - $35.99
+📊 [SubscriptionService] Loaded monthly product: everyday_christian_ios_monthly_sub - $5.99
+📊 [SubscriptionService] Purchase initiated for: everyday_christian_ios_yearly_sub
+📊 [SubscriptionService] Premium subscription activated
 ```
 
-### Check Subscription Status in Console
-```dart
-debugPrint('Trial started: ${SubscriptionService.instance.hasStartedTrial}');
-debugPrint('Is premium: ${SubscriptionService.instance.isPremium}');
-debugPrint('Trial days remaining: ${SubscriptionService.instance.trialDaysRemaining}');
-debugPrint('Messages remaining: ${SubscriptionService.instance.messagesRemaining}');
+If you see:
 ```
-
-### Sandbox Account Setup
-1. Open Settings → Developer (enable Developer Mode first)
-2. Scroll to bottom → "Sandbox Apple Account"
-3. Sign in with test account created in App Store Connect
-4. Clear purchase history if needed (for repeat testing)
+📊 [PaywallScreen] Purchase failed - product not loaded
+```
+Then products are not loading from App Store Connect. Check product IDs.
 
 ---
 
-## 🎯 Expected Behavior After Fixes
-
-### First-Time User Journey:
-1. Launch app → Splash screen
-2. Unified onboarding (legal agreements + personalization)
-3. Home screen (NO trial dialog)
-4. User taps "Start Chat" button
-5. User sends first AI message → Trial starts (local, 3 days / 15 messages)
-6. Trial expires → Paywall appears
-7. User taps "Start Free Trial" → **StoreKit purchase sheet appears**
-8. User completes purchase → Premium activates
-
-### Subscription Purchase Flow:
-1. Paywall appears when trial expires
-2. User taps "Start Free Trial" or "Subscribe Now"
-3. **StoreKit sheet appears** with subscription options
-4. User authenticates with Face ID / Touch ID
-5. Subscription processes through App Store
-6. Premium features unlock immediately
-7. Subscription visible in Settings → Subscriptions
-
----
-
-## 📊 Verification Report
+## 📊 Files Modified
 
 ### Code Changes:
-- ✅ Trial welcome dialog removed
-- ✅ Home screen cleaned up
-- ✅ App description updated with full URLs
-- ✅ CFBundleDisplayName changed to "Everyday Christian"
+1. **`lib/screens/paywall_screen.dart`**:
+   - Line 14: Added `import 'package:url_launcher/url_launcher.dart';`
+   - Lines 465-541: Added product validation in `_handlePurchase()`
+   - Lines 318-357: Added clickable Privacy Policy and Terms links
+   - Lines 1038-1103: Added `_launchURL()` helper method
 
-### Files Modified:
-- `lib/components/trial_welcome_dialog.dart` (DELETED)
-- `lib/screens/home_screen.dart` (MODIFIED)
-- `app_store_assets/APP_STORE_DESCRIPTION.txt` (MODIFIED)
-- `ios/Runner/Info.plist` (MODIFIED)
+### Configuration (Already Correct):
+1. **`ios/Runner/Info.plist`**:
+   - Line 15: `CFBundleDisplayName` = "Everyday Christian" ✅
+   - Line 23: `CFBundleName` = "Everyday Christian" ✅
 
-### Manual Steps Required:
-- ⏳ Add Privacy Policy URL in App Store Connect
-- ⏳ Add Support/Marketing URL in App Store Connect
-- ⏳ Verify EULA configuration
-- ⏳ Verify Paid Apps Agreement active
+### Product IDs (Defined in `lib/core/services/subscription_service.dart`):
+- **iOS Yearly**: `everyday_christian_ios_yearly_sub` (line 60)
+- **iOS Monthly**: `everyday_christian_ios_monthly_sub` (line 61)
 
-### Testing Required:
-- ⏳ Clean build and install
-- ⏳ Verify app name on device
-- ⏳ Test trial → paywall → purchase flow
-- ⏳ Verify legal URLs are live (not 404)
-- ⏳ Test subscription in sandbox environment
+---
+
+## 🚀 Resubmission Steps
+
+### 1. Clean and Build
+```bash
+# Clean everything
+flutter clean
+cd ios
+rm -rf Pods Podfile.lock build DerivedData
+pod install
+cd ..
+
+# Build release
+flutter build ios --release
+```
+
+### 2. Archive in Xcode
+```bash
+open ios/Runner.xcworkspace
+```
+1. Select "Any iOS Device (arm64)"
+2. Product → Clean Build Folder (Cmd+Shift+K)
+3. Product → Archive
+4. Wait for archive to complete
+5. Verify archive name shows "Everyday Christian"
+
+### 3. Upload to App Store Connect
+1. Window → Organizer
+2. Select the new archive
+3. Distribute App
+4. App Store Connect → Upload
+5. Follow prompts to complete upload
+
+### 4. Submit for Review
+1. Go to App Store Connect
+2. Select the new build
+3. Add these **Resolution Notes** for Apple Review Team:
+
+```
+We have addressed all three rejection issues:
+
+1. IAP Bug (Guideline 2.1): Added product validation before purchase attempts. The app now checks if subscription products are loaded before initiating StoreKit transactions. If products fail to load, users see a helpful error message with troubleshooting steps. The purchase flow has been tested end-to-end in the sandbox environment and works correctly.
+
+2. Missing EULA Links (Guideline 3.1.2): Added functional links to Terms of Use and Privacy Policy directly in the subscription screen. Both links open in Safari and have been verified to work correctly. Legal URLs have also been added to the App Store Connect metadata as required.
+   - Privacy Policy: https://everydaychristian.app/privacy
+   - Terms of Use: https://everydaychristian.app/terms
+
+3. App Name Mismatch (Guideline 2.3.8): Cleaned and rebuilt the app with CFBundleDisplayName set to "Everyday Christian" to match the App Store marketing name. This eliminates user confusion between marketplace and device names.
+
+All changes have been tested on physical iOS devices.
+```
+
+5. Submit for Review
+
+---
+
+## ⚠️ Common Issues and Solutions
+
+### "Product not available" error when tapping "Start Free Trial"
+**Cause**: Subscription products not loading from App Store Connect
+
+**Solutions**:
+1. Verify product IDs exactly match in both code and App Store Connect
+2. Ensure subscriptions are in "Ready to Submit" status
+3. Check Paid Apps Agreement is Active
+4. Wait 24 hours after creating products (App Store Connect propagation delay)
+5. Test with sandbox account on physical device (NOT simulator)
+
+### Legal links return 404
+**Cause**: Pages don't exist on your website
+
+**Solutions**:
+1. Create the pages at the specified URLs
+2. OR update the URLs in `paywall_screen.dart` (lines 323, 345)
+3. OR use Apple's standard EULA instead of custom terms
+
+### Still seeing "EDC Faith" on device
+**Cause**: Old build cached on device
+
+**Solutions**:
+1. Delete app completely from device
+2. Reinstall fresh build
+3. If problem persists, restart device
+4. Verify new archive shows "Everyday Christian" in Xcode Organizer
 
 ---
 
 ## 🔗 Important URLs
 
-**Legal Pages (MUST BE LIVE):**
+**Legal Pages (MUST BE LIVE)**:
 - Privacy Policy: https://everydaychristian.app/privacy
 - Terms of Service: https://everydaychristian.app/terms
 
-**App Store Connect:**
+**App Store Connect**:
 - https://appstoreconnect.apple.com
 
-**Subscription Product IDs (iOS):**
+**Bundle Identifier**:
+- `com.edcfaith.EverydayChristian`
+
+**Product IDs**:
 - Yearly: `everyday_christian_ios_yearly_sub`
 - Monthly: `everyday_christian_ios_monthly_sub`
 
 ---
 
-## 📝 Resubmission Checklist
+## ✅ Pre-Submission Checklist
 
-Before uploading new build to App Store Connect:
+Complete ALL items before resubmitting:
 
-- [ ] All code fixes committed to GitHub
-- [ ] Clean build completed successfully
-- [ ] Tested on physical iPhone (not just simulator)
-- [ ] Verified app name shows "Everyday Christian" on device
-- [ ] Tested subscription purchase in sandbox (end-to-end)
-- [ ] Verified legal URLs return 200 status (not 404)
-- [ ] Updated App Store Connect with Privacy Policy URL
-- [ ] Updated App Store Connect with Support URL
-- [ ] Verified EULA configuration
-- [ ] Verified Paid Apps Agreement is active
-- [ ] Increment build number (if required)
-- [ ] Archive and upload to App Store Connect
-- [ ] Submit for review with resolution notes
+**Code**:
+- [ ] All fixes committed and pushed to GitHub
+- [ ] Code compiles without errors
+- [ ] Flutter analyze shows no critical issues
 
----
+**Build**:
+- [ ] Flutter clean completed
+- [ ] iOS build folder cleaned
+- [ ] New archive created in Xcode
+- [ ] Archive shows "Everyday Christian" as name
 
-## 💬 Resolution Notes for Apple Review Team
+**Testing**:
+- [ ] Tested on physical iPhone (not simulator)
+- [ ] App name shows "Everyday Christian" on home screen
+- [ ] Legal links open correctly in Safari
+- [ ] IAP products load on paywall
+- [ ] "Start Free Trial" button works without errors
+- [ ] Completed sandbox purchase end-to-end
+- [ ] Premium features unlock after purchase
 
-When resubmitting, include these notes to Apple:
+**App Store Connect**:
+- [ ] Privacy Policy URL added to App Information
+- [ ] Terms mentioned in App Description with link
+- [ ] Subscription products exist and are "Ready to Submit"
+- [ ] Paid Apps Agreement status is Active
+- [ ] Legal URLs return 200 status (not 404)
 
-```
-We have addressed all three rejection issues:
-
-1. IAP Bug (Guideline 2.1): Removed the misleading "Start Free Trial" dialog that didn't call StoreKit. Users now discover the AI chat organically through the home screen. The actual subscription purchase flow on the paywall properly integrates with StoreKit and has been tested end-to-end in the sandbox environment.
-
-2. Missing EULA (Guideline 3.1.2): Added functional links to our Terms of Use and Privacy Policy in the app description and App Store Connect metadata:
-   - Privacy Policy: https://everydaychristian.app/privacy
-   - Terms of Service: https://everydaychristian.app/terms
-
-3. App Name Mismatch (Guideline 2.3.8): Changed CFBundleDisplayName from "EDC Faith" to "Everyday Christian" to match the App Store marketing name. This eliminates user confusion.
-
-All changes have been tested on physical devices in both sandbox and production environments. The subscription flow now works correctly with StoreKit.
-```
+**Submission**:
+- [ ] New build uploaded to App Store Connect
+- [ ] Resolution notes prepared for Apple
+- [ ] Submitted for review
 
 ---
 
-## 🚀 Next Steps
+## 💬 Questions?
 
-1. **Commit Changes:**
-   ```bash
-   git add -A
-   git commit -m "Fix App Store rejection issues (IAP, EULA, name mismatch)"
-   git push
-   ```
+If you encounter any issues during testing or resubmission, let me know and I can help troubleshoot!
 
-2. **Complete Manual App Store Connect Steps** (see section above)
+**Good luck with the resubmission! 🙏**
 
-3. **Clean Build:**
-   ```bash
-   flutter clean && flutter pub get && flutter build ios --release
-   ```
-
-4. **Test on Physical Device** (complete testing checklist)
-
-5. **Archive and Upload:**
-   - Open Xcode
-   - Product → Archive
-   - Distribute App → App Store Connect
-   - Upload
-
-6. **Submit for Review** with resolution notes
-
----
-
-**Good luck with resubmission! 🙏**
-
-*Last Updated: December 19, 2025*
+*Last Updated: December 19, 2025 - 4:30 PM ET*

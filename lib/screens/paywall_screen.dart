@@ -11,6 +11,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../components/gradient_background.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
@@ -289,7 +290,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
-                  // Terms
+                  // Terms with functional links to Privacy Policy and EULA
                   FrostedGlassCard(
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     intensity: GlassIntensity.light,
@@ -312,6 +313,47 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                             height: 1.4,
                           ),
                           textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        // CRITICAL FIX: Add functional links to Privacy Policy and Terms of Use (required by App Store)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () => _launchURL('https://everydaychristian.app/privacy'),
+                              child: Text(
+                                'Privacy Policy',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.goldColor,
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                '•',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.secondaryText,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => _launchURL('https://everydaychristian.app/terms'),
+                              child: Text(
+                                'Terms of Use',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.goldColor,
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -461,6 +503,84 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
     final subscriptionService = ref.read(subscriptionServiceProvider);
     final l10n = AppLocalizations.of(context);
+
+    // CRITICAL FIX: Validate products are loaded before attempting purchase
+    final selectedProduct = _selectedPlanIsYearly
+        ? subscriptionService.premiumProductYearly
+        : subscriptionService.premiumProductMonthly;
+
+    if (selectedProduct == null) {
+      setState(() => _isProcessing = false);
+
+      // Show detailed error with troubleshooting steps
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 5),
+          margin: const EdgeInsets.all(16),
+          padding: EdgeInsets.zero,
+          content: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF1E293B), // slate-800
+                  Color(0xFF0F172A), // slate-900
+                ],
+              ),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.red.withValues(alpha: 0.5),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      color: Colors.red.shade300,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Text(
+                        'Subscription Not Available',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Please try:\n1. Check your internet connection\n2. Sign in to App Store with your Apple ID\n3. Restart the app',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      debugPrint('📊 [PaywallScreen] Purchase failed - product not loaded. Product IDs configured: yearly=${SubscriptionService.premiumYearlyProductId}, monthly=${SubscriptionService.premiumMonthlyProductId}');
+      return;
+    }
 
     // Set up purchase callback
     subscriptionService.onPurchaseUpdate = (success, error) {
@@ -913,6 +1033,73 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         ),
       ],
     );
+  }
+
+  /// Launch URL in external browser (Safari/Chrome)
+  /// Used for Privacy Policy and Terms of Use links
+  Future<void> _launchURL(String urlString) async {
+    try {
+      final Uri url = Uri.parse(urlString);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(
+          url,
+          mode: LaunchMode.externalApplication, // Open in Safari/browser
+        );
+      } else {
+        debugPrint('📊 [PaywallScreen] Could not launch URL: $urlString');
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 3),
+            margin: const EdgeInsets.all(16),
+            padding: EdgeInsets.zero,
+            content: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF1E293B),
+                    Color(0xFF0F172A),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.red.withValues(alpha: 0.5),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.red.shade300,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Text(
+                      'Could not open link. Please check your internet connection.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('📊 [PaywallScreen] Error launching URL: $e');
+    }
   }
 
   @override
