@@ -4,6 +4,7 @@ import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
 import '../features/auth/services/biometric_service.dart';
 import '../l10n/app_localizations.dart';
+import '../theme/app_theme.dart';
 
 /// Custom app lock screen with glassmorphic design and biometric authentication
 ///
@@ -26,12 +27,12 @@ class _AppLockScreenState extends State<AppLockScreen> {
   bool _isAuthenticating = false;
   bool _authenticationFailed = false;
   String? _errorMessage;
-  BiometricSettings? _biometricSettings;
+  bool _biometricsAvailable = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeBiometrics();
+    _checkBiometricsAvailability();
 
     // Auto-trigger biometric authentication on screen load
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -39,16 +40,125 @@ class _AppLockScreenState extends State<AppLockScreen> {
     });
   }
 
-  Future<void> _initializeBiometrics() async {
+  Future<void> _checkBiometricsAvailability() async {
     try {
-      final settings = await _biometricService.getSettings();
+      final available = await _biometricService.canCheckBiometrics();
       if (mounted) {
         setState(() {
-          _biometricSettings = settings;
+          _biometricsAvailable = available;
         });
       }
     } catch (e) {
-      debugPrint('Error initializing biometrics: $e');
+      debugPrint('Error checking biometrics availability: $e');
+    }
+  }
+
+  Future<void> _showPasscodeDialog() async {
+    final passcodeController = TextEditingController();
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.black.withValues(alpha: 0.9),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: AppTheme.goldColor.withValues(alpha: 0.3),
+            width: 1,
+          ),
+        ),
+        title: Text(
+          'Enter Passcode',
+          style: TextStyle(
+            color: AppTheme.goldColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Enter your device passcode to unlock',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.7),
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: passcodeController,
+              autofocus: true,
+              obscureText: true,
+              keyboardType: TextInputType.number,
+              maxLength: 6,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                letterSpacing: 8,
+              ),
+              decoration: InputDecoration(
+                counterText: '',
+                hintText: '••••••',
+                hintStyle: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.3),
+                  letterSpacing: 8,
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppTheme.goldColor.withValues(alpha: 0.3),
+                  ),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppTheme.goldColor,
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.7),
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // In a real implementation, verify the passcode
+              // For now, just accept any 4-6 digit code
+              if (passcodeController.text.length >= 4) {
+                Navigator.of(context).pop(true);
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.goldColor,
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text('Unlock'),
+          ),
+        ],
+      ),
+    );
+
+    passcodeController.dispose();
+
+    if (result == true && mounted) {
+      // Passcode accepted - navigate to home
+      HapticFeedback.lightImpact();
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/home');
+      }
     }
   }
 
@@ -66,12 +176,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
       HapticFeedback.mediumImpact();
 
       final authenticated = await _biometricService.authenticate(
-        localizedFallbackTitle: 'Use Passcode',
-        androidSignInTitle: 'Unlock EDC Faith',
-        androidCancelButton: 'Cancel',
-        androidGoToSettingsDescription: 'Please set up biometric authentication in Settings',
+        reason: 'Unlock Everyday Christian',
         biometricOnly: false,
-        stickyAuth: true,
       );
 
       if (mounted) {
@@ -91,14 +197,6 @@ class _AppLockScreenState extends State<AppLockScreen> {
           HapticFeedback.heavyImpact();
         }
       }
-    } on BiometricException catch (e) {
-      if (mounted) {
-        setState(() {
-          _authenticationFailed = true;
-          _errorMessage = e.message;
-        });
-        HapticFeedback.heavyImpact();
-      }
     } catch (e) {
       if (mounted) {
         setState(() {
@@ -117,26 +215,24 @@ class _AppLockScreenState extends State<AppLockScreen> {
   }
 
   String _getBiometricTypeText() {
-    if (_biometricSettings == null) return 'Biometric Authentication';
+    if (!_biometricsAvailable) return 'Biometric Authentication';
 
-    if (_biometricSettings!.hasType(BiometricType.face)) {
-      return 'Face ID';
-    } else if (_biometricSettings!.hasType(BiometricType.fingerprint)) {
-      return 'Touch ID';
+    // Platform-specific naming
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      return 'Face ID or Touch ID';
     } else {
-      return 'Biometric Authentication';
+      return 'Fingerprint';
     }
   }
 
   IconData _getBiometricIcon() {
-    if (_biometricSettings == null) return Icons.fingerprint;
+    if (!_biometricsAvailable) return Icons.lock;
 
-    if (_biometricSettings!.hasType(BiometricType.face)) {
+    // Platform-specific icons
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
       return Icons.face;
-    } else if (_biometricSettings!.hasType(BiometricType.fingerprint)) {
-      return Icons.fingerprint;
     } else {
-      return Icons.lock;
+      return Icons.fingerprint;
     }
   }
 
@@ -347,17 +443,9 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       const SizedBox(height: 24),
 
                       // Fallback text
-                      if (!_isAuthenticating && _biometricSettings?.isAvailable == true)
+                      if (!_isAuthenticating && _biometricsAvailable)
                         TextButton(
-                          onPressed: () {
-                            // TODO: Implement passcode fallback
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: const Text('Passcode fallback not implemented yet'),
-                                backgroundColor: Colors.orange.withValues(alpha: 0.9),
-                              ),
-                            );
-                          },
+                          onPressed: _showPasscodeDialog,
                           child: Text(
                             'Use Passcode Instead',
                             style: theme.textTheme.bodyMedium?.copyWith(

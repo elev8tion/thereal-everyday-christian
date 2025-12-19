@@ -139,7 +139,9 @@ class AuthService extends StateNotifier<AuthState> {
         return false;
       }
 
-      final authenticated = await _biometric.authenticate();
+      final authenticated = await _biometric.authenticate(
+        reason: 'Authenticate to access Everyday Christian',
+      );
       if (!authenticated) {
         state = const AuthState.error('Biometric authentication failed');
         return false;
@@ -217,7 +219,9 @@ class AuthService extends StateNotifier<AuthState> {
         return false;
       }
 
-      final authenticated = await _biometric.authenticate();
+      final authenticated = await _biometric.authenticate(
+        reason: 'Enable biometric authentication',
+      );
       if (authenticated) {
         await _database.setSetting('biometric_enabled', true);
         return true;
