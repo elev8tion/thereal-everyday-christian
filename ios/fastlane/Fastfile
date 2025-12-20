@@ -24,12 +24,8 @@ platform :ios do
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
-      export_method: "app-store",
-      export_options: {
-        provisioningProfiles: {
-          "com.elev8tion.everydaychristian" => "match AppStore com.elev8tion.everydaychristian"
-        }
-      }
+      export_method: "app-store"
+      # Using automatic code signing - Xcode will manage certificates
     )
 
     # Upload to TestFlight
