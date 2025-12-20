@@ -1707,6 +1707,28 @@
   "@paywallRestorePurchase": {
     "description": "Restore purchase button text"
   },
+  "paywallTrialActive": "Trial Active!",
+  "@paywallTrialActive": {
+    "description": "Trial active status title"
+  },
+  "paywallTrialStatusMessage": "{remainingMessages} messages remaining • {trialDaysRemaining} days left",
+  "@paywallTrialStatusMessage": {
+    "description": "Trial status message showing remaining messages and days",
+    "placeholders": {
+      "remainingMessages": {
+        "type": "int",
+        "example": "14"
+      },
+      "trialDaysRemaining": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "paywallUpgradeToPremiumNow": "Upgrade to Premium Now",
+  "@paywallUpgradeToPremiumNow": {
+    "description": "Upgrade to premium button text shown during active trial"
+  },
   "paywallSubscriptionTerms": "Payment will be charged to your App Store account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in your App Store account settings.",
   "@paywallSubscriptionTerms": {
     "description": "Subscription terms and conditions for iOS"

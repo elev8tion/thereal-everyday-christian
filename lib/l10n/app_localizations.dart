@@ -2361,6 +2361,25 @@ abstract class AppLocalizations {
   /// **'Restore Previous Purchase'**
   String get paywallRestorePurchase;
 
+  /// Trial active status title
+  ///
+  /// In en, this message translates to:
+  /// **'Trial Active!'**
+  String get paywallTrialActive;
+
+  /// Trial status message showing remaining messages and days
+  ///
+  /// In en, this message translates to:
+  /// **'{remainingMessages} messages remaining • {trialDaysRemaining} days left'**
+  String paywallTrialStatusMessage(
+      int remainingMessages, int trialDaysRemaining);
+
+  /// Upgrade to premium button text shown during active trial
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium Now'**
+  String get paywallUpgradeToPremiumNow;
+
   /// Subscription terms and conditions for iOS
   ///
   /// In en, this message translates to:

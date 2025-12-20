@@ -1240,6 +1240,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paywallRestorePurchase => 'Restore Previous Purchase';
 
   @override
+  String get paywallTrialActive => 'Trial Active!';
+
+  @override
+  String paywallTrialStatusMessage(
+      int remainingMessages, int trialDaysRemaining) {
+    return '$remainingMessages messages remaining • $trialDaysRemaining days left';
+  }
+
+  @override
+  String get paywallUpgradeToPremiumNow => 'Upgrade to Premium Now';
+
+  @override
   String get paywallSubscriptionTerms =>
       'Payment will be charged to your App Store account. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Cancel anytime in your App Store account settings.';
 

@@ -58,8 +58,8 @@ class SubscriptionService {
   // iOS Product IDs (App Store Connect) - UPDATED 2025-12-20
   // NOTE: Use these in the SUBSCRIPTIONS section, NOT In-App Purchases section!
   // Fresh subscription products created with clean localizations (no rejections)
-  static const String _iosYearlyProductId = 'everyday_christian_premium_yearly';
-  static const String _iosMonthlyProductId = 'everyday_christian_premium_monthly';
+  static const String _iosYearlyProductId = 'everyday_christian_ios_yearly_sub';
+  static const String _iosMonthlyProductId = 'everyday_christian_ios_monthly_sub';
 
   // Android Product IDs (Google Play Console) - Original IDs
   static const String _androidYearlyProductId = 'everyday_christian_free_premium_yearly';
