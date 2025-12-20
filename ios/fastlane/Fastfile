@@ -1,0 +1,239 @@
+# Fastfile - Deployment automation for Everyday Christian iOS app
+# Documentation: https://docs.fastlane.tools
+
+default_platform(:ios)
+
+platform :ios do
+
+  # ========================================
+  # LANE: Beta Deployment (TestFlight)
+  # ========================================
+  # Usage: fastlane beta
+  # Builds app, increments build number, uploads to TestFlight
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    # Ensure we're on a clean git state
+    ensure_git_status_clean
+
+    # Increment build number (keeps version the same)
+    increment_build_number(
+      xcodeproj: "Runner.xcodeproj"
+    )
+
+    # Build the app
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.elev8tion.everydaychristian" => "match AppStore com.elev8tion.everydaychristian"
+        }
+      }
+    )
+
+    # Upload to TestFlight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true, # Don't wait for Apple processing
+      skip_submission: false, # Auto-submit for beta review
+      distribute_external: false, # Only internal testers initially
+      notify_external_testers: false
+    )
+
+    # Commit and push version bump
+    commit_version_bump(
+      message: "Bump build number for TestFlight beta [skip ci]",
+      xcodeproj: "Runner.xcodeproj"
+    )
+    push_to_git_remote
+
+    # Send success notification
+    notification(
+      title: "✅ TestFlight Upload Complete",
+      message: "Build uploaded successfully! Check App Store Connect for processing status."
+    )
+  end
+
+  # ========================================
+  # LANE: Release to App Store
+  # ========================================
+  # Usage: fastlane release
+  # Builds app, uploads to App Store, submits for review
+  desc "Deploy a new version to the App Store"
+  lane :release do
+    # Ensure we're on main branch
+    ensure_git_branch(branch: 'main')
+    ensure_git_status_clean
+
+    # Optional: Run tests before release
+    # run_tests(scheme: "Runner")
+
+    # Increment version number (e.g., 1.0.0 -> 1.0.1)
+    increment_version_number(
+      bump_type: "patch", # or "minor", "major"
+      xcodeproj: "Runner.xcodeproj"
+    )
+
+    # Build the app
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store"
+    )
+
+    # Upload to App Store Connect
+    upload_to_app_store(
+      skip_metadata: false, # Upload metadata changes
+      skip_screenshots: false, # Upload screenshots if changed
+      submit_for_review: true, # Auto-submit for review
+      automatic_release: false, # Manual release after approval
+      force: true, # Skip HTMl verification
+      submission_information: {
+        add_id_info_uses_idfa: false # Not using IDFA for ads
+      }
+    )
+
+    # Commit version bump
+    commit_version_bump(
+      message: "Release version #{lane_context[SharedValues::VERSION_NUMBER]} [skip ci]",
+      xcodeproj: "Runner.xcodeproj"
+    )
+
+    # Create git tag for release
+    add_git_tag(
+      tag: "v#{lane_context[SharedValues::VERSION_NUMBER]}"
+    )
+
+    push_to_git_remote(tags: true)
+
+    notification(
+      title: "🚀 App Store Upload Complete",
+      message: "Version #{lane_context[SharedValues::VERSION_NUMBER]} submitted for review!"
+    )
+  end
+
+  # ========================================
+  # LANE: Build Only (No Upload)
+  # ========================================
+  # Usage: fastlane build
+  # Just builds the app without uploading
+  desc "Build the iOS app without uploading"
+  lane :build do
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      skip_package_ipa: false
+    )
+
+    notification(
+      title: "✅ Build Complete",
+      message: "IPA file ready in build output directory"
+    )
+  end
+
+  # ========================================
+  # LANE: Capture Screenshots
+  # ========================================
+  # Usage: fastlane screenshots
+  # Takes screenshots for all device sizes
+  desc "Generate screenshots for App Store"
+  lane :screenshots do
+    capture_screenshots(
+      scheme: "Runner",
+      output_directory: "./fastlane/screenshots",
+      clear_previous_screenshots: true,
+      dark_mode: false
+    )
+
+    # Optionally upload to App Store Connect
+    # upload_to_app_store(
+    #   skip_binary_upload: true,
+    #   skip_metadata: true
+    # )
+  end
+
+  # ========================================
+  # LANE: Update Metadata
+  # ========================================
+  # Usage: fastlane metadata
+  # Updates App Store metadata without uploading a new build
+  desc "Update App Store metadata only"
+  lane :metadata do
+    upload_to_app_store(
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      force: true
+    )
+
+    notification(
+      title: "📝 Metadata Updated",
+      message: "App Store metadata updated successfully"
+    )
+  end
+
+  # ========================================
+  # LANE: Run Tests
+  # ========================================
+  # Usage: fastlane test
+  # Runs all unit and UI tests
+  desc "Run all tests"
+  lane :test do
+    run_tests(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      devices: ["iPhone 15 Pro"],
+      clean: true
+    )
+  end
+
+  # ========================================
+  # LANE: Version Bump (Patch)
+  # ========================================
+  # Usage: fastlane bump
+  # Increments patch version (1.0.0 -> 1.0.1)
+  desc "Bump version number (patch)"
+  lane :bump do
+    ensure_git_status_clean
+
+    increment_version_number(
+      bump_type: "patch",
+      xcodeproj: "Runner.xcodeproj"
+    )
+
+    version = get_version_number(xcodeproj: "Runner.xcodeproj")
+
+    commit_version_bump(
+      message: "Bump version to #{version} [skip ci]",
+      xcodeproj: "Runner.xcodeproj"
+    )
+
+    push_to_git_remote
+
+    UI.success("✅ Version bumped to #{version}")
+  end
+
+  # ========================================
+  # LANE: Match (Code Signing)
+  # ========================================
+  # Usage: fastlane sync_certificates
+  # Syncs code signing certificates and profiles
+  desc "Sync code signing certificates and profiles"
+  lane :sync_certificates do
+    match(
+      type: "appstore",
+      readonly: true, # Don't create new certificates
+      app_identifier: "com.elev8tion.everydaychristian"
+    )
+  end
+
+  # ========================================
+  # ERROR HANDLING
+  # ========================================
+  error do |lane, exception|
+    notification(
+      title: "❌ Fastlane Error",
+      message: "Lane '#{lane}' failed: #{exception.message}"
+    )
+  end
+end

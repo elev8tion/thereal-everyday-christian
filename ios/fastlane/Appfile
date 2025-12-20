@@ -1,0 +1,19 @@
+# App Store Connect credentials
+# Replace these with your actual values
+
+# Your Apple ID email
+apple_id("[[YOUR_APPLE_ID]]") # e.g., "your.email@example.com"
+
+# Your Team ID (found in App Store Connect)
+itc_team_id("[[YOUR_TEAM_ID]]") # e.g., "123456789"
+
+# Your Developer Portal Team ID (usually the same as above)
+team_id("[[YOUR_TEAM_ID]]")
+
+# Your app's bundle identifier
+app_identifier("com.elev8tion.everydaychristian")
+
+# For multiple apps/targets, use:
+# for_platform :ios do
+#   app_identifier("com.elev8tion.everydaychristian")
+# end
