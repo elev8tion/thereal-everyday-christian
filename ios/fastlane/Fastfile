@@ -30,6 +30,7 @@ platform :ios do
 
     # Upload to TestFlight
     upload_to_testflight(
+      api_key_path: "fastlane/api_key.json", # Use API key authentication
       skip_waiting_for_build_processing: true, # Don't wait for Apple processing
       skip_submission: false, # Auto-submit for beta review
       distribute_external: false, # Only internal testers initially
