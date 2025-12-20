@@ -1,0 +1,21 @@
+{
+  "group_name": "Premium Subscription",
+  "products": [
+    {
+      "id": "6756732997",
+      "name": "Premium Annual",
+      "productId": "everyday_christian_ios_yearly_sub",
+      "subscriptionPeriod": "ONE_YEAR",
+      "reviewNote": "Premium subscription with AI-powered scripture conversations",
+      "groupLevel": 2
+    },
+    {
+      "id": "6756733199",
+      "name": "Premium Monthly",
+      "productId": "everyday_christian_ios_monthly_sub",
+      "subscriptionPeriod": "ONE_MONTH",
+      "reviewNote": "Premium subscription with AI-powered scripture conversations",
+      "groupLevel": 3
+    }
+  ]
+}
