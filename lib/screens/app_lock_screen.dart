@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../components/frosted_glass_card.dart';
 import '../components/glass_button.dart';
+import '../components/pin_setup_dialog.dart';
 import '../features/auth/services/biometric_service.dart';
+import '../features/auth/services/secure_storage_service.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 
@@ -23,16 +25,19 @@ class AppLockScreen extends StatefulWidget {
 
 class _AppLockScreenState extends State<AppLockScreen> {
   final BiometricService _biometricService = BiometricService();
+  final SecureStorageService _secureStorage = const SecureStorageService();
 
   bool _isAuthenticating = false;
   bool _authenticationFailed = false;
   String? _errorMessage;
   bool _biometricsAvailable = false;
+  bool _appPinAvailable = false;
 
   @override
   void initState() {
     super.initState();
     _checkBiometricsAvailability();
+    _checkAppPinAvailability();
 
     // Auto-trigger biometric authentication on screen load
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -53,107 +58,254 @@ class _AppLockScreenState extends State<AppLockScreen> {
     }
   }
 
+  Future<void> _checkAppPinAvailability() async {
+    try {
+      final hasPin = await _secureStorage.hasAppPin();
+      if (mounted) {
+        setState(() {
+          _appPinAvailable = hasPin;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error checking app PIN availability: $e');
+    }
+  }
+
   Future<void> _showPasscodeDialog() async {
-    final passcodeController = TextEditingController();
-    final result = await showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.black.withValues(alpha: 0.9),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-            color: AppTheme.goldColor.withValues(alpha: 0.3),
-            width: 1,
+    // Check if app PIN is set
+    final hasPin = await _secureStorage.hasAppPin();
+
+    if (!hasPin) {
+      // No PIN set - offer to create one
+      final shouldCreate = await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          backgroundColor: Colors.black.withValues(alpha: 0.9),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: AppTheme.goldColor.withValues(alpha: 0.3),
+              width: 1,
+            ),
           ),
-        ),
-        title: Text(
-          'Enter Passcode',
-          style: TextStyle(
-            color: AppTheme.goldColor,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          title: Text(
+            'No PIN Set',
+            style: TextStyle(
+              color: AppTheme.goldColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Enter your device passcode to unlock',
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.7),
-                fontSize: 14,
+          content: Text(
+            'You haven\'t set up an app PIN yet. Would you like to create one now?',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.8),
+              fontSize: 14,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.7),
+                ),
               ),
             ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: passcodeController,
-              autofocus: true,
-              obscureText: true,
-              keyboardType: TextInputType.number,
-              maxLength: 6,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                letterSpacing: 8,
-              ),
-              decoration: InputDecoration(
-                counterText: '',
-                hintText: '••••••',
-                hintStyle: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.3),
-                  letterSpacing: 8,
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppTheme.goldColor.withValues(alpha: 0.3),
-                  ),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppTheme.goldColor,
-                    width: 2,
-                  ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.goldColor,
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
+              child: const Text('Create PIN'),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(
-              'Cancel',
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.7),
-              ),
+      );
+
+      if (shouldCreate == true && mounted) {
+        // Show PIN setup dialog
+        final created = await PinSetupDialog.show(context);
+        if (created && mounted) {
+          // PIN created successfully - update availability
+          setState(() {
+            _appPinAvailable = true;
+          });
+
+          // Navigate to home
+          HapticFeedback.lightImpact();
+          await Future.delayed(const Duration(milliseconds: 300));
+          if (mounted) {
+            Navigator.of(context).pushReplacementNamed('/home');
+          }
+        }
+      }
+      return;
+    }
+
+    // PIN is set - show verification dialog
+    final passcodeController = TextEditingController();
+    String? errorText;
+
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: Colors.black.withValues(alpha: 0.9),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: AppTheme.goldColor.withValues(alpha: 0.3),
+              width: 1,
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              // In a real implementation, verify the passcode
-              // For now, just accept any 4-6 digit code
-              if (passcodeController.text.length >= 4) {
-                Navigator.of(context).pop(true);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldColor,
-              foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+          title: Text(
+            'Enter PIN',
+            style: TextStyle(
+              color: AppTheme.goldColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Enter your app PIN to unlock',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.7),
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: passcodeController,
+                autofocus: true,
+                obscureText: true,
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  letterSpacing: 8,
+                ),
+                decoration: InputDecoration(
+                  counterText: '',
+                  hintText: '••••••',
+                  hintStyle: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.3),
+                    letterSpacing: 8,
+                  ),
+                  errorText: errorText,
+                  errorStyle: TextStyle(
+                    color: Colors.red.shade300,
+                    fontSize: 12,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppTheme.goldColor.withValues(alpha: 0.3),
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppTheme.goldColor,
+                      width: 2,
+                    ),
+                  ),
+                  errorBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.red.withValues(alpha: 0.8),
+                      width: 2,
+                    ),
+                  ),
+                  focusedErrorBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                onSubmitted: (pin) async {
+                  if (pin.length < 4) {
+                    setDialogState(() {
+                      errorText = 'PIN must be at least 4 digits';
+                    });
+                    HapticFeedback.heavyImpact();
+                    return;
+                  }
+
+                  final isValid = await _secureStorage.verifyAppPin(pin);
+                  if (isValid) {
+                    Navigator.of(context).pop(true);
+                  } else {
+                    setDialogState(() {
+                      errorText = 'Incorrect PIN. Please try again.';
+                    });
+                    passcodeController.clear();
+                    HapticFeedback.heavyImpact();
+                  }
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.7),
+                ),
               ),
             ),
-            child: const Text('Unlock'),
-          ),
-        ],
+            ElevatedButton(
+              onPressed: () async {
+                final pin = passcodeController.text;
+
+                if (pin.length < 4) {
+                  setDialogState(() {
+                    errorText = 'PIN must be at least 4 digits';
+                  });
+                  HapticFeedback.heavyImpact();
+                  return;
+                }
+
+                final isValid = await _secureStorage.verifyAppPin(pin);
+                if (isValid) {
+                  Navigator.of(context).pop(true);
+                } else {
+                  setDialogState(() {
+                    errorText = 'Incorrect PIN. Please try again.';
+                  });
+                  passcodeController.clear();
+                  HapticFeedback.heavyImpact();
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.goldColor,
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('Unlock'),
+            ),
+          ],
+        ),
       ),
     );
 
     passcodeController.dispose();
 
     if (result == true && mounted) {
-      // Passcode accepted - navigate to home
+      // PIN verified - navigate to home
       HapticFeedback.lightImpact();
       await Future.delayed(const Duration(milliseconds: 300));
       if (mounted) {

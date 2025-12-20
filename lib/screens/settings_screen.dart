@@ -9,6 +9,8 @@ import 'package:local_auth/local_auth.dart';
 import '../core/services/database_service.dart';
 import '../core/services/preferences_service.dart';
 import '../core/services/bible_config.dart';
+import '../features/auth/services/secure_storage_service.dart';
+import '../components/pin_setup_dialog.dart';
 import '../services/conversation_service.dart';
 import '../theme/app_theme.dart';
 import '../components/gradient_background.dart';
@@ -211,6 +213,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             Icons.security,
             [
               _buildAppLockTile(),
+              _buildPinManagementTile(),
               _buildActionTile(
                 l10n.clearCache,
                 l10n.clearCacheDesc,
@@ -705,6 +708,183 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     } catch (e) {
       debugPrint('App lock toggle error: $e');
     }
+  }
+
+  /// Build PIN management tile
+  Widget _buildPinManagementTile() {
+    return FutureBuilder<bool>(
+      future: const SecureStorageService().hasAppPin(),
+      builder: (context, snapshot) {
+        final hasPin = snapshot.data ?? false;
+
+        return _buildActionTile(
+          hasPin ? 'Change App PIN' : 'Set App PIN',
+          hasPin
+              ? 'Update your app PIN for fallback authentication'
+              : 'Create a PIN as backup when biometrics fail',
+          Icons.pin,
+          hasPin ? _handleChangePIN : _handleSetPIN,
+        );
+      },
+    );
+  }
+
+  /// Handle setting new PIN
+  Future<void> _handleSetPIN() async {
+    final created = await PinSetupDialog.show(context);
+
+    if (created && mounted) {
+      AppSnackBar.show(
+        context,
+        message: 'App PIN created successfully',
+        icon: Icons.check_circle,
+        iconColor: Colors.green,
+      );
+      setState(() {}); // Refresh tile
+    }
+  }
+
+  /// Handle changing existing PIN
+  Future<void> _handleChangePIN() async {
+    final secureStorage = const SecureStorageService();
+
+    // First verify current PIN
+    final verified = await _showPINVerificationDialog();
+    if (!verified || !mounted) return;
+
+    // Show PIN setup dialog to create new PIN
+    final created = await PinSetupDialog.show(context);
+
+    if (created && mounted) {
+      AppSnackBar.show(
+        context,
+        message: 'App PIN updated successfully',
+        icon: Icons.check_circle,
+        iconColor: Colors.green,
+      );
+      setState(() {}); // Refresh tile
+    }
+  }
+
+  /// Show dialog to verify current PIN before changing
+  Future<bool> _showPINVerificationDialog() async {
+    final secureStorage = const SecureStorageService();
+    final pinController = TextEditingController();
+    String? errorText;
+
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: Colors.black.withValues(alpha: 0.9),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: AppTheme.goldColor.withValues(alpha: 0.3),
+              width: 1,
+            ),
+          ),
+          title: Text(
+            'Verify Current PIN',
+            style: TextStyle(
+              color: AppTheme.goldColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Enter your current PIN to continue',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.7),
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: pinController,
+                autofocus: true,
+                obscureText: true,
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  letterSpacing: 8,
+                ),
+                decoration: InputDecoration(
+                  counterText: '',
+                  hintText: '••••••',
+                  hintStyle: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.3),
+                    letterSpacing: 8,
+                  ),
+                  errorText: errorText,
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppTheme.goldColor.withValues(alpha: 0.3),
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppTheme.goldColor,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                onSubmitted: (pin) async {
+                  final isValid = await secureStorage.verifyAppPin(pin);
+                  if (isValid) {
+                    Navigator.of(context).pop(true);
+                  } else {
+                    setDialogState(() {
+                      errorText = 'Incorrect PIN';
+                    });
+                    pinController.clear();
+                  }
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.7),
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final pin = pinController.text;
+                final isValid = await secureStorage.verifyAppPin(pin);
+                if (isValid) {
+                  Navigator.of(context).pop(true);
+                } else {
+                  setDialogState(() {
+                    errorText = 'Incorrect PIN';
+                  });
+                  pinController.clear();
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.goldColor,
+                foregroundColor: Colors.black,
+              ),
+              child: const Text('Verify'),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    pinController.dispose();
+    return result ?? false;
   }
 
   String _formatTimeTo12Hour(String time24) {

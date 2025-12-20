@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorageService {
@@ -18,6 +19,7 @@ class SecureStorageService {
   static const String _userDataKey = 'user_data';
   static const String _userCredentialsKey = 'user_credentials';
   static const String _biometricEnabledKey = 'biometric_enabled';
+  static const String _appPinHashKey = 'app_pin_hash';
   static const String _lastLoginKey = 'last_login';
   static const String _sessionTokenKey = 'session_token';
 
@@ -121,6 +123,72 @@ class SecureStorageService {
     }
   }
 
+  /// Store app PIN (hashed with SHA-256)
+  /// PIN must be 4-6 digits
+  Future<void> storeAppPin(String pin) async {
+    try {
+      // Validate PIN format (4-6 digits)
+      if (pin.length < 4 || pin.length > 6) {
+        throw SecureStorageException('PIN must be 4-6 digits');
+      }
+      if (!RegExp(r'^\d+$').hasMatch(pin)) {
+        throw SecureStorageException('PIN must contain only digits');
+      }
+
+      // Hash the PIN with SHA-256
+      final bytes = utf8.encode(pin);
+      final hash = sha256.convert(bytes);
+      final hashString = hash.toString();
+
+      // Store the hash (never store plaintext PIN)
+      await _storage.write(key: _appPinHashKey, value: hashString);
+    } catch (e) {
+      if (e is SecureStorageException) rethrow;
+      throw SecureStorageException('Failed to store app PIN: $e');
+    }
+  }
+
+  /// Verify app PIN against stored hash
+  /// Returns true if PIN matches, false otherwise
+  Future<bool> verifyAppPin(String pin) async {
+    try {
+      // Get stored hash
+      final storedHash = await _storage.read(key: _appPinHashKey);
+      if (storedHash == null) {
+        return false; // No PIN set
+      }
+
+      // Hash the entered PIN
+      final bytes = utf8.encode(pin);
+      final hash = sha256.convert(bytes);
+      final hashString = hash.toString();
+
+      // Compare hashes (constant-time comparison)
+      return hashString == storedHash;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Check if app PIN is set
+  Future<bool> hasAppPin() async {
+    try {
+      final pinHash = await _storage.read(key: _appPinHashKey);
+      return pinHash != null && pinHash.isNotEmpty;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Clear app PIN
+  Future<void> clearAppPin() async {
+    try {
+      await _storage.delete(key: _appPinHashKey);
+    } catch (e) {
+      throw SecureStorageException('Failed to clear app PIN: $e');
+    }
+  }
+
   /// Store last login timestamp
   Future<void> setLastLogin() async {
     try {
@@ -170,6 +238,7 @@ class SecureStorageService {
       await _storage.delete(key: _userDataKey);
       await _storage.delete(key: _sessionTokenKey);
       await _storage.delete(key: _lastLoginKey);
+      // Note: Does not clear app PIN or biometric settings
     } catch (e) {
       throw SecureStorageException('Failed to clear user data: $e');
     }
@@ -230,12 +299,14 @@ class SecureStorageService {
       final hasCreds = await hasCredentials();
       final lastLogin = await getLastLogin();
       final isBiometric = await isBiometricEnabled();
+      final hasPin = await hasAppPin();
 
       return StorageHealthCheck(
         hasUserData: hasUser,
         hasCredentials: hasCreds,
         lastLogin: lastLogin,
         biometricEnabled: isBiometric,
+        appPinEnabled: hasPin,
         isHealthy: true,
       );
     } catch (e) {
@@ -244,6 +315,7 @@ class SecureStorageService {
         hasCredentials: false,
         lastLogin: null,
         biometricEnabled: false,
+        appPinEnabled: false,
         isHealthy: false,
         error: e.toString(),
       );
@@ -283,6 +355,7 @@ class StorageHealthCheck {
   final bool hasCredentials;
   final DateTime? lastLogin;
   final bool biometricEnabled;
+  final bool appPinEnabled;
   final bool isHealthy;
   final String? error;
 
@@ -291,6 +364,7 @@ class StorageHealthCheck {
     required this.hasCredentials,
     this.lastLogin,
     required this.biometricEnabled,
+    required this.appPinEnabled,
     required this.isHealthy,
     this.error,
   });
@@ -305,6 +379,7 @@ class StorageHealthCheck {
     if (hasUserData) parts.add('User data ✓');
     if (hasCredentials) parts.add('Credentials ✓');
     if (biometricEnabled) parts.add('Biometric ✓');
+    if (appPinEnabled) parts.add('App PIN ✓');
     if (lastLogin != null) {
       final daysSince = DateTime.now().difference(lastLogin!).inDays;
       parts.add('Last login: ${daysSince}d ago');
@@ -315,7 +390,7 @@ class StorageHealthCheck {
 
   @override
   String toString() {
-    return 'StorageHealthCheck(healthy: $isHealthy, userData: $hasUserData, credentials: $hasCredentials, biometric: $biometricEnabled, error: $error)';
+    return 'StorageHealthCheck(healthy: $isHealthy, userData: $hasUserData, credentials: $hasCredentials, biometric: $biometricEnabled, appPin: $appPinEnabled, error: $error)';
   }
 }
 
