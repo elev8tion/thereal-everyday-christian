@@ -1,4 +1,4 @@
-# Response to Apple App Review - Everyday Christian
+4# Response to Apple App Review - Everyday Christian
 **Submission ID:** 213a117a-afa7-4f47-960b-3ecbc3461b1c
 **Date:** December 22, 2025
 **Version:** 1.0
@@ -31,21 +31,19 @@ We have updated the app binary to include **all required subscription informatio
 - Crisis detection and support resources
 
 **5. Functional Links to Privacy Policy and Terms of Use (EULA):**
-- **NEW LOCATION:** Links are now displayed in a **prominent frosted glass card** positioned **immediately below the Subscribe button** (above the "Restore Purchase" link)
+- **NEW LOCATION:** Links are now displayed in a **prominent frosted glass card** positioned **immediately above the Subscribe button**
 - Privacy Policy: https://everydaychristian.app/privacy ✅ (verified accessible)
 - Terms of Use (EULA): https://everydaychristian.app/terms ✅ (verified accessible)
 - Both links open in external browser (Safari) when tapped
-- Links appear in gold text (no underline) for clean, accessible design
 
 ### Screenshot References:
 The subscription information screen displays:
 1. Plan selector cards showing **subscription length** (12 months / 1 month)
 2. **Clear pricing** ($35.99/year or $5.99/month)
 3. **"150 Scripture Chats/month"** badge
-4. Large "Start Free Trial" (or "Subscribe Now") button
-5. **"Restore Previous Purchase"** link (required by Apple, always visible)
-6. **Privacy Policy and Terms of Use links** in gold text below the button
-7. Complete feature list with descriptions
+4. **Privacy Policy and Terms of Use links** in gold, underlined text
+5. Large "Subscribe Now" button
+6. Complete feature list with descriptions
 
 ---
 
@@ -139,7 +137,7 @@ Payment will be charged to your iTunes Account at confirmation of purchase. Subs
 |-------|--------|----------|
 | Missing subscription length in binary | ✅ **FIXED** | Added "12 months of access" and "1 month of access" to plan cards |
 | Missing price in binary | ✅ **FIXED** | Price already displayed prominently ($35.99 / $5.99) |
-| Missing EULA link in binary | ✅ **FIXED** | Moved Terms of Use link to prominent position below Subscribe button (above Restore link) |
+| Missing EULA link in binary | ✅ **FIXED** | Moved Terms of Use link to prominent position above Subscribe button |
 | Missing EULA in metadata | ✅ **FIXED** | Added EULA link to App Description and EULA field |
 | Reviewers cannot locate IAPs | ✅ **FIXED** | Provided 3 detailed navigation paths above |
 
@@ -151,5 +149,5 @@ If you have any questions or need further clarification, please reply to this me
 
 Thank you for your thorough review!
 
-**Developer:** Everyday Christian Team
+**Developer:** ELEV8TION
 **Support Email:** connect@everydaychristian.app

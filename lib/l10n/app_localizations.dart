@@ -5695,7 +5695,7 @@ abstract class AppLocalizations {
   /// Description for Bible tap-to-select tutorial
   ///
   /// In en, this message translates to:
-  /// **'Tap any verse to select it. Long press to view options like bookmarking and sharing.'**
+  /// **'Tap any verse to select it. Double tap to view options like bookmarking and sharing.'**
   String get tutorialBibleTapDescription;
 
   /// Title for Bible bookmark tutorial
