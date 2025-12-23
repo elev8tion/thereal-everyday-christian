@@ -64,9 +64,10 @@ Apple rejected the app for three violations:
 - Apple requires functional links to both Privacy Policy and Terms of Use (EULA)
 
 ### Fix Applied (`lib/screens/paywall_screen.dart`)
-✅ **Added clickable legal links** (lines 318-357):
+✅ **Added clickable legal links** (positioned below Subscribe button, above Restore link):
 - Added "Privacy Policy" link (opens https://everydaychristian.app/privacy)
-- Added "Terms of Use" link (opens https://everydaychristian.app/terms)
+- Added "Terms of Use (EULA)" link (opens https://everydaychristian.app/terms)
+- Links appear in gold text without underlines for clean, accessible design
 - Both links open in external browser (Safari)
 - Error handling if links can't be opened
 - Imported `url_launcher` package for opening links
@@ -259,8 +260,9 @@ Then products are not loading from App Store Connect. Check product IDs.
 1. **`lib/screens/paywall_screen.dart`**:
    - Line 14: Added `import 'package:url_launcher/url_launcher.dart';`
    - Lines 465-541: Added product validation in `_handlePurchase()`
-   - Lines 318-357: Added clickable Privacy Policy and Terms links
-   - Lines 1038-1103: Added `_launchURL()` helper method
+   - Lines 245-289: Clickable Privacy Policy and Terms links (positioned below Subscribe button, above Restore link)
+   - Removed underlines from all links (Privacy, Terms, Restore) for cleaner design
+   - Lines 1020-1085: Added `_launchURL()` helper method
 
 ### Configuration (Already Correct):
 1. **`ios/Runner/Info.plist`**:

@@ -205,55 +205,6 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   ),
                   const SizedBox(height: AppSpacing.xl),
 
-                  // CRITICAL: Terms of Use & Privacy Policy (MUST be above Subscribe button per App Store requirements)
-                  // Apple Guideline 3.1.2 requires functional links to EULA and Privacy Policy in prominent location
-                  FrostedGlassCard(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    intensity: GlassIntensity.light,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () => _launchURL(
-                              'https://everydaychristian.app/privacy'),
-                          child: const Text(
-                            'Privacy Policy',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: AppTheme.goldColor,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(
-                            '•',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: AppColors.secondaryText,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () =>
-                              _launchURL('https://everydaychristian.app/terms'),
-                          child: const Text(
-                            'Terms of Use (EULA)',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: AppTheme.goldColor,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-
                   // Purchase Button - generic text that works for both monthly and yearly
                   GlassButton(
                     text: _isProcessing
@@ -284,10 +235,56 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: AppTheme.goldColor,
-                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  // CRITICAL: Terms of Use & Privacy Policy (required by Apple Guideline 3.1.2)
+                  // Apple requires functional links to EULA and Privacy Policy in prominent location
+                  FrostedGlassCard(
+                    padding: const EdgeInsets.all(AppSpacing.md),
+                    intensity: GlassIntensity.light,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () => _launchURL(
+                              'https://everydaychristian.app/privacy'),
+                          child: const Text(
+                            'Privacy Policy',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppTheme.goldColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            '•',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.secondaryText,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () =>
+                              _launchURL('https://everydaychristian.app/terms'),
+                          child: const Text(
+                            'Terms of Use (EULA)',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppTheme.goldColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
