@@ -3199,7 +3199,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tutorialBibleTapDescription =>
-      'Tap any verse to select it. Long press to view options like bookmarking and sharing.';
+      'Tap any verse to select it. Double tap to view options like bookmarking and sharing.';
 
   @override
   String get tutorialBibleBookmarkTitle => 'Bookmark Your Favorites';

@@ -4325,7 +4325,7 @@
   "@tutorialBibleTapTitle": {
     "description": "Title for Bible tap-to-select tutorial"
   },
-  "tutorialBibleTapDescription": "Tap any verse to select it. Long press to view options like bookmarking and sharing.",
+  "tutorialBibleTapDescription": "Tap any verse to select it. Double tap to view options like bookmarking and sharing.",
   "@tutorialBibleTapDescription": {
     "description": "Description for Bible tap-to-select tutorial"
   },

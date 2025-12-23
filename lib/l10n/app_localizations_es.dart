@@ -3242,7 +3242,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tutorialBibleTapDescription =>
-      'Toca cualquier versículo para seleccionarlo. Mantén presionado para ver opciones como guardar y compartir.';
+      'Toca cualquier versículo para seleccionarlo. Toca dos veces para ver opciones como guardar y compartir.';
 
   @override
   String get tutorialBibleBookmarkTitle => 'Guarda tus Favoritos';
