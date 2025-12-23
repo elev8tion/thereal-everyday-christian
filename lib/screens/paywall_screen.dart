@@ -155,14 +155,11 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                     const SizedBox(height: AppSpacing.xxl),
                   ],
 
-                  // Plan Selector (show when trial expired/blocked OR when out of messages)
-                  if (hasTrialExpired ||
-                      isTrialBlocked ||
-                      remainingMessages == 0 ||
-                      widget.showMessageStats) ...[
-                    _buildPlanSelector(context, l10n, subscriptionService),
-                    const SizedBox(height: AppSpacing.xl),
-                  ],
+                  // Plan Selector - ALWAYS show per Apple Guideline 3.1.2
+                  // Apple requires subscription length and price to be visible WITHOUT user action
+                  // (cannot be hidden behind a button click or conditional on trial status)
+                  _buildPlanSelector(context, l10n, subscriptionService),
+                  const SizedBox(height: AppSpacing.xl),
 
                   // 150 Scripture Chats badge (centered under plan selectors)
                   Center(
@@ -206,86 +203,93 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xxl),
+                  const SizedBox(height: AppSpacing.xl),
 
-                  // Purchase Button - shows trial status when active
-                  if (!isInTrial) // Hide button if trial is already active
-                    GlassButton(
-                      text: _isProcessing
-                          ? l10n.paywallProcessing
-                          : (hasTrialExpired ||
-                                  isTrialBlocked ||
-                                  remainingMessages == 0 ||
-                                  widget.showMessageStats)
-                              ? l10n
-                                  .subscribeNow // Generic "Subscribe Now" for all post-trial cases
-                              : l10n
-                                  .paywallStartPremiumButton, // "Start Free Trial" for new users
-                      onPressed: _isProcessing ? null : _handlePurchase,
-                    )
-                  else
-                    // Show trial active status
-                    FrostedGlassCard(
-                      padding: const EdgeInsets.all(AppSpacing.lg),
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: 48,
-                          ),
-                          const SizedBox(height: AppSpacing.md),
-                          Text(
-                            l10n.paywallTrialActive,
+                  // CRITICAL: Terms of Use & Privacy Policy (MUST be above Subscribe button per App Store requirements)
+                  // Apple Guideline 3.1.2 requires functional links to EULA and Privacy Policy in prominent location
+                  FrostedGlassCard(
+                    padding: const EdgeInsets.all(AppSpacing.md),
+                    intensity: GlassIntensity.light,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () => _launchURL(
+                              'https://everydaychristian.app/privacy'),
+                          child: const Text(
+                            'Privacy Policy',
                             style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primaryText,
+                              fontSize: 13,
+                              color: AppTheme.goldColor,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.sm),
-                          Text(
-                            l10n.paywallTrialStatusMessage(
-                              remainingMessages,
-                              trialDaysRemaining,
-                            ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            '•',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 13,
                               color: AppColors.secondaryText,
                             ),
-                            textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: AppSpacing.md),
-                          GlassButton(
-                            text: l10n.paywallUpgradeToPremiumNow,
-                            onPressed: _isProcessing ? null : _handlePurchase,
+                        ),
+                        GestureDetector(
+                          onTap: () =>
+                              _launchURL('https://everydaychristian.app/terms'),
+                          child: const Text(
+                            'Terms of Use (EULA)',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppTheme.goldColor,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
                   const SizedBox(height: AppSpacing.lg),
 
-                  // Restore Button - only show if user had previous subscription
-                  if (hasTrialExpired || isTrialBlocked)
-                    GestureDetector(
-                      onTap: _isProcessing ? null : _handleRestore,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: AppSpacing.sm,
-                        ),
-                        child: Center(
-                          child: Text(
-                            l10n.paywallRestorePurchase,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.secondaryText,
-                              decoration: TextDecoration.underline,
-                            ),
+                  // Purchase Button - generic text that works for both monthly and yearly
+                  GlassButton(
+                    text: _isProcessing
+                        ? l10n.paywallProcessing
+                        : (hasTrialExpired ||
+                                isTrialBlocked ||
+                                remainingMessages == 0 ||
+                                widget.showMessageStats)
+                            ? l10n
+                                .subscribeNow // Generic "Subscribe Now" for all post-trial cases
+                            : l10n
+                                .paywallStartPremiumButton, // "Start Free Trial" for new users
+                    onPressed: _isProcessing ? null : _handlePurchase,
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  // Restore Button
+                  GestureDetector(
+                    onTap: _isProcessing ? null : _handleRestore,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.md,
+                      ),
+                      child: Center(
+                        child: Text(
+                          l10n.paywallRestorePurchase,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.goldColor,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
                     ),
+                  ),
                   const SizedBox(height: AppSpacing.xxl),
 
                   // Features Section (moved below Subscribe button)
@@ -332,7 +336,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
-                  // Terms with functional links to Privacy Policy and EULA
+                  // Auto-renewal terms and subscription info (required by App Store)
                   FrostedGlassCard(
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     intensity: GlassIntensity.light,
@@ -355,47 +359,6 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                             height: 1.4,
                           ),
                           textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        // CRITICAL FIX: Add functional links to Privacy Policy and Terms of Use (required by App Store)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () => _launchURL('https://everydaychristian.app/privacy'),
-                              child: Text(
-                                'Privacy Policy',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppTheme.goldColor,
-                                  decoration: TextDecoration.underline,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                              child: Text(
-                                '•',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.secondaryText,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => _launchURL('https://everydaychristian.app/terms'),
-                              child: Text(
-                                'Terms of Use',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppTheme.goldColor,
-                                  decoration: TextDecoration.underline,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
@@ -620,7 +583,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         ),
       );
 
-      debugPrint('📊 [PaywallScreen] Purchase failed - product not loaded. Product IDs configured: yearly=${SubscriptionService.premiumYearlyProductId}, monthly=${SubscriptionService.premiumMonthlyProductId}');
+      debugPrint(
+          '📊 [PaywallScreen] Purchase failed - product not loaded. Product IDs configured: yearly=${SubscriptionService.premiumYearlyProductId}, monthly=${SubscriptionService.premiumMonthlyProductId}');
       return;
     }
 
@@ -975,6 +939,18 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ),
                     ),
                     const SizedBox(height: 4),
+                    // CRITICAL: Subscription length (required by Apple Guideline 3.1.2)
+                    Text(
+                      '12 months of access',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: _selectedPlanIsYearly
+                            ? AppTheme.goldColor.withValues(alpha: 0.9)
+                            : AppColors.secondaryText,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
                     // Savings
                     Text(
                       l10n.paywallSavePercent(savings),
@@ -1059,6 +1035,18 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ),
                     ),
                     const SizedBox(height: 4),
+                    // CRITICAL: Subscription length (required by Apple Guideline 3.1.2)
+                    Text(
+                      '1 month of access',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: !_selectedPlanIsYearly
+                            ? AppTheme.goldColor.withValues(alpha: 0.9)
+                            : AppColors.secondaryText,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
                     // Billed info
                     Text(
                       l10n.paywallBilledMonthly,
