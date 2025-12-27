@@ -1,0 +1,24 @@
+We have addressed all three rejection issues from the previous submission:
+
+1. GUIDELINE 3.1.2 - Missing Subscription Information:
+We have updated the app binary to include ALL required information as specified:
+- Subscription length: "12 months of access" (yearly) and "1 month of access" (monthly) are now displayed prominently on plan cards
+- Price: $35.99/year and $5.99/month displayed in large, bold text
+- Content/Services: "150 Scripture Chats per month" badge, AI-powered Bible study features
+- Functional links to Privacy Policy (https://everydaychristian.app/privacy) and Terms of Use (https://everydaychristian.app/terms) are now positioned directly below the Subscribe button in a prominent frosted glass card with gold text that opens in Safari
+
+2. GUIDELINE 2.1 - Locating In-App Purchases:
+The in-app purchases are fully functional and accessible via three paths:
+   Method 1 (Direct): Home → Menu → Settings → "Manage Subscription"
+   Method 2: Home → "My Prayers" → Add Prayer → "Get AI Guidance" → (use 15 messages)
+   Method 3: Home → "Scripture Chat" → (use 15 messages)
+Product IDs are correctly configured for sandbox testing:
+   - everyday_christian_premium_yearly
+   - everyday_christian_premium_monthly
+
+3. GUIDELINE 2.3.8 - App Name Mismatch:
+The app binary has been completely cleaned and rebuilt. CFBundleDisplayName is set to "Everyday Christian" to match the App Store marketing name. The old "EDC Faith" name has been eliminated.
+
+All changes have been tested on physical iOS devices in sandbox environment.
+
+Build 22 is ready for review.

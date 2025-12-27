@@ -158,6 +158,7 @@ platform :ios do
   desc "Update App Store metadata only"
   lane :metadata do
     upload_to_app_store(
+      api_key_path: "fastlane/api_key.json",
       skip_binary_upload: true,
       skip_screenshots: true,
       force: true
@@ -166,6 +167,33 @@ platform :ios do
     notification(
       title: "📝 Metadata Updated",
       message: "App Store metadata updated successfully"
+    )
+  end
+
+  # ========================================
+  # LANE: Submit for Review
+  # ========================================
+  # Usage: fastlane submit
+  # Submits the current build for App Store review
+  desc "Submit current build for App Store review"
+  lane :submit do
+    upload_to_app_store(
+      api_key_path: "fastlane/api_key.json",
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      skip_metadata: false, # Upload metadata changes
+      submit_for_review: true,
+      automatic_release: false, # Manual release after approval
+      run_precheck_before_submit: false, # Skip precheck (doesn't work with API key for IAPs)
+      submission_information: {
+        add_id_info_uses_idfa: false
+      },
+      force: true
+    )
+
+    notification(
+      title: "🚀 Submitted for Review",
+      message: "Build 22 submitted to Apple for review!"
     )
   end
 
@@ -362,40 +390,129 @@ lane :query_subscriptions do
     key_filepath: "#{Dir.home}/private_keys/AuthKey_T9L7G79827.p8",
     duration: 1200
   )
-  
+
   UI.header "Querying Subscription Products"
-  
+
   app = Spaceship::ConnectAPI::App.find("com.elev8tion.everydaychristian")
-  
-  # Get in-app purchases
-  iaps = Spaceship::ConnectAPI.get_in_app_purchases(
-    filter: { app: app.id },
-    includes: "appStoreReviewScreenshot,iapPriceSchedule,inAppPurchaseLocalizations"
-  )
-  
-  if iaps && iaps.count > 0
-    UI.success "Found #{iaps.count} In-App Purchases/Subscriptions"
+
+  # Get subscription groups using the correct API
+  groups = Spaceship::ConnectAPI::SubscriptionGroup.all(app_id: app.id)
+
+  if groups && groups.count > 0
+    UI.success "Found #{groups.count} Subscription Group(s)"
     UI.message ""
-    
-    iaps.each do |iap|
-      UI.important "Product: #{iap.product_id}"
-      UI.message "  Type: #{iap.in_app_purchase_type}"
-      UI.message "  Reference Name: #{iap.reference_name}"
-      UI.message "  State: #{iap.state}"
+
+    groups.each do |group|
+      UI.header "Group: #{group.reference_name}"
+      UI.message "Group ID: #{group.id}"
       UI.message ""
-      
-      # Get localizations
-      if iap.in_app_purchase_localizations
-        UI.header "Localizations:"
-        iap.in_app_purchase_localizations.each do |loc|
-          UI.message "  Language: #{loc.locale}"
-          UI.message "  Name: #{loc.name}"
-          UI.message "  Description: #{loc.description}"
+
+      # Get subscriptions in this group
+      subs = Spaceship::ConnectAPI::Subscription.all(subscription_group_id: group.id)
+
+      if subs && subs.count > 0
+        subs.each do |sub|
+          UI.important "━━━ Product: #{sub.product_id} ━━━"
+          UI.message "  Name: #{sub.name}" if sub.name
+          UI.message "  State: #{sub.state}"
+          UI.message "  Subscription Period: #{sub.subscription_period}" if sub.respond_to?(:subscription_period)
+
+          # Get localizations
+          begin
+            locs = Spaceship::ConnectAPI::SubscriptionLocalization.all(subscription_id: sub.id)
+            if locs && locs.count > 0
+              UI.message "\n  📱 Localizations:"
+              locs.each do |loc|
+                UI.message "    • #{loc.locale}: #{loc.name}"
+                UI.message "      Description: #{loc.description}" if loc.description
+              end
+            else
+              UI.error "  ⚠️  No localizations found!"
+            end
+          rescue => e
+            UI.error "  ⚠️  Could not fetch localizations: #{e.message}"
+          end
+
           UI.message ""
         end
+      else
+        UI.error "No subscriptions found in this group!"
       end
     end
   else
-    UI.error "No subscriptions found!"
+    UI.error "No subscription groups found!"
   end
+end
+
+# ========================================
+# LANE: Fix Subscription Localizations
+# ========================================
+# Usage: fastlane fix_subscription_localizations
+# Updates subscription descriptions to show "150 messages monthly" instead of "Unlimited access"
+desc "Fix subscription localizations to show correct message limits"
+lane :fix_subscription_localizations do
+  api_key = app_store_connect_api_key(
+    key_id: "T9L7G79827",
+    issuer_id: "e5761715-cdcf-42cb-b50e-09977a5c8279",
+    key_filepath: "#{Dir.home}/private_keys/AuthKey_T9L7G79827.p8",
+    duration: 1200
+  )
+
+  UI.header "🔧 Fixing Subscription Localizations"
+
+  app = Spaceship::ConnectAPI::App.find("com.elev8tion.everydaychristian")
+  groups = Spaceship::ConnectAPI::SubscriptionGroup.all(app_id: app.id)
+
+  # Correct descriptions
+  descriptions = {
+    "en-US" => "150 messages monthly, auto-renews monthly",
+    "es-MX" => "150 mensajes mensuales, renovación automática mensual",
+    "es-ES" => "150 mensajes mensuales, renovación automática mensual"
+  }
+
+  descriptions_yearly = {
+    "en-US" => "150 messages monthly, auto-renews yearly",
+    "es-MX" => "150 mensajes mensuales, renovación automática anual",
+    "es-ES" => "150 mensajes mensuales, renovación automática anual"
+  }
+
+  groups.each do |group|
+    UI.message "Processing group: #{group.reference_name}"
+
+    subs = Spaceship::ConnectAPI::Subscription.all(subscription_group_id: group.id)
+
+    subs.each do |sub|
+      UI.important "Updating: #{sub.product_id}"
+
+      # Determine if monthly or yearly
+      is_yearly = sub.product_id.include?("yearly")
+      correct_descriptions = is_yearly ? descriptions_yearly : descriptions
+
+      # Get existing localizations
+      locs = Spaceship::ConnectAPI::SubscriptionLocalization.all(subscription_id: sub.id)
+
+      locs.each do |loc|
+        locale = loc.locale
+        current_desc = loc.description
+        new_desc = correct_descriptions[locale]
+
+        if new_desc && current_desc != new_desc
+          UI.message "  Updating #{locale}: #{current_desc} → #{new_desc}"
+
+          begin
+            # Update the localization
+            loc.update(attributes: { description: new_desc })
+            UI.success "  ✅ Updated #{locale}"
+          rescue => e
+            UI.error "  ❌ Failed to update #{locale}: #{e.message}"
+          end
+        else
+          UI.message "  ⏭  #{locale} already correct or not configured"
+        end
+      end
+    end
+  end
+
+  UI.success "✅ Subscription localizations updated!"
+  UI.important "⚠️  You may need to resubmit your app for these changes to take effect"
 end

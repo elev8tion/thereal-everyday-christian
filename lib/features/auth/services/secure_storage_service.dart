@@ -129,10 +129,10 @@ class SecureStorageService {
     try {
       // Validate PIN format (4-6 digits)
       if (pin.length < 4 || pin.length > 6) {
-        throw SecureStorageException('PIN must be 4-6 digits');
+        throw const SecureStorageException('PIN must be 4-6 digits');
       }
       if (!RegExp(r'^\d+$').hasMatch(pin)) {
-        throw SecureStorageException('PIN must contain only digits');
+        throw const SecureStorageException('PIN must contain only digits');
       }
 
       // Hash the PIN with SHA-256

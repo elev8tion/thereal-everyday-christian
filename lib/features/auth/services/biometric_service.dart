@@ -62,7 +62,7 @@ class BiometricService {
       return await _localAuth.authenticate(
         localizedReason: reason,
         authMessages: <AuthMessages>[
-          IOSAuthMessages(
+          const IOSAuthMessages(
             cancelButton: 'Cancel',
             goToSettingsButton: 'Go to settings',
             goToSettingsDescription: 'Biometric authentication is not set up on your device.',

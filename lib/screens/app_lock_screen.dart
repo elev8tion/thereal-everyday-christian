@@ -89,7 +89,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
               width: 1,
             ),
           ),
-          title: Text(
+          title: const Text(
             'No PIN Set',
             style: TextStyle(
               color: AppTheme.goldColor,
@@ -166,7 +166,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
               width: 1,
             ),
           ),
-          title: Text(
+          title: const Text(
             'Enter PIN',
             style: TextStyle(
               color: AppTheme.goldColor,
@@ -213,7 +213,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       color: AppTheme.goldColor.withValues(alpha: 0.3),
                     ),
                   ),
-                  focusedBorder: UnderlineInputBorder(
+                  focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: AppTheme.goldColor,
                       width: 2,
@@ -225,7 +225,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       width: 2,
                     ),
                   ),
-                  focusedErrorBorder: UnderlineInputBorder(
+                  focusedErrorBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.red,
                       width: 2,
