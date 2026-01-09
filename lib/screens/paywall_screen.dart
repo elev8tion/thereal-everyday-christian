@@ -212,7 +212,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                         : (hasTrialExpired ||
                                 isTrialBlocked ||
                                 remainingMessages == 0 ||
-                                widget.showMessageStats)
+                                widget.showMessageStats ||
+                                // Check trial eligibility based on selected plan
+                                (_selectedPlanIsYearly && subscriptionService.yearlyTrialEligible == false) ||
+                                (!_selectedPlanIsYearly && subscriptionService.monthlyTrialEligible == false))
                             ? l10n
                                 .subscribeNow // Generic "Subscribe Now" for all post-trial cases
                             : l10n
@@ -915,6 +918,35 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ),
                     ),
                     const SizedBox(height: 4),
+                    // Trial info (if available) - Apple requires trial period to be visible
+                    // Only show if user is eligible (or eligibility unknown) to comply with Apple guidelines
+                    if (subscriptionService.yearlyHasTrial &&
+                        subscriptionService.yearlyTrialDuration != null &&
+                        subscriptionService.yearlyTrialEligible != false)
+                      Column(
+                        children: [
+                          Text(
+                            '${subscriptionService.yearlyTrialDuration!.toUpperCase()} FREE',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: _selectedPlanIsYearly
+                                  ? AppTheme.goldColor
+                                  : AppColors.primaryText,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'then',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: AppColors.secondaryText,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                        ],
+                      ),
                     // Price
                     Text(
                       yearlyProduct?.price ?? '\$35.99',
@@ -1011,6 +1043,35 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ),
                     ),
                     const SizedBox(height: 4),
+                    // Trial info (if available) - Apple requires trial period to be visible
+                    // Only show if user is eligible (or eligibility unknown) to comply with Apple guidelines
+                    if (subscriptionService.monthlyHasTrial &&
+                        subscriptionService.monthlyTrialDuration != null &&
+                        subscriptionService.monthlyTrialEligible != false)
+                      Column(
+                        children: [
+                          Text(
+                            '${subscriptionService.monthlyTrialDuration!.toUpperCase()} FREE',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: !_selectedPlanIsYearly
+                                  ? AppTheme.goldColor
+                                  : AppColors.primaryText,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'then',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: AppColors.secondaryText,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                        ],
+                      ),
                     // Price
                     Text(
                       monthlyProduct?.price ?? '\$5.99',

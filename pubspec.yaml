@@ -51,6 +51,7 @@ dependencies:
   http: ^1.1.0
   upgrader: ^12.1.0
   in_app_purchase: ^3.1.13
+  in_app_purchase_storekit: ^0.3.8
   url_launcher: ^6.2.1
   image_picker: ^1.0.4
   screenshot: ^3.0.0

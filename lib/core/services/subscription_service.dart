@@ -13,6 +13,8 @@ import 'dart:developer' as developer;
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -94,6 +96,14 @@ class SubscriptionService {
   static const String _keyAutoRenewStatus = 'auto_renew_status';
   static const String _keyAutoSubscribeAttempted = 'auto_subscribe_attempted';
   static const String _keyPurchasedProductId = 'purchased_product_id'; // Track yearly vs monthly
+  // Keys for storing trial period information from ProductDetails
+  static const String _keyYearlyTrialDuration = 'yearly_trial_duration';
+  static const String _keyMonthlyTrialDuration = 'monthly_trial_duration';
+  static const String _keyYearlyHasTrial = 'yearly_has_trial';
+  static const String _keyMonthlyHasTrial = 'monthly_has_trial';
+  // Keys for storing trial eligibility (based on Apple purchase history)
+  static const String _keyYearlyTrialEligible = 'yearly_trial_eligible';
+  static const String _keyMonthlyTrialEligible = 'monthly_trial_eligible';
 
   // Keychain/KeyStore keys (survives app uninstall for trial abuse prevention)
   static const String _keychainTrialEverUsed = 'trial_ever_used_keychain';
@@ -116,6 +126,19 @@ class SubscriptionService {
   bool _isInitialized = false;
   ProductDetails? _premiumProductYearly;
   ProductDetails? _premiumProductMonthly;
+
+  // Trial information extracted from ProductDetails
+  bool _yearlyHasTrial = false;
+  bool _monthlyHasTrial = false;
+  String? _yearlyTrialDuration;  // e.g., "3 days", "1 week", "1 month"
+  String? _monthlyTrialDuration;
+
+  // Trial eligibility (determined by purchase history from Apple)
+  // true = user is eligible for trial (never purchased before)
+  // false = user has purchased before (not eligible for trial)
+  // null = eligibility unknown (couldn't determine from purchase history)
+  bool? _yearlyTrialEligible;
+  bool? _monthlyTrialEligible;
 
   // Purchase update callback
   Function(bool success, String? error)? onPurchaseUpdate;
@@ -248,9 +271,17 @@ class SubscriptionService {
         _premiumProductYearly = response.productDetails.firstWhere(
           (product) => product.id == premiumYearlyProductId,
         );
+        // Extract trial information for yearly product
+        _extractTrialInfo(_premiumProductYearly!, isYearly: true);
       } catch (e) {
         debugPrint('📊 [SubscriptionService] Yearly product not found, will remain null');
         _premiumProductYearly = null;
+        // Try to load cached trial info
+        _yearlyHasTrial = _prefs?.getBool(_keyYearlyHasTrial) ?? false;
+        _yearlyTrialDuration = _prefs?.getString(_keyYearlyTrialDuration);
+        // Load cached trial eligibility (null = unknown, true = eligible, false = ineligible)
+        final cachedEligibility = _prefs?.getBool(_keyYearlyTrialEligible);
+        _yearlyTrialEligible = cachedEligibility ?? true; // Default to eligible for new users
       }
 
       // Load monthly product
@@ -258,21 +289,121 @@ class SubscriptionService {
         _premiumProductMonthly = response.productDetails.firstWhere(
           (product) => product.id == premiumMonthlyProductId,
         );
+        // Extract trial information for monthly product
+        _extractTrialInfo(_premiumProductMonthly!, isYearly: false);
       } catch (e) {
         debugPrint('📊 [SubscriptionService] Monthly product not found, will remain null');
         _premiumProductMonthly = null;
+        // Try to load cached trial info
+        _monthlyHasTrial = _prefs?.getBool(_keyMonthlyHasTrial) ?? false;
+        _monthlyTrialDuration = _prefs?.getString(_keyMonthlyTrialDuration);
+        // Load cached trial eligibility (null = unknown, true = eligible, false = ineligible)
+        final cachedEligibility = _prefs?.getBool(_keyMonthlyTrialEligible);
+        _monthlyTrialEligible = cachedEligibility ?? true; // Default to eligible for new users
       }
 
       if (_premiumProductYearly != null) {
         debugPrint('📊 [SubscriptionService] Loaded yearly product: ${_premiumProductYearly!.id} - ${_premiumProductYearly!.price}');
+        if (_yearlyHasTrial) {
+          debugPrint('📊 [SubscriptionService] Yearly trial: $_yearlyTrialDuration');
+        }
       }
 
       if (_premiumProductMonthly != null) {
         debugPrint('📊 [SubscriptionService] Loaded monthly product: ${_premiumProductMonthly!.id} - ${_premiumProductMonthly!.price}');
+        if (_monthlyHasTrial) {
+          debugPrint('📊 [SubscriptionService] Monthly trial: $_monthlyTrialDuration');
+        }
       }
     } catch (e) {
       debugPrint('📊 [SubscriptionService] Failed to load products: $e');
     }
+  }
+
+  /// Extract trial information from iOS ProductDetails (iOS only)
+  ///
+  /// Uses AppStoreProductDetails to access SKProductWrapper and extract
+  /// introductory offer (free trial) information from App Store.
+  void _extractTrialInfo(ProductDetails product, {required bool isYearly}) {
+    try {
+      bool hasTrial = false;
+      String? trialDuration;
+
+      // iOS only - Cast to AppStoreProductDetails
+      if (product is AppStoreProductDetails) {
+        final skProduct = product.skProduct;
+
+        // Check if product has introductory price discount (free trial)
+        // introductoryPrice is an SKProductDiscountWrapper
+        if (skProduct.introductoryPrice != null) {
+          final introPrice = skProduct.introductoryPrice!;
+
+          // Check if it's a free trial (price should be "0" or "0.00")
+          final priceValue = double.tryParse(introPrice.price) ?? -1;
+          if (priceValue == 0) {
+            hasTrial = true;
+
+            // Get subscription period from introductory price discount
+            // subscriptionPeriod contains the trial duration (numberOfUnits and unit)
+            final period = introPrice.subscriptionPeriod;
+
+            // Convert period to human-readable format (e.g., "3 days", "1 week")
+            trialDuration = _formatSubscriptionPeriod(period.numberOfUnits, period.unit);
+
+            debugPrint('📊 [SubscriptionService] Found free trial: ${introPrice.price} for ${period.numberOfUnits} ${period.unit}');
+          }
+        }
+      }
+
+      // Store trial information
+      if (isYearly) {
+        _yearlyHasTrial = hasTrial;
+        _yearlyTrialDuration = trialDuration;
+        // Cache to SharedPreferences
+        _prefs?.setBool(_keyYearlyHasTrial, hasTrial);
+        if (trialDuration != null) {
+          _prefs?.setString(_keyYearlyTrialDuration, trialDuration);
+        }
+        // Load trial eligibility (or default to eligible for new users)
+        final cachedEligibility = _prefs?.getBool(_keyYearlyTrialEligible);
+        _yearlyTrialEligible = cachedEligibility ?? true;
+      } else {
+        _monthlyHasTrial = hasTrial;
+        _monthlyTrialDuration = trialDuration;
+        // Cache to SharedPreferences
+        _prefs?.setBool(_keyMonthlyHasTrial, hasTrial);
+        if (trialDuration != null) {
+          _prefs?.setString(_keyMonthlyTrialDuration, trialDuration);
+        }
+        // Load trial eligibility (or default to eligible for new users)
+        final cachedEligibility = _prefs?.getBool(_keyMonthlyTrialEligible);
+        _monthlyTrialEligible = cachedEligibility ?? true;
+      }
+
+      debugPrint('📊 [SubscriptionService] Extracted trial info for ${isYearly ? "yearly" : "monthly"}: hasTrial=$hasTrial, duration=$trialDuration');
+    } catch (e) {
+      debugPrint('📊 [SubscriptionService] Error extracting trial info: $e');
+    }
+  }
+
+  /// Format iOS subscription period into human-readable format
+  String _formatSubscriptionPeriod(int numberOfUnits, SKSubscriptionPeriodUnit unit) {
+    String unitStr;
+    switch (unit) {
+      case SKSubscriptionPeriodUnit.day:
+        unitStr = numberOfUnits == 1 ? 'day' : 'days';
+        break;
+      case SKSubscriptionPeriodUnit.week:
+        unitStr = numberOfUnits == 1 ? 'week' : 'weeks';
+        break;
+      case SKSubscriptionPeriodUnit.month:
+        unitStr = numberOfUnits == 1 ? 'month' : 'months';
+        break;
+      case SKSubscriptionPeriodUnit.year:
+        unitStr = numberOfUnits == 1 ? 'year' : 'years';
+        break;
+    }
+    return '$numberOfUnits $unitStr';
   }
 
   /// Dispose resources
@@ -685,6 +816,32 @@ class SubscriptionService {
     return productId == premiumMonthlyProductId;
   }
 
+  /// Get trial duration for yearly product (e.g., "3 days", "1 week")
+  /// Returns null if no trial or product not loaded
+  String? get yearlyTrialDuration => _yearlyTrialDuration;
+
+  /// Get trial duration for monthly product (e.g., "3 days", "1 week")
+  /// Returns null if no trial or product not loaded
+  String? get monthlyTrialDuration => _monthlyTrialDuration;
+
+  /// Check if yearly product has a free trial
+  bool get yearlyHasTrial => _yearlyHasTrial;
+
+  /// Check if monthly product has a free trial
+  bool get monthlyHasTrial => _monthlyHasTrial;
+
+  /// Check if user is eligible for yearly trial
+  /// Returns true if user has never purchased this product (eligible for trial)
+  /// Returns false if user has purchased before (not eligible for trial)
+  /// Returns null if eligibility is unknown (no purchase history checked yet)
+  bool? get yearlyTrialEligible => _yearlyTrialEligible;
+
+  /// Check if user is eligible for monthly trial
+  /// Returns true if user has never purchased this product (eligible for trial)
+  /// Returns false if user has purchased before (not eligible for trial)
+  /// Returns null if eligibility is unknown (no purchase history checked yet)
+  bool? get monthlyTrialEligible => _monthlyTrialEligible;
+
   /// Purchase premium subscription
   /// [productId] - Product ID to purchase (defaults to yearly if not specified)
   Future<void> purchasePremium({String? productId}) async {
@@ -756,6 +913,18 @@ class SubscriptionService {
       final productId = purchase.productID;
       await _prefs?.setString(_keyPurchasedProductId, productId);
       debugPrint('📊 [SubscriptionService] Purchased product: $productId');
+
+      // Mark trial as ineligible for this product (user has purchased before)
+      // This ensures we don't show "Start Free Trial" to users who already used it
+      if (productId == premiumYearlyProductId) {
+        _yearlyTrialEligible = false;
+        await _prefs?.setBool(_keyYearlyTrialEligible, false);
+        debugPrint('📊 [SubscriptionService] Yearly trial marked ineligible (purchase detected)');
+      } else if (productId == premiumMonthlyProductId) {
+        _monthlyTrialEligible = false;
+        await _prefs?.setBool(_keyMonthlyTrialEligible, false);
+        debugPrint('📊 [SubscriptionService] Monthly trial marked ineligible (purchase detected)');
+      }
 
       // Parse receipt data to extract expiry information
       try {
